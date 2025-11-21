@@ -21,7 +21,7 @@ FONT = pyg.font.SysFont("comicsans", 30) # definir la police d'ecriture
 def draw(player, temp_ecoulé, monster): # dessiner tout
     WIN.blit(BG, (0, 0)) # fond d'ecran
 
-    pyg.draw.rect(WIN, (255, 0, 0), player) # dessiner le joueur (rectangle rouge)
+    pyg.draw.rect(WIN, (0, 0, 255), player) # dessiner le joueur (rectangle rouge)
     pyg.draw.rect(WIN, (0, 255, 0), monster) # dessiner le joueur (rectangle rouge)
 
     if temp_ecoulé < 60: # calculer les minutes et secondes seulement si besoin
