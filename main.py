@@ -1,6 +1,5 @@
 import pygame as pyg # importer le module pygame (game engine)
 import time
-from summon import draw # importer la fonction draw depuis summon.py
 pyg.font.init() # initialiser le module font de pygame
 
 
