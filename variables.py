@@ -1,4 +1,5 @@
 import pygame as pyg
+pyg.font.init() # initialiser le module font de pygame
 
 WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
 WIN = pyg.display.set_mode((WIDTH, HEIGHT)) # creer la fenetre

@@ -1,7 +1,6 @@
 import pygame as pyg # importer le module pygame (game engine)
 import time
 from variables import * # importer les variables
-pyg.font.init() # initialiser le module font de pygame
 
 
 def draw(player, temp_ecoulé, monster): # dessiner tout
