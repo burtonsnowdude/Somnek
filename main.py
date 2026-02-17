@@ -2,14 +2,14 @@ import pygame as pyg # importer le module pygame (game engine)
 import time
 from variables import * # importer les variables
 
-
-def draw(player, temp_ecoulé, monster, bg, barre_PV): # dessiner tout
+# dessiner tout
+def draw(player, temp_ecoulé, monster, bg, barre_PV): 
     WIN.fill((225, 225, 225)) # fond d'ecran
 
     WIN.blit(BG, bg) # dessiner le fond d'ecran
     pyg.draw.rect(WIN, (255, 0, 0), player) # dessiner le joueur (rectangle rouge)
     pyg.draw.rect(WIN, (0, 255, 0), monster) # dessiner le joueur (rectangle rouge)
-    pyg.draw.rect(WIN, (0, 255, 10), barre_PV)
+    pyg.draw.rect(WIN, (0, 255, 10), barre_PV) # dessiner la barre de PV (rectangle vert)
 
     if temp_ecoulé < 60: # calculer les minutes et secondes seulement si besoin
 
