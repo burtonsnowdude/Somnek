@@ -6,9 +6,12 @@ Menu de Pause
 armes
 different types d'ennmis
 XP + nourriture
+<<<<<<< HEAD
 
 git clone lien #pour reccuperer les infos pour la première fois
 
 git add *
 git commit -m "votre commentaire"
 git push
+=======
+>>>>>>> c31b015572303d9e9c98ba57f023537d02d56b68
