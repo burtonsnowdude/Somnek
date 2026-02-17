@@ -1,0 +1,14 @@
+Menu principale
+design du map
+design des cara
+dégats
+Menu de Pause
+armes
+different types d'ennmis
+XP + nourriture
+
+git clone lien #pour reccuperer les infos pour la première fois
+
+git add *
+git commit -m "votre commentaire"
+git push
