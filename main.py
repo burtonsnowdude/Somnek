@@ -3,22 +3,24 @@ import time
 from variables import * # importer les variables
 
 
-def draw(player, temp_ecoulé, monster, bg): # dessiner tout
+def draw(player, temp_ecoulé, monster, bg, barre_PV): # dessiner tout
     WIN.fill((225, 225, 225)) # fond d'ecran
 
     WIN.blit(BG, bg) # dessiner le fond d'ecran
     pyg.draw.rect(WIN, (255, 0, 0), player) # dessiner le joueur (rectangle rouge)
     pyg.draw.rect(WIN, (0, 255, 0), monster) # dessiner le joueur (rectangle rouge)
+    pyg.draw.rect(WIN, (0, 255, 10), barre_PV)
 
     if temp_ecoulé < 60: # calculer les minutes et secondes seulement si besoin
 
         time_text = FONT.render(f"{int(temp_ecoulé)}s", 1, (255, 255, 255)) # creer le texte du temps ecoulé
     else:
-        min = temp_ecoulé // 60 # calculer les minutes
-        sec = temp_ecoulé % 60 # calculer les secondes
+        min = temp_ecoulé // 60 
+        sec = temp_ecoulé % 60 
 
         time_text = FONT.render(f"{int(min)}min {int(sec)}s", 1, (255, 255, 255)) # creer le texte du temps ecoulé
     WIN.blit(time_text, (10, 10)) # afficher le texte du temps ecoulé
+    
 
     pyg.display.update() # mettre a jour l'affichage
 
@@ -30,6 +32,7 @@ def main():
     bg = BG.get_rect() # creer un rectangle pour le fond d'ecran
     player = pyg.Rect(CENTREx, CENTREy, PLAYER_WIDTH, PLAYER_HEIGHT)# creer le joueur (rectangle)
     monster = pyg.Rect(20, 20, PLAYER_WIDTH, PLAYER_HEIGHT)# creer le joueur (rectangle)
+    barre_PV = pyg.Rect(400, 10, PLAYER_PV*30, 20)
 
     start_time = time.time()  # temps de debut
     temp_ecoulé = 0  # temps ecoule
@@ -64,9 +67,22 @@ def main():
 
         follow(player, monster)
 
-        draw(player, temp_ecoulé, monster, bg) # dessiner tout
+        "PLAYER_PV = degats(player, monster, PLAYER_PV)"
+
+        draw(player, temp_ecoulé, monster, bg, barre_PV) # dessiner tout
 
     pyg.quit() # quitter pygame
+
+"""
+def degats(player, monster, PV):
+    if player.colliderect(monster) and PV>0:
+            PV -= 1
+            time.sleep(1)
+    elif PV <= 0:
+         return 0
+    return PV
+"""
+
 
 def follow(player, monster):
     import math
@@ -74,7 +90,6 @@ def follow(player, monster):
     dx = player.centerx - monster.centerx
     dy = player.centery - monster.centery
     
-    # Calculate distance
     distance = math.sqrt(dx**2 + dy**2)
     
     # Only move if distance > 0 to avoid division by zero
@@ -82,6 +97,7 @@ def follow(player, monster):
         # Normalize and move at MONSTER_VIT speed
         monster.x += (dx / distance) * MONSTER_VIT
         monster.y += (dy / distance) * MONSTER_VIT
+
 
 if __name__ == "__main__": #s'assure que le main ne s'execute que si on lance ce fichier directement
     main()
