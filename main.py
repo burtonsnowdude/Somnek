@@ -9,14 +9,15 @@ def main():
 
     run = True
 
+    monstres_presents = []
     bg = BG.get_rect() # creer un rectangle pour le fond d'ecran
     barre_PV = pyg.Rect(500, 10, PLAYER_PV*5, 20)
-    m = monstre("t")
     p = player()
     start_time = time.time()  # temps de debut
     temp_ecoulé = 0  # temps ecoule
     frame = 0
-
+    frequence = 50
+    last_spawn_update = 0
     while run:
         clock.tick(60) # fixe le nombre de frames par seconde
         temp_ecoulé = time.time() - start_time  # calcule le temps ecoule
@@ -32,13 +33,26 @@ def main():
         pyg.draw.rect(WIN, (0, 255, 10), barre_PV)
         
         frame += 1
-        m.spawn()
-        p.draw_player()
-        p.move_bg(bg)
-        m.follow(player)
+    
+        if frame%frequence == 0 :
+            monstres_presents.append(Monstre("t"))
 
-        if p.pos.colliderect(m.pos) and frame%10 == 0:
-            p.degats(1)
+            if temp_ecoulé - last_spawn_update > 30:
+                if frequence > 30:
+                    frequence -= 1
+                last_spawn_update = temp_ecoulé
+
+        for m in monstres_presents[:]:
+            existe = m.spawn()
+            if existe :
+                m.follow(p)
+                if p.pos.colliderect(m.pos) and frame%10 == 0:
+                    p.degats(1)
+            else :
+                monstres_presents.remove(m)
+
+        p.draw_player()
+        p.move_bg(bg, monstres_presents)
 
         if temp_ecoulé < 60: # calculer les minutes et secondes seulement si besoin
              time_text = FONT.render(f"{int(temp_ecoulé)}s", 1, (255, 255, 255)) # creer le texte du temps ecoulé

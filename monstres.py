@@ -1,60 +1,76 @@
 import pygame as pyg
 from variables import * 
 import math
+from random import randint
 
-class monstre:
+class Monstre:
+
     def __init__(self, type):
-        monstre.hp = 50
-        monstre.pos = pyg.Rect(20, 20, PLAYER_WIDTH, PLAYER_HEIGHT)
-        monstre.existe = True
+        self.hp = 50
+        bord = randint(1,4)
+        if bord == 1 :
+            x, y = 0, randint(0, 800)
+        elif bord == 2 :
+            x, y = randint(0, 600), 0
+        elif bord == 3 :
+            x, y = 600, randint(0, 800)
+        else :
+            x, y = randint(0, 600), 800
+        self.pos = pyg.Rect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT)
 
     def spawn(self):
-        if monstre.existe :
-            pyg.draw.rect(WIN, (0, 255, 0), monstre.pos)
+        if self.hp > 0 :
+            pyg.draw.rect(WIN, (0, 255, 0), self.pos)
+            return True
+        else :
+            return False
 
     def degats(self, degats):
-        monstre.hp -= degats
+        self.hp -= degats
 
-    def follow(self, player):
-            # Calculate direction vector from monster to player
-        dx = player.pos.centerx - monstre.pos.centerx
-        dy = player.pos.centery - monstre.pos.centery
+    def follow(self, p):
+        # Calculate direction vector from monster to player
+        dx = p.pos.centerx - self.pos.centerx
+        dy = p.pos.centery - self.pos.centery
         
         distance = math.sqrt(dx**2 + dy**2)
         
         # Only move if distance > 0 to avoid division by zero
         if distance > 0:
             # Normalize and move at MONSTER_VIT speed
-            monstre.pos.x += (dx / distance) * MONSTER_VIT
-            monstre.pos.y += (dy / distance) * MONSTER_VIT
+            self.pos.x += (dx / distance) * MONSTER_VIT
+            self.pos.y += (dy / distance) * MONSTER_VIT
 
 class player:
     def __init__(self):
-        player.hp = PLAYER_PV
-        player.pos = pyg.Rect(CENTREx, CENTREy, PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.hp = PLAYER_PV
+        self.pos = pyg.Rect(CENTREx, CENTREy, PLAYER_WIDTH, PLAYER_HEIGHT)
 
     def draw_player(self):
-        pyg.draw.rect(WIN, (255, 0, 0), player.pos)
+        pyg.draw.rect(WIN, (255, 0, 0), self.pos)
 
-    def move_bg(self, bg):
-        # controle du joueur (avec les fleches ou les touches WASD)
+    def move_bg(self, bg, monstres):
         keys = pyg.key.get_pressed()
-        
-        if (keys[pyg.K_LEFT] or keys[pyg.K_a]):                       # gauche
+
+        if keys[pyg.K_LEFT] or keys[pyg.K_a]:
             bg.x += PLAYER_VIT
-            monstre.pos.x += PLAYER_VIT
+            for m in monstres:
+                m.pos.x += PLAYER_VIT
 
-        if (keys[pyg.K_RIGHT] or keys[pyg.K_d]) and (player.pos.x + PLAYER_VIT + PLAYER_WIDTH) <= WIDTH:   # droite
+        if keys[pyg.K_RIGHT] or keys[pyg.K_d]:
             bg.x -= PLAYER_VIT
-            monstre.pos.x -= PLAYER_VIT
+            for m in monstres:
+                m.pos.x -= PLAYER_VIT
 
-        if (keys[pyg.K_UP] or keys[pyg.K_w]) and (player.pos.y - PLAYER_VIT) >= 0:                         # haut
+        if keys[pyg.K_UP] or keys[pyg.K_w]:
             bg.y += PLAYER_VIT
-            monstre.pos.y += PLAYER_VIT
+            for m in monstres:
+                m.pos.y += PLAYER_VIT
 
-        if (keys[pyg.K_DOWN] or keys[pyg.K_s]) and (player.pos.y + PLAYER_VIT + PLAYER_HEIGHT) <= HEIGHT:  # bas
+        if keys[pyg.K_DOWN] or keys[pyg.K_s]:
             bg.y -= PLAYER_VIT
-            monstre.pos.y -= PLAYER_VIT
-    
+            for m in monstres:
+                m.pos.y -= PLAYER_VIT
+
     def degats(self, degats):
-        player.hp -= degats
+        self.hp -= degats

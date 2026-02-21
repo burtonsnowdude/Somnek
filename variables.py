@@ -4,7 +4,7 @@ pyg.font.init() # initialiser le module font de pygame
 PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
 PLAYER_VIT = 5 # vitesse de deplacement du joueur
 PLAYER_PV = 50 # points de vie du joueur
-MONSTER_VIT= 1
+MONSTER_VIT = 1
 
 WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
 CENTREx, CENTREy = WIDTH/2 - PLAYER_WIDTH, HEIGHT/2 - PLAYER_HEIGHT# coordonnees du centre de la fenetre
