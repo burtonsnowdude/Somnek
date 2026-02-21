@@ -6,21 +6,23 @@ from random import randint
 class Monstre:
 
     def __init__(self, type):
-        self.hp = 50
+        self.puissance = TYPES_MONSTRES[type][0]
+        self.hp = TYPES_MONSTRES[type][1]
         bord = randint(1,4)
         if bord == 1 :
-            x, y = 0, randint(0, 800)
+            x, y = 0, randint(0, 600)
         elif bord == 2 :
-            x, y = randint(0, 600), 0
+            x, y = randint(0, 800), 0
         elif bord == 3 :
-            x, y = 600, randint(0, 800)
+            x, y = 800, randint(0, 600)
         else :
-            x, y = randint(0, 600), 800
+            x, y = randint(0, 800), 600
         self.pos = pyg.Rect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.couleur = TYPES_MONSTRES[type][2]
 
     def spawn(self):
         if self.hp > 0 :
-            pyg.draw.rect(WIN, (0, 255, 0), self.pos)
+            pyg.draw.rect(WIN, self.couleur, self.pos)
             return True
         else :
             return False
