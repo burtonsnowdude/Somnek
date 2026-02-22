@@ -1,71 +1,72 @@
-import pygame as pyg # importer le module pygame (game engine)
+import pygame as pyg 
 import time
-from variables import * # importer les variables
-from monstres import *
+from variables import *
+from monstre_player import *
 from random import *
 
 def main():
-    clock = pyg.time.Clock() # creer une horloge pour gerer le temps
+    clock = pyg.time.Clock() # crée une horloge pour gérer le temps
 
     run = True
 
-    monstres_presents = []
-    bg = BG.get_rect() # creer un rectangle pour le fond d'ecran
+    monstres_presents = [] # liste qui contiendra les monstres existant
+    bg = BG.get_rect() 
     barre_PV = pyg.Rect(500, 10, PLAYER_PV*5, 20)
-    p = player()
-    start_time = time.time()  # temps de debut
+    p = Player()
+    start_time = time.time()  
     frame = 0
-    frequence = 50
+    frequence = 50 # fréquence à laquelle un monstre apparait
     last_spawn_update = 0
+
     while run:
         clock.tick(60) # fixe le nombre de frames par seconde
-        temps_ecoulé = time.time() - start_time  # calcule le temps ecoule
+        temps_ecoulé = time.time() - start_time  
 
-        for event in pyg.event.get():  # cherche appui du bouton sortie
-            if event.type == pyg.QUIT: # si le joueur ferme la fenetre
+        for event in pyg.event.get():  
+            if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
                 break
 
-        WIN.fill((225, 225, 225)) # fond d'ecran
-        WIN.blit(BG, bg) # dessiner le fond d'ecran
+        # Fond d'écran et barre de vie
+        WIN.fill((225, 225, 225)) 
+        WIN.blit(BG, bg) 
         barre_PV = pyg.Rect(500, 10, p.hp*5, 20)
         pyg.draw.rect(WIN, (0, 255, 10), barre_PV)
         
         frame += 1
     
         if frame%frequence == 0 :
-            monstres_presents.append(Monstre(choice(TYPES)))
-            
+            monstres_presents.append(Monstre(choice(TYPES))) # crée un nouveau monstre de type aléatoire
             if temps_ecoulé - last_spawn_update > 30:
                 if frequence > 30:
                     frequence -= 1
                 last_spawn_update = temps_ecoulé
 
         for m in monstres_presents[:]:
-            existe = m.spawn()
+            existe = m.show() # affiche tous les monstres existant
             if existe :
-                m.follow(p)
+                m.follow(p) # monstres suivant le joueur
                 if p.pos.colliderect(m.pos) and frame%10 == 0:
-                    p.degats(m.puissance)
+                    p.degats(m.puissance) # dégâts en cas de collision
             else :
                 monstres_presents.remove(m)
 
         p.draw_player()
         p.move_bg(bg, monstres_presents)
 
-        if temps_ecoulé < 60: # calculer les minutes et secondes seulement si besoin
-             time_text = FONT.render(f"{int(temps_ecoulé)}s", 1, (255, 255, 255)) # creer le texte du temps ecoulé
+        # Timer
+        if temps_ecoulé < 60: 
+             time_text = FONT.render(f"{int(temps_ecoulé)}s", 1, (255, 255, 255)) 
         else:
             min = temps_ecoulé // 60 
             sec = temps_ecoulé % 60 
-
-            time_text = FONT.render(f"{int(min)}min {int(sec)}s", 1, (255, 255, 255)) # creer le texte du temps ecoulé
-        WIN.blit(time_text, (10, 10)) # afficher le texte du temps ecoulé
+            time_text = FONT.render(f"{int(min)}min {int(sec)}s", 1, (255, 255, 255)) 
+        WIN.blit(time_text, (10, 10)) 
 
         pyg.display.update()
 
-    pyg.quit() # quitter pygame
+    pyg.quit() 
 
 
-if __name__ == "__main__": #s'assure que le main ne s'execute que si on lance ce fichier directement
+if __name__ == "__main__": # s'assure que le main ne s'exécute que si on lance ce fichier directement
     main()
