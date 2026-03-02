@@ -7,10 +7,10 @@ class Monstre:
     """Class Monstre"""
     def __init__(self, type):
 
-        self.puissance = TYPES_MONSTRES[type][0]
-        self.hp = TYPES_MONSTRES[type][1]
-        self.couleur = TYPES_MONSTRES[type][2]
-        self.vitesse = TYPES_MONSTRES[type][3]
+        self.puissance = TYPES_MONSTRES[type]["puissance"]
+        self.hp = TYPES_MONSTRES[type]["hp"]
+        self.couleur = TYPES_MONSTRES[type]["couleur"]
+        self.vitesse = TYPES_MONSTRES[type]["vitesse"]
 
         # Choisit un endroit aléatoire sur un bord pour apparaitre
         bord = randint(1,4)
@@ -59,6 +59,7 @@ class Monstre:
         self : Self@Monstre
         p : Self@Player
         """
+
         # Calculate direction vector from monster to player
         dx = p.pos.centerx - self.pos.centerx
         dy = p.pos.centery - self.pos.centery
@@ -77,6 +78,8 @@ class Player:
         self.hp = PLAYER_PV
         self.pos = pyg.Rect(CENTREx, CENTREy, PLAYER_WIDTH, PLAYER_HEIGHT)
         self.vitesse = PLAYER_VIT
+        self.xp = 0
+        self.niveau = 1
 
     def draw_player(self):
         """Dessine le joueur
@@ -152,3 +155,11 @@ class Player:
         degats : int
         """
         self.hp -= degats
+
+    def update_xp(self, xp, xp_attendu):
+        self.xp += xp
+        if self.xp >= xp_attendu :
+            self.xp -= xp_attendu
+            self.niveau += 1
+            return True
+        return False
