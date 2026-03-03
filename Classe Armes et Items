@@ -1,0 +1,141 @@
+import tkinter as tk
+import time
+import math
+class Arme:
+
+    def __init__(self, type_arme, nom_arme, dgbase, prix, portee,
+                 niveau_req, niveau=1, reduction=None):
+
+        self.type_arme = type_arme
+        self.nom_arme = nom_arme
+        self.dgbase = dgbase
+        self.prix = prix
+        self.portee = portee
+        self.reduction = reduction
+        self.niveau_req = niveau_req
+        self.niveau = niveau
+
+
+    def upgrade_arme(self, nv_degat):
+        if self.niveau >= self.niveau_req:
+            self.dgbase += nv_degat
+            self.niveau += 1
+
+
+    def est_a_portee(self, distance_monstre):
+        return distance_monstre <= self.portee
+
+
+    def appliquer_reduction(self, degat):
+        if self.reduction:
+            return degat - self.reduction
+        return degat
+    
+    def buy_arme(self,solde_j,prix):
+        self.solde_j -= prix
+    def show_arme(update_xp):
+        if update_xp() == True :
+            label.config(text=epee.nom)
+            epee = Arme("Épée")
+            fenetre = tk.Tk() 
+            bouton = tk.Button(fenetre, text="Voir arme", command="show_arme")
+            bouton.pack()
+            label = tk.Label(fenetre, text="")
+            label.pack()
+            fenetre.mainloop()
+    
+    
+
+import time
+import math
+
+class Items:
+    def __init__(self, type_item, nom, hp, hp_max, prix, niveau_requis,
+                 degat=None, durabilite=None, refroidissement=None, recuperation=None,
+                 vitesse_du_j=None, chance=None, cupidite=None, attirance=None,
+                 malchance=None, zone=None, resurrection=None, dernier_tir=None,
+                 portee_xp=None):
+        
+        
+        self.type_item = type_item
+        self.nom = nom
+        self.hp = hp
+        self.hp_max = hp_max
+        self.prix = prix
+        self.niveau_requis = niveau_requis
+
+        
+        self.degat = degat
+        self.durabilite = durabilite
+        self.refroidissement = refroidissement
+        self.recuperation = recuperation
+        self.vitesse_du_j = vitesse_du_j
+        self.chance = chance
+        self.cupidite = cupidite
+        self.attirance = attirance
+        self.malchance = malchance
+        self.zone = zone
+        self.resurrection = resurrection
+        self.dernier_tir = dernier_tir
+        self.portee_xp = portee_xp
+
+        # Etat interne
+        self.xp = 0  # XP du joueur
+        self.argent = 0  # Argent du joueur
+
+    
+
+    def buy_items(self, solde_j):
+        if solde_j >= self.prix:
+            solde_j -= self.prix
+        return solde_j
+
+    def regen_hp(self):
+        """Récupération progressive de PV toutes les secondes"""
+        if self.recuperation is None:
+            return
+        while self.hp < self.hp_max:
+            time.sleep(1)
+            self.hp += self.recuperation
+            if self.hp > self.hp_max:
+                self.hp = self.hp_max
+
+
+    def appliquer_durabilite(self):
+        """Réduit les PV de l'item selon sa durabilité"""
+        if self.durabilite is None:
+            return
+        for _ in range(self.durabilite):
+            time.sleep(2)
+            self.hp -= 5
+
+    def appliquer_cooldown(self):
+        """Réduit le temps entre attaques si l'item est utilisé comme arme"""
+        if self.refroidissement is None or self.degat is None:
+            return False
+        maintenant = time.time()
+        if self.dernier_tir is None:
+            self.dernier_tir = 0
+        if maintenant - self.dernier_tir >= self.refroidissement:
+            self.dernier_tir = maintenant
+            return True
+        else:
+            return False
+
+    def appliquer_cupidite(self, somme):
+        """Ajoute un pourcentage de cupidité à la somme récoltée"""
+        if self.cupidite is None:
+            return somme
+        argent_final = somme * (1 + self.cupidite)
+        return argent_final
+
+    def appliquer_attirance(self, xp, source_x, source_y, joueur_x, joueur_y):
+        """Ramasse de l'XP à distance selon portee_xp"""
+        if self.attirance is None or self.portee_xp is None:
+            return 0
+        distance = math.sqrt((joueur_x - source_x)**2 + (joueur_y - source_y)**2)
+        if distance <= self.portee_xp:
+            self.xp += xp
+            return xp
+        else:
+            return 0
