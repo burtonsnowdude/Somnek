@@ -155,6 +155,8 @@ class Player:
         degats : int
         """
         self.hp -= degats
+        if self.hp <= 0 :
+            pyg.quit() #à remplacer plus tard
 
     def update_xp(self, xp, xp_attendu):
         self.xp += xp
