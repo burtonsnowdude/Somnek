@@ -103,6 +103,7 @@ class Player:
                     m.pos.x += 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.x += self.vitesse
+                self.x_suppose -= self.vitesse
                 for m in monstres:
                     m.pos.x += self.vitesse
 
@@ -114,6 +115,7 @@ class Player:
                     m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.x -= self.vitesse
+                self.x_suppose += self.vitesse
                 for m in monstres:
                     m.pos.x -= self.vitesse
 
@@ -125,6 +127,7 @@ class Player:
                     m.pos.y += 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.y += self.vitesse
+                self.y_suppose -= self.vitesse
                 for m in monstres:
                     m.pos.y += self.vitesse
 
@@ -136,6 +139,7 @@ class Player:
                     m.pos.y -= 1/(math.sqrt(2)) * self.vitesse
             else :
                 bg.y -= self.vitesse
+                self.y_suppose += self.vitesse
                 for m in monstres:
                     m.pos.y -= self.vitesse
 
