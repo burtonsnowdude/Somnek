@@ -14,13 +14,11 @@ G4 = (0, 20, 0)
 WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
 CENTREx, CENTREy = WIDTH/2 - PLAYER_WIDTH, HEIGHT/2 - PLAYER_HEIGHT# coordonnees du centre de la fenetre
 WIN = pyg.display.set_mode((WIDTH, HEIGHT)) # creer la fenetre
-pyg.display.set_caption("Player Movement Example") 
+pyg.display.set_caption("Somnek") 
 
 BG = pyg.image.load("background.jpg") # charger le fond d'ecran
 BG = pyg.transform.scale(BG, (800, 600))
 FONT = pyg.font.SysFont("comicsans", 20) # definir la police d'ecriture
-
-TYPES = ["Dragon", "Sorcier", "Araignée", "Creeper"]
 
 TYPES_MONSTRES = {
     "Dragon" : {"puissance" : 1,
@@ -41,7 +39,9 @@ TYPES_MONSTRES = {
                 "vitesse" : 2}
 }
 
-# Liste ARMES qui n'a aucun sens juste pour test mon code
+TYPES = [type for type in TYPES_MONSTRES]
+
+# Dictionnaire ARMES qui n'a aucun sens juste pour test mon code
 ARMES = {}
 for i in range(1,61):
     ARMES["nawak"+str(i)] = i

@@ -3,6 +3,7 @@ import time
 from variables import *
 from monstre_player import *
 from random import *
+from coffres import *
 
 def main():
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
@@ -12,19 +13,20 @@ def main():
     # Toutes les variables initiales sont en bazar je pense qu'il faudra les organiser
     monstres_presents = [] # liste qui contiendra les monstres existant
     bg = BG.get_rect() 
-    barre_PV = pyg.Rect(500, 10, PLAYER_PV*5, 20)
     p = Player()
     start_time = time.time()  
     frame = 0
     frequence = 50 # fréquence à laquelle un monstre apparait
     last_spawn_update = 0
-    xp_attendu = 40
+    xp_attendu = 40 # xp attendu pour passer un niveau (croît exponentiellement)
     xp = 0.5
     seuil = 0
     options = []
     armes_possedees = []
     choix = []
-    pause_time = 0
+    pause_time = 0 # temps d'inactivité 
+    dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
+    coffre_existant = False
     while run:
         clock.tick(60) # fixe le nombre de frames par seconde
         temps_ecoulé = time.time() - start_time - pause_time
@@ -39,7 +41,20 @@ def main():
         WIN.blit(BG, bg) 
         
         frame += 1
-    
+
+        # Gestion des coffres
+        if random() > 0.9 and dernier_coffre_apparu > 100 and not coffre_existant:
+            nouveau_coffre = Coffre(p)
+            dernier_coffre_apparu = 0 
+            coffre_existant = True
+        if coffre_existant :
+            nouveau_coffre.pointer_coffre(p)
+        dernier_coffre_apparu += 1
+        if coffre_existant and nouveau_coffre.rectangle_existe :
+            if p.pos.colliderect(nouveau_coffre.coffre) : 
+                print("yeo") # bon pour l'instant le test échoue
+                coffre_existant = False
+
         if frame%frequence == 0 :
             monstres_presents.append(Monstre(choice(TYPES))) # crée un nouveau monstre de type aléatoire
             if temps_ecoulé - last_spawn_update > 30:
@@ -83,11 +98,43 @@ def main():
                 options = [pyg.Rect(370, 200+40*i, 100, 30) for i in range(3)]
                 for option in options :
                     pyg.draw.rect(WIN, (255, 255, 255), option)
+                selec = 0       
                 for i in range(len(choix)) :
                     texte = FONT.render(choix[i], 1, (0, 0, 0)) 
                     WIN.blit(texte, (390, 205+i*40))
                 pyg.display.update()
-                clic = False
+                debut = time.time()
+                keys = pyg.key.get_pressed()
+                entree = False
+                while not entree:
+                    pause_time = time.time() - debut
+                    for event in pyg.event.get():
+                        if event.type == pyg.QUIT:
+                            pyg.quit()
+                            exit()
+
+                        if event.type == pyg.KEYDOWN:
+                            if event.key == pyg.K_UP and selec != 0:
+                                pyg.draw.rect(WIN, (255, 255, 255), options[selec])
+                                selec -= 1
+
+                            if event.key == pyg.K_DOWN and selec != 2:
+                                pyg.draw.rect(WIN, (255, 255, 255), options[selec])
+                                selec += 1
+
+                            if event.key == pyg.K_RETURN:
+                                entree = True
+
+                    pyg.draw.rect(WIN, (120, 120, 250), options[selec])
+                    for i in range(len(choix)) :
+                        texte = FONT.render(choix[i], 1, (0, 0, 0)) 
+                        WIN.blit(texte, (390, 205+i*40))
+                    pyg.display.update()
+
+                armes_possedees.append(choix[selec])
+                print(armes_possedees)
+                options = []
+                """clic = False
                 debut = time.time()
                 while not clic :
                     pause_time = time.time() - debut
@@ -96,9 +143,9 @@ def main():
                         pos = pyg.mouse.get_pos()
                         for option in options :
                             if option.collidepoint(pos) and pyg.mouse.get_pressed()[0]:
-                                print(choix[options.index(option)])
+                                # print(choix[options.index(option)])
                                 armes_possedees.append(choix[options.index(option)])
-                                options = []
+                                options = []"""
 
         p.move_bg(bg, monstres_presents)
 

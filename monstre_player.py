@@ -15,21 +15,17 @@ class Monstre:
         # Choisit un endroit aléatoire sur un bord pour apparaitre
         bord = randint(1,4)
         if bord == 1 :
-            x, y = 0, randint(0, 600)
+            x, y = 0, randint(0, HEIGHT)
         elif bord == 2 :
-            x, y = randint(0, 800), 0
+            x, y = randint(0, WIDTH), 0
         elif bord == 3 :
-            x, y = 800, randint(0, 600)
+            x, y = WIDTH, randint(0, HEIGHT)
         else :
-            x, y = randint(0, 800), 600
+            x, y = randint(0, WIDTH), HEIGHT
         self.pos = pyg.Rect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT)
 
     def show(self):
         """Dessine le monstre tant qu'il est en vie
-        
-        Parameters
-        ----------
-        self : Self@Monstre
         
         Returns
         -------
@@ -46,7 +42,6 @@ class Monstre:
 
         Parameters
         ----------
-        self : Self@Monstre
         degats : int
         """
         self.hp -= degats
@@ -56,14 +51,12 @@ class Monstre:
         
         Parameters
         ----------
-        self : Self@Monstre
         p : Self@Player
         """
 
         # Calculate direction vector from monster to player
         dx = p.pos.centerx - self.pos.centerx
         dy = p.pos.centery - self.pos.centery
-        
         distance = math.sqrt(dx**2 + dy**2)
         
         # Only move if distance > 0 to avoid division by zero
@@ -80,14 +73,11 @@ class Player:
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
+        self.x_suppose = CENTREx
+        self.y_suppose = CENTREy
 
     def draw_player(self):
-        """Dessine le joueur
-        
-        Parameters
-        ----------
-        self : Self@Player
-        """
+        """Dessine le joueur"""
         pyg.draw.rect(WIN, (255, 0, 0), self.pos)
 
     def move_bg(self, bg, monstres):
@@ -95,7 +85,6 @@ class Player:
         
         Parameters
         ----------
-        self : Self@Player
         bg : Rect
         monstres : list
         """
@@ -109,6 +98,7 @@ class Player:
         if left:
             if up or down : 
                 bg.x += 1/(math.sqrt(2)) * self.vitesse
+                self.x_suppose -= 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.x += 1/(math.sqrt(2)) * self.vitesse
             else : 
@@ -119,6 +109,7 @@ class Player:
         if right:
             if up or down : 
                 bg.x -= 1/(math.sqrt(2)) * self.vitesse
+                self.x_suppose += 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
             else : 
@@ -129,6 +120,7 @@ class Player:
         if up:
             if right or left : 
                 bg.y += 1/(math.sqrt(2)) * self.vitesse
+                self.y_suppose -= 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.y += 1/(math.sqrt(2)) * self.vitesse
             else : 
@@ -139,6 +131,7 @@ class Player:
         if down:
             if right or left :
                 bg.y -= 1/(math.sqrt(2)) * self.vitesse
+                self.y_suppose += 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.y -= 1/(math.sqrt(2)) * self.vitesse
             else :
@@ -151,7 +144,6 @@ class Player:
 
         Parameters
         ----------
-        self : Self@Player
         degats : int
         """
         self.hp -= degats
