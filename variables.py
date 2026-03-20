@@ -16,10 +16,14 @@ CENTREx, CENTREy = WIDTH/2 - PLAYER_WIDTH, HEIGHT/2 - PLAYER_HEIGHT# coordonnees
 WIN = pyg.display.set_mode((WIDTH, HEIGHT)) # creer la fenetre
 pyg.display.set_caption("Somnek") 
 
-BG = pyg.image.load("background.jpg") # charger le fond d'ecran
+BG = pyg.image.load("Images/background.jpg") # charger le fond d'ecran
 BG = pyg.transform.scale(BG, (800, 600))
 FONT = pyg.font.SysFont("comicsans", 20) # definir la police d'ecriture
 
+FLECHE = pyg.image.load("Images/fleche.png").convert_alpha()
+FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
+TRESOR = pyg.image.load("Images/tresor.png").convert_alpha()
+#TRESOR = pyg.transform.smoothscale(TRESOR, (100, 70))
 TYPES_MONSTRES = {
     "Dragon" : {"puissance" : 1,
                 "hp" : 5,

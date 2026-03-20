@@ -152,7 +152,8 @@ class Player:
         """
         self.hp -= degats
         if self.hp <= 0 :
-            pyg.quit() #à remplacer plus tard
+            #pyg.quit() #à remplacer plus tard
+            pass # car ça fait buguer
 
     def update_xp(self, xp, xp_attendu):
         self.xp += xp

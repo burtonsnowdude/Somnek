@@ -17,16 +17,17 @@ def main():
     start_time = time.time()  
     frame = 0
     frequence = 50 # fréquence à laquelle un monstre apparait
-    last_spawn_update = 0
     xp_attendu = 40 # xp attendu pour passer un niveau (croît exponentiellement)
     xp = 0.5
     seuil = 0
     options = []
     armes_possedees = []
-    choix = []
     pause_time = 0 # temps d'inactivité 
     dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
     coffre_existant = False
+    nouveau_coffre = None
+    argent = 0
+
     while run:
         clock.tick(60) # fixe le nombre de frames par seconde
         temps_ecoulé = time.time() - start_time - pause_time
@@ -42,26 +43,30 @@ def main():
         
         frame += 1
 
+       
         # Gestion des coffres
-        if random() > 0.9 and dernier_coffre_apparu > 100 and not coffre_existant:
+        if randint(1,100) == 1 and dernier_coffre_apparu > 100 and not coffre_existant:
             nouveau_coffre = Coffre(p)
             dernier_coffre_apparu = 0 
             coffre_existant = True
-        if coffre_existant :
-            nouveau_coffre.pointer_coffre(p)
-        dernier_coffre_apparu += 1
-        if coffre_existant and nouveau_coffre.rectangle_existe :
-            if p.pos.colliderect(nouveau_coffre.coffre) : 
-                print("yeo") # bon pour l'instant le test échoue
-                coffre_existant = False
 
+        if coffre_existant:
+            nouveau_coffre.pointer_coffre(p)
+            if nouveau_coffre.coffre_sur_lecran:
+                if p.pos.colliderect(nouveau_coffre.rect):
+                    gain = nouveau_coffre.determiner_recompense(armes_possedees, seuil)
+                    if type(gain) == int :
+                        argent += gain
+                        print(argent)
+                    else :
+                        armes_possedees.append(gain)
+                        print(armes_possedees)
+                    coffre_existant = False
+        dernier_coffre_apparu += 1
+        
+        # Gestion des ennemis
         if frame%frequence == 0 :
             monstres_presents.append(Monstre(choice(TYPES))) # crée un nouveau monstre de type aléatoire
-            if temps_ecoulé - last_spawn_update > 30:
-                if frequence > 30:
-                    frequence -= 1
-                last_spawn_update = temps_ecoulé
-
         for m in monstres_presents[:]:
             existe = m.show() # affiche tous les monstres existant
             if existe :
@@ -70,12 +75,6 @@ def main():
                     p.degats(m.puissance) # dégâts en cas de collision
             else :
                 monstres_presents.remove(m)
-
-        # là j'ai mis un xp arbitraire mais il faudra le changer quand t'ajouteras les armes
-        # exactement comme la boucle pour les monstres mais ici ce serait une double boucle
-        # avec d'abord pour chaque arme possédée, puis pour chaque monstre présent s'il y a collision
-        # en mettant m.hp à la place de xp je pense 
-        # genre on récupère en xp l'équivalent des points de vie du monstre
 
         p.draw_player() 
 
@@ -88,6 +87,9 @@ def main():
             # passage de niveau (j'attends la class armes encore une fois c'est des listes arbitraires)
             if p.niveau < seuil :
                 armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
+                for arme in armes_dispo[:]:
+                    if arme in armes_possedees :
+                        armes_dispo.remove(arme)
                 choix = []
                 compteur = 0
                 while compteur < 3:
@@ -104,7 +106,6 @@ def main():
                     WIN.blit(texte, (390, 205+i*40))
                 pyg.display.update()
                 debut = time.time()
-                keys = pyg.key.get_pressed()
                 entree = False
                 while not entree:
                     pause_time = time.time() - debut
@@ -116,36 +117,28 @@ def main():
                         if event.type == pyg.KEYDOWN:
                             if event.key == pyg.K_UP and selec != 0:
                                 pyg.draw.rect(WIN, (255, 255, 255), options[selec])
+                                texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
+                                WIN.blit(texte, (390, 205+selec*40))
                                 selec -= 1
 
                             if event.key == pyg.K_DOWN and selec != 2:
                                 pyg.draw.rect(WIN, (255, 255, 255), options[selec])
+                                texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
+                                WIN.blit(texte, (390, 205+selec*40))
                                 selec += 1
 
                             if event.key == pyg.K_RETURN:
                                 entree = True
 
                     pyg.draw.rect(WIN, (120, 120, 250), options[selec])
-                    for i in range(len(choix)) :
-                        texte = FONT.render(choix[i], 1, (0, 0, 0)) 
-                        WIN.blit(texte, (390, 205+i*40))
+    
+                    texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
+                    WIN.blit(texte, (390, 205+selec*40))
                     pyg.display.update()
 
                 armes_possedees.append(choix[selec])
                 print(armes_possedees)
                 options = []
-                """clic = False
-                debut = time.time()
-                while not clic :
-                    pause_time = time.time() - debut
-                    for event in pyg.event.get() :
-                        clic = event.type == pyg.MOUSEBUTTONDOWN
-                        pos = pyg.mouse.get_pos()
-                        for option in options :
-                            if option.collidepoint(pos) and pyg.mouse.get_pressed()[0]:
-                                # print(choix[options.index(option)])
-                                armes_possedees.append(choix[options.index(option)])
-                                options = []"""
 
         p.move_bg(bg, monstres_presents)
 
