@@ -46,6 +46,10 @@ TYPES_MONSTRES = {
 TYPES = [type for type in TYPES_MONSTRES]
 
 # Dictionnaire ARMES qui n'a aucun sens juste pour test mon code
-ARMES = {}
+ARMES = {
+        "Epee_bleu" : {Carac_base_arme ,"dgbase" : 4,"prix" : 0,"niveau_req" : 0,
+        "niveau" : None},
+        "Clé_usb" : {Carac_base_arme , "dgbase" : 23,"prix" : 9,"niveau_req" : 4}
+        "Epee_enflammee" : {Carac_base_arme , "dgbase" : 10,"prix" : 2,"niveau_req" : 4}}
 for i in range(1,61):
     ARMES["nawak"+str(i)] = i
