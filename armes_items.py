@@ -5,41 +5,43 @@ import pygame
 import random
 global projectileYPosition
 class Arme:
-    
-    def __init__(self, type_arme, nom_arme, dgbase, prix, portee,
-                 niveau_req, niveau=1, reduction=None):
 
-        self.type_arme = type_arme
-        self.nom_arme = nom_arme
-        self.dgbase = dgbase
-        self.prix = prix
-        self.portee = portee
-        self.reduction = reduction
-        self.niveau_req = niveau_req
-        self.niveau = niveau
-
-    def améliorer_arme(self, nv_degat):
+    Carac_base_arme = 
+        {"type_arme" : None,
+        "dgbase" : 0,
+        "prix" : 0
+        "portee" : 0
+        "reduction" : 0
+        "niveau_req" : 0
+        "niveau" : None}
+    ARMES = {
+        "Epee_bleu" : {Carac_base_arme ,"dgbase" : 4,"prix" : 0,"niveau_req" : 0,
+        "niveau" : None},
+        "Clé_usb" : {Carac_base_arme , "dgbase" : 23,"prix" : 9,"niveau_req" : 4}
+        "Epee_enflammee" : {Carac_base_arme , "dgbase" : 10,"prix" : 2,"niveau_req" : 4}
+    }
+    def améliorer_arme(ARMES, nv_degat):
         """Améliorer une arme"""
         if self.niveau >= self.niveau_req:
             self.dgbase += nv_degat
             self.niveau += 1
 
 
-    def est_a_portee(self, distance_monstre):
+    def est_a_portee(ARMES, distance_monstre):
         """Vérifier qu'une arme peut atteindre sa cible"""
         return distance_monstre <= self.portee
 
 
-    def arme_degat(self, degat):
+    def arme_degat(ARMES, degat):
         """Appliquer des dégats"""
         if self.reduction:
             return degat - self.reduction
         return degat
     
-    def acheter_armes(self,solde_j,prix):
+    def acheter_armes(ARMES,solde_j,prix):
         """Acheter une arme"""
         self.solde_j -= prix
-    def afficher_armes(update_xp):
+    def afficher_armes(ARMES,update_xp):
         """Affiche les armes"""
         if update_xp() == True :
             label.config(text=epee.nom)
@@ -50,7 +52,6 @@ class Arme:
             label = tk.Label(fenetre, text="")
             label.pack()
             fenetre.mainloop()
-    
     
 class Items:
     hp = 100 # Vie du joueur
