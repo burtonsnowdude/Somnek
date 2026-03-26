@@ -1,4 +1,9 @@
 "Daphné j'ai créé mon propre fichier pour ne pas supprimer le tien mais j'ai conservé tes élements"
+"Les class Game et player ont du etre recrée pour l'application des effets mais quand tu les rajouteras les tiennes 
+il faudra les homogéniser avec ton code"
+"Les seules erreurs qui demeurent sont celles des dictionnaire, python capte pas que c'est des dictionnaires et pas des sets , c'est juste 20 fois le meme truc"
+"Sinon il n'y a rien"
+
 import pygame as pyg 
 import time
 from variables import *
@@ -428,8 +433,8 @@ class Player(pygame.sprite.Sprite):
         self.equipe_items = []
     
     def draw(self, win):
-        """Dessine le joeur"""
-        if self.walk_count + 1 >= 27:
+        """Afficher le joueur """
+        if self.walk_count + 1 >= 27: """changer d’image"""
             self.walk_count = 0
         
         # Placeholder rectangle (replace with actual sprites)
@@ -437,22 +442,25 @@ class Player(pygame.sprite.Sprite):
         pygame.draw.rect(win, color, (self.x, self.y, self.width, self.height))
     
     def update_position(self, keys):
-        """Update player position based on key input"""
+        """Change la position du joueur"""
+        """Si flèche gauche appuyée le joeur va à gauche"
         if keys[pygame.K_LEFT] and self.x > self.vel:
             self.x -= self.vel
             self.left = True
             self.right = False
             self.standing = False
+        """Si flèche droite appuyée le joeur va à droite"
         elif keys[pygame.K_RIGHT] and self.x < 500 - self.width - self.vel:
             self.x += self.vel
             self.right = True
             self.left = False
             self.standing = False
         else:
+        "Le joueur ne bouge pas"
             self.standing = True
             self.walk_count = 0
         
-        # Handle jump
+        "Sauter"
         if not self.is_jump:
             if keys[pygame.K_UP]:
                 self.is_jump = True
@@ -471,27 +479,27 @@ class Player(pygame.sprite.Sprite):
                 self.jump_count = 10
     
     def equiper_arme(self, arme):
-        """Equip a weapon"""
+        """Equiper l'arme"""
         if isinstance(arme, Arme):
             self.equipe_armes.append(arme)
     
     def equiper_item(self, item):
-        """Equip an item"""
+        """Equiper un item"""
         if isinstance(item, Items):
             self.equipe_items.append(item)
     
     def prendre_degat(self, degat):
-        """Take damage"""
+        """Subir les degats"""
         self.hp -= degat
         if self.hp < 0:
             self.hp = 0
     
     def gagner_xp(self, xp):
-        """Gain experience"""
+        """Gagner de l experience"""
         self.xp += xp
     
     def gagner_argent(self, montant):
-        """Gain money"""
+        """gagner l'argent"""
         self.argent += montant
 
 
@@ -500,6 +508,7 @@ class Projectile(pygame.sprite.Sprite):
     """Class projectile pour la statistique"""
     
     def __init__(self, x, y, radius, color, facing):
+        "initialiser la position"
         super().__init__()
         self.x = x
         self.y = y
@@ -509,11 +518,11 @@ class Projectile(pygame.sprite.Sprite):
         self.vel = 8 * facing
     
     def update(self):
-        """Update projectile position"""
+        """"changer la  position des projectiles""""
         self.x += self.vel
     
     def draw(self, win):
-        """Draw projectile on screen"""
+        """dessiner la projection"""
         pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
     
     def is_off_screen(self):
@@ -527,6 +536,7 @@ class Game:
     
     SCREEN_WIDTH = 500
     SCREEN_HEIGHT = 500
+    "Nombre d'image par seconde"
     FPS = 27
     
     def __init__(self):
@@ -544,7 +554,7 @@ class Game:
         self.bg = pygame.Surface((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self.bg.fill((255, 255, 255))
         
-        # Game settings
+        "Definie le nombre de projectile max"
         self.max_bullets = 5
     
     def handle_events(self):
@@ -601,7 +611,7 @@ class Game:
 
 
 def calculer_application_refroidissement(dernier_tir, refroidissement):
-    """Check if enough time has passed for next shot"""
+    """Vérifie si le temps requis est passé"""
     maintenant = time.time()
     if dernier_tir == 0:
         dernier_tir = maintenant
@@ -615,7 +625,7 @@ def calculer_application_refroidissement(dernier_tir, refroidissement):
 
 
 def regen_hp(player, recuperation, interval=1):
-    """Regenerate HP every interval seconds"""
+    """Regenere les points de vies par seconde"""
     if recuperation is None or recuperation <= 0:
         return
     
