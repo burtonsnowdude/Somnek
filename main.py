@@ -4,6 +4,9 @@ from variables import *
 from monstre_player import *
 from random import *
 from coffres import *
+import tkinter as tk
+import math
+import random
 
 def main():
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
