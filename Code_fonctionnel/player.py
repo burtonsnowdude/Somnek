@@ -15,6 +15,8 @@ class Player:
         self.niveau = 1
         self.x_suppose = CENTREx
         self.y_suppose = CENTREy
+        """Liste spéciale pygame"""
+        self.all_projectiles = pygame.sprite.Group()   
 
     def draw_player(self):
         """Dessine le joueur"""
