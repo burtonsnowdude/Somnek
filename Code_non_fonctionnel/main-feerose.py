@@ -1,6 +1,6 @@
 "Daphné j'ai créé mon propre fichier pour ne pas supprimer le tien mais j'ai conservé tes élements"
-"Les class Game et player ont du etre recrée pour l'application des effets mais quand tu les rajouteras les tiennes 
-il faudra les homogéniser avec ton code"
+"""Les class Game et player ont du etre recrée pour l'application des effets mais quand tu les rajouteras les tiennes 
+il faudra les homogéniser avec ton code"""
 "Les seules erreurs qui demeurent sont celles des dictionnaire, python capte pas que c'est des dictionnaires et pas des sets , c'est juste 20 fois le meme truc"
 "Sinon il n'y a rien"
 
@@ -177,65 +177,32 @@ def main():
 
 class Arme:
     """Class arme"""
-    Carac_base = {
-        "type_arme": None,
-        "dgbase": 0,
-        "prix": 0,
-        "portee": 0,
-        "reduction": 0,
-        "niveau_req": 0,
-        "niveau": 0
-    }
-    ARMES= {
-        "Epee_bleu": {
-            Carac_base,
-            "dgbase": 4,
-            "prix": 0,
-            "niveau_req": 0,
-            "niveau": 1
-        },
-        "Clé_usb": {
-            Carac_base,
-            "dgbase": 23,
-            "prix": 9,
-            "niveau_req": 4,
-            "niveau": 1
-        },
-        "Epee_enflammee": {
-            Carac_base,
-            "dgbase": 10,
-            "prix": 2,
-            "niveau_req": 4,
-            "niveau": 1
-        }
-    }
+    
     def __init__(self, nom_arme):
         """Initialiser"""
-        if nom_arme not in self.ARMES:
-            raise ValueError(f"Arme '{nom_arme}' non trouvée")
-        
         self.nom = nom_arme
-        self.caracteristiques = self.ARMES[nom_arme].copy()
+        for carac in ARMES[nom_arme]:
+            self.carac = ARMES[nom_arme][carac]
     
     def ameliorer_arme(self, nv_degat):
         """Améliorer les statistiques de l'arme"""
-        niveau_req = self.caracteristiques["niveau_req"]
-        niveau_actuel = self.caracteristiques["niveau"]
+        niveau_req = self.niveau_req
+        niveau_actuel = self.niveau
         
         if niveau_actuel >= niveau_req:
-            self.caracteristiques["dgbase"] += nv_degat
-            self.caracteristiques["niveau"] += 1
+            self.dgbase += nv_degat
+            self.niveau += 1
             return True
         return False
     
     def est_a_portee(self, distance_monstre):
         """Vérifie que le monstre est à la portée"""
-        return distance_monstre <= self.caracteristiques["portee"]
+        return distance_monstre <= self.portee
     
     def calculer_degat(self):
         """Calcule les degats"""
-        degat = self.caracteristiques["dgbase"]
-        reduction = self.caracteristiques["reduction"]
+        degat = self.dgbase
+        reduction = self.reduction
         
         if reduction > 0:
             return degat - reduction
@@ -243,64 +210,11 @@ class Arme:
     
     def get_prix(self):
         """Avoir le prix de l'arme"""
-        return self.caracteristiques["prix"]
+        return self.prix
 
 
 class Items:
     """Class items"""
-    
-    Carac_base__item= {
-        "type_item": None,
-        "hp": 0,
-        "hp_max": 0,
-        "prix": 0,
-        "niveau_requis": 0,
-        "degat": 0,
-        "durabilite": None,
-        "refroidissement": None,
-        "recuperation": None,
-        "vitesse_du_j": None,
-        "chance": None,
-        "cupidite": None,
-        "attirance": None,
-        "malchance": None,
-        "zone": None,
-        "resurrection": None,
-        "dernier_tir": 0,
-        "portee_xp": None,
-        "refroidir": None,
-        "quantite": 5,
-        "sante": None,
-        "protection": 0
-    }
-    
-    Items = {
-        "Parfum_Dioru": {
-            Carac_base__item,
-            "refroidir": 30,
-            "prix": 5
-        },
-        "Gloss_rose": {
-            Carac_base__item,
-            "attirance": 15,
-            "prix": 3
-        },
-        "Chew_gum": {
-            Carac_base__item,
-            "sante": 0.2,
-            "prix": 2
-        },
-        "Talons_noirs": {
-            Carac_base__item,
-            "vitesse_du_j": 0.2,
-            "prix": 7
-        },
-        "Crop_top_rose": {
-            Carac_base__item,
-            "protection": 0.2,
-            "prix": 6
-        }
-    }
     
     def __init__(self, nom_item):
         """Initialisez les items"""
@@ -407,11 +321,10 @@ class Items:
 
 
 
-class Player(pygame.sprite.Sprite):
+class Player:
     """Class player pour la projection"""
     
     def __init__(self, x, y, width, height):
-        super().__init__()
         self.x = x
         self.y = y
         self.width = width
@@ -434,35 +347,36 @@ class Player(pygame.sprite.Sprite):
     
     def draw(self, win):
         """Afficher le joueur """
-        if self.walk_count + 1 >= 27: """changer d’image"""
+        if self.walk_count + 1 >= 27: # changer d'image
             self.walk_count = 0
         
         # Placeholder rectangle (replace with actual sprites)
         color = (0, 100, 255) if self.right else (255, 100, 0)
-        pygame.draw.rect(win, color, (self.x, self.y, self.width, self.height))
+        pyg.draw.rect(win, color, (self.x, self.y, self.width, self.height))
     
     def update_position(self, keys):
         """Change la position du joueur"""
-        """Si flèche gauche appuyée le joeur va à gauche"
-        if keys[pygame.K_LEFT] and self.x > self.vel:
+        #Si flèche gauche appuyée le joueur va à gauche
+        if keys[pyg.K_LEFT] and self.x > self.vel:
             self.x -= self.vel
             self.left = True
             self.right = False
             self.standing = False
-        """Si flèche droite appuyée le joeur va à droite"
-        elif keys[pygame.K_RIGHT] and self.x < 500 - self.width - self.vel:
+        
+        #Si flèche droite appuyée le joeur va à droite
+        elif keys[pyg.K_RIGHT] and self.x < 500 - self.width - self.vel:
             self.x += self.vel
             self.right = True
             self.left = False
             self.standing = False
         else:
-        "Le joueur ne bouge pas"
+            #Le joueur ne bouge pas
             self.standing = True
             self.walk_count = 0
         
         "Sauter"
         if not self.is_jump:
-            if keys[pygame.K_UP]:
+            if keys[pyg.K_UP]:
                 self.is_jump = True
                 self.right = False
                 self.left = False
@@ -518,12 +432,12 @@ class Projectile(pygame.sprite.Sprite):
         self.vel = 8 * facing
     
     def update(self):
-        """"changer la  position des projectiles""""
+        """"changer la  position des projectiles"""
         self.x += self.vel
     
     def draw(self, win):
         """dessiner la projection"""
-        pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
+        pyg.draw.circle(win, self.color, (int(self.x), int(self.y)), self.radius)
     
     def is_off_screen(self):
         """Regarde si le projectile est sur la map"""
@@ -541,17 +455,17 @@ class Game:
     
     def __init__(self):
         """Initialize the game"""
-        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
-        pygame.display.set_caption("Game - Armes et Items")
-        self.clock = pygame.time.Clock()
+        self.screen = pyg.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        pyg.display.set_caption("Game - Armes et Items")
+        self.clock = pyg.time.Clock()
         self.running = True
         
         # Game objects
         self.player = Player(200, 410, 64, 64)
-        self.bullets = pygame.sprite.Group()
+        self.bullets = pyg.sprite.Group()
         
         # Background
-        self.bg = pygame.Surface((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        self.bg = pyg.Surface((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self.bg.fill((255, 255, 255))
         
         "Definie le nombre de projectile max"
@@ -559,19 +473,19 @@ class Game:
     
     def handle_events(self):
         """Handle pygame events"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        for event in pyg.event.get():
+            if event.type == pyg.QUIT:
                 self.running = False
     
     def update(self):
         """Update game state"""
-        keys = pygame.key.get_pressed()
+        keys = pyg.key.get_pressed()
         
         # Update player
         self.player.update_position(keys)
         
         # Handle shooting
-        if keys[pygame.K_SPACE]:
+        if keys[pyg.K_SPACE]:
             if len(self.bullets) < self.max_bullets:
                 facing = -1 if self.player.left else 1
                 new_bullet = Projectile(
@@ -597,7 +511,7 @@ class Game:
         for bullet in self.bullets:
             bullet.draw(self.screen)
         
-        pygame.display.update()
+        pyg.display.update()
     
     def run(self):
         """Main game loop"""
@@ -607,7 +521,7 @@ class Game:
             self.update()
             self.draw()
         
-        pygame.quit()
+        pyg.quit()
 
 
 def calculer_application_refroidissement(dernier_tir, refroidissement):
@@ -645,6 +559,6 @@ def durabilite_effect(player, durabilite_val, damage_per_tick=5, interval=2):
         time.sleep(interval)
         player.hp -= damage_per_tick
 
-    pyg.quit() 
+    #pyg.quit() 
 
-pygame.init()
+main()

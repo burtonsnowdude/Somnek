@@ -3,42 +3,35 @@ import time
 import math
 import pygame
 import random
+from Code_fonctionnel import *
 global projectileYPosition
+
+
 class Arme:
 
-    Carac_base_arme = 
-        {"type_arme" : None,
-        "dgbase" : 0,
-        "prix" : 0
-        "portee" : 0
-        "reduction" : 0
-        "niveau_req" : 0
-        "niveau" : None}
-    ARMES = {
-        "Epee_bleu" : {Carac_base_arme ,"dgbase" : 4,"prix" : 0,"niveau_req" : 0,
-        "niveau" : None},
-        "Clé_usb" : {Carac_base_arme , "dgbase" : 23,"prix" : 9,"niveau_req" : 4}
-        "Epee_enflammee" : {Carac_base_arme , "dgbase" : 10,"prix" : 2,"niveau_req" : 4}
-    }
-    def améliorer_arme(ARMES, nv_degat):
+    def __init__(self, type):
+        for carac in ARMES[type]:
+            self.str(carac) = ARMES[type][carac]
+
+    def améliorer_arme(self, nv_degat):
         """Améliorer une arme"""
         if self.niveau >= self.niveau_req:
             self.dgbase += nv_degat
             self.niveau += 1
 
 
-    def est_a_portee(ARMES, distance_monstre):
+    def est_a_portee(self, distance_monstre):
         """Vérifier qu'une arme peut atteindre sa cible"""
         return distance_monstre <= self.portee
 
 
-    def arme_degat(ARMES, degat):
+    def arme_degat(self, degat):
         """Appliquer des dégats"""
         if self.reduction:
             return degat - self.reduction
         return degat
     
-    def acheter_armes(ARMES,solde_j,prix):
+    def acheter_armes(self, prix):
         """Acheter une arme"""
         self.solde_j -= prix
     def afficher_armes(ARMES,update_xp):
@@ -57,35 +50,9 @@ class Items:
     hp = 100 # Vie du joueur
     xp = 0  # XP du joueur
     argent = 0  # Argent du joueur
-    Carac_de_base = {
-    "type_item": None,
-    "hp": 0,
-    "hp_max": 0,
-    "prix": 0,
-    "niveau_requis": 0,
-    "degat": None,
-    "durabilite": None,
-    "refroidissement": None,
-    "recuperation": None,
-    "vitesse_du_j": None,
-    "chance": None,
-    "cupidite": None,
-    "attirance": None,
-    "malchance": None,
-    "zone": None,
-    "resurrection": None,
-    "dernier_tir": None,
-    "portee_xp": None,
-    "refroidir": None,
-    "quantite": 5,
-    "sante" : None
-} # Dictionnaire des caractéristiques des items
-    items = {"Parfum Dioru" : {Carac_de_base, "refroidir" :30}
-                       "Un_gloss_rose" : {Carac_de_base,"attirance": 15 },
-                         "chew-gum" : {Carac_de_base, "sante" : 0,2},
-                         "talons noirs" : {Carac_de_base, "vitesse_du_j" :0,2 },
-                         "crop top rose": {Carac_de_base, "protection" : 0,2} 
+    
 
+"""
 # initialize pygame objects
 class player(object):
     def __init__(self,x,y,width,height):
@@ -117,7 +84,7 @@ class player(object):
                 win.blit(walkRight[0], (self.x, self.y))
             else:
                 win.blit(walkLeft[0], (self.x, self.y))
-
+"""
 
 class projectile(object):
     def __init__(self,x,y,radius,color,facing):
@@ -134,10 +101,10 @@ class projectile(object):
 
 
 def redrawGameWindow():
-    win.blit(bg, (0,0))
-    man.draw(win)
+    WIN.blit(BG, (0,0))
+    man.draw(WIN)
     for bullet in bullets:
-        bullet.draw(win)
+        bullet.draw(WIN)
     
     pygame.display.update()
 
@@ -226,7 +193,7 @@ def améliorer_items(items, degat, niveau,niveau_rq):
         """Ce n'est pas une fonction complete """
         """Pour la compléter il faudrais faire une fonction par items"""
          """Ici je l'ai mise juste pour avoir l'idée"""   
-            if niveau >= niveau_req:
+        if niveau >= niveau_req:
             dgbase += nv_degat
             niveau += 1
     def durabilite(items):

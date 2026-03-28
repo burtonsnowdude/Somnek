@@ -46,7 +46,6 @@ def main():
         
         frame += 1
 
-       
         # Gestion des coffres
         if randint(1,100) == 1 and dernier_coffre_apparu > 100 and not coffre_existant:
             nouveau_coffre = Coffre(p)
@@ -66,7 +65,6 @@ def main():
                         print(armes_possedees)
                     coffre_existant = False
         dernier_coffre_apparu += 1
-        
         # Gestion des ennemis
         if frame%frequence == 0 :
             monstres_presents.append(Monstre(choice(TYPES))) # crée un nouveau monstre de type aléatoire

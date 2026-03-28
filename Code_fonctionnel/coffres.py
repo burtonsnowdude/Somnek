@@ -61,6 +61,7 @@ class Coffre :
                 self.rect.topleft = (x_screen_coffre, y_screen_coffre)
     
     def determiner_recompense(self, armes_possedees, seuil) :
+        
         armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
         for arme in armes_dispo[:]:
             if arme in armes_possedees :
@@ -71,3 +72,6 @@ class Coffre :
             return argent_dispo
         else : 
             return choice(armes_dispo)
+        
+
+        
