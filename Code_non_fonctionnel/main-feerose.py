@@ -6,8 +6,8 @@ il faudra les homogéniser avec ton code"""
 
 import pygame as pyg 
 import time
-from variables import *
-from monstre_player import *
+from Code_fonctionnel import variables as vb
+from Code_fonctionnel import player as mp
 from random import *
 from coffres import *
 import tkinter as tk
@@ -22,7 +22,7 @@ def main():
     
     # Toutes les variables initiales sont en bazar je pense qu'il faudra les organiser
     monstres_presents = [] # liste qui contiendra les monstres existant
-    bg = BG.get_rect() 
+    bg = vb.BG.get_rect() 
     p = Player()
     start_time = time.time()  
     frame = 0
@@ -49,8 +49,8 @@ def main():
                 break
 
         # Fond d'écran 
-        WIN.fill((225, 225, 225)) 
-        WIN.blit(BG, bg) 
+        vb.WIN.fill((225, 225, 225)) 
+        vb.WIN.blit(vb.BG, bg) 
         
         frame += 1
 
@@ -77,7 +77,7 @@ def main():
         
         # Gestion des ennemis
         if frame%frequence == 0 :
-            monstres_presents.append(Monstre(choice(TYPES))) # crée un nouveau monstre de type aléatoire
+            monstres_presents.append(mp.Monstre(choice(vb.TYPES))) # crée un nouveau monstre de type aléatoire
         for m in monstres_presents[:]:
             existe = m.show() # affiche tous les monstres existant
             if existe :
@@ -91,13 +91,13 @@ def main():
 
         if p.update_xp(xp, xp_attendu) :
             xp_attendu *= 1.5
-            if seuil+4 <= len(ARMES) :
+            if seuil+4 <= len(vb.ARMES) :
                 seuil += 4
             if xp_attendu%2 != 0 :
                 xp_attendu += 1 # pour toujours avoir un nombre pair (évite un trop grand nombre de décimales)
             # passage de niveau (j'attends la class armes encore une fois c'est des listes arbitraires)
             if p.niveau < seuil :
-                armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
+                armes_dispo = [arme for arme in vb.ARMES if vb.ARMES[arme] < seuil]
                 for arme in armes_dispo[:]:
                     if arme in armes_possedees :
                         armes_dispo.remove(arme)
@@ -110,11 +110,11 @@ def main():
                         compteur += 1
                 options = [pyg.Rect(370, 200+40*i, 100, 30) for i in range(3)]
                 for option in options :
-                    pyg.draw.rect(WIN, (255, 255, 255), option)
+                    pyg.draw.rect(vb.WIN, (255, 255, 255), option)
                 selec = 0       
                 for i in range(len(choix)) :
-                    texte = FONT.render(choix[i], 1, (0, 0, 0)) 
-                    WIN.blit(texte, (390, 205+i*40))
+                    texte = vb.FONT.render(choix[i], 1, (0, 0, 0)) 
+                    vb.WIN.blit(texte, (390, 205+i*40))
                 pyg.display.update()
                 debut = time.time()
                 entree = False
@@ -127,24 +127,24 @@ def main():
 
                         if event.type == pyg.KEYDOWN:
                             if event.key == pyg.K_UP and selec != 0:
-                                pyg.draw.rect(WIN, (255, 255, 255), options[selec])
-                                texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
-                                WIN.blit(texte, (390, 205+selec*40))
+                                pyg.draw.rect(vb.WIN, (255, 255, 255), options[selec])
+                                texte = vb.FONT.render(choix[selec], 1, (0, 0, 0)) 
+                                vb.WIN.blit(texte, (390, 205+selec*40))
                                 selec -= 1
 
                             if event.key == pyg.K_DOWN and selec != 2:
-                                pyg.draw.rect(WIN, (255, 255, 255), options[selec])
-                                texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
-                                WIN.blit(texte, (390, 205+selec*40))
+                                pyg.draw.rect(vb.WIN, (255, 255, 255), options[selec])
+                                texte = vb.FONT.render(choix[selec], 1, (0, 0, 0)) 
+                                vb.WIN.blit(texte, (390, 205+selec*40))
                                 selec += 1
 
                             if event.key == pyg.K_RETURN:
                                 entree = True
 
-                    pyg.draw.rect(WIN, (120, 120, 250), options[selec])
+                    pyg.draw.rect(vb.WIN, (120, 120, 250), options[selec])
     
-                    texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
-                    WIN.blit(texte, (390, 205+selec*40))
+                    texte = vb.FONT.render(choix[selec], 1, (0, 0, 0)) 
+                    vb.WIN.blit(texte, (390, 205+selec*40))
                     pyg.display.update()
 
                 armes_possedees.append(choix[selec])
@@ -155,23 +155,23 @@ def main():
 
         # Timer et barre de vie
         if temps_ecoulé < 60: 
-             time_text = FONT.render(f"{int(temps_ecoulé)}s", 1, (255, 255, 255)) 
+             time_text = vb.FONT.render(f"{int(temps_ecoulé)}s", 1, (255, 255, 255)) 
         else:
             min = temps_ecoulé // 60 
             sec = temps_ecoulé % 60 
-            time_text = FONT.render(f"{int(min)}min {int(sec)}s", 1, (255, 255, 255)) 
-        WIN.blit(time_text, (370, 10)) 
+            time_text = vb.FONT.render(f"{int(min)}min {int(sec)}s", 1, (255, 255, 255)) 
+        vb.WIN.blit(time_text, (370, 10)) 
         barre_PV_blanc = pyg.Rect(500, 10, 250, 20)
         barre_PV = pyg.Rect(500, 10, p.hp*5, 20)
-        pyg.draw.rect(WIN, (255, 255, 255), barre_PV_blanc)
-        pyg.draw.rect(WIN, (0, 255, 10), barre_PV)
+        pyg.draw.rect(vb.WIN, (255, 255, 255), barre_PV_blanc)
+        pyg.draw.rect(vb.WIN, (0, 255, 10), barre_PV)
 
         # Barre d'xp
         unit = 250/xp_attendu
         barre_xp_blanc = pyg.Rect(10, 10, 250, 20)
         barre_xp = pyg.Rect(10, 10, p.xp*unit, 20)
-        pyg.draw.rect(WIN, (255, 255, 255), barre_xp_blanc)
-        pyg.draw.rect(WIN, (0, 0, 255), barre_xp)
+        pyg.draw.rect(vb.WIN, (255, 255, 255), barre_xp_blanc)
+        pyg.draw.rect(vb.WIN, (0, 0, 255), barre_xp)
         pyg.display.update()
 
 
@@ -181,8 +181,8 @@ class Arme:
     def __init__(self, nom_arme):
         """Initialiser"""
         self.nom = nom_arme
-        for carac in ARMES[nom_arme]:
-            self.carac = ARMES[nom_arme][carac]
+        for carac in vb.ARMES[nom_arme]:
+            self.carac = vb.ARMES[nom_arme][carac]
     
     def ameliorer_arme(self, nv_degat):
         """Améliorer les statistiques de l'arme"""

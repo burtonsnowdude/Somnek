@@ -61,7 +61,23 @@ class Coffre :
                 self.rect.topleft = (x_screen_coffre, y_screen_coffre)
     
     def determiner_recompense(self, armes_possedees, seuil) :
+        """Détermine la récompense obtenue par le joueur quand il atteint un coffre
+
+        Parameters
+        ----------
+        armes_possedees : list
+            La liste des armes détenues par le joueur
+        seuil : int
+            Le seuil de valeur maximale pour une arme (en fonction du niveau atteint)
         
+        Returns
+        -------
+        int
+            L'argent récolté
+        ou
+        str
+            L'arme récupérée
+        """
         armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
         for arme in armes_dispo[:]:
             if arme in armes_possedees :

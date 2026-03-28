@@ -3,67 +3,7 @@ from variables import *
 import math
 from random import randint
 
-class Monstre:
-    """Class Monstre"""
-    def __init__(self, type):
 
-        self.puissance = TYPES_MONSTRES[type]["puissance"]
-        self.hp = TYPES_MONSTRES[type]["hp"]
-        self.couleur = TYPES_MONSTRES[type]["couleur"]
-        self.vitesse = TYPES_MONSTRES[type]["vitesse"]
-
-        # Choisit un endroit aléatoire sur un bord pour apparaitre
-        bord = randint(1,4)
-        if bord == 1 :
-            x, y = 0, randint(0, HEIGHT)
-        elif bord == 2 :
-            x, y = randint(0, WIDTH), 0
-        elif bord == 3 :
-            x, y = WIDTH, randint(0, HEIGHT)
-        else :
-            x, y = randint(0, WIDTH), HEIGHT
-        self.pos = pyg.Rect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT)
-
-    def show(self):
-        """Dessine le monstre tant qu'il est en vie
-        
-        Returns
-        -------
-        bool 
-        """
-        if self.hp > 0 :
-            pyg.draw.rect(WIN, self.couleur, self.pos)
-            return True
-        else :
-            return False
-
-    def degats(self, degats):
-        """Inflige des dégâts au monstre
-
-        Parameters
-        ----------
-        degats : int
-        """
-        self.hp -= degats
-
-    def follow(self, p):
-        """Suivre le joueur
-        
-        Parameters
-        ----------
-        p : Self@Player
-        """
-
-        # Calculate direction vector from monster to player
-        dx = p.pos.centerx - self.pos.centerx
-        dy = p.pos.centery - self.pos.centery
-        distance = math.sqrt(dx**2 + dy**2)
-        
-        # Only move if distance > 0 to avoid division by zero
-        if distance > 0:
-            # Normalize and move 
-            self.pos.x += (dx / distance) * self.vitesse
-            self.pos.y += (dy / distance) * self.vitesse
 
 class Player:
     """Class Player"""
