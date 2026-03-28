@@ -4,6 +4,20 @@ import time
 import pygame as pyg
 
 def passage(xp_attendu, seuil):
+    """Incrémente le seuil et augmente l'xp attendu pour le prochain niveau
+
+    Parameters
+    ----------
+    xp_attendu : float
+        L'xp attendu pour passer au prochain niveau
+    seuil : int
+            Le seuil de valeur maximale pour une arme (en fonction du niveau atteint)
+    
+    Returns
+    -------
+    tuple(int, float)
+        contient le seuil et l'xp attendu actualisés
+    """
     xp_attendu *= 1.5
     if seuil+4 <= len(ARMES) :
         seuil += 4
@@ -14,6 +28,22 @@ def passage(xp_attendu, seuil):
     # passage de niveau (j'attends la class armes encore une fois c'est des listes arbitraires)
 
 def choix_arme(p, seuil, armes_possedees):
+    """Permet au joueur de choisir une arme à la fin d'un niveau
+
+    Parameters
+    ----------
+    p : Self@Player
+        Le joueur
+    seuil : int
+            Le seuil de valeur maximale pour une arme (en fonction du niveau atteint)
+    armes_possedees : list
+        La liste des armes possédées par le joueur
+
+    Returns
+    -------
+    tuple(list, float)
+        contient la liste des armes possedees par le joueur et le temps de pause
+    """
     if p.niveau < seuil :
         armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
         for arme in armes_dispo[:]:

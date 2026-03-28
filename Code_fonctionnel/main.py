@@ -82,6 +82,7 @@ def main():
         # Barre de vie et d'xp
         afficher_timer(temps_ecoule, p)
         afficher_xp(xp_attendu, p)
+        
     pyg.quit() 
 
 
