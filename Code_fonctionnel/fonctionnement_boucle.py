@@ -1,4 +1,3 @@
-import pygame as pyg
 import time
 from variables import *
 

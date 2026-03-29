@@ -21,7 +21,6 @@ class Coffre :
         self.y_coffre = randint(DISTANCE_MIN + int(player.y_suppose), DISTANCE_MAX + int(player.y_suppose))
         
         self.coffre_sur_lecran = False
-        self.coffre = None
 
     def pointer_coffre(self, player):
         """Dessine une flèche qui pointe vers le coffre, dessine le coffre s'il est dans la zone visible
@@ -51,13 +50,10 @@ class Coffre :
             x_screen_coffre = CENTREx - (player.x_suppose - self.x_coffre)
             y_screen_coffre = CENTREy - (player.y_suppose - self.y_coffre)
             self.coffre_sur_lecran = True
-            
-            self.coffre = TRESOR
-            
 
             if self.coffre_sur_lecran :
                 WIN.blit(TRESOR, (x_screen_coffre, y_screen_coffre))
-                self.rect = self.coffre.get_rect()
+                self.rect = TRESOR.get_rect()
                 self.rect.topleft = (x_screen_coffre, y_screen_coffre)
     
     def determiner_recompense(self, armes_possedees, seuil) :
