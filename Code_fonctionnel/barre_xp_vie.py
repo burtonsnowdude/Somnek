@@ -1,7 +1,7 @@
 from variables import *
 
-def afficher_timer(temps_ecoule, p) :
-    """Affiche le timer
+def afficher_timer_vie(temps_ecoule, p) :
+    """Affiche le timer et la barre de PV
 
     Parameters
     ----------

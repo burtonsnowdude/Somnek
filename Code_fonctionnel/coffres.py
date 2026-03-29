@@ -90,4 +90,11 @@ class Coffre :
             return choice(armes_dispo)
         
 
-        
+def ajout_coffre(dernier_coffre_apparu, coffre_existant, p):
+    if randint(1,100) == 1 and dernier_coffre_apparu > 100 and not coffre_existant:
+            nouveau_coffre = Coffre(p)
+            dernier_coffre_apparu = 0 
+            coffre_existant = True
+            return nouveau_coffre, dernier_coffre_apparu, coffre_existant
+    else :
+        return False
