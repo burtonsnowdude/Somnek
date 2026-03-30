@@ -13,9 +13,12 @@ from gestion_fichiers import *
 def main():
     noms, new_tab = det_noms()
     nom = "Daphne"
-    if ajouter_utilisateur(nom, noms) != False :
-        argent = new_tab[1][nom]
+    res = ajouter_utilisateur(nom, noms)
+    if  res == False :
+        argent = int(new_tab[1][nom])
+        new_tab[0][nom] = int(new_tab[0][nom])
     else :
+        noms = res
         argent = 0
         new_tab[0][nom] = 1 #niveau
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
@@ -36,7 +39,6 @@ def main():
     seuil = 0
     dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
     coffre_existant = False
-
     while run:
         for event in pyg.event.get():  
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre

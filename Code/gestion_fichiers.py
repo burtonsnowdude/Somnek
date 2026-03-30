@@ -59,7 +59,7 @@ def reecrire_fichier_niveau_argent(new_tab, noms):
     ----------
     new_tab : list(dict)
         La liste actualisée contenant les lignes de données sous forme de dictionnaires"""
-
+    
     with open("niveau_argent.csv", "w", newline = "") as fichier_niveau :
         writer = csv.DictWriter(fichier_niveau, noms)
         writer.writeheader()
