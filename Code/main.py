@@ -21,6 +21,7 @@ def main():
         noms = res
         argent = 0
         new_tab[0][nom] = 1 #niveau
+    armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     p = Player()
@@ -63,6 +64,7 @@ def main():
                         print(argent)
                     else :
                         armes_possedees.append(gain)
+                        ajouter_arme(nom, gain, armes_joueur)
                         print(armes_possedees)
                     coffre_existant = False
         dernier_coffre_apparu += 1 
@@ -77,14 +79,20 @@ def main():
         # Passage de niveau
         if p.update_xp(xp, xp_attendu):
             seuil, xp_attendu = passage(xp_attendu, seuil)
-            armes_possedees, pause_time = choix_arme(p, seuil, armes_possedees)
+            arme, pause_time = choix_arme(p, seuil, armes_possedees)
+            armes_possedees.append(arme)
+            print(armes_possedees)
+            armes_joueur = ajouter_arme(nom, arme, armes_joueur)
             new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
         p.move_bg(bg, monstres_presents)
 
         # Barre de vie et d'xp, timer
         afficher_timer_vie(temps_ecoule, p)
         afficher_xp(xp_attendu, p)
-    reecrire_fichier_niveau_argent(new_tab, noms)  
+    
+    # Reecriture des fichiers csv avec les données actualisées de la partie
+    reecrire_fichier_niveau_argent(new_tab, noms) 
+    reecrire_fichier_armes(armes_joueur, noms) 
     pyg.quit() 
 
 
