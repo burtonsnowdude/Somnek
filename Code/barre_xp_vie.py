@@ -10,17 +10,21 @@ def afficher_timer_vie(temps_ecoule, p) :
     p : Self@Player
         Le joueur
     """
-    if temps_ecoule < 60: 
-            time_text = FONT.render(f"{int(temps_ecoule)}s", 1, (255, 255, 255)) 
-    else:
-        min = temps_ecoule // 60 
-        sec = temps_ecoule % 60 
-        time_text = FONT.render(f"{int(min)}min {int(sec)}s", 1, (255, 255, 255)) 
-    WIN.blit(time_text, (370, 10)) 
-    barre_PV_blanc = pyg.Rect(500, 10, 250, 20)
-    barre_PV = pyg.Rect(500, 10, p.hp*5, 20)
+    
+    min = int(temps_ecoule // 60)
+    if len(str(min)) != 2 :
+            min = "0"+str(min)
+    sec = int(temps_ecoule % 60)
+    if len(str(sec)) != 2 :
+        sec = "0"+str(sec)
+    time_text = FONT.render(f"{min} : {sec}", 1, (255, 255, 255)) 
+    WIN.blit(time_text, (370, 20)) 
+    height = 5
+    const = 3*height
+    barre_PV_blanc = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT - const, PLAYER_WIDTH, height)
+    barre_PV = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT - const, p.hp/2, height)
     pyg.draw.rect(WIN, (255, 255, 255), barre_PV_blanc)
-    pyg.draw.rect(WIN, (0, 255, 10), barre_PV)
+    pyg.draw.rect(WIN, (200, 0, 0), barre_PV)
 
 def afficher_xp(xp_attendu, p):
     """Affiche la barre d'xp
@@ -32,9 +36,9 @@ def afficher_xp(xp_attendu, p):
     p : Self@Player
         Le joueur
     """
-    unit = 250/xp_attendu
-    barre_xp_blanc = pyg.Rect(10, 10, 250, 20)
-    barre_xp = pyg.Rect(10, 10, p.xp*unit, 20)
+    unit = 760/xp_attendu
+    barre_xp_blanc = pyg.Rect(20, 3, 760, 10)
+    barre_xp = pyg.Rect(20, 3, p.xp*unit, 10)
     pyg.draw.rect(WIN, (255, 255, 255), barre_xp_blanc)
     pyg.draw.rect(WIN, (0, 0, 255), barre_xp)
     pyg.display.update()

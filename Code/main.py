@@ -40,13 +40,15 @@ def main():
     seuil = 0
     dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
     coffre_existant = False
+    kill_count = 0 
+    
     while run:
         for event in pyg.event.get():  
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
                 break
 
-        temps_ecoule = fonc_boucle(clock, start_time, pause_time, bg)
+        temps_ecoule = fonc_boucle(clock, start_time, pause_time, p)
         frame += 1
 
         # Gestion des coffres

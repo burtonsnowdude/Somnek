@@ -9,18 +9,18 @@ class Player:
     """Class Player"""
     def __init__(self):
         self.hp = PLAYER_PV
-        self.pos = pyg.Rect(CENTREx, CENTREy, PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.pos = pyg.Rect(CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT)
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
-        self.x_suppose = CENTREx
-        self.y_suppose = CENTREy
-        """Liste spéciale pygame"""
+        self.x_suppose = CENTREx-PLAYER_WIDTH/2
+        self.y_suppose = CENTREy - PLAYER_HEIGHT
+        #Liste spéciale pygame
         self.all_projectiles = pyg.sprite.Group()   
 
     def draw_player(self):
         """Dessine le joueur"""
-        pyg.draw.rect(WIN, (255, 0, 0), self.pos)
+        WIN.blit(PLAYER_IMAGE, (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT))
 
     def move_bg(self, bg, monstres):
         """Déplace le fond pour donner l'illusion que le joueur se déplace
