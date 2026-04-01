@@ -41,7 +41,14 @@ class Monstre:
             pyg.draw.rect(WIN, self.couleur, self.pos)
             return True
         else :
+            self.death_place = (self.pos.x, self.pos.y)
+            self.rect = XP.get_rect()
+            self.rect.topleft = self.death_place
             return False
+    
+    def show_xp(self):
+        WIN.blit(XP, self.pos.x, self.pos.y)
+        self.valeur = self.puissance
 
     def degats(self, degats):
         """Inflige des dégâts au monstre
@@ -87,7 +94,7 @@ def ajouter_monstre(monstres_presents):
     monstres_presents.append(Monstre(choice(TYPES))) # crée un nouveau monstre de type aléatoire
     return monstres_presents
 
-def gestion_monstres_presents(monstres_presents, frame, p):
+def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     """Gère l'affichage, le déplacement des monstres presents et les collisions avec le joueur
     
     Parameters
@@ -112,4 +119,13 @@ def gestion_monstres_presents(monstres_presents, frame, p):
                 p.degats(m.puissance) # dégâts en cas de collision
         else :
             monstres_presents.remove(m)
+            xp_dispo.append(m)
     return monstres_presents
+
+def gestion_xp_fenetre(xp_dispo, p):
+    for xp in xp_dispo[:]:
+        xp.show_xp()
+        if p.pos.colliderect(xp.pos):
+            p.update_xp(xp.valeur)
+            xp_dispo.remove(xp)
+    return xp_dispo

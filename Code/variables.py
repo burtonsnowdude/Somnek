@@ -4,7 +4,16 @@ pyg.font.init() # initialiser le module font de pygame
 PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
 PLAYER_VIT = 3.5 # vitesse de deplacement du joueur
 PLAYER_PV = 50 # points de vie du joueur
+
+# Images
 PLAYER_IMAGE = pyg.image.load("Images/perso.png")
+XP = pyg.image.load("Images/xp.jpg")
+BG = pyg.image.load("Images/grass.png") # charger le fond d'ecran
+BG = pyg.transform.scale(BG, (800, 600))
+FLECHE = pyg.image.load("Images/fleche.png")
+FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
+TRESOR = pyg.image.load("Images/tresor.png")
+
 # Couleurs
 G1 = (0, 255, 120)
 G2 = (0, 180, 80)
@@ -15,15 +24,9 @@ WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
 CENTREx, CENTREy = WIDTH/2 - PLAYER_WIDTH, HEIGHT/2 - PLAYER_HEIGHT# coordonnees du centre de la fenetre
 WIN = pyg.display.set_mode((WIDTH, HEIGHT)) # creer la fenetre
 pyg.display.set_caption("Somnek") 
-
-BG = pyg.image.load("Images/grass.png") # charger le fond d'ecran
-BG = pyg.transform.scale(BG, (800, 600))
 FONT = pyg.font.SysFont("Press Start 2P", 24) # definir la police d'ecriture
 
-FLECHE = pyg.image.load("Images/fleche.png").convert_alpha()
-FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
-TRESOR = pyg.image.load("Images/tresor.png").convert_alpha()
-#TRESOR = pyg.transform.smoothscale(TRESOR, (100, 70))
+
 TYPES_MONSTRES = {
     "Dragon" : {"puissance" : 1,
                 "hp" : 5,

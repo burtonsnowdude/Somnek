@@ -20,9 +20,9 @@ def afficher_timer_vie(temps_ecoule, p) :
     time_text = FONT.render(f"{min} : {sec}", 1, (255, 255, 255)) 
     WIN.blit(time_text, (370, 20)) 
     height = 5
-    const = 3*height
-    barre_PV_blanc = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT - const, PLAYER_WIDTH, height)
-    barre_PV = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT - const, p.hp/2, height)
+    const = 4*height
+    barre_PV_blanc = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT/2 - const, PLAYER_WIDTH, height)
+    barre_PV = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT/2 - const, p.hp/2, height)
     pyg.draw.rect(WIN, (255, 255, 255), barre_PV_blanc)
     pyg.draw.rect(WIN, (200, 0, 0), barre_PV)
 

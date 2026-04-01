@@ -27,7 +27,7 @@ def main():
     p = Player()
 
     # Initialisation des variables
-    monstres_presents, armes_possedees = [], [] 
+    monstres_presents, armes_possedees, xp_dispo = [], [], []
     bg = BG.get_rect() 
 
     start_time = time.time()  
@@ -51,6 +51,12 @@ def main():
         temps_ecoule = fonc_boucle(clock, start_time, pause_time, p)
         frame += 1
 
+        # Gestion des ennemis
+        if frame%frequence == 0:
+            monstres_presents = ajouter_monstre(monstres_presents)
+        monstres_presents = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
+        gestion_xp_fenetre(xp_dispo, p)
+
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
         if ajout != False :
@@ -70,14 +76,13 @@ def main():
                         print(armes_possedees)
                     coffre_existant = False
         dernier_coffre_apparu += 1 
-
-        # Gestion des ennemis
-        if frame%frequence == 0:
-            monstres_presents = ajouter_monstre(monstres_presents)
-        monstres_presents = gestion_monstres_presents(monstres_presents, frame, p)
     
         p.draw_player() 
-
+        
+        # Barre de vie et d'xp, timer
+        afficher_timer_vie(temps_ecoule, p)
+        afficher_xp(xp_attendu, p)
+    
         # Passage de niveau
         if p.update_xp(xp, xp_attendu):
             seuil, xp_attendu = passage(xp_attendu, seuil)
@@ -86,12 +91,8 @@ def main():
             print(armes_possedees)
             armes_joueur = ajouter_arme(nom, arme, armes_joueur)
             new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
-        p.move_bg(bg, monstres_presents)
+        p.move_bg(bg, monstres_presents, xp_dispo)
 
-        # Barre de vie et d'xp, timer
-        afficher_timer_vie(temps_ecoule, p)
-        afficher_xp(xp_attendu, p)
-    
     # Reecriture des fichiers csv avec les données actualisées de la partie
     reecrire_fichier_niveau_argent(new_tab, noms) 
     reecrire_fichier_armes(armes_joueur, noms) 
