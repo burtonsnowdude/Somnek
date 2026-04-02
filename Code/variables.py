@@ -1,9 +1,7 @@
 import pygame as pyg
 pyg.font.init() # initialiser le module font de pygame
 
-PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
-PLAYER_VIT = 5 # vitesse de deplacement du joueur
-PLAYER_PV = 50 # points de vie du joueur
+
 
 # Couleurs
 G1 = (0, 255, 120)
@@ -12,13 +10,19 @@ G3 = (0, 100, 40)
 G4 = (0, 20, 0)
 
 WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
-CENTREx, CENTREy = WIDTH/2 - PLAYER_WIDTH, HEIGHT/2 - PLAYER_HEIGHT# coordonnees du centre de la fenetre
+
 WIN = pyg.display.set_mode((WIDTH, HEIGHT)) # creer la fenetre
+
 pyg.display.set_caption("Somnek") 
+
 
 BG = pyg.image.load("Images/background.jpg") # charger le fond d'ecran
 BG = pyg.transform.scale(BG, (800, 600))
 FONT = pyg.font.SysFont("comicsans", 20) # definir la police d'ecriture
+CENTREx, CENTREy = WIDTH//2, HEIGHT//2 
+PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
+PLAYER_VIT = 5 # vitesse de deplacement du joueur
+PLAYER_PV = 50 # points de vie du joueur
 
 FLECHE = pyg.image.load("Images/fleche.png").convert_alpha()
 FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))

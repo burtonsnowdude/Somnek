@@ -9,6 +9,7 @@ from barre_xp_vie import *
 from class_monstre import *
 from fonctionnement_boucle import *
 from gestion_fichiers import *
+from player import Player
 
 def main():
     noms, new_tab = det_noms()
@@ -21,7 +22,7 @@ def main():
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     p = Player()
-
+    
     # Initialisation des variables
     monstres_presents, armes_possedees = [], [] 
     bg = BG.get_rect() 
@@ -38,14 +39,30 @@ def main():
     coffre_existant = False
 
     while run:
+        WIN.blit(BG, (0, 0))
+        
         for event in pyg.event.get():  
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
                 break
+        keys = pyg.key.get_pressed()
+            #detecter si la barre espace est appuyé pour lancer les projectiles
+        if keys[pyg.K_SPACE]:
+                    
+                    p.lancer_projectile()  
+        p.update_cooldown()
+        # déplace les projectiles
+        for projectile in p.all_projectiles : 
+             
+            projectile.move() 
+            
+        #appliquer les images de mon groupe projectile
+        p.all_projectiles.draw(BG) 
 
+        p.draw_player() 
         temps_ecoule = fonc_boucle(clock, start_time, pause_time, bg)
         frame += 1
-
+                   
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
         if ajout != False :
@@ -70,7 +87,7 @@ def main():
             monstres_presents = ajouter_monstre(monstres_presents)
         monstres_presents = gestion_monstres_presents(monstres_presents, frame, p)
     
-        p.draw_player() 
+       
 
         # Passage de niveau
         if p.update_xp(xp, xp_attendu):
@@ -83,6 +100,9 @@ def main():
         afficher_timer_vie(temps_ecoule, p)
         afficher_xp(xp_attendu, p)
     reecrire_fichier_niveau_argent(new_tab, noms)  
+
+   
+    pyg.display.flip()
     pyg.quit() 
 
 

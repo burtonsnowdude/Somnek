@@ -17,7 +17,8 @@ class Monstre:
         self.hp = TYPES_MONSTRES[type]["hp"]
         self.couleur = TYPES_MONSTRES[type]["couleur"]
         self.vitesse = TYPES_MONSTRES[type]["vitesse"]
-
+        self.all_monsters = pyg.sprite.Group() 
+        
         # Choisit un endroit aléatoire sur un bord pour apparaitre
         bord = randint(1,4)
         if bord == 1 :
