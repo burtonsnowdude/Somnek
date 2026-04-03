@@ -21,7 +21,7 @@ class Player:
 
         self.all_projectiles = pyg.sprite.Group()   
         self.projectile_cooldown = 0
-        self.projectile_cadence = 10 
+        self.projectile_cadence = 30
 
     def draw_player(self):
         """Dessine le joueur"""

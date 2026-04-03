@@ -48,7 +48,7 @@ class Monstre:
             return False
     
     def show_xp(self):
-        WIN.blit(XP, self.pos.x, self.pos.y)
+        WIN.blit(XP, (self.pos.x, self.pos.y))
         self.valeur = self.puissance
 
     def degats(self, degats):
@@ -123,10 +123,10 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
             xp_dispo.append(m)
     return monstres_presents
 
-def gestion_xp_fenetre(xp_dispo, p):
+def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
     for xp in xp_dispo[:]:
         xp.show_xp()
         if p.pos.colliderect(xp.pos):
-            p.update_xp(xp.valeur)
+            p.update_xp(xp.valeur, xp_attendu)
             xp_dispo.remove(xp)
     return xp_dispo

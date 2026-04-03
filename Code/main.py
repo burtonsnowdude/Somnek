@@ -59,7 +59,9 @@ def main():
         # déplace les projectiles
         for projectile in p.all_projectiles : 
             projectile.move() 
-
+            for m in monstres_presents:
+                if projectile.rect.colliderect(m.pos):
+                    m.degats(5)
         #appliquer les images de mon groupe projectile
         p.all_projectiles.draw(WIN) 
 
@@ -68,7 +70,7 @@ def main():
         if frame%frequence == 0:
             monstres_presents = ajouter_monstre(monstres_presents)
         monstres_presents = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
-        gestion_xp_fenetre(xp_dispo, p)
+        gestion_xp_fenetre(xp_dispo, p, xp_attendu)
 
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
