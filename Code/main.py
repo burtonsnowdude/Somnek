@@ -51,21 +51,18 @@ def main():
                 run = False 
                 break
 
-        keys = pyg.key.get_pressed()
-
-            #detecter si la barre espace est appuyé pour lancer les projectiles
-        if keys[pyg.K_SPACE]:
-                    p.lancer_projectile()  
+        temps_ecoule = fonc_boucle(clock, start_time, pause_time, p)
+        frame += 1
+        
+        p.lancer_projectile()
         p.update_cooldown()
         # déplace les projectiles
         for projectile in p.all_projectiles : 
             projectile.move() 
 
         #appliquer les images de mon groupe projectile
-        p.all_projectiles.draw(BG) 
+        p.all_projectiles.draw(WIN) 
 
-        temps_ecoule = fonc_boucle(clock, start_time, pause_time, p)
-        frame += 1
 
         # Gestion des ennemis
         if frame%frequence == 0:

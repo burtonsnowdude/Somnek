@@ -29,7 +29,7 @@ class Projectile(pyg.sprite.Sprite):
         return pyg.sprite.spritecollide(sprite, group, False, pyg.sprite.collide_mask)
     def move(self):
             self.rect.y -= self.velocity  
-            self.rotate()
+            #self.rotate()
             """for monster in self.check_collision(self,monstres_presents):"""
             """self.remove()"""
             # infliger des degats
