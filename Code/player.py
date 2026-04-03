@@ -7,21 +7,27 @@ class Player:
     """Class Player"""
     def __init__(self):
         self.hp = PLAYER_PV
-        self.pos = pyg.Rect(CENTREx, CENTREy, PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.pos = pyg.Rect(CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT)
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
+<<<<<<< HEAD
         self.x_suppose = CENTREx
         self.y_suppose = CENTREy
+=======
+        self.x_suppose = CENTREx-PLAYER_WIDTH/2
+        self.y_suppose = CENTREy - PLAYER_HEIGHT
+        #Liste spéciale pygame
+>>>>>>> c63290efb4321cc7b929fafe6ea4f006470f045d
         self.all_projectiles = pyg.sprite.Group()   
         self.projectile_cooldown = 0
         self.projectile_cadence = 10 
 
     def draw_player(self):
         """Dessine le joueur"""
-        pyg.draw.rect(WIN, (255, 0, 0), self.pos)
+        WIN.blit(PLAYER_IMAGE, (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2))
 
-    def move_bg(self, bg, monstres):
+    def move_bg(self, bg, monstres, xp):
         """Déplace le fond pour donner l'illusion que le joueur se déplace
         
         Parameters
@@ -42,11 +48,15 @@ class Player:
                 self.x_suppose -= 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.x += 1/(math.sqrt(2)) * self.vitesse
+                for x in xp:
+                    x.pos.x += 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.x += self.vitesse
                 self.x_suppose -= self.vitesse
                 for m in monstres:
                     m.pos.x += self.vitesse
+                for x in xp:
+                    x.pos.x += self.vitesse
 
         if right:
             if up or down : 
@@ -54,11 +64,15 @@ class Player:
                 self.x_suppose += 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
+                for x in xp:
+                    x.pos.x -= 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.x -= self.vitesse
                 self.x_suppose += self.vitesse
                 for m in monstres:
                     m.pos.x -= self.vitesse
+                for x in xp:
+                    x.pos.x -= self.vitesse
 
         if up:
             if right or left : 
@@ -66,11 +80,16 @@ class Player:
                 self.y_suppose -= 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.y += 1/(math.sqrt(2)) * self.vitesse
+                for x in xp:
+                    x.pos.y += 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.y += self.vitesse
                 self.y_suppose -= self.vitesse
                 for m in monstres:
                     m.pos.y += self.vitesse
+                for x in xp:
+                    x.pos.y += self.vitesse
+
 
         if down:
             if right or left :
@@ -78,11 +97,15 @@ class Player:
                 self.y_suppose += 1/(math.sqrt(2)) * self.vitesse
                 for m in monstres:
                     m.pos.y -= 1/(math.sqrt(2)) * self.vitesse
+                for x in xp:
+                    x.pos.y -= 1/(math.sqrt(2)) * self.vitesse
             else :
                 bg.y -= self.vitesse
                 self.y_suppose += self.vitesse
                 for m in monstres:
                     m.pos.y -= self.vitesse
+                for x in xp:
+                    x.pos.y -= self.vitesse
 
     def degats(self, degats):
         """Prendre des dégâts

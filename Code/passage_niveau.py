@@ -95,6 +95,5 @@ def choix_arme(p, seuil, armes_possedees):
             WIN.blit(texte, (390, 205+selec*40))
             pyg.display.update()
 
-        armes_possedees.append(choix[selec])
-        print(armes_possedees)
-        return armes_possedees, pause_time
+        
+        return choix[selec], pause_time

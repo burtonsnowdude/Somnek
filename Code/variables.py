@@ -1,7 +1,22 @@
 import pygame as pyg
 pyg.font.init() # initialiser le module font de pygame
 
+<<<<<<< HEAD
 
+=======
+PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
+PLAYER_VIT = 3.5 # vitesse de deplacement du joueur
+PLAYER_PV = 50 # points de vie du joueur
+>>>>>>> c63290efb4321cc7b929fafe6ea4f006470f045d
+
+# Images
+PLAYER_IMAGE = pyg.image.load("Images/perso.png")
+XP = pyg.image.load("Images/xp.jpg")
+BG = pyg.image.load("Images/grass.png") # charger le fond d'ecran
+BG = pyg.transform.scale(BG, (800, 600))
+FLECHE = pyg.image.load("Images/fleche.png")
+FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
+TRESOR = pyg.image.load("Images/tresor.png")
 
 # Couleurs
 G1 = (0, 255, 120)
@@ -14,7 +29,9 @@ WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
 WIN = pyg.display.set_mode((WIDTH, HEIGHT)) # creer la fenetre
 
 pyg.display.set_caption("Somnek") 
+FONT = pyg.font.SysFont("Press Start 2P", 24) # definir la police d'ecriture
 
+<<<<<<< HEAD
 
 BG = pyg.image.load("Images/background.jpg") # charger le fond d'ecran
 BG = pyg.transform.scale(BG, (800, 600))
@@ -23,11 +40,9 @@ CENTREx, CENTREy = WIDTH//2, HEIGHT//2
 PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
 PLAYER_VIT = 5 # vitesse de deplacement du joueur
 PLAYER_PV = 50 # points de vie du joueur
+=======
+>>>>>>> c63290efb4321cc7b929fafe6ea4f006470f045d
 
-FLECHE = pyg.image.load("Images/fleche.png").convert_alpha()
-FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
-TRESOR = pyg.image.load("Images/tresor.png").convert_alpha()
-#TRESOR = pyg.transform.smoothscale(TRESOR, (100, 70))
 TYPES_MONSTRES = {
     "Dragon" : {"puissance" : 1,
                 "hp" : 5,
