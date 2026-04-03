@@ -11,14 +11,14 @@ class Player:
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
-<<<<<<< HEAD
+
         self.x_suppose = CENTREx
         self.y_suppose = CENTREy
-=======
+
         self.x_suppose = CENTREx-PLAYER_WIDTH/2
         self.y_suppose = CENTREy - PLAYER_HEIGHT
         #Liste spéciale pygame
->>>>>>> c63290efb4321cc7b929fafe6ea4f006470f045d
+
         self.all_projectiles = pyg.sprite.Group()   
         self.projectile_cooldown = 0
         self.projectile_cadence = 10 
