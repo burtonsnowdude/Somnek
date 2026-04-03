@@ -112,6 +112,7 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     list 
         La liste des monstres presents
     """
+    kill_count = p.kill_count
     for m in monstres_presents[:]:
         existe = m.show() # affiche tous les monstres existant
         if existe :
@@ -119,14 +120,17 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
             if p.pos.colliderect(m.pos) and frame%10 == 0:
                 p.degats(m.puissance) # dégâts en cas de collision
         else :
+            kill_count += 1
             monstres_presents.remove(m)
             xp_dispo.append(m)
-    return monstres_presents
+    return monstres_presents, kill_count
 
 def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
+    obtenu = 0
     for xp in xp_dispo[:]:
         xp.show_xp()
         if p.pos.colliderect(xp.pos):
+            obtenu += xp.puissance
             p.update_xp(xp.valeur, xp_attendu)
             xp_dispo.remove(xp)
-    return xp_dispo
+    return xp_dispo, obtenu

@@ -11,7 +11,8 @@ class Player:
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
-
+        self.kill_count = 0
+        
         self.x_suppose = CENTREx
         self.y_suppose = CENTREy
 

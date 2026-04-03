@@ -37,13 +37,14 @@ def main():
 
     frequence = 50 # fréquence à laquelle un monstre apparait
     xp_attendu = 40 # xp attendu pour passer un niveau (croît exponentiellement)
-    xp = 0.5
+    xp = 0
     seuil = 0
     dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
     coffre_existant = False
-    kill_count = 0 
+     
     
     while run:
+        xp = 0
         WIN.blit(BG, (0, 0))
         
         for event in pyg.event.get():  
@@ -69,8 +70,8 @@ def main():
         # Gestion des ennemis
         if frame%frequence == 0:
             monstres_presents = ajouter_monstre(monstres_presents)
-        monstres_presents = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
-        gestion_xp_fenetre(xp_dispo, p, xp_attendu)
+        monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
+        xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
 
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
