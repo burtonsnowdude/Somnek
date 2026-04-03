@@ -50,26 +50,20 @@ def main():
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
                 break
+
         keys = pyg.key.get_pressed()
+
             #detecter si la barre espace est appuyé pour lancer les projectiles
         if keys[pyg.K_SPACE]:
-                    
                     p.lancer_projectile()  
         p.update_cooldown()
         # déplace les projectiles
         for projectile in p.all_projectiles : 
-             
             projectile.move() 
-            
+
         #appliquer les images de mon groupe projectile
         p.all_projectiles.draw(BG) 
 
-<<<<<<< HEAD
-        p.draw_player() 
-        temps_ecoule = fonc_boucle(clock, start_time, pause_time, bg)
-        frame += 1
-                   
-=======
         temps_ecoule = fonc_boucle(clock, start_time, pause_time, p)
         frame += 1
 
@@ -79,7 +73,6 @@ def main():
         monstres_presents = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
         gestion_xp_fenetre(xp_dispo, p)
 
->>>>>>> c63290efb4321cc7b929fafe6ea4f006470f045d
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
         if ajout != False :
@@ -99,31 +92,11 @@ def main():
                         print(armes_possedees)
                     coffre_existant = False
         dernier_coffre_apparu += 1 
-    
-<<<<<<< HEAD
-       
-
-        # Passage de niveau
-        if p.update_xp(xp, xp_attendu):
-            seuil, xp_attendu = passage(xp_attendu, seuil)
-            armes_possedees, pause_time = choix_arme(p, seuil, armes_possedees)
-            new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
-        p.move_bg(bg, monstres_presents)
-
-        # Barre de vie et d'xp, timer
-        afficher_timer_vie(temps_ecoule, p)
-        afficher_xp(xp_attendu, p)
-    reecrire_fichier_niveau_argent(new_tab, noms)  
-
-   
-    pyg.display.flip()
-=======
         p.draw_player() 
-        
         # Barre de vie et d'xp, timer
         afficher_timer_vie(temps_ecoule, p)
         afficher_xp(xp_attendu, p)
-    
+
         # Passage de niveau
         if p.update_xp(xp, xp_attendu):
             seuil, xp_attendu = passage(xp_attendu, seuil)
@@ -134,10 +107,12 @@ def main():
             new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
         p.move_bg(bg, monstres_presents, xp_dispo)
 
-    # Reecriture des fichiers csv avec les données actualisées de la partie
-    reecrire_fichier_niveau_argent(new_tab, noms) 
-    reecrire_fichier_armes(armes_joueur, noms) 
->>>>>>> c63290efb4321cc7b929fafe6ea4f006470f045d
+        # Reecriture des fichiers csv avec les données actualisées de la partie
+        reecrire_fichier_niveau_argent(new_tab, noms) 
+        reecrire_fichier_armes(armes_joueur, noms) 
+        pyg.display.flip()
+    
+    
     pyg.quit() 
 
 

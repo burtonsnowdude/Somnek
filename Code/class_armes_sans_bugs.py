@@ -6,7 +6,6 @@ import math
 import random
 import pygame as pyg
 
-
 class Arme:
     """Class arme"""
 
@@ -28,7 +27,7 @@ class Arme:
             "niveau_req": 0,
             "niveau": 1
         },
-        "Clé_usb": {
+        "Cle_usb": {
             **Carac_base,
             "dgbase": 23,
             "prix": 9,

@@ -122,7 +122,7 @@ def definir_fichier_nouv_armes(noms):
                     row[nom] = 0
                 writer.writerow(row)
     
-
+definir_fichier_nouv_armes(["Daphne", "Feerose", "Liam"])
 
 def contenu_fichier_armes():
     """Récupère les données du fichier armes_obtenues_par_joueur.csv"""
