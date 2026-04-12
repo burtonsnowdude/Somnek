@@ -1,45 +1,51 @@
-import pygame
+import pygame as pyg
+import random
+pyg.font.init() # initialiser le module font de pygame
 
-# class du projectile
-class Projectile(pygame.sprite.Sprite):
-
-    def __init__(self, player):
+# class qui gère et défini le projectile du joueur
+class Projectile(pyg.sprite.Sprite):
+    #definir le créateur de la classe
+    def __init__(self,player):
         super().__init__()
-        self.velocity = 2
+        self.velocity = 5
         self.player = player
-        self.image = pygame.image.load('assets/projectile.png')
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pyg.image.load("Images/projectile_pistolet.png").convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.x = player.rect.x + 120
-        self.rect.y = player.rect.y + 80
+        self.rect.center = player.pos.center
         self.origin_image = self.image
         self.angle = 0
-
-    def rotate(self):
-        # faire tourner le projectile
-        self.angle += 8
-        self.image = pygame.transform.rotozoom(self.origin_image, self.angle, 1)
-        self.rect = self.image.get_rect(center=self.rect.center)
-
+        
+        
+    def rotate(self): 
+         #tourner le projectile
+         self.angle +=16
+         self.image = pyg.transform.rotozoom(self.origin_image, self.angle, 1)
+         self.rect = self.image.get_rect(center = self.rect.center)
     def remove(self):
-        self.player.all_projectiles.remove(self)
-
+         self.kill()
+        
     def check_collision(self, sprite, group):
         """Vérifier les collisions avec un groupe de sprites"""
-        return pygame.sprite.spritecollide(sprite, group, False, pygame.sprite.collide_mask)
-    
-    def move(self,monstres_presents):
-        self.rect.x += self.velocity
-        self.rotate()
-
-        # verifie si le projectile entre en collision avec un monstre
-        for monster in self.check_collision(self,monstres_presents):
-            self.remove()
+        return pyg.sprite.spritecollide(sprite, group, False, pyg.sprite.collide_mask)
+    def move(self):
+            self.rect.y -= self.velocity  
+            #self.rotate()
+            """for monster in self.check_collision(self,monstres_presents):"""
+            """self.remove()"""
             # infliger des degats
-            monster.degats(self.player.attack)
+            """monster.degats(self.player.attack)"""
+            #verifier si le projectile est présent
+            if self.rect.y <0:
+                 #suppprimer le projectile en dehors de l'écran
+                 self.remove()
+    
+                
+         
+    
 
-        # verifie si le projectile n'est plus present sur l'ecran
-        if self.rect.x > 1080:
-            # supprimer le projectile (en dehors de l'ecran)
-            self.remove()
+
+    
+                
+         
+    
 

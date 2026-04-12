@@ -25,6 +25,10 @@ def afficher_timer_vie(temps_ecoule, p) :
     barre_PV = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT/2 - const, p.hp/2, height)
     pyg.draw.rect(WIN, (255, 255, 255), barre_PV_blanc)
     pyg.draw.rect(WIN, (200, 0, 0), barre_PV)
+    txt_niveau = FONT.render(f"LVL {p.niveau}", 1, (255, 255, 255))
+    WIN.blit(txt_niveau, (740, 15))
+    txt_kill = FONT.render(f"KILLS {p.kill_count}", 1, (255, 255, 255))
+    WIN.blit(txt_kill, (720, 30))
 
 def afficher_xp(xp_attendu, p):
     """Affiche la barre d'xp

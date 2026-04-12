@@ -2,9 +2,7 @@ import pygame as pyg
 from variables import * 
 import math
 from random import randint
-
-
-
+from classe_projectile import Projectile
 class Player:
     """Class Player"""
     def __init__(self):
@@ -13,10 +11,18 @@ class Player:
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
+        self.kill_count = 0
+        
+        self.x_suppose = CENTREx
+        self.y_suppose = CENTREy
+
         self.x_suppose = CENTREx-PLAYER_WIDTH/2
         self.y_suppose = CENTREy - PLAYER_HEIGHT
         #Liste spéciale pygame
+
         self.all_projectiles = pyg.sprite.Group()   
+        self.projectile_cooldown = 0
+        self.projectile_cadence = 30
 
     def draw_player(self):
         """Dessine le joueur"""
@@ -121,3 +127,15 @@ class Player:
             self.niveau += 1
             return True
         return False
+    def lancer_projectile(self):
+        """Créer un projectile avec cooldown"""
+        # Vérifier si l'on peut tirer 
+        if self.projectile_cooldown <= 0:
+            projectile = Projectile(self)
+            self.all_projectiles.add(projectile)
+            self.projectile_cooldown = self.projectile_cadence  # Reset cooldown
+    
+    def update_cooldown(self):
+        """À appeler chaque frame pour réduire le cooldown"""
+        if self.projectile_cooldown > 0:
+            self.projectile_cooldown -= 1

@@ -9,6 +9,7 @@ from barre_xp_vie import *
 from class_monstre import *
 from fonctionnement_boucle import *
 from gestion_fichiers import *
+from player import Player
 
 def main():
     noms, new_tab = det_noms()
@@ -25,7 +26,7 @@ def main():
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     p = Player()
-
+    
     # Initialisation des variables
     monstres_presents, armes_possedees, xp_dispo = [], [], []
     bg = BG.get_rect() 
@@ -36,13 +37,16 @@ def main():
 
     frequence = 50 # fréquence à laquelle un monstre apparait
     xp_attendu = 40 # xp attendu pour passer un niveau (croît exponentiellement)
-    xp = 0.5
+    xp = 0
     seuil = 0
     dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
     coffre_existant = False
-    kill_count = 0 
+     
     
     while run:
+        xp = 0
+        WIN.blit(BG, (0, 0))
+        
         for event in pyg.event.get():  
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
@@ -50,12 +54,24 @@ def main():
 
         temps_ecoule = fonc_boucle(clock, start_time, pause_time, p)
         frame += 1
+        
+        p.lancer_projectile()
+        p.update_cooldown()
+        # déplace les projectiles
+        for projectile in p.all_projectiles : 
+            projectile.move() 
+            for m in monstres_presents:
+                if projectile.rect.colliderect(m.pos):
+                    m.degats(5)
+        #appliquer les images de mon groupe projectile
+        p.all_projectiles.draw(WIN) 
+
 
         # Gestion des ennemis
         if frame%frequence == 0:
             monstres_presents = ajouter_monstre(monstres_presents)
-        monstres_presents = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
-        gestion_xp_fenetre(xp_dispo, p)
+        monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
+        xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
 
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
@@ -76,13 +92,11 @@ def main():
                         print(armes_possedees)
                     coffre_existant = False
         dernier_coffre_apparu += 1 
-    
         p.draw_player() 
-        
         # Barre de vie et d'xp, timer
         afficher_timer_vie(temps_ecoule, p)
         afficher_xp(xp_attendu, p)
-    
+
         # Passage de niveau
         if p.update_xp(xp, xp_attendu):
             seuil, xp_attendu = passage(xp_attendu, seuil)
@@ -93,9 +107,12 @@ def main():
             new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
         p.move_bg(bg, monstres_presents, xp_dispo)
 
-    # Reecriture des fichiers csv avec les données actualisées de la partie
-    reecrire_fichier_niveau_argent(new_tab, noms) 
-    reecrire_fichier_armes(armes_joueur, noms) 
+        # Reecriture des fichiers csv avec les données actualisées de la partie
+        reecrire_fichier_niveau_argent(new_tab, noms) 
+        reecrire_fichier_armes(armes_joueur, noms) 
+        pyg.display.flip()
+    
+    
     pyg.quit() 
 
 
