@@ -1,4 +1,6 @@
-quetes ={
+import csv
+
+QUETES ={
     "histoire" : {
         "scene1" : [
             "trouver quelqu’un",
@@ -58,9 +60,26 @@ quetes ={
             1000 : "tue 1000 ennemis avec une arme de zone"
         }
     
-    
-    }
+    },
+
+    "aquerir": [
+
+    ]
 }
 
 #j'ai besoin que on fini les scenes avant le code des scnes
 #j'ai aussi besoin du compteur de morts pour les kill quetes
+
+def verif_q(utilisateur):
+    nb_armes = 0
+    with open("Fichiers_csv/armes_obtenues_par_joueur.csv", "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row == utilisateur:
+                for i in row:
+                    nb_armes+=row[i]
+    return nb_armes
+    
+    
+    
+verif_q("Dapne")
