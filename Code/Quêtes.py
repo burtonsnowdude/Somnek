@@ -1,4 +1,5 @@
 import csv
+from variables import *
 
 QUETES ={
     "histoire" : {
@@ -35,31 +36,13 @@ QUETES ={
     },
 
     "kill" : {
-        "armes projectiles" : {
-            10 : "tue 10 ennemis avec une arme projectile",
-            20 : "tue 20 ennemis avec une arme projectile",
-            50 : "tue 50 ennemis avec une arme projectile",
-            100 : "tue 100 ennemis avec une arme projectile",
-            500 : "tue 500 ennemis avec une arme projectile",
-            1000 : "tue 1000 ennemis avec une arme projectile"
-        },
-        "armes de mêlée" : {
-            10 : "tue 10 ennemis avec une arme de mêlée",
-            20 : "tue 20 ennemis avec une arme de mêlée",
-            50 : "tue 50 ennemis avec une arme de mêlée",
-            100 : "tue 100 ennemis avec une arme de mêlée",
-            500 : "tue 500 ennemis avec une arme de mêlée",
-            1000 : "tue 1000 ennemis avec une arme de mêlée"
-        },
-        "armes de zone" : {
-            10 : "tue 10 ennemis avec une arme de zone",
-            20 : "tue 20 ennemis avec une arme de zone",
-            50 : "tue 50 ennemis avec une arme de zone",
-            100 : "tue 100 ennemis avec une arme de zone",
-            500 : "tue 500 ennemis avec une arme de zone",
-            1000 : "tue 1000 ennemis avec une arme de zone"
-        }
-    
+
+        10 : "tue 10 ennemis ",
+        20 : "tue 20 ennemis ",
+        50 : "tue 50 ennemis ",
+        100 : "tue 100 ennemis ",
+        500 : "tue 500 ennemis ",
+        1000 : "tue 1000 ennemis "
     },
 
     "aquerir": [
@@ -79,6 +62,24 @@ def verif_q(utilisateur):
                 for i in row:
                     nb_armes+=row[i]
     return nb_armes
+
+
+def verif_k(p):
+    nb_kills = p.kill_count
+    if nb_kills == 10 and nb_kills < 20:
+        return(QUETES["kill"][10])
+    elif nb_kills == 20 and nb_kills < 50:
+        return(QUETES["kill"][20])
+    elif nb_kills == 50 and nb_kills < 100:
+        return(QUETES["kill"][50])
+    elif nb_kills == 100 and nb_kills < 500:
+        return(QUETES["kill"][100])
+    elif nb_kills == 500 and nb_kills < 1000:
+        return(QUETES["kill"][500])
+    elif nb_kills == 1000:
+        return(QUETES["kill"][1000])
+    return False
+    
     
     
     
