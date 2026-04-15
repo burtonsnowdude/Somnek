@@ -33,19 +33,23 @@ TYPES_MONSTRES = {
     "Dragon" : {"puissance" : 1,
                 "hp" : 5,
                 "couleur" : G4, 
-                "vitesse" : 1},
+                "vitesse" : 1,
+                "niveau" : 1},
     "Sorcier" : {"puissance" : 1,
                 "hp" : 3,
                 "couleur" : G2, 
-                "vitesse" : 1},
+                "vitesse" : 1,
+                "niveau" : 1},
     "Araignée" : {"puissance" : 1,
                 "hp" : 2,
                 "couleur" : G1, 
-                "vitesse" : 2},
+                "vitesse" : 2,
+                "niveau" : 2},
     "Creeper" : {"puissance" : 1,
                 "hp" : 4,
                 "couleur" : G3, 
-                "vitesse" : 2}
+                "vitesse" : 2,
+                "niveau" : 2}
 }
 
 TYPES = [type for type in TYPES_MONSTRES]

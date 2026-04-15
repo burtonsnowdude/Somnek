@@ -28,7 +28,7 @@ class Player:
         """Dessine le joueur"""
         WIN.blit(PLAYER_IMAGE, (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2))
 
-    def move_bg(self, bg, monstres, xp):
+    def move_bg(self, bg, monstres, xp, monstres_vague):
         """Déplace le fond pour donner l'illusion que le joueur se déplace
         
         Parameters
@@ -41,72 +41,59 @@ class Player:
         right = keys[pyg.K_RIGHT] or keys[pyg.K_d]
         left = keys[pyg.K_LEFT] or keys[pyg.K_a]
         down = keys[pyg.K_DOWN] or keys[pyg.K_s]
-        
+        obj_a_deplacer = monstres+xp
         # Déplacement pour chaque touche appuyée, adapté en diagonale pour que le joueur n'aille pas plus vite
         if left:
             if up or down : 
                 bg.x += 1/(math.sqrt(2)) * self.vitesse
                 self.x_suppose -= 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.x += 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.x += 1/(math.sqrt(2)) * self.vitesse
+            
             else : 
                 bg.x += self.vitesse
                 self.x_suppose -= self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.x += self.vitesse
-                for x in xp:
-                    x.pos.x += self.vitesse
 
         if right:
             if up or down : 
                 bg.x -= 1/(math.sqrt(2)) * self.vitesse
                 self.x_suppose += 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.x -= 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.x -= self.vitesse
                 self.x_suppose += self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.x -= self.vitesse
-                for x in xp:
-                    x.pos.x -= self.vitesse
 
         if up:
             if right or left : 
                 bg.y += 1/(math.sqrt(2)) * self.vitesse
                 self.y_suppose -= 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.y += 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.y += 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.y += self.vitesse
                 self.y_suppose -= self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.y += self.vitesse
-                for x in xp:
-                    x.pos.y += self.vitesse
+
 
 
         if down:
             if right or left :
                 bg.y -= 1/(math.sqrt(2)) * self.vitesse
                 self.y_suppose += 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.y -= 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.y -= 1/(math.sqrt(2)) * self.vitesse
             else :
                 bg.y -= self.vitesse
                 self.y_suppose += self.vitesse
-                for m in monstres:
+                for m in obj_a_deplacer:
                     m.pos.y -= self.vitesse
-                for x in xp:
-                    x.pos.y -= self.vitesse
+
 
     def degats(self, degats):
         """Prendre des dégâts

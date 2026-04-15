@@ -38,11 +38,12 @@ def main():
     frequence = 50 # fréquence à laquelle un monstre apparait
     xp_attendu = 40 # xp attendu pour passer un niveau (croît exponentiellement)
     xp = 0
-    seuil = 0
+    seuil = 2
     dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
     coffre_existant = False
-     
-    
+    derniere_vague = 0
+    monstres_vague = None
+
     while run:
         xp = 0
         WIN.blit(BG, (0, 0))
@@ -72,7 +73,13 @@ def main():
             monstres_presents = ajouter_monstre(monstres_presents)
         monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
         xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
-
+        res = gestion_vague(derniere_vague, p.niveau)
+        if res is not False :
+            derniere_vague, monstres_vague, coin = res
+        else : 
+            derniere_vague += 1
+        if monstres_vague is not None :
+            monstres_vague, p.kill_count = traverser_ecran(monstres_vague, coin, p, frame, xp_dispo, p.kill_count)
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
         if ajout != False :
@@ -96,7 +103,7 @@ def main():
         # Barre de vie et d'xp, timer
         afficher_timer_vie(temps_ecoule, p)
         afficher_xp(xp_attendu, p)
-
+    
         # Passage de niveau
         if p.update_xp(xp, xp_attendu):
             seuil, xp_attendu = passage(xp_attendu, seuil)
@@ -105,7 +112,7 @@ def main():
             print(armes_possedees)
             armes_joueur = ajouter_arme(nom, arme, armes_joueur)
             new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
-        p.move_bg(bg, monstres_presents, xp_dispo)
+        p.move_bg(bg, monstres_presents, xp_dispo, monstres_vague)
 
         # Reecriture des fichiers csv avec les données actualisées de la partie
         reecrire_fichier_niveau_argent(new_tab, noms) 
