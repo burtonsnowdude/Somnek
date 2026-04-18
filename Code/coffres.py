@@ -2,9 +2,13 @@ from random import *
 from math import *
 import pygame as pyg
 from variables import *
+from fonctionnement_boucle import remplir_fond
 
 DISTANCE_MIN = -2000
 DISTANCE_MAX = 2000
+ARGENT_W = ARGENT.get_width()
+ARGENT_H = ARGENT.get_height()
+
 
 class Coffre :
 
@@ -56,7 +60,7 @@ class Coffre :
                 self.rect = TRESOR.get_rect()
                 self.rect.topleft = (x_screen_coffre, y_screen_coffre)
     
-    def determiner_recompense(self, armes_possedees, seuil) :
+    def determiner_recompense(self, armes_possedees, seuil, p) :
         """Détermine la récompense obtenue par le joueur quand il atteint un coffre
 
         Parameters
@@ -75,9 +79,10 @@ class Coffre :
             L'arme récupérée
         """
         for i in ANIM_COFFRE :
-            WIN.blit(i, self.rect)
-            pyg.time.delay(100)
-
+            remplir_fond(p)
+            WIN.blit(i, (CENTREx-COFFRE_W/2, CENTREy-COFFRE_H/2))
+            pyg.display.flip()
+            pyg.time.delay(200)
         armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
         for arme in armes_dispo[:]:
             if arme in armes_possedees :
@@ -85,6 +90,11 @@ class Coffre :
         argent_dispo = int(seuil * randint(1, seuil))
         choix_aleat = choice((True, False))
         if choix_aleat :
+            WIN.blit(ARGENT, (CENTREx-ARGENT_W/2, CENTREy - ARGENT_H/2))
+            txt = FONT.render(str(argent_dispo), 1, (255, 255, 255))
+            WIN.blit(txt, (CENTREx, CENTREy-ARGENT_H/2+20))
+            pyg.display.flip()
+            pyg.time.delay(2000)
             return argent_dispo
         else : 
             return choice(armes_dispo)

@@ -48,13 +48,13 @@ class Player:
         dx, dy = 0, 0
         
         if left :
-            dx = -1 * self.vitesse
+            dx -=1 * self.vitesse
         if right :
-            dx = 1 * self.vitesse
+            dx += 1 * self.vitesse
         if up :
-            dy = -1 * self.vitesse
+            dy -= 1 * self.vitesse
         if down :
-            dy = 1* self.vitesse
+            dy += 1* self.vitesse
         
         if dx != 0 and dy != 0 :
             dx *= 1/(math.sqrt(2)) 
@@ -67,7 +67,7 @@ class Player:
             objet.pos.y -= dy
         bg.x -= dx
         bg.y -= dy
-        
+
     def degats(self, degats):
         """Prendre des dégâts
 

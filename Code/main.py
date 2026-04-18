@@ -52,8 +52,8 @@ def main():
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
                 break
-
-        temps_ecoule = fonc_boucle(clock, start_time, pause_time, p)
+        remplir_fond(p)
+        temps_ecoule = chrono(clock, start_time, pause_time)
         frame += 1
         
         p.lancer_projectile()
@@ -89,7 +89,7 @@ def main():
             nouveau_coffre.pointer_coffre(p)
             if nouveau_coffre.coffre_sur_lecran:
                 if p.pos.colliderect(nouveau_coffre.rect):
-                    gain = nouveau_coffre.determiner_recompense(armes_possedees, seuil)
+                    gain = nouveau_coffre.determiner_recompense(armes_possedees, seuil, p)
                     if type(gain) == int :
                         argent += gain
                         print(argent)
