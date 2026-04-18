@@ -11,5 +11,5 @@ def fonc_boucle(clock, start_time, pause_time, p):
     for i in range(-WIDTH, 2*WIDTH, WIDTH):
         for j in range(-HEIGHT, 2*HEIGHT, HEIGHT):
                 WIN.blit(BG, (i-offset_x, j-offset_y))
-    #WIN.blit(BG, bg) 
     return temps_ecoule
+

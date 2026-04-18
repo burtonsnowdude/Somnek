@@ -42,6 +42,8 @@ class Player:
         left = keys[pyg.K_LEFT] or keys[pyg.K_a]
         down = keys[pyg.K_DOWN] or keys[pyg.K_s]
         obj_a_deplacer = monstres+xp
+        if monstres_vague is not None :
+            obj_a_deplacer += monstres_vague 
         # Déplacement pour chaque touche appuyée, adapté en diagonale pour que le joueur n'aille pas plus vite
         if left:
             if up or down : 
@@ -61,7 +63,7 @@ class Player:
                 bg.x -= 1/(math.sqrt(2)) * self.vitesse
                 self.x_suppose += 1/(math.sqrt(2)) * self.vitesse
                 for m in obj_a_deplacer:
-                    m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
+                   m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
             else : 
                 bg.x -= self.vitesse
                 self.x_suppose += self.vitesse
@@ -93,7 +95,6 @@ class Player:
                 self.y_suppose += self.vitesse
                 for m in obj_a_deplacer:
                     m.pos.y -= self.vitesse
-
 
     def degats(self, degats):
         """Prendre des dégâts

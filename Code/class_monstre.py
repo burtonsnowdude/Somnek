@@ -2,7 +2,6 @@ import pygame as pyg
 from variables import * 
 import math
 from random import *
-
 class Monstre:
     """Class Monstre"""
     def __init__(self, type):
@@ -46,13 +45,10 @@ class Monstre:
             pyg.draw.rect(WIN, self.couleur, self.pos)
             return True
         else :
-            self.death_place = (self.pos.x, self.pos.y)
-            self.rect = XP.get_rect()
-            self.rect.topleft = self.death_place
             return False
     
     def show_xp(self):
-        WIN.blit(XP, (self.pos.x, self.pos.y))
+        WIN.blit(XP, self.pos)
         self.valeur = self.puissance
 
     def degats(self, degats):
@@ -141,9 +137,7 @@ def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
 
 def gestion_vague(derniere_vague, niveau):
     if derniere_vague > 600 and randint(1, 10):
-        print("hello")
         nb_monstres = randint(5, 20)
-        print(nb_monstres)
         monstres_dispos = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= niveau]
         type = choice(monstres_dispos)
         coin = randint(1,4)
@@ -171,13 +165,13 @@ def gestion_vague(derniere_vague, niveau):
 def traverser_ecran(monstres_vague, coin, p, frame, xp_dispo, kill_count):
     coin_a_atteindre = 5 - coin # le coin en diagonale
     if coin_a_atteindre == 1:
-        coord = (0,0)
+        coord = (-25,-25)
     if coin_a_atteindre == 2 :
-        coord = (WIDTH, 0)
+        coord = (WIDTH+25, -25)
     if coin_a_atteindre == 3 :
-        coord = (0, HEIGHT)
+        coord = (-25, HEIGHT+25)
     if coin_a_atteindre == 4 :
-        coord = (WIDTH, HEIGHT)
+        coord = (WIDTH+25, HEIGHT+25)
     coord = pyg.Rect(coord[0], coord[1], 1, 1)
     for m in monstres_vague[:]:
         existe = m.show() # affiche tous les monstres existant
