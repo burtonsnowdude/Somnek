@@ -74,6 +74,10 @@ class Coffre :
         str
             L'arme récupérée
         """
+        for i in ANIM_COFFRE :
+            WIN.blit(i, self.rect)
+            pyg.time.delay(100)
+
         armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
         for arme in armes_dispo[:]:
             if arme in armes_possedees :

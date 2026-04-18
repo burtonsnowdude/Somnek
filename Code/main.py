@@ -113,14 +113,14 @@ def main():
             armes_joueur = ajouter_arme(nom, arme, armes_joueur)
             new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
         p.move_bg(bg, monstres_presents, xp_dispo, monstres_vague)
-
-        # Reecriture des fichiers csv avec les données actualisées de la partie
-        reecrire_fichier_niveau_argent(new_tab, noms) 
-        reecrire_fichier_armes(armes_joueur, noms) 
+    
         pyg.display.flip()
     
     
     pyg.quit() 
+    # Reecriture des fichiers csv avec les données actualisées de la partie
+    reecrire_fichier_niveau_argent(new_tab, noms) 
+    reecrire_fichier_armes(armes_joueur, noms) 
 
 
 if __name__ == "__main__": # s'assure que le main ne s'exécute que si on lance ce fichier directement

@@ -45,57 +45,29 @@ class Player:
         if monstres_vague is not None :
             obj_a_deplacer += monstres_vague 
         # Déplacement pour chaque touche appuyée, adapté en diagonale pour que le joueur n'aille pas plus vite
-        if left:
-            if up or down : 
-                bg.x += 1/(math.sqrt(2)) * self.vitesse
-                self.x_suppose -= 1/(math.sqrt(2)) * self.vitesse
-                for m in obj_a_deplacer:
-                    m.pos.x += 1/(math.sqrt(2)) * self.vitesse
-            
-            else : 
-                bg.x += self.vitesse
-                self.x_suppose -= self.vitesse
-                for m in obj_a_deplacer:
-                    m.pos.x += self.vitesse
-
-        if right:
-            if up or down : 
-                bg.x -= 1/(math.sqrt(2)) * self.vitesse
-                self.x_suppose += 1/(math.sqrt(2)) * self.vitesse
-                for m in obj_a_deplacer:
-                   m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
-            else : 
-                bg.x -= self.vitesse
-                self.x_suppose += self.vitesse
-                for m in obj_a_deplacer:
-                    m.pos.x -= self.vitesse
-
-        if up:
-            if right or left : 
-                bg.y += 1/(math.sqrt(2)) * self.vitesse
-                self.y_suppose -= 1/(math.sqrt(2)) * self.vitesse
-                for m in obj_a_deplacer:
-                    m.pos.y += 1/(math.sqrt(2)) * self.vitesse
-            else : 
-                bg.y += self.vitesse
-                self.y_suppose -= self.vitesse
-                for m in obj_a_deplacer:
-                    m.pos.y += self.vitesse
-
-
-
-        if down:
-            if right or left :
-                bg.y -= 1/(math.sqrt(2)) * self.vitesse
-                self.y_suppose += 1/(math.sqrt(2)) * self.vitesse
-                for m in obj_a_deplacer:
-                    m.pos.y -= 1/(math.sqrt(2)) * self.vitesse
-            else :
-                bg.y -= self.vitesse
-                self.y_suppose += self.vitesse
-                for m in obj_a_deplacer:
-                    m.pos.y -= self.vitesse
-
+        dx, dy = 0, 0
+        
+        if left :
+            dx = -1 * self.vitesse
+        if right :
+            dx = 1 * self.vitesse
+        if up :
+            dy = -1 * self.vitesse
+        if down :
+            dy = 1* self.vitesse
+        
+        if dx != 0 and dy != 0 :
+            dx *= 1/(math.sqrt(2)) 
+            dy *= 1/(math.sqrt(2))
+        
+        self.x_suppose += dx
+        self.y_suppose += dy
+        for objet in obj_a_deplacer :
+            objet.pos.x -= dx
+            objet.pos.y -= dy
+        bg.x -= dx
+        bg.y -= dy
+        
     def degats(self, degats):
         """Prendre des dégâts
 

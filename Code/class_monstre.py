@@ -14,9 +14,9 @@ class Monstre:
         """
         self.puissance = TYPES_MONSTRES[type]["puissance"]
         self.hp = TYPES_MONSTRES[type]["hp"]
-        self.couleur = TYPES_MONSTRES[type]["couleur"]
         self.vitesse = TYPES_MONSTRES[type]["vitesse"]
         self.all_monsters = pyg.sprite.Group() 
+        self.image = TYPES_MONSTRES[type]["image"]
         
         # Choisit un endroit aléatoire sur un bord pour apparaitre
         bord = randint(1,4)
@@ -28,11 +28,11 @@ class Monstre:
             x, y = WIDTH, randint(0, HEIGHT)
         else :
             x, y = randint(0, WIDTH), HEIGHT
-        self.pos = pyg.Rect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.pos = pyg.Rect(x, y, self.image.get_width(), self.image.get_height())
 
     def choix_coord(self, coord):
         x, y = coord
-        self.pos = pyg.Rect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.pos = pyg.Rect(x, y, self.image.get_width(), self.image.get_height())
 
     def show(self):
         """Dessine le monstre tant qu'il est en vie
@@ -42,7 +42,7 @@ class Monstre:
         bool 
         """
         if self.hp > 0 :
-            pyg.draw.rect(WIN, self.couleur, self.pos)
+            WIN.blit(self.image, self.pos)
             return True
         else :
             return False
@@ -137,7 +137,7 @@ def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
 
 def gestion_vague(derniere_vague, niveau):
     if derniere_vague > 600 and randint(1, 10):
-        nb_monstres = randint(5, 20)
+        nb_monstres = randint(5, 10)
         monstres_dispos = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= niveau]
         type = choice(monstres_dispos)
         coin = randint(1,4)
@@ -152,7 +152,7 @@ def gestion_vague(derniere_vague, niveau):
         monstres_vague = []
         for i in range(nb_monstres) : 
             m = Monstre(type)
-            m.vitesse += 12
+            m.vitesse += 7
             m.choix_coord((x, y))
             if choice((True, False)) :
                 x += randint(-60,60)
