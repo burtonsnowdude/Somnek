@@ -10,6 +10,7 @@ from class_monstre import *
 from fonctionnement_boucle import *
 from gestion_fichiers import *
 from player import Player
+from evenements import vague_130
 
 def main():
     noms, new_tab = det_noms()
@@ -43,6 +44,7 @@ def main():
     coffre_existant = False
     derniere_vague = 0
     monstres_vague = None
+    vague = False
 
     while run:
         xp = 0
@@ -80,11 +82,13 @@ def main():
             derniere_vague += 1
         if monstres_vague is not None :
             monstres_vague, p.kill_count = traverser_ecran(monstres_vague, coin, p, frame, xp_dispo, p.kill_count)
+        
+        monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague)
+
         # Gestion des coffres
         ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
         if ajout != False :
             nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
-
         if coffre_existant:
             nouveau_coffre.pointer_coffre(p)
             if nouveau_coffre.coffre_sur_lecran:
@@ -99,6 +103,7 @@ def main():
                         print(armes_possedees)
                     coffre_existant = False
         dernier_coffre_apparu += 1 
+
         p.draw_player() 
         # Barre de vie et d'xp, timer
         afficher_timer_vie(temps_ecoule, p)
