@@ -63,7 +63,11 @@ def main():
         # déplace les projectiles
         for projectile in p.all_projectiles : 
             projectile.move() 
-            for m in monstres_presents:
+            if monstres_vague is not None :
+                monstres = monstres_presents + monstres_vague 
+            else : 
+                monstres = monstres_presents
+            for m in monstres:
                 if projectile.rect.colliderect(m.pos):
                     m.degats(5)
         #appliquer les images de mon groupe projectile

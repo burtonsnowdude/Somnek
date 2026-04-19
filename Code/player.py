@@ -56,17 +56,16 @@ class Player:
         if down :
             dy += 1* self.vitesse
         
-        if dx != 0 and dy != 0 :
+        """if dx != 0 and dy != 0 :
             dx *= 1/(math.sqrt(2)) 
             dy *= 1/(math.sqrt(2))
-        
+        """
         self.x_suppose += dx
         self.y_suppose += dy
         for objet in obj_a_deplacer :
             objet.pos.x -= dx
             objet.pos.y -= dy
-        bg.x -= dx
-        bg.y -= dy
+        
 
     def degats(self, degats):
         """Prendre des dégâts
