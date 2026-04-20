@@ -8,7 +8,8 @@ DISTANCE_MIN = -2000
 DISTANCE_MAX = 2000
 ARGENT_W = ARGENT.get_width()
 ARGENT_H = ARGENT.get_height()
-
+COFFRE_W = TRESOR.get_width()
+COFFRE_H = TRESOR.get_height()
 
 class Coffre :
 
@@ -21,10 +22,9 @@ class Coffre :
             Self@Player
         """
         # Coordonnées du coffre
-        self.x_coffre = randint(DISTANCE_MIN + int(player.x_suppose), DISTANCE_MAX + int(player.x_suppose))
-        self.y_coffre = randint(DISTANCE_MIN + int(player.y_suppose), DISTANCE_MAX + int(player.y_suppose))
+        self.x_coffre = randint(DISTANCE_MIN + int(player.x_monde), DISTANCE_MAX + int(player.x_monde))
+        self.y_coffre = randint(DISTANCE_MIN + int(player.y_monde), DISTANCE_MAX + int(player.y_monde))
         
-        self.coffre_sur_lecran = False
 
     def pointer_coffre(self, player):
         """Dessine une flèche qui pointe vers le coffre, dessine le coffre s'il est dans la zone visible
@@ -36,29 +36,18 @@ class Coffre :
         """
 
         # Calcul de l'angle
-        angle = atan2((self.x_coffre - player.x_suppose), (self.y_coffre - player.y_suppose))
-        angle = degrees(angle) - 180
+        angle = atan2((self.x_coffre - player.x_monde), (self.y_coffre - player.y_monde))
+        angle = atan2((self.y_coffre - player.y_monde), (self.x_coffre - player.x_monde))
+        #angle = degrees(angle) - 180
 
         # Rotation de la flèche
         fleche_orientee = pyg.transform.rotozoom(FLECHE, angle, 1)
         WIN.blit(fleche_orientee, (400, 200))
-
-        # Calcul des coordonnées couvertes par l'écran affiché
-        position_min_en_x = player.x_suppose - CENTREx
-        position_max_en_x = player.x_suppose + CENTREx
-        position_min_en_y = player.y_suppose - CENTREy
-        position_max_en_y = player.y_suppose + CENTREy
-
-        # On dessine le coffre s'il se situe parmi ces coordonnées
-        if position_min_en_x <= self.x_coffre <= position_max_en_x and position_min_en_y <= self.y_coffre <= position_max_en_y:
-            x_screen_coffre = CENTREx - (player.x_suppose - self.x_coffre)
-            y_screen_coffre = CENTREy - (player.y_suppose - self.y_coffre)
-            self.coffre_sur_lecran = True
-
-            if self.coffre_sur_lecran :
-                WIN.blit(TRESOR, (x_screen_coffre, y_screen_coffre))
-                self.rect = TRESOR.get_rect()
-                self.rect.topleft = (x_screen_coffre, y_screen_coffre)
+        x_screen_coffre = CENTREx - (player.x_monde - self.x_coffre)
+        y_screen_coffre = CENTREy - (player.y_monde - self.y_coffre)
+        WIN.blit(TRESOR, (x_screen_coffre, y_screen_coffre))
+        self.rect = TRESOR.get_rect()
+        self.rect.topleft = (x_screen_coffre, y_screen_coffre)
     
     def determiner_recompense(self, armes_possedees, seuil, p) :
         """Détermine la récompense obtenue par le joueur quand il atteint un coffre

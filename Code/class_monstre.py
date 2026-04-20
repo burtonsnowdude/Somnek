@@ -2,9 +2,11 @@ import pygame as pyg
 from variables import * 
 import math
 from random import *
+from fonctionnement_boucle import camera, screen_to_world
+
 class Monstre:
     """Class Monstre"""
-    def __init__(self, type):
+    def __init__(self, type, p):
         """Initialise un monstre en fonction de son type et choisit ses coordonnées d'apparition
         
         Parameters
@@ -21,18 +23,20 @@ class Monstre:
         # Choisit un endroit aléatoire sur un bord pour apparaitre
         bord = randint(1,4)
         if bord == 1 :
-            x, y = 0, randint(0, HEIGHT)
+            self.x_screen, self.y_screen = 0, randint(0, HEIGHT)
         elif bord == 2 :
-            x, y = randint(0, WIDTH), 0
+            self.x_screen, self.y_screen = randint(0, WIDTH), 0
         elif bord == 3 :
-            x, y = WIDTH, randint(0, HEIGHT)
+            self.x_screen, self.y_screen = WIDTH, randint(0, HEIGHT)
         else :
-            x, y = randint(0, WIDTH), HEIGHT
-        self.pos = pyg.Rect(x, y, self.image.get_width(), self.image.get_height())
+            self.x_screen, self.y_screen = randint(0, WIDTH), HEIGHT
+        self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
+        self.rect = self.image.get_rect()
+        
 
     def choix_coord(self, coord):
-        x, y = coord
-        self.pos = pyg.Rect(x, y, self.image.get_width(), self.image.get_height())
+        self.x_monde, self.y_monde = coord
+        self.x_screen, self.y_screen = coord
 
     def show(self):
         """Dessine le monstre tant qu'il est en vie
@@ -42,13 +46,15 @@ class Monstre:
         bool 
         """
         if self.hp > 0 :
-            WIN.blit(self.image, self.pos)
+            self.rect.topleft = (self.x_screen, self.y_screen)
+            WIN.blit(self.image, (self.x_screen, self.y_screen))
             return True
         else :
             return False
     
     def show_xp(self):
-        WIN.blit(XP, self.pos)
+        self.rect.topleft = (self.x_screen, self.y_screen)
+        WIN.blit(XP, self.rect)
         self.valeur = self.puissance
 
     def degats(self, degats):
@@ -60,7 +66,7 @@ class Monstre:
         """
         self.hp -= degats
 
-    def follow(self, coord):
+    def follow(self, x,y):
         """Suivre le joueur
         
         Parameters
@@ -69,18 +75,18 @@ class Monstre:
         """
 
         # Calculate direction vector from monster to player
-        dx = coord.centerx - self.pos.centerx
-        dy = coord.centery - self.pos.centery
+        dx = x - self.x_monde
+        dy = y - self.y_monde
         distance = math.sqrt(dx**2 + dy**2)
         
         # Only move if distance > 0 to avoid division by zero
         if distance > 0:
             # Normalize and move 
-            self.pos.x += (dx / distance) * self.vitesse
-            self.pos.y += (dy / distance) * self.vitesse
+            self.x_monde += (dx / distance) * self.vitesse
+            self.y_monde += (dy / distance) * self.vitesse
 
 # Gestion des ennemis
-def ajouter_monstre(monstres_presents):
+def ajouter_monstre(monstres_presents, p):
     """Crée un nouveau monstre et l'ajoute à la liste des monstres presents
     
     Parameters
@@ -92,7 +98,7 @@ def ajouter_monstre(monstres_presents):
     -------
     list 
         La liste des monstres presents"""
-    monstres_presents.append(Monstre(choice(TYPES))) # crée un nouveau monstre de type aléatoire
+    monstres_presents.append(Monstre(choice(TYPES), p)) # crée un nouveau monstre de type aléatoire
     return monstres_presents
 
 def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
@@ -116,8 +122,8 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     for m in monstres_presents[:]:
         existe = m.show() # affiche tous les monstres existant
         if existe :
-            m.follow(p.pos) # monstres suivant le joueur
-            if p.pos.colliderect(m.pos) and frame%10 == 0:
+            m.follow(p.x_monde, p.y_monde) # monstres suivant le joueur
+            if p.pos.colliderect(m.rect) and frame%10 == 0:
                 p.degats(m.puissance) # dégâts en cas de collision
         else :
             kill_count += 1
@@ -129,13 +135,13 @@ def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
     obtenu = 0
     for xp in xp_dispo[:]:
         xp.show_xp()
-        if p.pos.colliderect(xp.pos):
+        if p.pos.colliderect(xp.rect):
             obtenu += xp.puissance
             p.update_xp(xp.valeur, xp_attendu)
             xp_dispo.remove(xp)
     return xp_dispo, obtenu
 
-def gestion_vague(derniere_vague, niveau):
+def gestion_vague(derniere_vague, niveau, p):
     if derniere_vague > 600 and randint(1, 10):
         nb_monstres = randint(5, 10)
         monstres_dispos = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= niveau]
@@ -149,9 +155,10 @@ def gestion_vague(derniere_vague, niveau):
             x, y = 0, HEIGHT
         if coin == 4 : 
             x, y = WIDTH, HEIGHT
+        x, y = screen_to_world(x, y, p)
         monstres_vague = []
         for i in range(nb_monstres) : 
-            m = Monstre(type)
+            m = Monstre(type, p)
             m.vitesse += 7
             m.choix_coord((x, y))
             if choice((True, False)) :
@@ -162,26 +169,34 @@ def gestion_vague(derniere_vague, niveau):
         return 0, monstres_vague, coin
     return False
     
-def traverser_ecran(monstres_vague, coin, p, frame, xp_dispo, kill_count):
+def coord_coin(coin, p):
     coin_a_atteindre = 5 - coin # le coin en diagonale
     if coin_a_atteindre == 1:
-        coord = (-25,-25)
+        x_screen, y_screen = (-25,-25)
     if coin_a_atteindre == 2 :
-        coord = (WIDTH+25, -25)
+        x_screen, y_screen = (WIDTH+25, -25)
     if coin_a_atteindre == 3 :
-        coord = (-25, HEIGHT+25)
+        x_screen, y_screen = (-25, HEIGHT+25)
     if coin_a_atteindre == 4 :
-        coord = (WIDTH+25, HEIGHT+25)
-    coord = pyg.Rect(coord[0], coord[1], 1, 1)
+        x_screen, y_screen = (WIDTH+25, HEIGHT+25)
+    x_monde, y_monde = screen_to_world(x_screen, y_screen, p)
+    return x_monde, y_monde
+
+def traverser_ecran(monstres_vague, p, frame, xp_dispo, kill_count, x_monde, y_monde):
     for m in monstres_vague[:]:
-        existe = m.show() # affiche tous les monstres existant
-        if existe :
-            m.follow(coord) # monstres suivant le joueur
-            if p.pos.colliderect(m.pos) and frame%10 == 0:
-                p.degats(m.puissance) # dégâts en cas de collision
-        else :
-            kill_count += 1
-            monstres_vague.remove(m)
-            xp_dispo.append(m)
+        dx = x_monde - m.x_monde
+        dy = y_monde - m.y_monde
+        distance = math.sqrt(dx**2 + dy**2)
+
+        if distance > 5:
+            existe = m.show() # affiche tous les monstres existant
+            if existe :
+                m.follow(x_monde, y_monde) # monstres suivant le joueur
+                if p.pos.colliderect(m.rect) and frame%10 == 0:
+                    p.degats(m.puissance) # dégâts en cas de collision
+            else :
+                kill_count += 1
+                monstres_vague.remove(m)
+                xp_dispo.append(m)
     return monstres_vague, kill_count
         

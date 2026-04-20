@@ -3,6 +3,8 @@ from variables import *
 import math
 from random import randint
 from classe_projectile import Projectile
+from fonctionnement_boucle import camera, screen_to_world
+
 class Player:
     """Class Player"""
     def __init__(self):
@@ -13,11 +15,8 @@ class Player:
         self.niveau = 1
         self.kill_count = 0
         
-        self.x_suppose = CENTREx
-        self.y_suppose = CENTREy
-
-        self.x_suppose = CENTREx-PLAYER_WIDTH/2
-        self.y_suppose = CENTREy - PLAYER_HEIGHT
+        self.x_monde = CENTREx-PLAYER_WIDTH/2
+        self.y_monde = CENTREy - PLAYER_HEIGHT/2
         #Liste spéciale pygame
 
         self.all_projectiles = pyg.sprite.Group()   
@@ -28,7 +27,7 @@ class Player:
         """Dessine le joueur"""
         WIN.blit(PLAYER_IMAGE, (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2))
 
-    def move_bg(self, bg, monstres, xp, monstres_vague):
+    def move_bg(self, monstres, xp, monstres_vague):
         """Déplace le fond pour donner l'illusion que le joueur se déplace
         
         Parameters
@@ -56,15 +55,14 @@ class Player:
         if down :
             dy += 1* self.vitesse
         
-        """if dx != 0 and dy != 0 :
+        if dx != 0 and dy != 0 :
             dx *= 1/(math.sqrt(2)) 
             dy *= 1/(math.sqrt(2))
-        """
-        self.x_suppose += dx
-        self.y_suppose += dy
+        self.x_monde += dx
+        self.y_monde += dy
         for objet in obj_a_deplacer :
-            objet.pos.x -= dx
-            objet.pos.y -= dy
+            objet.x_screen, objet.y_screen = camera(objet.x_monde, objet.y_monde, self)
+
         
 
     def degats(self, degats):
@@ -86,6 +84,7 @@ class Player:
             self.niveau += 1
             return True
         return False
+    
     def lancer_projectile(self):
         """Créer un projectile avec cooldown"""
         # Vérifier si l'on peut tirer 
