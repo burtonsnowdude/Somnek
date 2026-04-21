@@ -45,7 +45,7 @@ def main():
     derniere_vague = 0
     monstres_vague = None
     vague = False
-
+    pause = False
     while run:
         xp = 0
         WIN.blit(BG, (0, 0))
@@ -54,77 +54,82 @@ def main():
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
                 break
-        remplir_fond(p)
-        temps_ecoule = chrono(clock, start_time, pause_time)
-        frame += 1
+            if event.type == pyg.KEYDOWN:
+                if event.key == pyg.K_SPACE:
+                    pause = not pause
         
-        p.lancer_projectile()
-        p.update_cooldown()
-        # déplace les projectiles
-        for projectile in p.all_projectiles : 
-            projectile.move() 
-            if monstres_vague is not None :
-                monstres = monstres_presents + monstres_vague 
-            else : 
-                monstres = monstres_presents
-            for m in monstres:
-                if projectile.rect.colliderect(m.rect):
-                    m.degats(5)
-        #appliquer les images de mon groupe projectile
-        p.all_projectiles.draw(WIN) 
-
-
-        # Gestion des ennemis
-        if frame%frequence == 0:
-            monstres_presents = ajouter_monstre(monstres_presents, p)
-        monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
-        xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
-        res = gestion_vague(derniere_vague, p.niveau, p)
-        if res is not False :
-            derniere_vague, monstres_vague, coin = res
-            x_monde, y_monde = coord_coin(coin,p)
-        else : 
-            derniere_vague += 1
-        if monstres_vague is not None :
-            monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, p.kill_count, x_monde, y_monde)
-        
-        monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p)
-
-        # Gestion des coffres
-        ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
-        if ajout != False :
-            nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
-        if coffre_existant:
-            nouveau_coffre.pointer_coffre(p)
+        if not pause : 
+            remplir_fond(p)
+            temps_ecoule = chrono(clock, start_time, pause_time)
+            frame += 1
             
-            if p.pos.colliderect(nouveau_coffre.rect):
-                gain = nouveau_coffre.determiner_recompense(armes_possedees, seuil, p)
-                if type(gain) == int :
-                    argent += gain
-                    print(argent)
-                else :
-                    armes_possedees.append(gain)
-                    ajouter_arme(nom, gain, armes_joueur)
-                    print(armes_possedees)
-                coffre_existant = False
-        dernier_coffre_apparu += 1 
+            p.lancer_projectile()
+            p.update_cooldown()
+            # déplace les projectiles
+            for projectile in p.all_projectiles : 
+                projectile.move() 
+                if monstres_vague is not None :
+                    monstres = monstres_presents + monstres_vague 
+                else : 
+                    monstres = monstres_presents
+                for m in monstres:
+                    if projectile.rect.colliderect(m.rect):
+                        m.degats(5)
+            #appliquer les images de mon groupe projectile
+            p.all_projectiles.draw(WIN) 
 
-        p.draw_player() 
-        # Barre de vie et d'xp, timer
-        afficher_timer_vie(temps_ecoule, p)
-        afficher_xp(xp_attendu, p)
-    
-        # Passage de niveau
-        if p.update_xp(xp, xp_attendu):
-            seuil, xp_attendu = passage(xp_attendu, seuil)
-            arme, pause_time = choix_arme(p, seuil, armes_possedees)
-            armes_possedees.append(arme)
-            print(armes_possedees)
-            armes_joueur = ajouter_arme(nom, arme, armes_joueur)
-            new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
-        p.move_bg(monstres_presents, xp_dispo, monstres_vague)
-    
-        pyg.display.flip()
+
+            # Gestion des ennemis
+            if frame%frequence == 0:
+                monstres_presents = ajouter_monstre(monstres_presents, p)
+            monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
+            xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
+            res = gestion_vague(derniere_vague, p.niveau, p)
+            if res is not False :
+                derniere_vague, monstres_vague, coin = res
+                x_monde, y_monde = coord_coin(coin,p)
+            else : 
+                derniere_vague += 1
+            if monstres_vague is not None :
+                monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, p.kill_count, x_monde, y_monde)
+            
+            monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p)
+
+            # Gestion des coffres
+            ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
+            if ajout != False :
+                nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
+            if coffre_existant:
+                nouveau_coffre.pointer_coffre(p)
+                
+                if p.pos.colliderect(nouveau_coffre.rect):
+                    gain = nouveau_coffre.determiner_recompense(armes_possedees, seuil, p)
+                    if type(gain) == int :
+                        argent += gain
+                        print(argent)
+                    else :
+                        armes_possedees.append(gain)
+                        ajouter_arme(nom, gain, armes_joueur)
+                        print(armes_possedees)
+                    coffre_existant = False
+            dernier_coffre_apparu += 1 
+
+            p.draw_player() 
+            # Barre de vie et d'xp, timer
+            afficher_timer_vie(temps_ecoule, p)
+            afficher_xp(xp_attendu, p)
+        
+            # Passage de niveau
+            if p.update_xp(xp, xp_attendu):
+                seuil, xp_attendu = passage(xp_attendu, seuil)
+                arme, pause_time = choix_arme(p, seuil, armes_possedees)
+                armes_possedees.append(arme)
+                print(armes_possedees)
+                armes_joueur = ajouter_arme(nom, arme, armes_joueur)
+                new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
+            p.move_bg(monstres_presents, xp_dispo, monstres_vague)
+        
+            pyg.display.flip()
     
     
     pyg.quit() 

@@ -22,6 +22,7 @@ class Coffre :
             Self@Player
         """
         # Coordonnées du coffre
+        self.rect = TRESOR.get_rect()
         self.x_coffre = randint(DISTANCE_MIN + int(player.x_monde), DISTANCE_MAX + int(player.x_monde))
         self.y_coffre = randint(DISTANCE_MIN + int(player.y_monde), DISTANCE_MAX + int(player.y_monde))
         
@@ -37,8 +38,7 @@ class Coffre :
 
         # Calcul de l'angle
         angle = atan2((self.x_coffre - player.x_monde), (self.y_coffre - player.y_monde))
-        angle = atan2((self.y_coffre - player.y_monde), (self.x_coffre - player.x_monde))
-        #angle = degrees(angle) - 180
+        angle = degrees(angle) - 180
 
         # Rotation de la flèche
         fleche_orientee = pyg.transform.rotozoom(FLECHE, angle, 1)
@@ -46,7 +46,6 @@ class Coffre :
         x_screen_coffre = CENTREx - (player.x_monde - self.x_coffre)
         y_screen_coffre = CENTREy - (player.y_monde - self.y_coffre)
         WIN.blit(TRESOR, (x_screen_coffre, y_screen_coffre))
-        self.rect = TRESOR.get_rect()
         self.rect.topleft = (x_screen_coffre, y_screen_coffre)
     
     def determiner_recompense(self, armes_possedees, seuil, p) :
