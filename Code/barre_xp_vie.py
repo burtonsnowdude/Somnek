@@ -1,4 +1,5 @@
 from variables import *
+import pygame as pyg 
 
 def afficher_timer_vie(temps_ecoule, p) :
     """Affiche le timer et la barre de PV
@@ -46,3 +47,27 @@ def afficher_xp(xp_attendu, p):
     pyg.draw.rect(WIN, (255, 255, 255), barre_xp_blanc)
     pyg.draw.rect(WIN, (0, 0, 255), barre_xp)
     pyg.display.update()
+
+class PopupAchievement(pyg.sprite.Sprite):
+    def __init__(self, message, duration=3000):
+        super().__init__()
+        self.image = pyg.Surface((300, 50), pyg.SRCALPHA)
+        self.image.fill((255, 227, 112, 255))  # Start fully opaque
+        pyg.draw.rect(self.image, (0, 0, 0), (5, 5, 290, 40), 2)
+        font = pyg.font.SysFont(None, 24)
+        text = font.render(message, True, (0, 0, 0))
+        self.image.blit(text, (10, 10))
+        self.rect = self.image.get_rect(topright=(800, 50))
+        self.start_time = pyg.time.get_ticks()
+        self.duration = duration
+
+    def update(self):
+        elapsed = pyg.time.get_ticks() - self.start_time
+        if elapsed > self.duration:
+            self.kill()  # Remove from group
+        elif elapsed < 2000:  # Opaque for first 2 seconds
+            self.image.set_alpha(255)
+        else:  # Fade out over the last 1 second
+            fade_elapsed = elapsed - 2000
+            alpha = max(0, 255 - int((fade_elapsed / 1000) * 255))
+            self.image.set_alpha(alpha)

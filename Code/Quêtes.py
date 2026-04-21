@@ -42,26 +42,44 @@ QUETES ={
         50 : "tue 50 ennemis ",
         100 : "tue 100 ennemis ",
         500 : "tue 500 ennemis ",
-        1000 : "tue 1000 ennemis "
+        1000 : "tue 1000 ennemis ",
+        5000 : "tue 5000 ennemis ",
+        10000 : "tue 10000 ennemis "
     },
 
     "aquerir": [
-
+        "aquerir ton premier arme",
+        "aquerir 5 armes",
+        "aquerir 10 armes",
+        "aquerir 20 armes",
+        "aquerir 50 armes",
+        "aquerir 100 armes",
+        "aquerir 200 armes",
+        "aquerir 500 armes"
     ]
 }
 
 #j'ai besoin que on fini les scenes avant le code des scnes
 #j'ai aussi besoin du compteur de morts pour les kill quetes
 
-def verif_q(utilisateur):
-    nb_armes = 0
-    with open("Fichiers_csv/armes_obtenues_par_joueur.csv", "r") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row == utilisateur:
-                for i in row:
-                    nb_armes+=row[i]
-    return nb_armes
+def verif_q(nb_armes):  # Modified to take nb_armes as parameter for real-time checking
+    if nb_armes >= 1:  # Adjusted to >= for cumulative triggers (e.g., first weapon)
+        return QUETES["aquerir"][0]
+    elif nb_armes >= 5:
+        return QUETES["aquerir"][1]
+    elif nb_armes >= 10:
+        return QUETES["aquerir"][2]
+    elif nb_armes >= 20:
+        return QUETES["aquerir"][3]
+    elif nb_armes >= 50:
+        return QUETES["aquerir"][4]
+    elif nb_armes >= 100:
+        return QUETES["aquerir"][5]
+    elif nb_armes >= 200:
+        return QUETES["aquerir"][6]
+    elif nb_armes >= 500:
+        return QUETES["aquerir"][7]
+    return False
 
 
 def verif_k(p):
@@ -78,9 +96,13 @@ def verif_k(p):
         return(QUETES["kill"][500])
     elif nb_kills == 1000:
         return(QUETES["kill"][1000])
+    elif nb_kills == 5000:
+        return(QUETES["kill"][5000])
+    elif nb_kills == 10000:
+        return(QUETES["kill"][10000])
     return False
     
     
     
     
-verif_q("Dapne")
+verif_q(1)

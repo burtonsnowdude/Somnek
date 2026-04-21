@@ -11,6 +11,7 @@ from fonctionnement_boucle import *
 from gestion_fichiers import *
 from player import Player
 from evenements import vague_130
+from Quêtes import verif_k, verif_q  # Import quest verification functions
 
 def main():
     noms, new_tab = det_noms()
@@ -46,6 +47,14 @@ def main():
     monstres_vague = None
     vague = False
     pause = False
+    popup_message = None
+    popup_start_time = 0
+
+    popup_group = pyg.sprite.Group()  # Groupe pour les popups
+    completed_kill_quests = set()  # Suivre les quêtes de kills terminées
+    completed_acquire_quests = set()  # Suivre les quêtes d'acquisition terminées
+    test_popup_triggered = False  # Drapeau pour déclencher le popup de test une seule fois
+
     while run:
         xp = 0
         WIN.blit(BG, (0, 0))
@@ -57,7 +66,7 @@ def main():
             if event.type == pyg.KEYDOWN:
                 if event.key == pyg.K_SPACE:
                     pause = not pause
-        
+
         if not pause : 
             remplir_fond(p)
             temps_ecoule = chrono(clock, start_time, pause_time)
@@ -77,8 +86,6 @@ def main():
                         m.degats(5)
             #appliquer les images de mon groupe projectile
             p.all_projectiles.draw(WIN) 
-
-
             # Gestion des ennemis
             if frame%frequence == 0:
                 monstres_presents = ajouter_monstre(monstres_presents, p)
@@ -118,7 +125,32 @@ def main():
             # Barre de vie et d'xp, timer
             afficher_timer_vie(temps_ecoule, p)
             afficher_xp(xp_attendu, p)
-        
+            
+            # Gestion des achievements (exemple: 10 kills)
+            if p.kill_count == 10 and len(popup_group) == 0:
+                popup = PopupAchievement("Achievement: First 10 Kills!")
+                popup_group.add(popup)
+            
+            # Vérifier et déclencher les quêtes de kills
+            kill_quest = verif_k(p)
+            if kill_quest and kill_quest not in completed_kill_quests:
+                popup = PopupAchievement(kill_quest)
+                popup_group.add(popup)
+                completed_kill_quests.add(kill_quest)
+
+            # Vérifier et déclencher les quêtes d'acquisition
+            acquire_quest = verif_q(len(armes_possedees))  # Passe le nombre actuel d'armes
+            if acquire_quest and acquire_quest not in completed_acquire_quests:
+                popup = PopupAchievement(acquire_quest)
+                popup_group.add(popup)
+                completed_acquire_quests.add(acquire_quest)
+
+            # Optionnel : Garder le popup de test pour le débogage
+            if temps_ecoule >= 5 and not test_popup_triggered:
+                popup = PopupAchievement("Test Achievement: 5 Seconds Passed!")
+                popup_group.add(popup)
+                test_popup_triggered = True
+
             # Passage de niveau
             if p.update_xp(xp, xp_attendu):
                 seuil, xp_attendu = passage(xp_attendu, seuil)
@@ -128,7 +160,10 @@ def main():
                 armes_joueur = ajouter_arme(nom, arme, armes_joueur)
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
             p.move_bg(monstres_presents, xp_dispo, monstres_vague)
-        
+            
+            popup_group.update()  # Met à jour les popups
+            popup_group.draw(WIN)  # Dessine les popups
+            
             pyg.display.flip()
     
     
