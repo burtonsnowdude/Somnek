@@ -1,15 +1,6 @@
 import pygame as pyg
 pyg.font.init() # initialiser le module font de pygame
-
-
-# Images
-PLAYER_IMAGE = pyg.image.load("Images/perso.png")
-XP = pyg.image.load("Images/xp.jpg")
-BG = pyg.image.load("Images/grass.png") # charger le fond d'ecran
-BG = pyg.transform.scale(BG, (800, 600))
-FLECHE = pyg.image.load("Images/fleche.png")
-FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
-TRESOR = pyg.image.load("Images/tresor.png")
+from traitement_images import *
 
 # Couleurs
 G1 = (0, 255, 120)
@@ -26,26 +17,30 @@ FONT = pyg.font.SysFont("Press Start 2P", 24) # definir la police d'ecriture
 
 CENTREx, CENTREy = WIDTH//2, HEIGHT//2 
 PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
-PLAYER_VIT = 5 # vitesse de deplacement du joueur
+PLAYER_VIT = 2 # vitesse de deplacement du joueur
 PLAYER_PV = 50 # points de vie du joueur
 
+CATEGORIE = {}
+for i in range(1, 51):
+    t = "Type " + str(i)
+    CATEGORIE[t] = {"puissance" : i,
+                "hp" : 5*i,
+                "vitesse" : i,
+                "niveau" : i}
+    
 TYPES_MONSTRES = {
-    "Dragon" : {"puissance" : 1,
-                "hp" : 5,
+    "Dragon" : { ** CATEGORIE["Type 1"],
                 "couleur" : G4, 
-                "vitesse" : 1},
-    "Sorcier" : {"puissance" : 1,
-                "hp" : 3,
-                "couleur" : G2, 
-                "vitesse" : 1},
-    "Araignée" : {"puissance" : 1,
-                "hp" : 2,
-                "couleur" : G1, 
-                "vitesse" : 2},
-    "Creeper" : {"puissance" : 1,
-                "hp" : 4,
-                "couleur" : G3, 
-                "vitesse" : 2}
+                "image" : SPIDER},
+    "Sorcier" : {** CATEGORIE["Type 1"],
+                "couleur" : G2,
+                "image" : SORCIER},
+    "Araignée" : {** CATEGORIE["Type 1"],
+                "couleur" : G1,
+                "image" : SPIDER},
+    "Creeper" : {** CATEGORIE["Type 1"],
+                "couleur" : G3,
+                "image" : SORCIER}
 }
 
 TYPES = [type for type in TYPES_MONSTRES]

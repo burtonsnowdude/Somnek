@@ -3,6 +3,8 @@ from variables import *
 import math
 from random import randint
 from classe_projectile import Projectile
+from fonctionnement_boucle import camera, screen_to_world
+
 class Player:
     """Class Player"""
     def __init__(self):
@@ -13,11 +15,8 @@ class Player:
         self.niveau = 1
         self.kill_count = 0
         
-        self.x_suppose = CENTREx
-        self.y_suppose = CENTREy
-
-        self.x_suppose = CENTREx-PLAYER_WIDTH/2
-        self.y_suppose = CENTREy - PLAYER_HEIGHT
+        self.x_monde = CENTREx-PLAYER_WIDTH/2
+        self.y_monde = CENTREy - PLAYER_HEIGHT/2
         #Liste spéciale pygame
 
         self.all_projectiles = pyg.sprite.Group()   
@@ -28,7 +27,7 @@ class Player:
         """Dessine le joueur"""
         WIN.blit(PLAYER_IMAGE, (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2))
 
-    def move_bg(self, bg, monstres, xp):
+    def move_bg(self, monstres, xp, monstres_vague):
         """Déplace le fond pour donner l'illusion que le joueur se déplace
         
         Parameters
@@ -41,72 +40,30 @@ class Player:
         right = keys[pyg.K_RIGHT] or keys[pyg.K_d]
         left = keys[pyg.K_LEFT] or keys[pyg.K_a]
         down = keys[pyg.K_DOWN] or keys[pyg.K_s]
-        
+        obj_a_deplacer = monstres+xp
+        if monstres_vague is not None :
+            obj_a_deplacer += monstres_vague 
         # Déplacement pour chaque touche appuyée, adapté en diagonale pour que le joueur n'aille pas plus vite
-        if left:
-            if up or down : 
-                bg.x += 1/(math.sqrt(2)) * self.vitesse
-                self.x_suppose -= 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
-                    m.pos.x += 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.x += 1/(math.sqrt(2)) * self.vitesse
-            else : 
-                bg.x += self.vitesse
-                self.x_suppose -= self.vitesse
-                for m in monstres:
-                    m.pos.x += self.vitesse
-                for x in xp:
-                    x.pos.x += self.vitesse
+        dx, dy = 0, 0
+        
+        if left :
+            dx -=1 * self.vitesse
+        if right :
+            dx += 1 * self.vitesse
+        if up :
+            dy -= 1 * self.vitesse
+        if down :
+            dy += 1* self.vitesse
+        
+        if dx != 0 and dy != 0 :
+            dx *= 1/(math.sqrt(2)) 
+            dy *= 1/(math.sqrt(2))
+        self.x_monde += dx
+        self.y_monde += dy
+        for objet in obj_a_deplacer :
+            objet.x_screen, objet.y_screen = camera(objet.x_monde, objet.y_monde, self)
 
-        if right:
-            if up or down : 
-                bg.x -= 1/(math.sqrt(2)) * self.vitesse
-                self.x_suppose += 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
-                    m.pos.x -= 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.x -= 1/(math.sqrt(2)) * self.vitesse
-            else : 
-                bg.x -= self.vitesse
-                self.x_suppose += self.vitesse
-                for m in monstres:
-                    m.pos.x -= self.vitesse
-                for x in xp:
-                    x.pos.x -= self.vitesse
-
-        if up:
-            if right or left : 
-                bg.y += 1/(math.sqrt(2)) * self.vitesse
-                self.y_suppose -= 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
-                    m.pos.y += 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.y += 1/(math.sqrt(2)) * self.vitesse
-            else : 
-                bg.y += self.vitesse
-                self.y_suppose -= self.vitesse
-                for m in monstres:
-                    m.pos.y += self.vitesse
-                for x in xp:
-                    x.pos.y += self.vitesse
-
-
-        if down:
-            if right or left :
-                bg.y -= 1/(math.sqrt(2)) * self.vitesse
-                self.y_suppose += 1/(math.sqrt(2)) * self.vitesse
-                for m in monstres:
-                    m.pos.y -= 1/(math.sqrt(2)) * self.vitesse
-                for x in xp:
-                    x.pos.y -= 1/(math.sqrt(2)) * self.vitesse
-            else :
-                bg.y -= self.vitesse
-                self.y_suppose += self.vitesse
-                for m in monstres:
-                    m.pos.y -= self.vitesse
-                for x in xp:
-                    x.pos.y -= self.vitesse
+        
 
     def degats(self, degats):
         """Prendre des dégâts
@@ -127,6 +84,7 @@ class Player:
             self.niveau += 1
             return True
         return False
+    
     def lancer_projectile(self):
         """Créer un projectile avec cooldown"""
         # Vérifier si l'on peut tirer 
