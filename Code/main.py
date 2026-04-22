@@ -66,6 +66,8 @@ def main():
             if event.type == pyg.KEYDOWN:
                 if event.key == pyg.K_SPACE:
                     pause = not pause
+        if pause :
+            pause, run, pause_time = menu_pause(new_tab, noms, armes_joueur)
 
         if not pause : 
             remplir_fond(p)
