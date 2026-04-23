@@ -6,11 +6,11 @@ from random import *
 from coffres import *
 from passage_niveau import *
 from barre_xp_vie import *
-from class_monstre import *
+from Monstres.class_monstre import *
 from fonctionnement_boucle import *
 from gestion_fichiers import *
 from player import Player
-from evenements import vague_130
+from Monstres.vagues import *
 from Quêtes import verif_k, verif_q  # Import quest verification functions
 
 def main():
@@ -31,7 +31,6 @@ def main():
     
     # Initialisation des variables
     monstres_presents, armes_possedees, xp_dispo = [], [], []
-    bg = BG.get_rect() 
 
     start_time = time.time()  
     frame = 0
@@ -101,7 +100,6 @@ def main():
                 derniere_vague += 1
             if monstres_vague is not None :
                 monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, p.kill_count, x_monde, y_monde)
-            
             monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p)
 
             # Gestion des coffres

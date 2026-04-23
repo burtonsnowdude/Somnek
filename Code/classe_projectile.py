@@ -9,7 +9,7 @@ class Projectile(pyg.sprite.Sprite):
         super().__init__()
         self.velocity = 5
         self.player = player
-        self.image = pyg.image.load("Images/projectile_pistolet.png").convert_alpha()
+        self.image = pyg.image.load("Images/Armes_items/projectile_pistolet.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = player.pos.center
         self.origin_image = self.image
