@@ -4,7 +4,7 @@ import pygame as pyg
 from variables import *
 from math import sqrt, cos, sin
 from fonctionnement_boucle import camera, screen_to_world
-from time import time
+import time
 
 REPLIQUES_BOSS = [
     "Brrrrrr",
@@ -25,19 +25,19 @@ REPLIQUES_ELEVES = [
 
 BOSS = {
     1 : {
-        "hp" : 0,
-        "image" : None,
-        "particularites" : [],
-        "vitesse" : 0
+        "hp" : 100,
+        "image" : SPIDER,
+        "particularites" : ["dialogue_boss", "move", "dash_boss", "rotation_boss", "hallucination"],
+        "vitesse" : 2
     },
     2 : {
-        "hp" : 0,
-        "image" : None,
+        "hp" : 200,
+        "image" : SPIDER,
         "particularites" : [],
         "vitesse" : 0
     },
     3 : {
-        "hp" : 0,
+        "hp" : 300,
         "image" : None,
         "particularites" : [],
         "vitesse" : 0
@@ -50,7 +50,7 @@ BOSS = {
     } # etc là c'est juste des modèles vides
 }
 
-# Class Boss très incomplète 
+# Class Boss 
 class Boss :
     def __init__(self, temps, p):
         self.hp = BOSS[temps]["hp"]
@@ -135,39 +135,72 @@ class Boss :
             self.y_screen = CENTREy + self.dist * sin(self.angle)
         self.update_coord_monde(p)
         
-    
-    def move(self):
-        """Déplace le boss vers un point aléatoire"""
-        pass
+    def follow(self, x, y):
+        dx = x - self.x_monde
+        dy = y - self.y_monde
+        distance = sqrt(dx**2 + dy**2)
+        # Only move if distance > 0 to avoid division by zero
+        if distance > 0:
+            # Normalize and move 
+            self.x_monde += (dx / distance) * self.vitesse
+            self.y_monde += (dy / distance) * self.vitesse
 
-    def dash_boss(self):
-        pass
+    def move(self, p):
+        """Déplace le boss vers un point aléatoire et revient à sa coord screen initiale"""
+
+        if self.iteration1:
+            self.x_base_screen, self.y_base_screen = self.x_screen, self.y_screen
+            self.x_base_monde, self.y_base_monde = self.x_monde, self.y_monde
+            self.x_aleat_screen, self.y_aleat_screen = (randint(0, WIDTH), randint(0, HEIGHT))
+            self.x_aleat_monde, self.y_aleat_monde = screen_to_world(self.x_aleat_screen, self.y_aleat_screen, p)
+            self.but = "aleat"
+
+        if self.but == "aleat":
+            self.follow(self.x_aleat_monde, self.y_aleat_monde)
+
+        if (self.x_monde, self.y_monde) == (self.x_aleat_monde, self.y_aleat_monde):
+            self.but = "base"
+
+        if self.but == "base":
+            self.follow(self.x_base_monde, self.y_base_monde)
+
+        if (self.x_screen, self.y_screen) == (self.x_base_screen, self.y_base_screen):
+            self.action_is_over = True
+            
+        self.update_coord_screen(p)
+
+    def dash_boss(self, p):
+        self.vitesse += 10
+        self.move(p)
+        self.vitesse -= 10
 
     def attaque_dist(self):
         pass
 
-    def follow(self): 
-        """Suit le joueur"""
-        pass
 
 def spawn_boss(temps, boss_present, boss_acheves, p):
+    temps /= 60
+    temps = int(temps)
     boss = False
-    if not boss_present and int(temps) in BOSS and not int(temps) in boss_acheves : 
+    if not boss_present and temps in BOSS and not temps in boss_acheves : 
         boss_present = True
         boss = Boss(temps, p)
     return boss_present, boss
 
 
-def gestion_boss(boss, boss_present, action, temps_ecoule):
+def gestion_boss(boss, boss_present, temps_ecoule):
     """Choisit une action du boss et l'exécute jusqu'à sa fin"""
     if boss_present:
         particularites = boss.particularites # liste d'actions que le boss peut faire
+
         if boss.action_is_over :
-            action = choice(particularites)
+            boss.action = choice(particularites)
             boss.iteration1 = True
             boss.action_is_over = False
+        action = boss.action
         if action == "attaque_a_distance":
             boss.attaque_a_distance()
+
         if action == "hallucination":
             effet = effet_hallucination(WIN, temps_ecoule)
             WIN.blit(effet, (0,0))
@@ -175,23 +208,32 @@ def gestion_boss(boss, boss_present, action, temps_ecoule):
             overlay.fill((255, 0, 150))  
             overlay.set_alpha(40)
             WIN.blit(overlay, (0, 0))
+
+        if action == "dialogue_boss":
+            boss.dialogue_boss()
+            boss.dialogue_perso()
+
         if action == "move":
             boss.move()
+
         if action == "dash_boss":
             boss.dash_boss()
+
         if action == "rotation_boss":
             boss.rotation_boss()
+
         boss.draw_boss()
+
         if boss.hp <= 0:
             boss_present = False
+
     return boss_present
 
 def effet_hallucination(surface, t):
-    width, height = surface.get_size()
-    new_surface = pyg.Surface((width, height))
+    new_surface = pyg.Surface((WIDTH, HEIGHT))
 
-    for y in range(height):
+    for y in range(HEIGHT):
         offset = int(10 * sin(y * 0.05 + t))
-        new_surface.blit(surface, (offset, y), (0, y, width, 1))
+        new_surface.blit(surface, (offset, y), (0, y, WIDTH, 1))
 
     return new_surface

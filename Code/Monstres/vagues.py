@@ -48,7 +48,8 @@ def coord_coin(coin, p):
     x_monde, y_monde = screen_to_world(x_screen, y_screen, p)
     return x_monde, y_monde
 
-def traverser_ecran(monstres_vague, p, frame, xp_dispo, kill_count, x_monde, y_monde):
+def traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde):
+    kill_count = p.kill_count
     for m in monstres_vague[:]:
         dx = x_monde - m.x_monde
         dy = y_monde - m.y_monde

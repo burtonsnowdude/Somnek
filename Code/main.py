@@ -12,7 +12,7 @@ from gestion_fichiers import *
 from player import Player
 from Monstres.vagues import *
 from Quêtes import verif_k, verif_q  # Import quest verification functions
-from Monstres.boss import effet_hallucination
+from Monstres.boss import spawn_boss, gestion_boss
 
 def main():
     noms, new_tab = det_noms()
@@ -31,7 +31,7 @@ def main():
     p = Player()
     
     # Initialisation des variables
-    monstres_presents, armes_possedees, xp_dispo = [], [], []
+    monstres_presents, armes_possedees, xp_dispo, boss_acheves = [], [], [], []
 
     start_time = time.time()  
     frame = 0
@@ -49,7 +49,7 @@ def main():
     pause = False
     popup_message = None
     popup_start_time = 0
-
+    boss_present = False
     popup_group = pyg.sprite.Group()  # Groupe pour les popups
     completed_kill_quests = set()  # Suivre les quêtes de kills terminées
     completed_acquire_quests = set()  # Suivre les quêtes d'acquisition terminées
@@ -99,9 +99,11 @@ def main():
             else : 
                 derniere_vague += 1
             if monstres_vague is not None :
-                monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, p.kill_count, x_monde, y_monde)
+                monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
             monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p)
 
+            boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p)
+            boss_present = gestion_boss(boss, boss_present, temps_ecoule)
             # Gestion des coffres
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout != False :
