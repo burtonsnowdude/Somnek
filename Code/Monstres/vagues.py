@@ -23,7 +23,6 @@ def gestion_vague(derniere_vague, niveau, p):
         x, y = screen_to_world(x, y, p)
         monstres_vague = []
         for i in range(nb_monstres) :
-            print("y") 
             m = Monstre(type, p)
             m.vitesse += 7
             m.choix_coord((x, y))

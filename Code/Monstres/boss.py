@@ -26,27 +26,31 @@ REPLIQUES_ELEVES = [
 BOSS = {
     1 : {
         "hp" : 100,
-        "image" : SPIDER,
-        "particularites" : ["dialogue_boss", "move", "dash_boss", "rotation_boss", "hallucination"],
-        "vitesse" : 2
+        "image" : PALETTE,
+        "particularites" : ["dialogue_boss", "dialogue_perso", "move", "dash_boss", "rotation_boss", "hallucination"],
+        "vitesse" : 1, 
+        "puissance" : 10
     },
     2 : {
         "hp" : 200,
         "image" : SPIDER,
         "particularites" : [],
-        "vitesse" : 0
+        "vitesse" : 0, 
+        "puissance" : 0
     },
     3 : {
         "hp" : 300,
         "image" : None,
         "particularites" : [],
-        "vitesse" : 0
+        "vitesse" : 0, 
+        "puissance" : 0
     },
     4 : {
         "hp" : 0,
         "image" : None,
         "particularites" : [],
-        "vitesse" : 0
+        "vitesse" : 0, 
+        "puissance" : 0
     } # etc là c'est juste des modèles vides
 }
 
@@ -73,12 +77,6 @@ class Boss :
         self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
         self.rect = self.image.get_rect()
 
-    def update_coord_monde(self, p):
-        self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
-    
-    def update_coord_screen(self, p):
-        self.x_screen, self.y_screen = camera(self.x_monde, self.y_monde, p)
-
     def draw_boss(self):
         """Dessine le boss"""
         WIN.blit(self.image, (self.x_screen, self.y_screen))
@@ -89,6 +87,15 @@ class Boss :
 
     def cinematique_mort_boss(self):
         pass
+    
+    def degats(self, degats):
+        """Inflige des dégâts au monstre
+
+        Parameters
+        ----------
+        degats : int
+        """
+        self.hp -= degats
 
     def dialogue_perso(self):
         """Faire répondre le personnage parce que c'est encore plus sympathique"""
@@ -98,9 +105,9 @@ class Boss :
             self.texte = choice(REPLIQUES_ELEVES)
             self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
-            fond = pyg.Rect(20, HEIGHT-20, WIDTH-40, 10)
-            pyg.draw.rect(WIN, self.color_joueur, fond)
-            WIN.blit(self.texte, (25, HEIGHT-15))
+            fond = pyg.Rect(20, HEIGHT-40, WIDTH-40, 30)
+            pyg.draw.rect(WIN, self.color_boss, fond)
+            WIN.blit(self.texte, (25, HEIGHT-30))
             pyg.display.flip()
         else :
             self.action_is_over = True
@@ -113,9 +120,9 @@ class Boss :
             self.texte = choice(REPLIQUES_BOSS)
             self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
-            fond = pyg.Rect(20, HEIGHT-20, WIDTH-40, 10)
+            fond = pyg.Rect(20, HEIGHT-40, WIDTH-40, 30)
             pyg.draw.rect(WIN, self.color_boss, fond)
-            WIN.blit(self.texte, (25, HEIGHT-15))
+            WIN.blit(self.texte, (25, HEIGHT-30))
             pyg.display.flip()
         else :
             self.action_is_over = True
@@ -127,13 +134,14 @@ class Boss :
             self.coord_a_atteindre = (self.x_screen, self.y_screen)
             self.dist = sqrt((self.x_screen-CENTREx)**2 + (self.y_screen-CENTREy)**2)
             self.angle = 0
-        elif (self.x_screen, self.y_screen) == self.coord_a_atteindre :
+            self.debut = time.time()
+        if time.time() - self.debut > 10:
             self.action_is_over = True
         else :
-            angle += 0.02
+            self.angle += 0.02
             self.x_screen = CENTREx + self.dist * cos(self.angle)
             self.y_screen = CENTREy + self.dist * sin(self.angle)
-        self.update_coord_monde(p)
+        self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
         
     def follow(self, x, y):
         dx = x - self.x_monde
@@ -144,51 +152,56 @@ class Boss :
             # Normalize and move 
             self.x_monde += (dx / distance) * self.vitesse
             self.y_monde += (dy / distance) * self.vitesse
+    
+    def hallucination(self, surface):
+        if self.iteration1 :
+            self.debut = time.time()
+            self.iteration1 = False
+        temps_ecoule = time.time() - self.debut
+        new_surface = pyg.Surface((WIDTH, HEIGHT))
+
+        for y in range(HEIGHT):
+            offset = int(10 * sin(y * 0.05 + temps_ecoule))
+            new_surface.blit(surface, (offset, y), (0, y, WIDTH, 1))
+        if temps_ecoule > 10 :
+            self.action_is_over = True
+        return new_surface
 
     def move(self, p):
-        """Déplace le boss vers un point aléatoire et revient à sa coord screen initiale"""
+        """Déplace le boss vers un point aléatoire"""
 
         if self.iteration1:
-            self.x_base_screen, self.y_base_screen = self.x_screen, self.y_screen
-            self.x_base_monde, self.y_base_monde = self.x_monde, self.y_monde
             self.x_aleat_screen, self.y_aleat_screen = (randint(0, WIDTH), randint(0, HEIGHT))
             self.x_aleat_monde, self.y_aleat_monde = screen_to_world(self.x_aleat_screen, self.y_aleat_screen, p)
-            self.but = "aleat"
+            self.iteration1 = False
 
-        if self.but == "aleat":
-            self.follow(self.x_aleat_monde, self.y_aleat_monde)
+        self.follow(self.x_aleat_monde, self.y_aleat_monde)
 
         if (self.x_monde, self.y_monde) == (self.x_aleat_monde, self.y_aleat_monde):
-            self.but = "base"
-
-        if self.but == "base":
-            self.follow(self.x_base_monde, self.y_base_monde)
-
-        if (self.x_screen, self.y_screen) == (self.x_base_screen, self.y_base_screen):
             self.action_is_over = True
-            
-        self.update_coord_screen(p)
 
     def dash_boss(self, p):
         self.vitesse += 10
         self.move(p)
         self.vitesse -= 10
 
+    def follow_player(self, p):
+        self.follow(p.x_monde, p.y_monde)
+        
     def attaque_dist(self):
         pass
 
 
-def spawn_boss(temps, boss_present, boss_acheves, p):
+def spawn_boss(temps, boss_present, boss_acheves, p, boss):
     temps /= 60
     temps = int(temps)
-    boss = False
     if not boss_present and temps in BOSS and not temps in boss_acheves : 
         boss_present = True
         boss = Boss(temps, p)
     return boss_present, boss
 
 
-def gestion_boss(boss, boss_present, temps_ecoule):
+def gestion_boss(boss, boss_present, p, frame):
     """Choisit une action du boss et l'exécute jusqu'à sa fin"""
     if boss_present:
         particularites = boss.particularites # liste d'actions que le boss peut faire
@@ -197,43 +210,44 @@ def gestion_boss(boss, boss_present, temps_ecoule):
             boss.action = choice(particularites)
             boss.iteration1 = True
             boss.action_is_over = False
+            print(boss.action)
         action = boss.action
+
         if action == "attaque_a_distance":
             boss.attaque_a_distance()
 
         if action == "hallucination":
-            effet = effet_hallucination(WIN, temps_ecoule)
+            effet = boss.hallucination(WIN)
             WIN.blit(effet, (0,0))
             overlay = pyg.Surface((WIDTH, HEIGHT))
             overlay.fill((255, 0, 150))  
             overlay.set_alpha(40)
             WIN.blit(overlay, (0, 0))
+            boss.follow_player(p)
 
         if action == "dialogue_boss":
             boss.dialogue_boss()
-            boss.dialogue_perso()
+            boss.follow_player(p)
 
+        if action == "dialogue_perso":
+            boss.dialogue_perso()
+            boss.follow_player(p)
+            
         if action == "move":
-            boss.move()
+            boss.move(p)
 
         if action == "dash_boss":
-            boss.dash_boss()
+            boss.dash_boss(p)
 
         if action == "rotation_boss":
-            boss.rotation_boss()
+            boss.rotation_boss(p)
 
+        if p.pos.colliderect(boss.rect) and frame%10 == 0:
+            p.degats(boss.puissance)
         boss.draw_boss()
 
         if boss.hp <= 0:
             boss_present = False
+            boss = None
 
     return boss_present
-
-def effet_hallucination(surface, t):
-    new_surface = pyg.Surface((WIDTH, HEIGHT))
-
-    for y in range(HEIGHT):
-        offset = int(10 * sin(y * 0.05 + t))
-        new_surface.blit(surface, (offset, y), (0, y, WIDTH, 1))
-
-    return new_surface

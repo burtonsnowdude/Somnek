@@ -13,6 +13,7 @@ ARGENT = pyg.image.load("Images/Coffres/argent.png")
 #MONSTRES
 SPIDER = pyg.image.load("Images/Monstres/spider.png")
 SORCIER = pyg.image.load("Images/Monstres/sorcier.png")
+PALETTE = pyg.image.load("Images/Monstres/palette.png")
 
 #ANIM COFFRE
 spritesheet_coffre = pyg.image.load("Images/Coffres/anim_coffre.png")

@@ -27,7 +27,7 @@ class Player:
         """Dessine le joueur"""
         WIN.blit(PLAYER_IMAGE, (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2))
 
-    def move_bg(self, monstres, xp, monstres_vague):
+    def move_bg(self, monstres, xp, monstres_vague, boss, boss_present):
         """Déplace le fond pour donner l'illusion que le joueur se déplace
         
         Parameters
@@ -43,6 +43,8 @@ class Player:
         obj_a_deplacer = monstres+xp
         if monstres_vague is not None :
             obj_a_deplacer += monstres_vague 
+        if boss_present :
+            obj_a_deplacer.append(boss)
         # Déplacement pour chaque touche appuyée, adapté en diagonale pour que le joueur n'aille pas plus vite
         dx, dy = 0, 0
         

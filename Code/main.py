@@ -47,6 +47,7 @@ def main():
     monstres_vague = None
     vague = False
     pause = False
+    boss = None
     popup_message = None
     popup_start_time = 0
     boss_present = False
@@ -80,6 +81,8 @@ def main():
                 projectile.move() 
                 if monstres_vague is not None :
                     monstres = monstres_presents + monstres_vague 
+                if boss_present :
+                    monstres.append(boss)
                 else : 
                     monstres = monstres_presents
                 for m in monstres:
@@ -102,8 +105,8 @@ def main():
                 monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
             monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p)
 
-            boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p)
-            boss_present = gestion_boss(boss, boss_present, temps_ecoule)
+            boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p, boss)
+            boss_present = gestion_boss(boss, boss_present, p, frame)
             # Gestion des coffres
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout != False :
@@ -161,7 +164,7 @@ def main():
                 print(armes_possedees)
                 armes_joueur = ajouter_arme(nom, arme, armes_joueur)
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
-            p.move_bg(monstres_presents, xp_dispo, monstres_vague)
+            p.move_bg(monstres_presents, xp_dispo, monstres_vague, boss, boss_present)
             
             popup_group.update()  # Met à jour les popups
             popup_group.draw(WIN)  # Dessine les popups
