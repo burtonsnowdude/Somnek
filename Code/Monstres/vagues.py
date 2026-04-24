@@ -7,7 +7,7 @@ from Monstres.class_monstre import *
 
 ################################ VAGUE NORMALE #############################################
 def gestion_vague(derniere_vague, niveau, p):
-    if derniere_vague > 600 and randint(1, 2)== 1:
+    if derniere_vague > 1800 and randint(1, 2)== 1:
         nb_monstres = randint(5, 10)
         monstres_dispos = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= niveau]
         type = choice(monstres_dispos)

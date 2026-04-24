@@ -11,10 +11,10 @@ WIN = pyg.display.set_mode((WIDTH, HEIGHT))
 pyg.display.set_caption("SOMNEK")
 
 # Fond d'écran
-fond_decran = pyg.image.load("Images/fond_accueil.png")
+fond_decran = pyg.image.load("Images/Interface/fond_accueil.png")
 fond_decran = pyg.transform.scale(fond_decran, (WIDTH, HEIGHT))
 
-fond_enter = pyg.image.load("Images/press.png")
+fond_enter = pyg.image.load("Images/Interface/press.png")
 fond_enter = pyg.transform.scale(fond_enter, (WIDTH, HEIGHT))
 
 

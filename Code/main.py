@@ -12,6 +12,7 @@ from gestion_fichiers import *
 from player import Player
 from Monstres.vagues import *
 from Quêtes import verif_k, verif_q  # Import quest verification functions
+from Monstres.boss import effet_hallucination
 
 def main():
     noms, new_tab = det_noms()
@@ -57,7 +58,6 @@ def main():
     while run:
         xp = 0
         WIN.blit(BG, (0, 0))
-        
         for event in pyg.event.get():  
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
@@ -72,7 +72,7 @@ def main():
             remplir_fond(p)
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
-            
+
             p.lancer_projectile()
             p.update_cooldown()
             # déplace les projectiles

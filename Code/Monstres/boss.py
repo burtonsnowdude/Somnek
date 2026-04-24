@@ -6,9 +6,6 @@ from math import sqrt, cos, sin
 from fonctionnement_boucle import camera, screen_to_world
 from time import time
 
-THEMES = {
-
-}
 REPLIQUES_BOSS = [
     "Brrrrrr",
     "Tu vas regretter d'être sorti de ton misérable lycée...",
@@ -25,8 +22,6 @@ REPLIQUES_ELEVES = [
     "Je savais que j'aurais dû sécher aujourd'hui...",
     "En vrai ça reste mieux que les cours..."
 ]
-
-THEME_PAR_DEFAUT = None
 
 BOSS = {
     1 : {
@@ -57,13 +52,13 @@ BOSS = {
 
 # Class Boss très incomplète 
 class Boss :
-    def __init__(self, niveau, p, theme):
-        self.hp = BOSS[niveau]["hp"]
-        self.image = BOSS[niveau]["image"]
-        self.vitesse = BOSS[niveau]["vitesse"]
-        self.particularites = BOSS[niveau]["particularites"]
-        self.color_boss = THEMES[theme]["boss"]
-        self.color_joueur = THEMES[theme]["joueur"]
+    def __init__(self, temps, p):
+        self.hp = BOSS[temps]["hp"]
+        self.image = BOSS[temps]["image"]
+        self.vitesse = BOSS[temps]["vitesse"]
+        self.particularites = BOSS[temps]["particularites"]
+        self.color_boss = (54, 78, 125)
+        self.color_joueur = (107, 120, 146)
         self.action_is_over = True
         self.iteration1 = True
         bord = randint(1,4)
@@ -140,10 +135,6 @@ class Boss :
             self.y_screen = CENTREy + self.dist * sin(self.angle)
         self.update_coord_monde(p)
         
-
-    def hallucination(self):
-        """Rend la vision du joueur bizarre parce que pourquoi pas"""
-        pass
     
     def move(self):
         """Déplace le boss vers un point aléatoire"""
@@ -159,15 +150,15 @@ class Boss :
         """Suit le joueur"""
         pass
 
-def spawn_boss(niveau, boss_present, boss_acheves, p):
+def spawn_boss(temps, boss_present, boss_acheves, p):
     boss = False
-    if not boss_present and niveau in BOSS and not niveau in boss_acheves : 
+    if not boss_present and int(temps) in BOSS and not int(temps) in boss_acheves : 
         boss_present = True
-        boss = Boss(niveau, p)
+        boss = Boss(temps, p)
     return boss_present, boss
 
 
-def gestion_boss(boss, boss_present, action):
+def gestion_boss(boss, boss_present, action, temps_ecoule):
     """Choisit une action du boss et l'exécute jusqu'à sa fin"""
     if boss_present:
         particularites = boss.particularites # liste d'actions que le boss peut faire
@@ -176,9 +167,14 @@ def gestion_boss(boss, boss_present, action):
             boss.iteration1 = True
             boss.action_is_over = False
         if action == "attaque_a_distance":
-            boss.attaque_a_distance
+            boss.attaque_a_distance()
         if action == "hallucination":
-            boss.hallucination()
+            effet = effet_hallucination(WIN, temps_ecoule)
+            WIN.blit(effet, (0,0))
+            overlay = pyg.Surface((WIDTH, HEIGHT))
+            overlay.fill((255, 0, 150))  
+            overlay.set_alpha(40)
+            WIN.blit(overlay, (0, 0))
         if action == "move":
             boss.move()
         if action == "dash_boss":
@@ -189,3 +185,13 @@ def gestion_boss(boss, boss_present, action):
         if boss.hp <= 0:
             boss_present = False
     return boss_present
+
+def effet_hallucination(surface, t):
+    width, height = surface.get_size()
+    new_surface = pyg.Surface((width, height))
+
+    for y in range(height):
+        offset = int(10 * sin(y * 0.05 + t))
+        new_surface.blit(surface, (offset, y), (0, y, width, 1))
+
+    return new_surface
