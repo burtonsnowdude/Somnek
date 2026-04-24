@@ -55,7 +55,7 @@ def traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde):
         distance = math.sqrt(dx**2 + dy**2)
 
         if distance > 5:
-            m.show() # affiche tous les monstres existant
+            m.show(frame) # affiche tous les monstres existant
             if m.hp > 0 :
                 m.follow(x_monde, y_monde) # monstres suivant le joueur
                 if p.pos.colliderect(m.rect) and frame%10 == 0:

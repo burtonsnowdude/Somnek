@@ -14,12 +14,18 @@ class Monstre:
         type : str
             Le type de monstre
         """
+        self.type = type
         self.puissance = TYPES_MONSTRES[type]["puissance"]
         self.hp = TYPES_MONSTRES[type]["hp"]
         self.vitesse = TYPES_MONSTRES[type]["vitesse"]
         self.all_monsters = pyg.sprite.Group() 
-        self.image = TYPES_MONSTRES[type]["image"]
-        
+        if "image" in TYPES_MONSTRES[type]:
+            self.image = TYPES_MONSTRES[type]["image"]
+            self.rect = self.image.get_rect()
+        elif "anim" in TYPES_MONSTRES[type]:
+            self.anim = TYPES_MONSTRES[type]["anim"]
+            self.index = 0
+            self.rect = self.anim[0].get_rect()
         # Choisit un endroit aléatoire sur un bord pour apparaitre
         bord = randint(1,4)
         if bord == 1 :
@@ -31,18 +37,24 @@ class Monstre:
         else :
             self.x_screen, self.y_screen = randint(0, WIDTH), HEIGHT
         self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
-        self.rect = self.image.get_rect()
+        
         
 
     def choix_coord(self, coord):
         self.x_monde, self.y_monde = coord
         self.x_screen, self.y_screen = coord
 
-    def show(self):
+    def show(self, frame):
         """Dessine le monstre"""
         self.rect.topleft = (self.x_screen, self.y_screen)
-        WIN.blit(self.image, (self.x_screen, self.y_screen))
-            
+        if "image" in TYPES_MONSTRES[self.type] :
+            WIN.blit(self.image, (self.x_screen, self.y_screen))
+        elif frame%4 == 0 :
+            WIN.blit(self.anim[self.index], (self.x_screen, self.y_screen))
+            self.index += 1
+            self.index = self.index%len(self.anim)
+        else :
+            WIN.blit(self.anim[self.index], (self.x_screen, self.y_screen))
     
     def show_xp(self):
         self.rect.topleft = (self.x_screen, self.y_screen)
@@ -112,7 +124,7 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     """
     kill_count = p.kill_count
     for m in monstres_presents[:]:
-        m.show() # affiche tous les monstres existant
+        m.show(frame) # affiche tous les monstres existant
         if m.hp > 0 :
             m.follow(p.x_monde, p.y_monde) # monstres suivant le joueur
             if p.pos.colliderect(m.rect) and frame%10 == 0:

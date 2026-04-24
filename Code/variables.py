@@ -30,16 +30,12 @@ for i in range(1, 51):
     
 TYPES_MONSTRES = {
     "Dragon" : { ** CATEGORIE["Type 1"],
-                "couleur" : G4, 
-                "image" : SPIDER},
+                "anim" : ANIM_DRAGON},
     "Sorcier" : {** CATEGORIE["Type 1"],
-                "couleur" : G2,
                 "image" : SORCIER},
     "Araignée" : {** CATEGORIE["Type 1"],
-                "couleur" : G1,
                 "image" : SPIDER},
     "Creeper" : {** CATEGORIE["Type 1"],
-                "couleur" : G3,
                 "image" : SORCIER}
 }
 
