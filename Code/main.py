@@ -29,7 +29,7 @@ def main():
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     p = Player()
-    perso = "Nerd"
+    perso = "Fille_populaire"
     # Initialisation des variables
     monstres_presents, armes_possedees, xp_dispo, boss_acheves = [], [], [], []
 
@@ -104,7 +104,7 @@ def main():
                 derniere_vague += 1
             if monstres_vague is not None :
                 monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
-            monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p)
+            monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p, perso)
 
             boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p, boss, perso)
             boss_present = gestion_boss(boss, boss_present, p, frame)
@@ -131,13 +131,13 @@ def main():
             # Barre de vie et d'xp, timer
             afficher_timer_vie(temps_ecoule, p)
             afficher_xp(xp_attendu, p)
-            
+            """
             # Gestion des achievements (exemple: 10 kills)
             if p.kill_count == 10 and not achievement_10_done:
                 popup = PopupAchievement("Achievement: First 10 Kills!")
                 popup_group.add(popup)
                 achievement_10_done = True
-            
+            """
             # Vérifier et déclencher les quêtes de kills
             kill_quest = verif_k(p)
             if kill_quest and kill_quest not in completed_kill_quests:

@@ -1,6 +1,7 @@
 import pygame as pyg
 pyg.font.init() # initialiser le module font de pygame
 from traitement_images import *
+from math import ceil
 
 # Couleurs
 G1 = (0, 255, 120)
@@ -25,30 +26,51 @@ for i in range(1, 51):
     t = "Type " + str(i)
     CATEGORIE[t] = {"puissance" : i,
                 "hp" : 5*i,
-                "vitesse" : i,
+                "vitesse" : ceil(i/5),
                 "niveau" : i}
     
 TYPES_MONSTRES = {
+
+    # NERD
     "Dragon" : { ** CATEGORIE["Type 1"],
                 "perso" : "Nerd",
                 "anim" : ANIM_DRAGON},
-    "Sorcier" : {** CATEGORIE["Type 1"],
+    "Sorcier" : {** CATEGORIE["Type 2"],
                  "perso" : "Nerd",
                 "image" : SORCIER},
-    "Araignée" : {** CATEGORIE["Type 1"],
+    "Araignée" : {** CATEGORIE["Type 4"],
                   "perso" : "Nerd",
                 "image" : SPIDER},
-    "Creeper" : {** CATEGORIE["Type 1"],
+    "Creeper" : {** CATEGORIE["Type 6"],
                  "perso" : "Nerd",
-                "image" : SORCIER},
-    "Ballon_foot" : {** CATEGORIE["Type 2"],
+                "image" : CREEPER},
+    "Seau" : {** CATEGORIE["Type 8"],
+                 "perso" : "Nerd",
+                "image" : SEAU},
+    "Savon" : {** CATEGORIE["Type 10"],
+                 "perso" : "Nerd",
+                "image" : SAVON},
+    "Ballon_foot" : {** CATEGORIE["Type 14"],
                 "perso" : "Nerd",
                 "anim" : ANIM_BALLON},
-    "Grand_mere" : {** CATEGORIE["Type 3"],
+    "Grand_mere" : {** CATEGORIE["Type 18"],
                 "perso" : "Nerd",
-                "anim" : ANIM_GRAND_MERE
+                "anim" : ANIM_GRAND_MERE},
 
-    }
+
+    # FILLE POPULAIRE           
+    "Demaquillant" : {** CATEGORIE["Type 1"],
+                "perso" : "Fille_populaire",
+                "image" : DEMAQUILLANT},
+    "Eval" : {** CATEGORIE["Type 2"],
+                "perso" : "Fille_populaire",
+                "image" : EVAL},
+    "Fond_de_teint" : {** CATEGORIE["Type 4"],
+                "perso" : "Fille_populaire",
+                "image" : FOND_DE_TEINT},
+    "Skinny" : { ** CATEGORIE["Type 6"],
+                "perso" : "Fille_populaire",
+                "image" : SKINNY}
     
 }
 
