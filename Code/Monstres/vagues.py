@@ -70,7 +70,7 @@ def traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde):
 def vague_130(temps_ecoule, monstres_presents, vague, p, perso):
     if int(temps_ecoule%90) == 0 and int(temps_ecoule) != 0 and not vague:
         choix_possibles = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["perso"] == perso and TYPES_MONSTRES[monstre]["niveau"] <= p.niveau]
-        type = choice(TYPES)
+        type = choice(choix_possibles)
         if "image" in TYPES_MONSTRES[type]:
             w = TYPES_MONSTRES[type]["image"].get_width()
             h = TYPES_MONSTRES[type]["image"].get_height()

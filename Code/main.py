@@ -29,7 +29,7 @@ def main():
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     p = Player()
-    perso = "Fille_populaire"
+    perso = "Nerd"
     # Initialisation des variables
     monstres_presents, armes_possedees, xp_dispo, boss_acheves = [], [], [], []
 

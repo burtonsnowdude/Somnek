@@ -2,13 +2,14 @@ import time
 from variables import *
 from gestion_fichiers import reecrire_fichier_niveau_argent, reecrire_fichier_armes
 from barre_xp_vie import PopupAchievement
+
 def remplir_fond(p):
     # Fond d'écran 
     WIN.fill((225, 225, 225)) 
-    offset_x = p.x_monde % WIDTH
-    offset_y = p.y_monde % HEIGHT
-    for i in range(-WIDTH, 2*WIDTH, WIDTH):
-        for j in range(-HEIGHT, 2*HEIGHT, HEIGHT):
+    offset_x = p.x_monde % BGX
+    offset_y = p.y_monde % BGY
+    for i in range(-BGX, WIDTH + BGX, BGX):
+        for j in range(-BGY, HEIGHT + BGY, BGY):
                 WIN.blit(BG, (i-offset_x, j-offset_y))
 
 def chrono(clock, start_time, pause_time):

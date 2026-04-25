@@ -12,7 +12,7 @@ REPLIQUES_BOSS = [
     "Arghhhhhhh",
     "1101 0001 1110... (c'est une menace de fou faut juste comprendre le binaire et l'hexadécimal)",
     "Le magasin est ouvert  !",
-    "1010 1010 1010 1010 1010 1010 1010 !!!(ça c'est pas une menace de fou j'avoue)"
+    "1010 1010 1010 1010 1010 1010 1010 !!! (ça c'est pas une menace de fou j'avoue)"
 ]
 
 REPLIQUES_ELEVES = [
@@ -23,64 +23,34 @@ REPLIQUES_ELEVES = [
     "En vrai ça reste mieux que les cours..."
 ]
 BOSS = {}
-temps = [15, 25, 30, 38, 50, 62, 82]
+temps = [30, 50]
 for t in temps :
     BOSS[t] = {"hp" : t*10,
                "vitesse" : temps.index(t),
                "puissance" : 10* temps.index(t)}
-BOSS[15]["particularites"] = ["dialogue_boss", "dash_boss", "hallucination"]
-BOSS[25]["particularites"] = ["dialogue_perso", "move", "rotation_boss"]
-BOSS[30]["particularites"] = ["dash_boss", "move", "hallucination"]
-BOSS[38]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss"]
-BOSS[50]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss"]
-BOSS[62]["particularites"] = ["move", "dash_boss", "attaque_a_distance"]
-BOSS[82]["particularites"] = ["move", "dash_boss", "attaque_a_distance", "hallucination"]
+
+BOSS[30]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
+BOSS[50]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss", "hallucination"]
+
 
 BOSS_PAR_PERSO = {
-    "Nerd" : {15 : { ** BOSS[15],
-              "image" : None},
-            25 : {** BOSS[25],
-              "image" : None},
+    "Nerd" : {
             30 : {** BOSS[30],
-              "image" : None},
-            38 : {** BOSS[38],
-              "image" : None},
+              "anim" : ANIM_HARCELEUR},
             50 : {** BOSS[50],
-              "image" : None},
-            62 : {** BOSS[62],
-              "image" : None},
-            82 : {** BOSS[82],
-              "image" : None}
+              "image" : DARK_VADARO}
     },
-    "Fille_populaire": {15 : { ** BOSS[15],
-              "image" : None},
-            25 : {** BOSS[25],
-              "image" : None},
+    "Fille_populaire": {
             30 : {** BOSS[30],
               "image" : None},
-            38 : {** BOSS[38],
-              "image" : None},
             50 : {** BOSS[50],
-              "image" : None},
-            62 : {** BOSS[62],
-              "image" : None},
-            82 : {** BOSS[82],
-              "image" : None}
+              "image" : PALETTE}
     },
-    "Nonne" : {15 : { ** BOSS[15],
-              "image" : None},
-            25 : {** BOSS[25],
-              "image" : None},
+    "Nonne" : {
             30 : {** BOSS[30],
-              "image" : None},
-            38 : {** BOSS[38],
-              "image" : None},
+              "anim" : ANIM_NONNE},
             50 : {** BOSS[50],
-              "image" : None},
-            62 : {** BOSS[62],
-              "image" : None},
-            82 : {** BOSS[82],
-              "image" : None}
+              "anim" : ANIM_HOMME_MI_DEMON}
     }
 }
 # Class Boss 
