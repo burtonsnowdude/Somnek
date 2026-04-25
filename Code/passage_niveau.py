@@ -2,6 +2,7 @@ from variables import *
 from random import *
 import time
 import pygame as pyg
+from math import ceil
 
 def passage(xp_attendu, seuil):
     """Incrémente le seuil et augmente l'xp attendu pour le prochain niveau
@@ -18,14 +19,12 @@ def passage(xp_attendu, seuil):
     tuple(int, float)
         contient le seuil et l'xp attendu actualisés
     """
-    xp_attendu *= 1.5
+    xp_attendu = ceil(1.5*xp_attendu)
     if seuil+4 <= len(ARMES) :
         seuil += 4
-    if xp_attendu%2 != 0 :
-        xp_attendu += 1 
+    
     return seuil, xp_attendu
-    # pour toujours avoir un nombre pair (évite un trop grand nombre de décimales)
-    # passage de niveau (j'attends la class armes encore une fois c'est des listes arbitraires)
+    
 
 def choix_arme(p, seuil, armes_possedees):
     """Permet au joueur de choisir une arme à la fin d'un niveau

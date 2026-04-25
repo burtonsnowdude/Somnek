@@ -3,12 +3,6 @@ pyg.font.init() # initialiser le module font de pygame
 from traitement_images import *
 from math import ceil
 
-# Couleurs
-G1 = (0, 255, 120)
-G2 = (0, 180, 80)
-G3 = (0, 100, 40)
-G4 = (0, 20, 0)
-
 WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
 
 WIN = pyg.display.set_mode((WIDTH, HEIGHT)) # creer la fenetre
@@ -21,12 +15,14 @@ PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
 PLAYER_VIT = 2 # vitesse de deplacement du joueur
 PLAYER_PV = 50 # points de vie du joueur
 
+FREQUENCE = 50
+
 CATEGORIE = {}
 for i in range(1, 51):
     t = "Type " + str(i)
     CATEGORIE[t] = {"puissance" : i,
                 "hp" : 5*i,
-                "vitesse" : ceil(i/5),
+                "vitesse" : ceil(i/10),
                 "niveau" : i}
     
 TYPES_MONSTRES = {

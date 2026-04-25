@@ -34,28 +34,17 @@ def main():
     monstres_presents, armes_possedees, xp_dispo, boss_acheves = [], [], [], []
 
     start_time = time.time()  
-    frame = 0
-    pause_time = 0 # temps d'inactivité 
 
-    frequence = 50 # fréquence à laquelle un monstre apparait
-    xp_attendu = 40 # xp attendu pour passer un niveau (croît exponentiellement)
-    xp = 0
+    frame, pause_time, xp, dernier_coffre_apparu, derniere_vague = [0]*5
+    xp_attendu = 100 # xp attendu pour passer un niveau (croît exponentiellement)
     seuil = 2
-    dernier_coffre_apparu = 0 # nombre de frames depuis le dernier coffre apparu
-    coffre_existant = False
-    derniere_vague = 0
-    monstres_vague = None
-    vague = False
-    pause = False
-    boss = None
-    achievement_10_done = False
+    monstres_vague, boss = [None] * 2
+    vague, pause, boss_present, test_popup_triggered, coffre_existant = [False]*5
     popup_message = None
     popup_start_time = 0
-    boss_present = False
     popup_group = pyg.sprite.Group()  # Groupe pour les popups
     completed_kill_quests = set()  # Suivre les quêtes de kills terminées
     completed_acquire_quests = set()  # Suivre les quêtes d'acquisition terminées
-    test_popup_triggered = False  # Drapeau pour déclencher le popup de test une seule fois
 
     while run:
         xp = 0
@@ -92,7 +81,7 @@ def main():
             #appliquer les images de mon groupe projectile
             p.all_projectiles.draw(WIN) 
             # Gestion des ennemis
-            if frame%frequence == 0:
+            if frame%FREQUENCE == 0:
                 monstres_presents = ajouter_monstre(monstres_presents, p, perso)
             monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
             xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
