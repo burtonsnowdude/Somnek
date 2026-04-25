@@ -46,7 +46,6 @@ def afficher_xp(xp_attendu, p):
     barre_xp = pyg.Rect(20, 3, p.xp*unit, 10)
     pyg.draw.rect(WIN, (255, 255, 255), barre_xp_blanc)
     pyg.draw.rect(WIN, (0, 0, 255), barre_xp)
-    pyg.display.update()
 
 class PopupAchievement(pyg.sprite.Sprite):
     def __init__(self, message, duration=3000):

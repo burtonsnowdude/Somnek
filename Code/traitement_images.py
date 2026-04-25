@@ -24,11 +24,13 @@ PALETTE = pyg.image.load("Images/Monstres/palette.png")
 #SPRITESHEET
 spritesheet_coffre = pyg.image.load("Images/Coffres/anim_coffre.png")
 spritesheet_dragon = pyg.image.load("Images/Monstres/dragon.png")
+spritesheet_ballon = pyg.image.load("Images/Monstres/ballon_foot.png")
+spritesheet_nonne = pyg.image.load("Images/Monstres/nonne.png")
+spritesheet_grand_mere = pyg.image.load("Images/Monstres/grand_mere.png")
+spritesheet_harceleur = pyg.image.load("Images/Monstres/harceleur.png")
 
-def decouper_image(image, cols, rows):
+def decouper_image(image, cols, rows, nb_a_enlever):
     sheet_w, sheet_h = image.get_size()
-    cols = 4
-    rows = 3
     width = sheet_w // cols
     height = sheet_h // rows
 
@@ -43,7 +45,13 @@ def decouper_image(image, cols, rows):
     anim = []
     for i in range(len(tableau_images)-1):
         anim += tableau_images[i]
+    for i in range(nb_a_enlever):
+        anim.pop(-1)
     return anim
 
-ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 3)
-ANIM_DRAGON = decouper_image(spritesheet_dragon, 3, 4)
+ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 3, 0)
+ANIM_DRAGON = decouper_image(spritesheet_dragon, 3, 4, 3)
+ANIM_BALLON = decouper_image(spritesheet_ballon, 2, 2, 0)
+ANIM_NONNE = decouper_image(spritesheet_nonne, 5, 5, 4)
+ANIM_GRAND_MERE = decouper_image(spritesheet_grand_mere, 1, 2, 0)
+ANIM_HARCELEUR = decouper_image(spritesheet_harceleur, 3, 4, 2)

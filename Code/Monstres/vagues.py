@@ -6,10 +6,10 @@ from Monstres.class_monstre import *
 ################## FONCTION QUI REGROUPE TOUS LES EVENEMENTS ################
 
 ################################ VAGUE NORMALE #############################################
-def gestion_vague(derniere_vague, niveau, p):
+def gestion_vague(derniere_vague, p, perso):
     if derniere_vague > 1800 and randint(1, 2)== 1:
         nb_monstres = randint(5, 10)
-        monstres_dispos = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= niveau]
+        monstres_dispos = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= 1 and TYPES_MONSTRES[monstre]["perso"] == perso]
         type = choice(monstres_dispos)
         coin = randint(1,4)
         if coin == 1 :

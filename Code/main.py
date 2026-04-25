@@ -29,7 +29,7 @@ def main():
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     p = Player()
-    
+    perso = "Nerd"
     # Initialisation des variables
     monstres_presents, armes_possedees, xp_dispo, boss_acheves = [], [], [], []
 
@@ -48,6 +48,7 @@ def main():
     vague = False
     pause = False
     boss = None
+    achievement_10_done = False
     popup_message = None
     popup_start_time = 0
     boss_present = False
@@ -92,10 +93,10 @@ def main():
             p.all_projectiles.draw(WIN) 
             # Gestion des ennemis
             if frame%frequence == 0:
-                monstres_presents = ajouter_monstre(monstres_presents, p)
+                monstres_presents = ajouter_monstre(monstres_presents, p, perso)
             monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
             xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
-            res = gestion_vague(derniere_vague, p.niveau, p)
+            res = gestion_vague(derniere_vague, p, perso)
             if res is not False :
                 derniere_vague, monstres_vague, coin = res
                 x_monde, y_monde = coord_coin(coin,p)
@@ -105,7 +106,7 @@ def main():
                 monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
             monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p)
 
-            boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p, boss)
+            boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p, boss, perso)
             boss_present = gestion_boss(boss, boss_present, p, frame)
             # Gestion des coffres
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
@@ -132,9 +133,10 @@ def main():
             afficher_xp(xp_attendu, p)
             
             # Gestion des achievements (exemple: 10 kills)
-            if p.kill_count == 10 and len(popup_group) == 0:
+            if p.kill_count == 10 and not achievement_10_done:
                 popup = PopupAchievement("Achievement: First 10 Kills!")
                 popup_group.add(popup)
+                achievement_10_done = True
             
             # Vérifier et déclencher les quêtes de kills
             kill_quest = verif_k(p)

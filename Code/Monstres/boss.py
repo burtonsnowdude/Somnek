@@ -22,45 +22,81 @@ REPLIQUES_ELEVES = [
     "Je savais que j'aurais dû sécher aujourd'hui...",
     "En vrai ça reste mieux que les cours..."
 ]
+BOSS = {}
+temps = [15, 25, 30, 38, 50, 62, 82]
+for t in temps :
+    BOSS[t] = {"hp" : t*10,
+               "vitesse" : temps.index(t),
+               "puissance" : 10* temps.index(t)}
+BOSS[15]["particularites"] = ["dialogue_boss", "dash_boss", "hallucination"]
+BOSS[25]["particularites"] = ["dialogue_perso", "move", "rotation_boss"]
+BOSS[30]["particularites"] = ["dash_boss", "move", "hallucination"]
+BOSS[38]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss"]
+BOSS[50]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss"]
+BOSS[62]["particularites"] = ["move", "dash_boss", "attaque_a_distance"]
+BOSS[82]["particularites"] = ["move", "dash_boss", "attaque_a_distance", "hallucination"]
 
-BOSS = {
-    1 : {
-        "hp" : 100,
-        "image" : PALETTE,
-        "particularites" : ["dialogue_boss", "dialogue_perso", "move", "dash_boss", "rotation_boss", "hallucination"],
-        "vitesse" : 1, 
-        "puissance" : 10
+BOSS_PAR_PERSO = {
+    "Nerd" : {15 : { ** BOSS[15],
+              "image" : None},
+            25 : {** BOSS[25],
+              "image" : None},
+            30 : {** BOSS[30],
+              "image" : None},
+            38 : {** BOSS[38],
+              "image" : None},
+            50 : {** BOSS[50],
+              "image" : None},
+            62 : {** BOSS[62],
+              "image" : None},
+            82 : {** BOSS[82],
+              "image" : None}
     },
-    2 : {
-        "hp" : 200,
-        "image" : SPIDER,
-        "particularites" : [],
-        "vitesse" : 0, 
-        "puissance" : 0
+    "Fille_populaire": {15 : { ** BOSS[15],
+              "image" : None},
+            25 : {** BOSS[25],
+              "image" : None},
+            30 : {** BOSS[30],
+              "image" : None},
+            38 : {** BOSS[38],
+              "image" : None},
+            50 : {** BOSS[50],
+              "image" : None},
+            62 : {** BOSS[62],
+              "image" : None},
+            82 : {** BOSS[82],
+              "image" : None}
     },
-    3 : {
-        "hp" : 300,
-        "image" : None,
-        "particularites" : [],
-        "vitesse" : 0, 
-        "puissance" : 0
-    },
-    4 : {
-        "hp" : 0,
-        "image" : None,
-        "particularites" : [],
-        "vitesse" : 0, 
-        "puissance" : 0
-    } # etc là c'est juste des modèles vides
+    "Nonne" : {15 : { ** BOSS[15],
+              "image" : None},
+            25 : {** BOSS[25],
+              "image" : None},
+            30 : {** BOSS[30],
+              "image" : None},
+            38 : {** BOSS[38],
+              "image" : None},
+            50 : {** BOSS[50],
+              "image" : None},
+            62 : {** BOSS[62],
+              "image" : None},
+            82 : {** BOSS[82],
+              "image" : None}
+    }
 }
-
 # Class Boss 
 class Boss :
-    def __init__(self, temps, p):
-        self.hp = BOSS[temps]["hp"]
-        self.image = BOSS[temps]["image"]
-        self.vitesse = BOSS[temps]["vitesse"]
-        self.particularites = BOSS[temps]["particularites"]
+    def __init__(self, temps, p, perso):
+        self.hp = BOSS_PAR_PERSO[perso][temps]["hp"]
+        self.temps = temps
+        if "image" in BOSS_PAR_PERSO[perso][temps]:
+            self.image = BOSS_PAR_PERSO[perso][temps]["image"]
+            self.rect = self.image.get_rect()
+        elif "anim" in BOSS_PAR_PERSO[perso][temps]:
+            self.anim = BOSS_PAR_PERSO[temps]["anim"]
+            self.index = 0
+            self.rect = self.anim[0].get_rect()
+        self.vitesse = BOSS_PAR_PERSO[perso][temps]["vitesse"]
+        self.particularites = BOSS_PAR_PERSO[perso][temps]["particularites"]
         self.color_boss = (54, 78, 125)
         self.color_joueur = (107, 120, 146)
         self.action_is_over = True
@@ -77,9 +113,14 @@ class Boss :
         self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
         self.rect = self.image.get_rect()
 
-    def draw_boss(self):
+    def draw_boss(self, frame):
         """Dessine le boss"""
-        WIN.blit(self.image, (self.x_screen, self.y_screen))
+        if "image" in BOSS_PAR_PERSO[self.temps]:
+            WIN.blit(self.image, (self.x_screen, self.y_screen))
+        elif frame%4 == 0 :
+            WIN.blit(self.anim[self.index], (self.x_screen, self.y_screen))
+            self.index += 1
+            self.index = self.index%len(self.anim)
 
     def cinematique_spawn_boss(self):
         """Cinématique d'apparition du boss"""
@@ -105,10 +146,11 @@ class Boss :
             self.texte = choice(REPLIQUES_ELEVES)
             self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
-            fond = pyg.Rect(20, HEIGHT-40, WIDTH-40, 30)
-            pyg.draw.rect(WIN, self.color_boss, fond)
+            fond = pyg.Surface(HEIGHT-40, WIDTH-40, 30)
+            fond.set_alpha(150)
+            fond.fill(self.color_boss)
+            WIN.blit(fond, (20, HEIGHT-40))
             WIN.blit(self.texte, (25, HEIGHT-30))
-            pyg.display.flip()
         else :
             self.action_is_over = True
 
@@ -120,10 +162,11 @@ class Boss :
             self.texte = choice(REPLIQUES_BOSS)
             self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
-            fond = pyg.Rect(20, HEIGHT-40, WIDTH-40, 30)
-            pyg.draw.rect(WIN, self.color_boss, fond)
+            fond = pyg.Surface(HEIGHT-40, WIDTH-40, 30)
+            fond.set_alpha(150)
+            fond.fill(self.color_boss)
+            WIN.blit(fond, (20, HEIGHT-40))
             WIN.blit(self.texte, (25, HEIGHT-30))
-            pyg.display.flip()
         else :
             self.action_is_over = True
 
@@ -174,10 +217,11 @@ class Boss :
             self.x_aleat_screen, self.y_aleat_screen = (randint(0, WIDTH), randint(0, HEIGHT))
             self.x_aleat_monde, self.y_aleat_monde = screen_to_world(self.x_aleat_screen, self.y_aleat_screen, p)
             self.iteration1 = False
+            self.debut = time.time()
 
         self.follow(self.x_aleat_monde, self.y_aleat_monde)
-
-        if (self.x_monde, self.y_monde) == (self.x_aleat_monde, self.y_aleat_monde):
+        t = time.time() -self.debut
+        if (self.x_monde, self.y_monde) == (self.x_aleat_monde, self.y_aleat_monde) or t > 5:
             self.action_is_over = True
 
     def dash_boss(self, p):
@@ -192,12 +236,12 @@ class Boss :
         pass
 
 
-def spawn_boss(temps, boss_present, boss_acheves, p, boss):
+def spawn_boss(temps, boss_present, boss_acheves, p, boss, perso):
     temps /= 60
     temps = int(temps)
     if not boss_present and temps in BOSS and not temps in boss_acheves : 
         boss_present = True
-        boss = Boss(temps, p)
+        boss = Boss(temps, p, perso)
     return boss_present, boss
 
 

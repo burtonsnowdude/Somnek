@@ -90,7 +90,7 @@ class Monstre:
             self.y_monde += (dy / distance) * self.vitesse
 
 # Gestion des ennemis
-def ajouter_monstre(monstres_presents, p):
+def ajouter_monstre(monstres_presents, p, perso):
     """Crée un nouveau monstre et l'ajoute à la liste des monstres presents
     
     Parameters
@@ -102,7 +102,8 @@ def ajouter_monstre(monstres_presents, p):
     -------
     list 
         La liste des monstres presents"""
-    monstres_presents.append(Monstre(choice(TYPES), p)) # crée un nouveau monstre de type aléatoire
+    choix_possibles = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= p.niveau and TYPES_MONSTRES[monstre]["perso"] == perso]
+    monstres_presents.append(Monstre(choice(choix_possibles), p)) # crée un nouveau monstre de type aléatoire
     return monstres_presents
 
 def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):

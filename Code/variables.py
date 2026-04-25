@@ -30,13 +30,26 @@ for i in range(1, 51):
     
 TYPES_MONSTRES = {
     "Dragon" : { ** CATEGORIE["Type 1"],
+                "perso" : "Nerd",
                 "anim" : ANIM_DRAGON},
     "Sorcier" : {** CATEGORIE["Type 1"],
+                 "perso" : "Nerd",
                 "image" : SORCIER},
     "Araignée" : {** CATEGORIE["Type 1"],
+                  "perso" : "Nerd",
                 "image" : SPIDER},
     "Creeper" : {** CATEGORIE["Type 1"],
-                "image" : SORCIER}
+                 "perso" : "Nerd",
+                "image" : SORCIER},
+    "Ballon_foot" : {** CATEGORIE["Type 2"],
+                "perso" : "Nerd",
+                "anim" : ANIM_BALLON},
+    "Grand_mere" : {** CATEGORIE["Type 3"],
+                "perso" : "Nerd",
+                "anim" : ANIM_GRAND_MERE
+
+    }
+    
 }
 
 TYPES = [type for type in TYPES_MONSTRES]
