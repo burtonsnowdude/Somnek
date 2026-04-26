@@ -63,76 +63,76 @@ class Button:
 
     def is_clicked(self, mouse_pos, mouse_pressed):
         return self.rect.collidepoint(mouse_pos) and mouse_pressed[0]
+def lancer_interface():
+    # Création des boutons  
+    buttons = [ 
+        Button("COMMENCER", "load", 400, 305, 300, 65),   
 
-# Création des boutons  
-buttons = [ 
-    Button("COMMENCER", "load", 400, 305, 300, 65),   
+        Button("COLLECTION", "collection", 150, 440, 220, 60), 
+        Button("POWER UP", "power_up", 400, 440, 250, 70), 
+        Button("REALISATIONS", "realisations", 670, 440, 260, 60), 
 
-    Button("COLLECTION", "collection", 150, 440, 220, 60), 
-    Button("POWER UP", "power_up", 400, 440, 250, 70), 
-    Button("REALISATIONS", "realisations", 670, 440, 260, 60), 
+        Button("Credits", "credits", 400, 520, 200, 50), 
+        Button("Options", "options", 100, 50, 180, 45),   
+        Button("QUITTER", "quit", 700, 50, 180, 45),       
+        Button("Pressez ESPACE pour commencer", "start", 400, 300, 300, 50)]
+    # Initialiser la police
+    font = pyg.font.Font(None, 36)
+    # Initialiser le score
+    argent = 0
+    # Boucle principale
+    running = True
+    clock = pyg.time.Clock()
 
-    Button("Credits", "credits", 400, 520, 200, 50), 
-    Button("Options", "options", 100, 50, 180, 45),   
-    Button("QUITTER", "quit", 700, 50, 180, 45),       
-    Button("Pressez ESPACE pour commencer", "start", 400, 300, 300, 50)]
-# Initialiser la police
-font = pyg.font.Font(None, 36)
-# Initialiser le score
-argent = 0
-# Boucle principale
-running = True
-clock = pyg.time.Clock()
+    while running:
+        clock.tick(60)
+        WIN.blit(fond_decran, (0, 0))
+        mouse_pos = pyg.mouse.get_pos()
+        mouse_pressed = pyg.mouse.get_pressed()
 
-while running:
-    clock.tick(60)
-    WIN.blit(fond_decran, (0, 0))
-    mouse_pos = pyg.mouse.get_pos()
-    mouse_pressed = pyg.mouse.get_pressed()
+        # Titre
+        title_shadow = FONT_TITLE.render("SOMNEK", True, SHADOW)
+        title = FONT_TITLE.render("SOMNEK", True, WHITE)
+        WIN.blit(title_shadow, (210, 165))  
+        WIN.blit(title, (210, 150)) 
 
-    # Titre
-    title_shadow = FONT_TITLE.render("SOMNEK", True, SHADOW)
-    title = FONT_TITLE.render("SOMNEK", True, WHITE)
-    WIN.blit(title_shadow, (210, 165))  
-    WIN.blit(title, (210, 150)) 
+        # Boutons
+        for btn in buttons:
+            btn.draw(WIN, mouse_pos)
+            if btn.is_clicked(mouse_pos, mouse_pressed):
+                pyg.time.delay(200)
 
-    # Boutons
-    for btn in buttons:
-        btn.draw(WIN, mouse_pos)
-        if btn.is_clicked(mouse_pos, mouse_pressed):
-            pyg.time.delay(200)
-
-            if btn.action == "load":
-                print("Commencer")
-            elif btn.action == "collection":
-                print("Collection")     
-            elif btn.action == "credits":
-                print("Credits")                
-            elif btn.action == "power_up":
-                print("Power Up")
-            elif btn.action == "realisations":
-                print("Réalisations")   
-            elif btn.action == "options":
-                print("Options")
-            elif btn.action == "quit":  
-                running = False
- 
+                if btn.action == "load":
+                    print("Commencer")
+                elif btn.action == "collection":
+                    print("Collection")     
+                elif btn.action == "credits":
+                    print("Credits")                
+                elif btn.action == "power_up":
+                    print("Power Up")
+                elif btn.action == "realisations":
+                    print("Réalisations")   
+                elif btn.action == "options":
+                    print("Options")
+                elif btn.action == "quit":  
+                    running = False
     
-    # Afficher l'argent
-    argent_text = font.render(f"Argent: {argent}", True, (0, 0, 0))
-    argent_rect = argent_text.get_rect(center=(400, 50))  # centre haut
-    WIN.blit(argent_text, argent_rect)
- 
+        
+        # Afficher l'argent
+        argent_text = font.render(f"Argent: {argent}", True, (0, 0, 0))
+        argent_rect = argent_text.get_rect(center=(400, 50))  # centre haut
+        WIN.blit(argent_text, argent_rect)
+    
 
-    # Événements
-    for event in pyg.event.get():
-        if event.type == pyg.QUIT:
-            running = False
-        if event.type == pyg.KEYDOWN:
-            if event.key == pyg.K_SPACE:
-                print("Espace pressé - Lancer le jeu")
-                game_enter = True
+        # Événements
+        for event in pyg.event.get():
+            if event.type == pyg.QUIT:
+                running = False
+            if event.type == pyg.KEYDOWN:
+                if event.key == pyg.K_SPACE:
+                    print("Espace pressé - Lancer le jeu")
+                    game_enter = True
 
-    pyg.display.flip()
+        pyg.display.flip()
 
-pyg.quit()
+    pyg.quit()

@@ -35,7 +35,7 @@ def main():
 
     start_time = time.time()  
 
-    frame, pause_time, xp, dernier_coffre_apparu, derniere_vague = [0]*5
+    frame, pause_time, xp, dernier_coffre_apparu, derniere_vague, time_map = [0]*6
     xp_attendu = 100 # xp attendu pour passer un niveau (croît exponentiellement)
     seuil = 2
     monstres_vague, boss = [None] * 2
