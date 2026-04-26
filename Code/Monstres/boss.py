@@ -23,33 +23,33 @@ REPLIQUES_ELEVES = [
     "En vrai ça reste mieux que les cours..."
 ]
 BOSS = {}
-temps = [30, 50]
+temps = [15, 25]
 for t in temps :
     BOSS[t] = {"hp" : t*10,
                "vitesse" : temps.index(t),
                "puissance" : 10* temps.index(t)}
 
-BOSS[30]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
-BOSS[50]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss", "hallucination"]
+BOSS[15]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
+BOSS[25]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss", "hallucination"]
 
 
 BOSS_PAR_PERSO = {
     "Nerd" : {
-            30 : {** BOSS[30],
+            15 : {** BOSS[15],
               "anim" : ANIM_HARCELEUR},
-            50 : {** BOSS[50],
+            25 : {** BOSS[25],
               "image" : DARK_VADARO}
     },
     "Fille_populaire": {
-            30 : {** BOSS[30],
+            15 : {** BOSS[15],
               "image" : None},
-            50 : {** BOSS[50],
+            25 : {** BOSS[25],
               "image" : PALETTE}
     },
     "Nonne" : {
-            30 : {** BOSS[30],
+            15 : {** BOSS[15],
               "anim" : ANIM_NONNE},
-            50 : {** BOSS[50],
+            25 : {** BOSS[25],
               "anim" : ANIM_HOMME_MI_DEMON}
     }
 }

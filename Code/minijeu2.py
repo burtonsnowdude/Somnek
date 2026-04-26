@@ -82,6 +82,7 @@ def quizz():
                 if event.type == pyg.QUIT:
                     pyg.quit()
                     exit()
+                                
             if event.type == pyg.MOUSEBUTTONDOWN:
                 mouse_pos = pyg.mouse.get_pos()
                 for btn in buttons:

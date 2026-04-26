@@ -36,7 +36,7 @@ def main():
     start_time = time.time()  
 
     frame, pause_time, xp, dernier_coffre_apparu, derniere_vague, time_map = [0]*6
-    xp_attendu = 100 # xp attendu pour passer un niveau (croît exponentiellement)
+    xp_attendu = 20 # xp attendu pour passer un niveau (croît exponentiellement)
     seuil = 2
     monstres_vague, boss = [None] * 2
     vague, pause, boss_present, test_popup_triggered, coffre_existant = [False]*5
@@ -120,13 +120,7 @@ def main():
             # Barre de vie et d'xp, timer
             afficher_timer_vie(temps_ecoule, p)
             afficher_xp(xp_attendu, p)
-            """
-            # Gestion des achievements (exemple: 10 kills)
-            if p.kill_count == 10 and not achievement_10_done:
-                popup = PopupAchievement("Achievement: First 10 Kills!")
-                popup_group.add(popup)
-                achievement_10_done = True
-            """
+        
             # Vérifier et déclencher les quêtes de kills
             kill_quest = verif_k(p)
             if kill_quest and kill_quest not in completed_kill_quests:

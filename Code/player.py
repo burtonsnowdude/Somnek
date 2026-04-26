@@ -9,7 +9,8 @@ class Player:
     """Class Player"""
     def __init__(self):
         self.hp = PLAYER_PV
-        self.pos = pyg.Rect(CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT)
+        self.pos = PLAYER_IMAGE.get_rect()
+        self.pos.topleft = (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2)
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
