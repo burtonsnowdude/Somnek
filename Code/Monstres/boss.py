@@ -25,7 +25,7 @@ REPLIQUES_ELEVES = [
 BOSS = {}
 temps = [15, 25]
 for t in temps :
-    BOSS[t] = {"hp" : t*10,
+    BOSS[t] = {"hp" : t*1000,
                "vitesse" : temps.index(t),
                "puissance" : 10* temps.index(t)}
 

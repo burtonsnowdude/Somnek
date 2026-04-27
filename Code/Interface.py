@@ -209,7 +209,7 @@ while running:
             if result == "start_game":
                 show_start = False
                 from main import main
-                main(WIN)
+                main()
                 running = False
 
         # AFFICHER LES OPTINS

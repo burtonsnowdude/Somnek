@@ -7,9 +7,10 @@ class Button:
         self.rect = pyg.Rect(0, 0, width, height)
         self.rect.center = (x, y)
         self.font = font  
-
+        self.color1 = (0, 0, 200)
+        self.color2 = (0, 0, 255, 128)
     def draw(self, win, mouse_pos):
-        color = (0, 0, 200) if self.rect.collidepoint(mouse_pos) else (0, 0, 255, 128)
+        color = self.color1 if self.rect.collidepoint(mouse_pos) else self.color2
 
         surface = pyg.Surface(self.rect.size, pyg.SRCALPHA)
         pyg.draw.rect(surface, color, surface.get_rect(), border_radius=10)

@@ -14,7 +14,7 @@ from Monstres.vagues import *
 from Quêtes import verif_k, verif_q  # Import quest verification functions
 from Monstres.boss import spawn_boss, gestion_boss
 
-def main(WIN):
+def main():
     noms, new_tab = det_noms()
     nom = "Daphne"
     res = ajouter_utilisateur(nom, noms)

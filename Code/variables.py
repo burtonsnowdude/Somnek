@@ -21,7 +21,7 @@ CATEGORIE = {}
 for i in range(1, 51):
     t = "Type " + str(i)
     CATEGORIE[t] = {"puissance" : i,
-                "hp" : 5*i,
+                "hp" : 10*i,
                 "vitesse" : ceil(i/10),
                 "niveau" : i}
     
