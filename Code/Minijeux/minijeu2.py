@@ -1,20 +1,20 @@
 """
-QUIZZ SUR LE MAQUILLAGE
-ETAPE 1 : FAIRE SPAWN L'OBJET SUR LA MAP fait
-ETAPE 2 : GUIDER LE JOUEUR JUSQU'A L'OBJET (idées : par le son, mini map  
-        (bcp plus chiant à faire), la flèche la fameuse (mais c'est trop simple))
-ETAPE 3 : DIALOGUE AVEC LA DAME DU MAGASIN (scène, demander à Feerose ou Liam)
-ETAPE 4 : QUIZZ
+Minijeu Fille_populaire : QUIZZ SUR LE MAQUILLAGE
+
 """
 import pygame as pyg
 from random import randint, shuffle
 from math import sqrt
-from fonctionnement_boucle import screen_to_world
+from fonctionnement_divers import screen_to_world, camera
 from Class_Button import Button
 from variables import *
 
 pyg.init()
 pyg.mixer.init()
+
+X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200 # c'est faux c'est juste pour test
+OBJET = pyg.image.load("Images/Armes_items/berserk.png")
+SON = pyg.mixer.Sound("Sons/son_quete2.mp3")
 
 QUIZZ = { 
     0 :
@@ -40,21 +40,47 @@ QUIZZ = {
 
 
 def spawn_objet(x_debut, x_fin, y_debut, y_fin, p):
-    nb_aleat = randint(-5, 5)
-    for i in [x_debut, x_fin, y_debut, y_fin] :
-        i *= nb_aleat
+    """Faire spawn l'objet dans un des magasins
+    x_debut, x_fin, y_debut, y_fin : int
+        Les coordonnées du magasin
+    p : Self@Player
+        Le joueur
+    """
+    nb_aleat1 = randint(-2, 2)
+    nb_aleat2 = randint(-2, 2)
+    x_debut += nb_aleat1 * WIDTH
+    y_debut += nb_aleat2 * HEIGHT
+    x_fin += nb_aleat1 * WIDTH
+    y_fin += nb_aleat2 * HEIGHT
     coord = (randint(x_debut, x_fin), randint(y_debut, y_fin))
     coord = screen_to_world(coord[0], coord[1], p)
-    son = pyg.mixer.Sound("Sons/son_quete2.mp3")
-    return coord, son
+    print(coord)
+    return coord
+
+def draw_objet(coord, image):
+    WIN.blit(image, coord)
+
+def collision(coord, image, p):
+    rect = image.get_rect()
+    rect.topleft = coord
+    if p.pos.colliderect(rect):
+        return True
+    return False
 
 def regler_volume(coord, p, son):
     dist = sqrt((coord[0] - p.x_monde)**2 + (coord[1] - p.y_monde)**2)
-    son.set_volume((100-dist)/100)
-    return son
+
+    # distance max d'entente 
+    max_dist = 2*WIDTH
+
+    volume = 1 - (dist / max_dist)
+    volume = max(0, min(1, volume))
+
+    son.set_volume(volume)
+    
 
 def play_sound(son):
-    if not son.get_busy():
+    if not pyg.mixer.get_busy():
         son.play()
 
 def quizz():
@@ -122,3 +148,17 @@ def retour_ligne(texte):
 
     return liste
 
+
+def minijeu2(p, coord_monde, minijeu2_fini):
+    if coord_monde == None:
+        coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p)
+        coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
+    coord_screen = camera(coord_monde[0], coord_monde[1], p)
+    regler_volume(coord_monde, p, SON)
+    play_sound(SON)
+    draw_objet(coord_screen, OBJET)
+    if collision(coord_screen, OBJET, p):
+        quizz()
+        minijeu2_fini = True
+        SON.stop()
+    return coord_monde, minijeu2_fini

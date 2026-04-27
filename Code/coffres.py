@@ -2,7 +2,7 @@ from random import *
 from math import *
 import pygame as pyg
 from variables import *
-from fonctionnement_boucle import remplir_fond
+from fonctionnement_divers import remplir_fond
 
 DISTANCE_MIN = -2000
 DISTANCE_MAX = 2000

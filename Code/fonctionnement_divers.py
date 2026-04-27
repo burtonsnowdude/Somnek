@@ -1,7 +1,7 @@
 import time
 from variables import *
 from gestion_fichiers import reecrire_fichier_niveau_argent, reecrire_fichier_armes
-from barre_xp_vie import PopupAchievement
+from affichage_divers import PopupAchievement
 
 def remplir_fond(p):
     # Fond d'écran 

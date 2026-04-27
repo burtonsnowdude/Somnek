@@ -1,16 +1,15 @@
 import pygame as pyg
 from variables import * 
 import math
-from random import randint
 from classe_projectile import Projectile
-from fonctionnement_boucle import camera, screen_to_world
+from fonctionnement_divers import camera
 
 class Player:
     """Class Player"""
     def __init__(self):
         self.hp = PLAYER_PV
         self.pos = PLAYER_IMAGE.get_rect()
-        self.pos.topleft = (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2)
+        self.pos.center = CENTREx, CENTREy
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1

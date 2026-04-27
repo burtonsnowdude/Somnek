@@ -1,7 +1,8 @@
-import pygame as pyg
 from variables import *
-from random import choice
-from Monstres.class_monstre import *
+from random import choice, randint
+from Monstres.class_monstre import Monstre
+from fonctionnement_divers import screen_to_world
+from math import sqrt
 
 ################## FONCTION QUI REGROUPE TOUS LES EVENEMENTS ################
 
@@ -52,7 +53,7 @@ def traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde):
     for m in monstres_vague[:]:
         dx = x_monde - m.x_monde
         dy = y_monde - m.y_monde
-        distance = math.sqrt(dx**2 + dy**2)
+        distance = sqrt(dx**2 + dy**2)
 
         if distance > 5:
             m.show(frame) # affiche tous les monstres existant

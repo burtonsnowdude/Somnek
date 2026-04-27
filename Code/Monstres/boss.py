@@ -3,7 +3,7 @@ from random import choice, randint
 import pygame as pyg
 from variables import *
 from math import sqrt, cos, sin
-from fonctionnement_boucle import camera, screen_to_world
+from fonctionnement_divers import screen_to_world
 import time
 
 REPLIQUES_BOSS = [

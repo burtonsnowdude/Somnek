@@ -2,17 +2,17 @@ import pygame as pyg
 import time
 from variables import *
 from player import *
-from random import *
-from coffres import *
+from coffres import ajout_coffre
 from passage_niveau import *
-from barre_xp_vie import *
+from affichage_divers import *
 from Monstres.class_monstre import *
-from fonctionnement_boucle import *
+from fonctionnement_divers import *
 from gestion_fichiers import *
 from player import Player
 from Monstres.vagues import *
 from Quêtes import verif_k, verif_q  # Import quest verification functions
 from Monstres.boss import spawn_boss, gestion_boss
+from Minijeux.minijeu2 import minijeu2
 
 def main():
     noms, new_tab = det_noms()
@@ -38,8 +38,8 @@ def main():
     frame, pause_time, xp, dernier_coffre_apparu, derniere_vague, time_map = [0]*6
     xp_attendu = 20 # xp attendu pour passer un niveau (croît exponentiellement)
     seuil = 2
-    monstres_vague, boss = [None] * 2
-    vague, pause, boss_present, test_popup_triggered, coffre_existant = [False]*5
+    monstres_vague, boss, coord_monde = [None] * 3
+    vague, pause, boss_present, test_popup_triggered, coffre_existant, minijeu2_fini = [False]*6
     popup_message = None
     popup_start_time = 0
     popup_group = pyg.sprite.Group()  # Groupe pour les popups
@@ -63,7 +63,8 @@ def main():
             remplir_fond(p)
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
-
+            if not minijeu2_fini :
+                coord_monde, minijeu2_fini = minijeu2(p, coord_monde, minijeu2_fini)
             p.lancer_projectile()
             p.update_cooldown()
             # déplace les projectiles

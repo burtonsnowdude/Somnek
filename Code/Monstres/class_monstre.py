@@ -1,8 +1,8 @@
 import pygame as pyg
 from variables import * 
 import math
-from random import *
-from fonctionnement_boucle import camera, screen_to_world
+from random import choice, randint
+from fonctionnement_divers import screen_to_world
 
 class Monstre:
     """Class Monstre"""
