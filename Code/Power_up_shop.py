@@ -1,13 +1,13 @@
 import pygame
 import pygameui
 import variable_power_up as data
-from class_Button import Button
+from Class_Button import Button
 
 WIDTH, HEIGHT = 550, 500
 
 FONT_BUTTON = pygame.font.SysFont(None, 36)
 
-shop_bg_img = pygame.image.load("Images/power_shop.png")
+shop_bg_img = pygame.image.load("Images/Interface/power_shop.png")
 shop_bg_img = pygame.transform.scale(shop_bg_img, (WIDTH, HEIGHT))
 
 current_price = 0

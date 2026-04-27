@@ -1,6 +1,6 @@
 import pygame
 import variable_power_up as data
-from class_Button import Button
+from Class_Button import Button
 
 pygame.init()
 
@@ -11,7 +11,7 @@ pygame.display.set_caption("Collection")
 FONT_BUTTON = pygame.font.SysFont(None, 24)
 
 
-shop_bg_img = pygame.image.load("Images/Collection.png")
+shop_bg_img = pygame.image.load("Images/Interface/Collection.png")
 shop_bg_img = pygame.transform.scale(shop_bg_img, (WIDTH, HEIGHT))
 
 
@@ -26,15 +26,15 @@ def load_big(path):
     return pygame.transform.scale(pygame.image.load(path), AFFICH_SIZE)
 
 # petites images
-img_palette = load_small("Images/items/palette.png")
-img_berserk = load_small("Images/items/berserk.png")
-img_nain = load_small("Images/items/nain.png")
-inconnu = load_small("Images/items/inconnu.png")
+img_palette = load_small("Images/Armes_items/palette.png")
+img_berserk = load_small("Images/Armes_items/berserk.png")
+img_nain = load_small("Images/Armes_items/nain.png")
+inconnu = load_small("Images/Armes_items/inconnu.png")
 
 # grandes images
-palette_affich = load_big("Images/palette_affich.png")
-berserk_affich = load_big("Images/berserk_affich.png")
-pas_trouve = load_big("Images/pas_trouvé.png")
+palette_affich = load_big("Images/Interface/palette_affich.png")
+berserk_affich = load_big("Images/Interface/berserk_affich.png")
+pas_trouve = load_big("Images/Interface/pas_trouvé.png")
 
 
 liste_all_item = {

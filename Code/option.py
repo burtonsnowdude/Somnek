@@ -1,6 +1,6 @@
 import pygame
 import pygameui
-from class_Button import Button
+from Class_Button import Button
 import variable_power_up as data
 from Power_up_shop import checkboxes as shop_checkboxes
 from Power_up_shop import sync_checkboxes
@@ -21,7 +21,7 @@ world = pygame.Surface((WORLD_W, WORLD_H))
 
 FONT_BUTTON = pygame.font.SysFont(None, 36)
 
-fond_options = pygame.image.load("Images/fond_options.png")
+fond_options = pygame.image.load("Images/Interface/fond_options.png")
 fond_options = pygame.transform.scale(fond_options, (WORLD_W, WORLD_H))
 
 reset_clicked = False

@@ -7,7 +7,7 @@ from variables import *
 from realisation_brouillon import realisation_brouillon, POPUP_W, POPUP_H
 from Power_up_shop import open_shop
 from option import options, checkboxes
-from class_Button import Button
+from Class_Button import Button
 import variable_power_up as data
 from collection import open_collection
 from start import open_start
@@ -21,20 +21,17 @@ pyg.mixer.init()
 WIN = pyg.display.set_mode((WIDTH, HEIGHT))
 pyg.display.set_caption("SOMNEK")
 
-fond_intro = pyg.image.load("Images/press.png")
+fond_intro = pyg.image.load("Images/Interface/press.png")
 fond_intro = pyg.transform.scale(fond_intro, (WIDTH, HEIGHT))
 
-fond_menu = pyg.image.load("Images/fond_accueil.png")
+fond_menu = pyg.image.load("Images/Interface/fond_accueil.png")
 fond_menu = pyg.transform.scale(fond_menu, (WIDTH, HEIGHT))
 
-fond_collection = pyg.image.load("Images/Collection.png")
-fond_collection = pyg.transform.scale(fond_collection, (350, 400))
 
-fond_credits = pyg.image.load("Images/fond_credits.png")
+
+fond_credits = pyg.image.load("Images/Interface/fond_credits.png")
 fond_credits = pyg.transform.scale(fond_credits, (350, 400))
 
-choice_1 = pyg.image.load("Images/choice-1.png")
-choice_1 = pyg.transform.scale(choice_1, (350, 400))
 
 game = False
 show_image = False
@@ -161,21 +158,21 @@ while running:
 
         if musique_bout and not musique_bout_played:
             if settings["sound"]:
-                play_music("Musique/sound_button.mp3")
+                play_music("Sons/sound_button.mp3")
                 musique_bout = False
 
         if musique_load and not musique_load_played:
             if settings["sound"]:
-                play_music("Musique/start.mp3")
+                play_music("Sons/start.mp3")
                 musique_load = False
 
         if musique_close and not musique_close_played:
             if settings["sound"]:
-                    play_music("Musique/rev.mp3")
+                    play_music("Sons/rev.mp3")
                     musique_close = False
         if settings["music"]:
             if pyg.mixer.music.get_busy() == False:
-                pyg.mixer.music.load("Musique/music_interface.mp3")
+                pyg.mixer.music.load("Sons/music_interface.mp3")
                 pyg.mixer.music.play(-1)
 
         if show_realisation:

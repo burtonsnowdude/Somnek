@@ -1,5 +1,5 @@
 import pygame
-from class_Button import Button
+from Class_Button import Button
 
 pygame.init()
 
@@ -9,7 +9,7 @@ FONT_BUTTON = pygame.font.SysFont(None, 24)
 # -----------------
 # IMAGES
 # -----------------
-shop_bg_img = pygame.image.load("Images/choix_du_personnage.png")
+shop_bg_img = pygame.image.load("Images/Interface/choix_du_personnage.png")
 shop_bg_img = pygame.transform.scale(shop_bg_img, (WIDTH, HEIGHT))
 
 
@@ -20,14 +20,14 @@ def load_big(path):
     return pygame.transform.scale(pygame.image.load(path), (250, 70))
 
 
-img_fille = load_small("Images/fille.png")
-img_nonne = load_small("Images/nonne.png")
+img_fille = load_small("Images/Persos/fille_populaire.png")
+img_nonne = load_small("Images/Persos/nonne.png")
 
-fille_affich = load_big("Images/affiche_perso_fille.png")
-nonne_affich = load_big("Images/affiche_perso_soeur.png")
+fille_affich = load_big("Images/Interface/affiche_perso_fille.png")
+nonne_affich = load_big("Images/Interface/affiche_perso_soeur.png")
 
-img_arme_base_fille = load_small("Images/gloss_rose.png")
-img_arme_base_nonne = load_small("Images/croix_de_base.png")
+img_arme_base_fille = load_small("Images/Armes_items/gloss_rose.png")
+img_arme_base_nonne = load_small("Images/Armes_items/croix_de_base.png")
 
 armes = {
     "Fille": img_arme_base_fille,
