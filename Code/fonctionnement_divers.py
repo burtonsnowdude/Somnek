@@ -2,6 +2,8 @@ import time
 from variables import *
 from gestion_fichiers import reecrire_fichier_niveau_argent, reecrire_fichier_armes
 from affichage_divers import PopupAchievement
+from Class_Button import Button
+FONT_PAUSE = pyg.font.SysFont("Press Start 2P", 50) 
 
 def remplir_fond(p):
     # Fond d'écran 
@@ -28,23 +30,22 @@ def screen_to_world(x_screen, y_screen, p):
     return x_monde, y_monde
 
 def menu_pause(new_tab, noms, armes_joueur):
-    taille_btn = 300
-    pause_options = ["SAUVEGARDER", "QUITTER", "STATISTIQUES", "INVENTAIRE"]
-    boutons = [pyg.Rect(CENTREx-taille_btn//2, 200+40*i, taille_btn, 30) for i in range(len(pause_options))]
-    for bouton in boutons :
-        pyg.draw.rect(WIN, (255, 255, 255), bouton)
-    selec = 0       
-    for i in range(len(pause_options)) :
-        texte = FONT.render(pause_options[i], 1, (0, 0, 0)) 
-        WIN.blit(texte, (CENTREx-taille_btn//2, 205+i*40))
-    pyg.display.update()
-    entree = False
-    pause = True
     run = True
-    choix = None
     debut = time.time()
-    while not entree and pause:
-        pause_time = time.time() - debut
+    clock = pyg.time.Clock()
+    choix = ["SAUVEGARDER", "QUITTER", "STATISTIQUES", "INVENTAIRE"]
+    vert = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
+    vert.fill((204, 237, 204, 200))
+    texte = FONT_PAUSE.render("Menu de pause", True, (17, 97, 17))
+    buttons = [Button(choix[i], choix[i], 400, 200+100*i, 650, 80, FONT) for i in range(4)]
+    for b in buttons :
+        b.color1 = (17, 97, 17)
+        b.color2 = (43, 119, 52)
+    waiting = True
+    selec = 0
+    pause = True
+    while waiting and pause:
+        clock.tick(60)
         for event in pyg.event.get():
             if event.type == pyg.QUIT:
                 pyg.quit()
@@ -53,30 +54,35 @@ def menu_pause(new_tab, noms, armes_joueur):
                 if event.key == pyg.K_SPACE:
                     pause = False
                 if event.key == pyg.K_UP and selec != 0:
-                    pyg.draw.rect(WIN, (255, 255, 255), boutons[selec])
-                    texte = FONT.render(pause_options[selec], 1, (0, 0, 0)) 
-                    WIN.blit(texte, (CENTREx-taille_btn//2, 205+selec*40))
                     selec -= 1
-
-                if event.key == pyg.K_DOWN and selec != len(boutons)-1:
-                    pyg.draw.rect(WIN, (255, 255, 255), boutons[selec])
-                    texte = FONT.render(pause_options[selec], 1, (0, 0, 0)) 
-                    WIN.blit(texte, (CENTREx-taille_btn//2, 205+selec*40))
+                if event.key == pyg.K_DOWN and selec != 2:
                     selec += 1
-
                 if event.key == pyg.K_RETURN:
-                    entree = True
-                    choix = pause_options[selec]
+                    choix = buttons[selec].action
+                    waiting = False
+            if event.type == pyg.MOUSEBUTTONDOWN:
+                mouse_pos = pyg.mouse.get_pos()
+            
+                for btn in buttons:
+                    if btn.rect.collidepoint(mouse_pos):
+                        choix = btn.action
+                        waiting = False
+        mouse_pos = pyg.mouse.get_pos()
+        
+        WIN.fill((225, 225, 225))
+        for t in range(-BGX, WIDTH + BGX, BGX):
+            for j in range(-BGY, HEIGHT + BGY, BGY):
+                    WIN.blit(BG, (t, j))
+        mouse_pos = pyg.mouse.get_pos()
 
-        pyg.draw.rect(WIN, (120, 120, 250), boutons[selec])
-
-        texte = FONT.render(pause_options[selec], 1, (0, 0, 0)) 
-        WIN.blit(texte, (CENTREx-taille_btn//2, 205+selec*40))
+        WIN.blit(vert, (0, 0))
+        for btn in buttons:
+            btn.draw(WIN, mouse_pos)
+        WIN.blit(texte, texte.get_rect(center=(CENTREx, 100)))
         pyg.display.update()
+
     if choix == "SAUVEGARDE":
         sauvegarde(new_tab, noms, armes_joueur)
-        popup = PopupAchievement("Sauvegarde effectuée !")
-        popup.update()
 
     if choix == "QUITTER":
         run = False
@@ -84,7 +90,7 @@ def menu_pause(new_tab, noms, armes_joueur):
         pass
     if choix == "INVENTAIRE":
         pass
-    return pause, run, pause_time
+    return pause, run, time.time()-debut
 
 def sauvegarde(new_tab, noms, armes_joueur):
     reecrire_fichier_niveau_argent(new_tab, noms) 

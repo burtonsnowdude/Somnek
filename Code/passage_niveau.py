@@ -3,7 +3,8 @@ from random import *
 import time
 import pygame as pyg
 from math import ceil
-
+from Class_Button import Button
+FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
 def passage(xp_attendu, seuil):
     """Incrémente le seuil et augmente l'xp attendu pour le prochain niveau
 
@@ -44,6 +45,8 @@ def choix_arme(p, seuil, armes_possedees):
         contient la liste des armes possedees par le joueur et le temps de pause
     """
     if p.niveau < seuil :
+        debut = time.time()
+        clock = pyg.time.Clock()
         armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
         for arme in armes_dispo[:]:
             if arme in armes_possedees :
@@ -55,44 +58,48 @@ def choix_arme(p, seuil, armes_possedees):
             if arme not in choix :
                 choix.append(arme) 
                 compteur += 1
-        options = [pyg.Rect(370, 200+40*i, 100, 30) for i in range(3)]
-        for option in options :
-            pyg.draw.rect(WIN, (255, 255, 255), option)
-        selec = 0       
-        for i in range(len(choix)) :
-            texte = FONT.render(choix[i], 1, (0, 0, 0)) 
-            WIN.blit(texte, (390, 205+i*40))
-        pyg.display.update()
-        debut = time.time()
-        entree = False
-        while not entree:
-            pause_time = time.time() - debut
+        vert = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
+        vert.fill((204, 237, 204, 200))
+        texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (17, 97, 17))
+        buttons = [Button(choix[i], choix[i], 400, 200+100*i, 650, 80, FONT) for i in range(3)]
+        for b in buttons :
+            b.color1 = (17, 97, 17)
+            b.color2 = (43, 119, 52)
+        waiting = True
+        selec = 0
+
+        while waiting:
+            clock.tick(60)
             for event in pyg.event.get():
                 if event.type == pyg.QUIT:
                     pyg.quit()
                     exit()
-
                 if event.type == pyg.KEYDOWN:
                     if event.key == pyg.K_UP and selec != 0:
-                        pyg.draw.rect(WIN, (255, 255, 255), options[selec])
-                        texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
-                        WIN.blit(texte, (390, 205+selec*40))
                         selec -= 1
-
                     if event.key == pyg.K_DOWN and selec != 2:
-                        pyg.draw.rect(WIN, (255, 255, 255), options[selec])
-                        texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
-                        WIN.blit(texte, (390, 205+selec*40))
                         selec += 1
-
                     if event.key == pyg.K_RETURN:
-                        entree = True
-
-            pyg.draw.rect(WIN, (120, 120, 250), options[selec])
-
-            texte = FONT.render(choix[selec], 1, (0, 0, 0)) 
-            WIN.blit(texte, (390, 205+selec*40))
+                        choix = buttons[selec].action
+                        waiting = False
+                if event.type == pyg.MOUSEBUTTONDOWN:
+                    mouse_pos = pyg.mouse.get_pos()
+                
+                    for btn in buttons:
+                        if btn.rect.collidepoint(mouse_pos):
+                            choix = btn.action
+                            waiting = False
+            mouse_pos = pyg.mouse.get_pos()
+            
+            WIN.fill((225, 225, 225))
+            for t in range(-BGX, WIDTH + BGX, BGX):
+                for j in range(-BGY, HEIGHT + BGY, BGY):
+                        WIN.blit(BG, (t, j))
+            mouse_pos = pyg.mouse.get_pos()
+  
+            WIN.blit(vert, (0, 0))
+            for btn in buttons:
+                btn.draw(WIN, mouse_pos)
+            WIN.blit(texte, texte.get_rect(center=(CENTREx, 100)))
             pyg.display.update()
-
-        
-        return choix[selec], pause_time
+        return choix, time.time()-debut

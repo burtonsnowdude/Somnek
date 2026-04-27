@@ -48,7 +48,6 @@ def main():
 
     while run:
         xp = 0
-        WIN.blit(BG, (0, 0))
         for event in pyg.event.get():  
             if event.type == pyg.QUIT: # si le joueur ferme la fenêtre
                 run = False 
