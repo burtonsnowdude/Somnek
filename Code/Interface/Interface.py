@@ -152,6 +152,7 @@ def interface():
                         running = False
                         pyg.quit()
                         exit()
+                        return False
 
                     elif btn.action == "realisations":
                         show_realisation = True
@@ -260,6 +261,7 @@ def interface():
         for event in events:
                 if event.type == pyg.QUIT:
                     running = False
+                    return False
                 if event.type == pyg.KEYDOWN:
                     if event.key == pyg.K_SPACE:
                         game = True

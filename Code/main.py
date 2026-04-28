@@ -2,8 +2,9 @@ from Jeu.jeu import jeu
 from Interface.Interface import interface
 
 def main():
-    perso = interface()
-    jeu(perso)
+    res = interface()
+    if res is not False :
+        jeu(res)
 
 if __name__ == "__main__": # s'assure que le main ne s'exécute que si on lance ce fichier directement
     main()
