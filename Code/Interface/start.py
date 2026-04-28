@@ -20,7 +20,7 @@ def load_big(path):
     return pygame.transform.scale(pygame.image.load(path), (250, 70))
 
 
-img_fille = load_small("Images/Persos/fille_populaire.png")
+img_fille = load_small("Images/Persos/fille_populaire_l.png")
 img_nonne = load_small("Images/Persos/nonne.png")
 
 fille_affich = load_big("Images/Interface/affiche_perso_fille.png")

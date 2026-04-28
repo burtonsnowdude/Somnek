@@ -18,10 +18,20 @@ PLAYER_PV = 50 # points de vie du joueur
 FREQUENCE = 50
 
 
-PERSOS =  {"Fille_populaire" : FILLE_POPULAIRE,
-           "Nonne" : NONNE,
-           "Nerd" : NERD
+PERSOS =  {
+    "Fille_populaire" : {"image" : 
+                            {"horizon_r" : FILLE_POPULAIRE_R,
+                            "horizon_l" : FILLE_POPULAIRE_L}},
+    "Nonne" : {"image" :
+                    {"horizon_r" : NONNE,
+                    "horizon_l" : NONNE}},
+    "Nerd" : {"anim" : 
+                {"avant" : ANIM_NERD_AVANT,
+                "arriere" : ANIM_NERD_ARRIERE,
+                "horizon_r" : ANIM_NERD_HORIZON_R,
+                "horizon_l" : ANIM_NERD_HORIZON_L}}
 }
+
 CATEGORIE = {}
 for i in range(1, 51):
     t = "Type " + str(i)
@@ -65,7 +75,7 @@ TYPES_MONSTRES = {
                 "anim" : ANIM_GRAND_MERE},
     "Fille_populaire" : {** CATEGORIE["Type 20"],
                 "perso" : "Nerd",
-                "image" : FILLE_POPULAIRE},
+                "image" : FILLE_POPULAIRE_R},
     "Telephone" : {** CATEGORIE["Type 22"],
                 "perso" : "Nerd",
                 "anim" : ANIM_TELEPHONE},
@@ -90,6 +100,9 @@ TYPES_MONSTRES = {
     "Skinny" : { ** CATEGORIE["Type 6"],
                 "perso" : "Fille_populaire",
                 "anim" : ANIM_SKINNY},
+    "Rouge_a_levre" : { ** CATEGORIE["Type 8"],
+                "perso" : "Fille_populaire",
+                "anim" : ANIM_ROUGE_A_LEVRE},
     "Lunettes" : {** CATEGORIE["Type 10"],
                 "perso" : "Fille_populaire",
                 "anim" : ANIM_LUNETTES},
@@ -97,14 +110,19 @@ TYPES_MONSTRES = {
                 "perso" : "Fille_populaire",
                 "anim" : ANIM_OUT_OF_STOCK},
     "Avion" : { ** CATEGORIE["Type 16"],
+               "perso" : "Fille_populaire"},
+    "Pipi" : { ** CATEGORIE["Type 18"],
                "perso" : "Fille_populaire",
-               "anim" : ANIM_AVION},
+               "anim" : ANIM_PIPI},
     "Caca" : { ** CATEGORIE["Type 20"],
                "perso" : "Fille_populaire",
                "anim" : ANIM_CACA},
     "Chewing_gum_sale" : { ** CATEGORIE["Type 22"],
                 "perso" : "Fille_populaire",
                 "anim" : ANIM_CHEWING_GUM_SALE},
+    "Odeurs" : { ** CATEGORIE["Type 24"],
+                "perso" : "Fille_populaire",
+                "anim" : ANIM_ODEURS},
 
     # NONNE
     "Bisous" : { ** CATEGORIE["Type 4"],

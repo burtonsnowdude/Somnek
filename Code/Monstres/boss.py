@@ -42,7 +42,7 @@ BOSS_PAR_PERSO = {
     },
     "Fille_populaire": {
             15 : {** BOSS[15],
-              "image" : None},
+              "image" : ANIM_EX_AMIES},
             25 : {** BOSS[25],
               "image" : PALETTE}
     },

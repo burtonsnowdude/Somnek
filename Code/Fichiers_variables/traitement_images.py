@@ -1,6 +1,20 @@
 import pygame as pyg
 
-################################ IMAGES FIXES ############################
+##############################################################################################################
+def decouper_image(image, cols, rows, nb_a_enlever):
+    sheet_w, sheet_h = image.get_size()
+    width = sheet_w // cols
+    height = sheet_h // rows
+
+    tableau_images = [[image.subsurface((x * width, y * height, width, height)) for x in range(cols)] for y in range(rows)]
+    anim = []
+    for i in range(len(tableau_images)-1):
+        anim += tableau_images[i]
+    for i in range(nb_a_enlever):
+        anim.pop(-1)
+    return anim
+
+################################ IMAGES FIXES ################################################################
 
 XP = pyg.image.load("Images/Autre/xp.jpg")
 BG = pyg.image.load("Images/Maps/grass.png") # charger le fond d'ecran
@@ -9,11 +23,26 @@ FLECHE = pyg.image.load("Images/Coffres/fleche.png")
 FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
 TRESOR = pyg.image.load("Images/Coffres/tresor.png")
 ARGENT = pyg.image.load("Images/Coffres/argent.png")
+KILL_SIGN = pyg.image.load("Images/Autre/kill.png")
 
-#PERSONNAGES
-FILLE_POPULAIRE = pyg.image.load("Images/Persos/fille_populaire.png")
+###################################### PERSONNAGES ##########################################################
+# FILLE POPULAIRE
+FILLE_POPULAIRE_L = pyg.image.load("Images/Persos/fille_populaire_l.png")
+FILLE_POPULAIRE_R = pyg.image.load("Images/Persos/fille_populaire_r.png")
+
+#NERD
+spritesheet_nerd_avant = pyg.image.load("Images/Persos/nerd_avant.png")
+spritesheet_nerd_arriere = pyg.image.load("Images/Persos/nerd_arriere.png")
+spritesheet_nerd_horizon_r = pyg.image.load("Images/Persos/nerd_horizon_r.png")
+spritesheet_nerd_horizon_l = pyg.image.load("Images/Persos/nerd_horizon_l.png")
+ANIM_NERD_AVANT = decouper_image(spritesheet_nerd_avant, 4, 5, 3)
+ANIM_NERD_ARRIERE = decouper_image(spritesheet_nerd_arriere, 4, 4, 0)
+ANIM_NERD_HORIZON_R = decouper_image(spritesheet_nerd_horizon_r, 3, 3, 0)
+ANIM_NERD_HORIZON_L = decouper_image(spritesheet_nerd_horizon_l, 3, 3, 0)
+
+#NONNE
 NONNE = pyg.image.load("Images/Persos/nonne.png")
-NERD = pyg.image.load("Images/Persos/nerd.png")
+
 
 #MONSTRES NERD
 SPIDER = pyg.image.load("Images/Monstres/spider.png")
@@ -35,7 +64,7 @@ CHEWING_GUM = pyg.image.load("Images/Monstres/chewing_gum.png")
 CROIX_ENVERS = pyg.image.load("Images/Monstres/croix_envers.png")
 OSTIE_PERIMEE = pyg.image.load("Images/Monstres/ostie_perimee.png")
 MONDE = pyg.image.load("Images/Monstres/monde.png")
-########################### ANIMS ######################################
+########################### ANIMS ##########################################################################
 
 #SPRITESHEET
 spritesheet_coffre = pyg.image.load("Images/Coffres/anim_coffre.png")
@@ -51,6 +80,7 @@ spritesheet_creeper = pyg.image.load("Images/Monstres/creeper.png")
 spritesheet_sorcier = pyg.image.load("Images/Monstres/sorcier.png")
 spritesheet_ordi_mutant = pyg.image.load("Images/Monstres/ordi_mutant.png")
 
+
 # FILLE POPULAIRE
 spritesheet_chewing_gum_sale = pyg.image.load("Images/Monstres/chewing_gum_sale.png")
 spritesheet_skinny = pyg.image.load("Images/Monstres/skinny.png")
@@ -58,6 +88,10 @@ spritesheet_avion = pyg.image.load("Images/Monstres/avion.png")
 spritesheet_lunettes = pyg.image.load("Images/Monstres/lunettes.png")
 spritesheet_out_of_stock = pyg.image.load("Images/Monstres/out_of_stock.png")
 spritesheet_caca = pyg.image.load("Images/Monstres/caca.png")
+spritesheet_rouge_a_levre = pyg.image.load("Images/Monstres/rouge_a_levre.png")
+spritesheet_ex_amies = pyg.image.load("Images/Monstres/ex_amies.png")
+spritesheet_pipi = pyg.image.load("Images/Monstres/pipi.png")
+spritesheet_odeurs = pyg.image.load("Images/Monstres/odeurs.png")
 
 # NONNE
 spritesheet_nonne = pyg.image.load("Images/Monstres/nonne.png")
@@ -68,18 +102,6 @@ spritesheet_666 = pyg.image.load("Images/Monstres/666.png")
 spritesheet_fruit_defendu = pyg.image.load("Images/Monstres/fruit_defendu.png")
 spritesheet_miroir = pyg.image.load("Images/Monstres/miroir.png")
 
-def decouper_image(image, cols, rows, nb_a_enlever):
-    sheet_w, sheet_h = image.get_size()
-    width = sheet_w // cols
-    height = sheet_h // rows
-
-    tableau_images = [[image.subsurface((x * width, y * height, width, height)) for x in range(cols)] for y in range(rows)]
-    anim = []
-    for i in range(len(tableau_images)-1):
-        anim += tableau_images[i]
-    for i in range(nb_a_enlever):
-        anim.pop(-1)
-    return anim
 
 ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 3, 0)
 
@@ -101,6 +123,10 @@ ANIM_CHEWING_GUM_SALE = decouper_image(spritesheet_chewing_gum_sale, 2, 2, 0)
 ANIM_LUNETTES = decouper_image(spritesheet_lunettes, 3, 3, 0)
 ANIM_OUT_OF_STOCK = decouper_image(spritesheet_out_of_stock, 2, 2, 0)
 ANIM_CACA = decouper_image(spritesheet_caca, 2, 2, 0)
+ANIM_ROUGE_A_LEVRE = decouper_image(spritesheet_rouge_a_levre, 3, 3, 1)
+ANIM_EX_AMIES = decouper_image(spritesheet_ex_amies, 3, 3, 0)
+ANIM_PIPI = decouper_image(spritesheet_pipi, 3, 3, 0)
+ANIM_ODEURS = decouper_image(spritesheet_odeurs, 3, 3, 2)
 
 # NONNE
 ANIM_NONNE = decouper_image(spritesheet_nonne, 5, 5, 4)

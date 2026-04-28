@@ -28,6 +28,7 @@ def jeu(perso):
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
+    perso = "Nerd"
     p = Player(perso)
     # Initialisation des variables
     monstres_presents, armes_possedees, xp_dispo, boss_acheves = [], [], [], []
@@ -115,11 +116,11 @@ def jeu(perso):
                     coffre_existant = False
             dernier_coffre_apparu += 1 
 
-            p.draw_player() 
+            p.draw_player(frame) 
             # Barre de vie et d'xp, timer
-            afficher_timer_vie(temps_ecoule, p)
             afficher_xp(xp_attendu, p)
-        
+            afficher_timer_vie(temps_ecoule, p)
+
             # Vérifier et déclencher les quêtes de kills
             kill_quest = verif_k(p)
             if kill_quest and kill_quest not in completed_kill_quests:
