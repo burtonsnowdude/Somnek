@@ -1,6 +1,6 @@
 import pygame
-import variable_power_up as data
-from Class_Button import Button
+import Interface.variable_power_up as data
+from Interface.Class_Button import Button
 
 pygame.init()
 

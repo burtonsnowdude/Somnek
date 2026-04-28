@@ -1,9 +1,9 @@
 import pygame
-import pygameui
-from Class_Button import Button
-import variable_power_up as data
-from Power_up_shop import checkboxes as shop_checkboxes
-from Power_up_shop import sync_checkboxes
+import Interface.pygameui as pygameui
+from Interface.Class_Button import Button
+import Interface.variable_power_up as data
+from Interface.Power_up_shop import checkboxes as shop_checkboxes
+from Interface.Power_up_shop import sync_checkboxes
 sync_checkboxes()
 pygame.init()
 

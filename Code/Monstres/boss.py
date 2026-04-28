@@ -1,9 +1,9 @@
 # N'hésitez pas à ajouter des répliques si vous avez de l'inspi
 from random import choice, randint
 import pygame as pyg
-from variables import *
+from Fichiers_variables.variables import *
 from math import sqrt, cos, sin
-from fonctionnement_divers import screen_to_world
+from Affichage.fonctionnement_divers import screen_to_world
 import time
 
 REPLIQUES_BOSS = [

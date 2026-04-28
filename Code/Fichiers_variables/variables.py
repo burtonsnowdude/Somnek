@@ -1,6 +1,6 @@
 import pygame as pyg
 pyg.font.init() # initialiser le module font de pygame
-from traitement_images import *
+from Fichiers_variables.traitement_images import *
 from math import ceil
 
 WIDTH, HEIGHT = 800, 600 # dimensions de la fenetre
@@ -17,6 +17,11 @@ PLAYER_PV = 50 # points de vie du joueur
 
 FREQUENCE = 50
 
+
+PERSOS =  {"Fille_populaire" : FILLE_POPULAIRE,
+           "Nonne" : NONNE,
+           "Nerd" : NERD
+}
 CATEGORIE = {}
 for i in range(1, 51):
     t = "Type " + str(i)

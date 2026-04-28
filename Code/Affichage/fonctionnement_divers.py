@@ -1,8 +1,8 @@
 import time
-from variables import *
-from gestion_fichiers import reecrire_fichier_niveau_argent, reecrire_fichier_armes
-from affichage_divers import PopupAchievement
-from Class_Button import Button
+from Fichiers_variables.variables import *
+from Fichiers_variables.gestion_fichiers import reecrire_fichier_niveau_argent, reecrire_fichier_armes
+from Affichage.affichage_divers import PopupAchievement
+from Interface.Class_Button import Button
 FONT_PAUSE = pyg.font.SysFont("Press Start 2P", 50) 
 
 def remplir_fond(p):

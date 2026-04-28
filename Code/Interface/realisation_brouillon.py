@@ -1,5 +1,5 @@
 import pygame
-import pygameui
+import Interface.pygameui as pygameui
 import pygame_menu
 from pygame_menu.widgets import ScrollBar
 pygame.init()

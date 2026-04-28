@@ -1,4 +1,4 @@
-from variables import *
+from Fichiers_variables.variables import *
 import pygame as pyg 
 
 def afficher_timer_vie(temps_ecoule, p) :

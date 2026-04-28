@@ -1,22 +1,24 @@
 import pygame as pyg
-from variables import * 
+from Fichiers_variables.variables import * 
 import math
-from classe_projectile import Projectile
-from fonctionnement_divers import camera
+from Armes_Items.classe_projectile import Projectile
+from Affichage.fonctionnement_divers import camera
 
 class Player:
     """Class Player"""
-    def __init__(self):
+    def __init__(self, perso):
         self.hp = PLAYER_PV
-        self.pos = PLAYER_IMAGE.get_rect()
+        self.image = PERSOS[perso]
+        self.pos = self.image.get_rect()
         self.pos.center = CENTREx, CENTREy
         self.vitesse = PLAYER_VIT
         self.xp = 0
         self.niveau = 1
         self.kill_count = 0
         
-        self.x_monde = CENTREx-PLAYER_WIDTH/2
-        self.y_monde = CENTREy - PLAYER_HEIGHT/2
+        
+        self.x_monde = CENTREx
+        self.y_monde = CENTREy
         #Liste spéciale pygame
 
         self.all_projectiles = pyg.sprite.Group()   
@@ -25,7 +27,7 @@ class Player:
 
     def draw_player(self):
         """Dessine le joueur"""
-        WIN.blit(PLAYER_IMAGE, (CENTREx-PLAYER_WIDTH/2, CENTREy - PLAYER_HEIGHT/2))
+        WIN.blit(self.image, self.pos)
 
     def move_bg(self, monstres, xp, monstres_vague, boss, boss_present):
         """Déplace le fond pour donner l'illusion que le joueur se déplace

@@ -1,9 +1,9 @@
-from variables import *
+from Fichiers_variables.variables import *
 from random import *
 import time
 import pygame as pyg
 from math import ceil
-from Class_Button import Button
+from Interface.Class_Button import Button
 FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
 def passage(xp_attendu, seuil):
     """Incrémente le seuil et augmente l'xp attendu pour le prochain niveau

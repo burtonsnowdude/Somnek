@@ -1,5 +1,5 @@
 import csv
-from variables import *
+from Fichiers_variables.variables import *
 
 """
 Niveau atteint

@@ -1,7 +1,7 @@
 import pygame
-import pygameui
-import variable_power_up as data
-from Class_Button import Button
+import Interface.pygameui as pygameui
+import Interface.variable_power_up as data
+from Interface.Class_Button import Button
 
 WIDTH, HEIGHT = 550, 500
 

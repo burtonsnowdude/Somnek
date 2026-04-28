@@ -1,5 +1,5 @@
 import pygame
-from Class_Button import Button
+from Interface.Class_Button import Button
 
 pygame.init()
 
@@ -35,7 +35,7 @@ armes = {
 }
 
 liste_all_charac = {
-    "Fille": (img_fille, fille_affich),
+    "Fille_populaire": (img_fille, fille_affich),
     "Nonne": (img_nonne, nonne_affich)
 }
 
@@ -157,7 +157,7 @@ def handle_panel_buttons(mouse_pos, mouse_pressed, selected_item):
     # CONFIRMER
     if selected_item.unlocked and btn_confirm.is_clicked(mouse_pos, mouse_pressed):
         print("Perso confirmé :", selected_item.name)
-        return "start_game"
+        return "start_game", selected_item.name
 
     # DEBLOQUER
     if not selected_item.unlocked and btn_unlock.is_clicked(mouse_pos, mouse_pressed):
@@ -185,9 +185,9 @@ def open_start(WIN, events, mouse_pos, mouse_pressed, btn_close, font):
     draw_selected_panel(WIN, selected_item, font)
 
     result = handle_panel_buttons(mouse_pos, mouse_pressed, selected_item)
-
-    if result == "start_game":
-        return "start_game"
+    if type(result) == tuple :
+        if result[0] == "start_game":
+            return result
 
     btn_close.draw(WIN, mouse_pos)
 

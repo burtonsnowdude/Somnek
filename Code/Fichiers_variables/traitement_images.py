@@ -2,7 +2,6 @@ import pygame as pyg
 
 ################################ IMAGES FIXES ############################
 
-PLAYER_IMAGE = pyg.image.load("Images/Persos/perso.png")
 XP = pyg.image.load("Images/Autre/xp.jpg")
 BG = pyg.image.load("Images/Maps/grass.png") # charger le fond d'ecran
 BGX, BGY = BG.get_size()
@@ -13,6 +12,8 @@ ARGENT = pyg.image.load("Images/Coffres/argent.png")
 
 #PERSONNAGES
 FILLE_POPULAIRE = pyg.image.load("Images/Persos/fille_populaire.png")
+NONNE = pyg.image.load("Images/Persos/nonne.png")
+NERD = pyg.image.load("Images/Persos/nerd.png")
 
 #MONSTRES NERD
 SPIDER = pyg.image.load("Images/Monstres/spider.png")

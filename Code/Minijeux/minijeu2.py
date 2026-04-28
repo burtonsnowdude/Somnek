@@ -5,9 +5,9 @@ Minijeu Fille_populaire : QUIZZ SUR LE MAQUILLAGE
 import pygame as pyg
 from random import randint, shuffle
 from math import sqrt
-from fonctionnement_divers import screen_to_world, camera
-from Class_Button import Button
-from variables import *
+from Affichage.fonctionnement_divers import screen_to_world, camera
+from Interface.Class_Button import Button
+from Fichiers_variables.variables import *
 
 pyg.init()
 pyg.mixer.init()
@@ -83,7 +83,7 @@ def play_sound(son):
     if not pyg.mixer.get_busy():
         son.play()
 
-def quizz():
+def quizz(son):
     run = True
     i = 0
     clock = pyg.time.Clock()
@@ -112,7 +112,7 @@ def quizz():
             b.color2 = (232, 73, 105)
         waiting = True
         while waiting:
-
+            play_sound(son)
             for event in pyg.event.get():
                 if event.type == pyg.QUIT:
                     pyg.quit()
@@ -158,7 +158,7 @@ def minijeu2(p, coord_monde, minijeu2_fini):
     play_sound(SON)
     draw_objet(coord_screen, OBJET)
     if collision(coord_screen, OBJET, p):
-        quizz()
+        quizz(SON)
         minijeu2_fini = True
         SON.stop()
     return coord_monde, minijeu2_fini

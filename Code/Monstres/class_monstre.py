@@ -1,8 +1,8 @@
 import pygame as pyg
-from variables import * 
+from Fichiers_variables.variables import * 
 import math
 from random import choice, randint
-from fonctionnement_divers import screen_to_world
+from Affichage.fonctionnement_divers import screen_to_world
 
 class Monstre:
     """Class Monstre"""
@@ -46,18 +46,18 @@ class Monstre:
 
     def show(self, frame):
         """Dessine le monstre"""
-        self.rect.topleft = (self.x_screen, self.y_screen)
+        self.rect.center = (self.x_screen, self.y_screen)
         if "image" in TYPES_MONSTRES[self.type] :
-            WIN.blit(self.image, (self.x_screen, self.y_screen))
+            WIN.blit(self.image, self.rect)
         elif frame%4 == 0 :
-            WIN.blit(self.anim[self.index], (self.x_screen, self.y_screen))
+            WIN.blit(self.anim[self.index], self.rect)
             self.index += 1
             self.index = self.index%len(self.anim)
         else :
-            WIN.blit(self.anim[self.index], (self.x_screen, self.y_screen))
+            WIN.blit(self.anim[self.index], self.rect)
     
     def show_xp(self):
-        self.rect.topleft = (self.x_screen, self.y_screen)
+        self.rect.center = (self.x_screen, self.y_screen)
         WIN.blit(XP, self.rect)
         self.valeur = self.puissance
 
