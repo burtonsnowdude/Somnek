@@ -8,13 +8,16 @@ from math import sqrt
 from Affichage.fonctionnement_divers import screen_to_world, camera
 from Interface.Class_Button import Button
 from Fichiers_variables.variables import *
-
+from Fichiers_variables.traitement_images import decouper_image
+import time
 pyg.init()
 pyg.mixer.init()
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200 # c'est faux c'est juste pour test
-OBJET = pyg.image.load("Images/Armes_items/berserk.png")
+OBJET = pyg.image.load("Images/Armes_items/highlighter.png")
 SON = pyg.mixer.Sound("Sons/son_quete2.mp3")
+spritesheet_quizz = pyg.image.load("Images/Autre/anim_quizz.png")
+ANIM_QUIZZ = decouper_image(spritesheet_quizz, 5, 5, 3)
 
 QUIZZ = { 
     0 :
@@ -55,6 +58,7 @@ def spawn_objet(x_debut, x_fin, y_debut, y_fin, p):
     coord = (randint(x_debut, x_fin), randint(y_debut, y_fin))
     coord = screen_to_world(coord[0], coord[1], p)
     print(coord)
+    coord = (200, 300)
     return coord
 
 def draw_objet(coord, image):
@@ -82,7 +86,31 @@ def regler_volume(coord, p, son):
 def play_sound(son):
     if not pyg.mixer.get_busy():
         son.play()
+        print("y")
 
+def replique(texte, color):
+    texte = FONT.render(texte, True, (0,0,0))
+    temps_debut = time.time()
+    fond = pyg.Surface((WIDTH-40, HEIGHT-40), 30)
+    fond.set_alpha(150)
+    fond.fill(color)
+    while time.time() - temps_debut < 5:
+        WIN.blit(fond, (20, HEIGHT-40))
+        WIN.blit(texte, (25, HEIGHT-30))
+        pyg.display.update()
+
+def anim_quizz():
+    replique("Bonjour ! Bienvenue au magasin !", (255, 0, 0))
+    replique("Ok merci.", (0, 0, 255))
+    frame = 0
+    i = 0
+    while i < 21 :
+        frame += 1
+        WIN.blit(ANIM_QUIZZ[i], (0,0))
+        if frame%6 == 0:
+            i += 1
+        pyg.display.update()
+        
 def quizz(son):
     run = True
     i = 0
@@ -158,6 +186,7 @@ def minijeu2(p, coord_monde, minijeu2_fini):
     play_sound(SON)
     draw_objet(coord_screen, OBJET)
     if collision(coord_screen, OBJET, p):
+        anim_quizz()
         quizz(SON)
         minijeu2_fini = True
         SON.stop()

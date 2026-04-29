@@ -8,7 +8,7 @@ def decouper_image(image, cols, rows, nb_a_enlever):
 
     tableau_images = [[image.subsurface((x * width, y * height, width, height)) for x in range(cols)] for y in range(rows)]
     anim = []
-    for i in range(len(tableau_images)-1):
+    for i in range(len(tableau_images)):
         anim += tableau_images[i]
     for i in range(nb_a_enlever):
         anim.pop(-1)
@@ -106,7 +106,7 @@ spritesheet_miroir = pyg.image.load("Images/Monstres/miroir.png")
 ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 3, 0)
 
 # NERD
-ANIM_DRAGON = decouper_image(spritesheet_dragon, 3, 4, 3)
+ANIM_DRAGON = decouper_image(spritesheet_dragon, 3, 4, 6)
 ANIM_BALLON = decouper_image(spritesheet_ballon, 2, 2, 0)
 ANIM_GRAND_MERE = decouper_image(spritesheet_grand_mere, 1, 2, 0)
 ANIM_HARCELEUR = decouper_image(spritesheet_harceleur, 3, 4, 2)

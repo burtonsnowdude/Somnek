@@ -143,5 +143,5 @@ def noubliez_pas_les_paroles():
             pyg.display.update()
         i += 1
     return win_count >= 2
-# (oui c'est de la fausse générosité) comme ça vous pouvez ajouter des questions sans tout casser
+
         

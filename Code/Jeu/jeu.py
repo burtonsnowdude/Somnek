@@ -39,7 +39,7 @@ def jeu(perso):
     frame, pause_time, xp, dernier_coffre_apparu, derniere_vague, time_map = [0]*6
     xp_attendu = 20 # xp attendu pour passer un niveau (croît exponentiellement)
     seuil = 2
-    monstres_vague, boss, coord_monde = [None] * 3
+    monstres_vague, boss, coord_monde, coord_monde3 = [None] * 4
     vague, pause, boss_present, test_popup_triggered, coffre_existant, minijeu2_fini, minijeu3_fini = [False]*7
     popup_message = None
     popup_start_time = 0
@@ -63,10 +63,10 @@ def jeu(perso):
             remplir_fond(p)
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
-            if not minijeu3_fini :
-                coord_monde, minijeu3_fini = minijeu3(p, coord_monde, minijeu3_fini)
-            #if not minijeu2_fini :
-                #coord_monde, minijeu2_fini = minijeu2(p, coord_monde, minijeu2_fini)
+            #if not minijeu3_fini :
+            #   coord_monde3, minijeu3_fini = minijeu3(p, coord_monde3, minijeu3_fini)
+            if not minijeu2_fini :
+                coord_monde, minijeu2_fini = minijeu2(p, coord_monde, minijeu2_fini)
             p.lancer_projectile()
             p.update_cooldown()
             # déplace les projectiles
