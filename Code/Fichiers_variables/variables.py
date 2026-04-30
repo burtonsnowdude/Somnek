@@ -21,15 +21,18 @@ FREQUENCE = 50
 PERSOS =  {
     "Fille_populaire" : {"image" : 
                             {"horizon_r" : FILLE_POPULAIRE_R,
-                            "horizon_l" : FILLE_POPULAIRE_L}},
+                            "horizon_l" : FILLE_POPULAIRE_L},
+                        "color" : (167, 67, 86, 200)},
     "Nonne" : {"image" :
                     {"horizon_r" : NONNE,
-                    "horizon_l" : NONNE}},
+                    "horizon_l" : NONNE},
+                "color" : (92, 60, 61, 200)},
     "Nerd" : {"anim" : 
                 {"avant" : ANIM_NERD_AVANT,
                 "arriere" : ANIM_NERD_ARRIERE,
                 "horizon_r" : ANIM_NERD_HORIZON_R,
-                "horizon_l" : ANIM_NERD_HORIZON_L}}
+                "horizon_l" : ANIM_NERD_HORIZON_L},
+            "color" : (92, 167, 133, 200)}
 }
 
 CATEGORIE = {}

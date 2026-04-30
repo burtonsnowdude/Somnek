@@ -5,6 +5,7 @@ from Fichiers_variables.variables import *
 from math import sqrt, cos, sin
 from Affichage.fonctionnement_divers import screen_to_world
 import time
+from Minijeux.minijeu2 import replique, retour_ligne
 
 REPLIQUES_BOSS = [
     "Brrrrrr",
@@ -108,19 +109,21 @@ class Boss :
         """
         self.hp -= degats
 
-    def dialogue_perso(self):
+    def dialogue_perso(self, p):
         """Faire répondre le personnage parce que c'est encore plus sympathique"""
         if self.iteration1 :
             self.iteration1 = False
             self.temps_debut = time.time()
-            self.texte = choice(REPLIQUES_ELEVES)
+            self.textes = choice(REPLIQUES_ELEVES)
+            self.textes = retour_ligne(self.textes)
             self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
-            fond = pyg.Surface(HEIGHT-40, WIDTH-40, 30)
-            fond.set_alpha(150)
-            fond.fill(self.color_boss)
-            WIN.blit(fond, (20, HEIGHT-40))
-            WIN.blit(self.texte, (25, HEIGHT-30))
+            fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
+            fond.fill(p.color)
+            WIN.blit(fond, (20, HEIGHT-100))
+            for t in self.textes :
+                texte = FONT.render(t, True, (0, 0, 0))
+                WIN.blit(texte, (30, HEIGHT-90+20*self.textes.index(t)))
         else :
             self.action_is_over = True
 
@@ -129,14 +132,16 @@ class Boss :
         if self.iteration1 :
             self.iteration1 = False
             self.temps_debut = time.time()
-            self.texte = choice(REPLIQUES_BOSS)
+            self.textes = choice(REPLIQUES_BOSS)
+            self.textes = retour_ligne(self.textes)
             self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
-            fond = pyg.Surface(HEIGHT-40, WIDTH-40, 30)
-            fond.set_alpha(150)
-            fond.fill(self.color_boss)
-            WIN.blit(fond, (20, HEIGHT-40))
-            WIN.blit(self.texte, (25, HEIGHT-30))
+            fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
+            fond.fill((92, 101, 184, 200))
+            WIN.blit(fond, (20, HEIGHT-100))
+            for t in self.textes :
+                texte = FONT.render(t, True, (0, 0, 0))
+                WIN.blit(texte, (30, HEIGHT-90+20*self.textes.index(t)))
         else :
             self.action_is_over = True
 
@@ -244,7 +249,7 @@ def gestion_boss(boss, boss_present, p, frame):
             boss.follow_player(p)
 
         if action == "dialogue_perso":
-            boss.dialogue_perso()
+            boss.dialogue_perso(p)
             boss.follow_player(p)
             
         if action == "move":

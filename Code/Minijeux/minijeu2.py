@@ -88,29 +88,80 @@ def play_sound(son):
         son.play()
         print("y")
 
-def replique(texte, color):
-    texte = FONT.render(texte, True, (0,0,0))
+def replique(texte, color, text_color):
+    textes = retour_ligne(texte)
     temps_debut = time.time()
-    fond = pyg.Surface((WIDTH-40, HEIGHT-40), 30)
-    fond.set_alpha(150)
+    fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
     fond.fill(color)
-    while time.time() - temps_debut < 5:
-        WIN.blit(fond, (20, HEIGHT-40))
-        WIN.blit(texte, (25, HEIGHT-30))
+    while time.time() - temps_debut < 3:
+        for event in pyg.event.get():
+            if event.type == pyg.QUIT:
+                pyg.quit()
+                exit()
+            if event.type == pyg.KEYDOWN :
+                keys = pyg.key.get_pressed()
+                if keys[pyg.K_RETURN]:
+                    return
+        WIN.blit(fond, (20, HEIGHT-100))
+        for t in textes :
+            texte = FONT.render(t, True, text_color)
+            WIN.blit(texte, (30, HEIGHT-90+20*textes.index(t)))
         pyg.display.update()
 
-def anim_quizz():
-    replique("Bonjour ! Bienvenue au magasin !", (255, 0, 0))
-    replique("Ok merci.", (0, 0, 255))
+def anim_quizz(son):
+    replique("Bonjour ! Bienvenue au magasin !", (255, 182, 229, 200), (167, 67, 86))
+    play_sound(son)
+    replique("Heuu... qui êtes vous ? Je ne vois personne.", (154, 158, 200, 200), (167, 67, 86))
+    play_sound(son)
+    replique("T'inquièteeeee, je sais pourquoi tu viens.", (255, 182, 229, 200), (167, 67, 86))
+    play_sound(son)
+    replique("Ah bonn moi-même je ne savais pas pour être honnête.", (154, 158, 200, 200), (167, 67, 86))
+    play_sound(son)
+    replique("Bon, assez parlé. Venez à bout de ce quizz et vous remporterez un lot incroyable !", (255, 182, 229, 200), (167, 67, 86))
+    play_sound(son)
+    replique("Ça fait rêver...", (154, 158, 200, 200), (167, 67, 86))
     frame = 0
     i = 0
     while i < 21 :
+        play_sound(son)
         frame += 1
         WIN.blit(ANIM_QUIZZ[i], (0,0))
         if frame%6 == 0:
             i += 1
         pyg.display.update()
-        
+
+def anim_fin(victoire, son):
+    play_sound(son)
+    if victoire :
+        play_sound(son)
+        replique("Bravo ! Vous avez réussi à avoir la moyenne ! Vous repartez avec ce magnifique highlighter, et ce sans le payer !", (255, 182, 229, 200), (167, 67, 86))
+        play_sound(son)
+        replique("Je suis émue là... Tout d'abord j'aimerais remercier mes parents qui m'ont toujours soutenue et mes a-", (154, 158, 200, 200), (167, 67, 86))
+        play_sound(son)
+        replique("Bon chut maintenant on en a marre.", (255, 182, 229, 200), (167, 67, 86))
+        play_sound(son)
+        replique("Ah... Ok... Merci quand même...", (154, 158, 200, 200), (167, 67, 86))
+    else : 
+        play_sound(son)
+        replique("Malheureusement pour vous, vous avez lamentablement échoué. Vous repartez bredouille de ce magasin.", (255, 182, 229, 200), (167, 67, 86))
+        play_sound(son)
+        replique("...", (154, 158, 200, 200), (167, 67, 86))
+        play_sound(son)
+        replique("Le lot était un highlighter de trèèèèèès haute qualité !", (255, 182, 229, 200), (167, 67, 86))
+        play_sound(son)
+        replique("De toute façon c'est nul les highlighters.", (154, 158, 200, 200), (167, 67, 86))
+        play_sound(son)
+        replique("Arrêtez d'avoir le seum et fichez le camp de mon magasin s'il vous plait.", (255, 182, 229, 200),(167, 67, 86))        
+    frame = 0
+    i = 0
+    while i < 21 :
+        play_sound(son)
+        frame += 1
+        WIN.blit(ANIM_QUIZZ[i], (0,0))
+        if frame%6 == 0:
+            i += 1
+        pyg.display.update()
+              
 def quizz(son):
     run = True
     i = 0
@@ -186,8 +237,9 @@ def minijeu2(p, coord_monde, minijeu2_fini):
     play_sound(SON)
     draw_objet(coord_screen, OBJET)
     if collision(coord_screen, OBJET, p):
-        anim_quizz()
-        quizz(SON)
+        anim_quizz(SON)
+        victoire = quizz(SON)
+        anim_fin(victoire, SON)
         minijeu2_fini = True
         SON.stop()
     return coord_monde, minijeu2_fini

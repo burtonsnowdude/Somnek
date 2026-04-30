@@ -17,7 +17,7 @@ def decouper_image(image, cols, rows, nb_a_enlever):
 ################################ IMAGES FIXES ################################################################
 
 XP = pyg.image.load("Images/Autre/xp.jpg")
-BG = pyg.image.load("Images/Maps/grass.png") # charger le fond d'ecran
+BG = pyg.image.load("Images/Maps/map_cour_vraie.png") # charger le fond d'ecran
 BGX, BGY = BG.get_size()
 FLECHE = pyg.image.load("Images/Coffres/fleche.png")
 FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))

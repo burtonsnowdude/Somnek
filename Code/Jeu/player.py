@@ -28,7 +28,7 @@ class Player:
         self.niveau = 1
         self.kill_count = 0
         self.perso = perso
-        
+        self.color = PERSOS[perso]["color"]
         self.x_monde = CENTREx
         self.y_monde = CENTREy
         #Liste spéciale pygame
