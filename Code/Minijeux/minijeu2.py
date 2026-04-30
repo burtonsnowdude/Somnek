@@ -139,7 +139,7 @@ def anim_fin(victoire, son):
         play_sound(son)
         replique("Je suis émue là... Tout d'abord j'aimerais remercier mes parents qui m'ont toujours soutenue et mes a-", BLEU, ECRITURE)
         play_sound(son)
-        replique("Bon chut maintenant on en a marre.", (255, 182, 229, 200), ROSE, ECRITURE)
+        replique("Bon chut maintenant on en a marre.", ROSE, ECRITURE)
         play_sound(son)
         replique("Ah... Ok... Merci quand même...", BLEU, ECRITURE)
     else : 
@@ -250,5 +250,5 @@ def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees):
         victoire = quizz(SON)
         anim_fin(victoire, SON)
         minijeu2_fini = True
-        SON.stop()
+        pyg.mixer.music.stop()
     return coord_monde, minijeu2_fini, armes_possedees

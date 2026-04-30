@@ -24,31 +24,31 @@ REPLIQUES_ELEVES = [
     "En vrai ça reste mieux que les cours..."
 ]
 BOSS = {}
-temps = [15, 25]
+temps = [1, 25]
 for t in temps :
     BOSS[t] = {"hp" : t*1000,
-               "vitesse" : temps.index(t),
+               "vitesse" : temps.index(t)+1,
                "puissance" : 10* temps.index(t)}
 
-BOSS[15]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
+BOSS[1]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
 BOSS[25]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss", "hallucination"]
 
 
 BOSS_PAR_PERSO = {
     "Nerd" : {
-            15 : {** BOSS[15],
+            1 : {** BOSS[1],
               "anim" : ANIM_HARCELEUR},
             25 : {** BOSS[25],
               "image" : DARK_VADARO}
     },
     "Fille_populaire": {
-            15 : {** BOSS[15],
-              "image" : ANIM_EX_AMIES},
+            1 : {** BOSS[1],
+              "anim" : ANIM_EX_AMIES},
             25 : {** BOSS[25],
               "image" : PALETTE}
     },
     "Nonne" : {
-            15 : {** BOSS[15],
+            1 : {** BOSS[1],
               "anim" : ANIM_NONNE},
             25 : {** BOSS[25],
               "anim" : ANIM_HOMME_MI_DEMON}
@@ -59,11 +59,13 @@ class Boss :
     def __init__(self, temps, p, perso):
         self.hp = BOSS_PAR_PERSO[perso][temps]["hp"]
         self.temps = temps
+        self.perso = perso
+        self.puissance = BOSS_PAR_PERSO[perso][temps]["puissance"]
         if "image" in BOSS_PAR_PERSO[perso][temps]:
             self.image = BOSS_PAR_PERSO[perso][temps]["image"]
             self.rect = self.image.get_rect()
         elif "anim" in BOSS_PAR_PERSO[perso][temps]:
-            self.anim = BOSS_PAR_PERSO[temps]["anim"]
+            self.anim = BOSS_PAR_PERSO[perso][temps]["anim"]
             self.index = 0
             self.rect = self.anim[0].get_rect()
         self.vitesse = BOSS_PAR_PERSO[perso][temps]["vitesse"]
@@ -82,16 +84,18 @@ class Boss :
         else :
             self.x_screen, self.y_screen = randint(0, WIDTH), HEIGHT
         self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
-        self.rect = self.image.get_rect()
 
     def draw_boss(self, frame):
         """Dessine le boss"""
-        if "image" in BOSS_PAR_PERSO[self.temps]:
-            WIN.blit(self.image, (self.x_screen, self.y_screen))
+        self.rect.center = (self.x_screen, self.y_screen)
+        if "image" in BOSS_PAR_PERSO[self.perso][self.temps]:
+            WIN.blit(self.image, self.rect)
         elif frame%4 == 0 :
-            WIN.blit(self.anim[self.index], (self.x_screen, self.y_screen))
+            WIN.blit(self.anim[self.index], self.rect)
             self.index += 1
             self.index = self.index%len(self.anim)
+        else :
+            WIN.blit(self.anim[self.index], self.rect)
 
     def cinematique_spawn_boss(self):
         """Cinématique d'apparition du boss"""
@@ -116,7 +120,6 @@ class Boss :
             self.temps_debut = time.time()
             self.textes = choice(REPLIQUES_ELEVES)
             self.textes = retour_ligne(self.textes)
-            self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
             fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
             fond.fill(p.color)
@@ -134,7 +137,6 @@ class Boss :
             self.temps_debut = time.time()
             self.textes = choice(REPLIQUES_BOSS)
             self.textes = retour_ligne(self.textes)
-            self.texte = FONT.render(self.texte, 1, (255, 255, 255))
         if time.time() - self.temps_debut < 5:
             fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
             fond.fill((92, 101, 184, 200))
@@ -170,7 +172,7 @@ class Boss :
             # Normalize and move 
             self.x_monde += (dx / distance) * self.vitesse
             self.y_monde += (dy / distance) * self.vitesse
-    
+
     def hallucination(self, surface):
         if self.iteration1 :
             self.debut = time.time()
@@ -193,7 +195,6 @@ class Boss :
             self.x_aleat_monde, self.y_aleat_monde = screen_to_world(self.x_aleat_screen, self.y_aleat_screen, p)
             self.iteration1 = False
             self.debut = time.time()
-
         self.follow(self.x_aleat_monde, self.y_aleat_monde)
         t = time.time() -self.debut
         if (self.x_monde, self.y_monde) == (self.x_aleat_monde, self.y_aleat_monde) or t > 5:
@@ -205,10 +206,12 @@ class Boss :
         self.vitesse -= 10
 
     def follow_player(self, p):
+        old = self.x_monde
         self.follow(p.x_monde, p.y_monde)
-        
+        print("delta move:", self.x_monde - old)
+
     def attaque_dist(self):
-        pass
+        self.action_is_over = True
 
 
 def spawn_boss(temps, boss_present, boss_acheves, p, boss, perso):
@@ -233,14 +236,14 @@ def gestion_boss(boss, boss_present, p, frame):
         action = boss.action
 
         if action == "attaque_a_distance":
-            boss.attaque_a_distance()
+            boss.attaque_dist()
 
         if action == "hallucination":
             effet = boss.hallucination(WIN)
             WIN.blit(effet, (0,0))
             overlay = pyg.Surface((WIDTH, HEIGHT))
             overlay.fill((255, 0, 150))  
-            overlay.set_alpha(40)
+            overlay.set_alpha(100)
             WIN.blit(overlay, (0, 0))
             boss.follow_player(p)
 
@@ -263,7 +266,7 @@ def gestion_boss(boss, boss_present, p, frame):
 
         if p.pos.colliderect(boss.rect) and frame%10 == 0:
             p.degats(boss.puissance)
-        boss.draw_boss()
+        boss.draw_boss(frame)
 
         if boss.hp <= 0:
             boss_present = False

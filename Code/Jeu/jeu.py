@@ -12,8 +12,7 @@ from Jeu.player import Player
 from Monstres.vagues import *
 from Jeu.Quêtes import verif_k, verif_q  # Import quest verification functions
 from Monstres.boss import spawn_boss, gestion_boss
-from Minijeux.minijeu2 import minijeu2
-from Minijeux.minijeu3 import minijeu3
+from Minijeux.all_mj import mj
 
 def jeu(perso):
     noms, new_tab = det_noms()
@@ -39,8 +38,8 @@ def jeu(perso):
     frame, pause_time, xp, dernier_coffre_apparu, derniere_vague, time_map = [0]*6
     xp_attendu = 20 # xp attendu pour passer un niveau (croît exponentiellement)
     seuil = 2
-    monstres_vague, boss, coord_monde, coord_monde3 = [None] * 4
-    vague, pause, boss_present, test_popup_triggered, coffre_existant, minijeu2_fini, minijeu3_fini = [False]*7
+    monstres_vague, boss, coord_monde = [None] * 3
+    vague, pause, boss_present, test_popup_triggered, coffre_existant, minijeu_fini = [False]*6
     popup_message = None
     popup_start_time = 0
     popup_group = pyg.sprite.Group()  # Groupe pour les popups
@@ -63,13 +62,7 @@ def jeu(perso):
             remplir_fond(p)
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
-            #if not minijeu3_fini :
-            #   coord_monde3, minijeu3_fini = minijeu3(p, coord_monde3, minijeu3_fini)
-            """if not minijeu2_fini :
-                coord_monde, minijeu2_fini, armes_possedees = minijeu2(p, coord_monde, minijeu2_fini, armes_possedees)
-            """
-            if not minijeu3_fini :
-                coord_monde, minijeu3_fini =minijeu3(p, coord_monde, minijeu3_fini)
+            coord_monde, minijeu_fini, armes_possedees = mj(perso, coord_monde, minijeu_fini, p, armes_possedees)
             p.lancer_projectile()
             p.update_cooldown()
             # déplace les projectiles

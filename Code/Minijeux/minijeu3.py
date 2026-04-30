@@ -26,7 +26,7 @@ PAROLES = {
     "Je vous salue Marie" : {"Musique" : JE_VOUS_SALUE_MARIE,
         "Paroles_trou" : ["Je vous salue, Marie, pleine de grâces",
         "Le Seigneur est avec vous.",
-        "Vous êtes bénie entre toutes les ______",
+        "Vous êtes bénie entre toutes les _______",
         "Et Jésus, le fruit de vos entrailles, est béni.",
         "Sainte Marie, Mère de Dieu,",
         "Priez pour nous, pauvres ________", 
@@ -37,10 +37,13 @@ PAROLES = {
         "Paroles_trou" : ["Notre Père, qui est aux _____,",
                      "Que ton nom soit _________,",
                      "Que ton règne vienne",
-                     "Que ta volonté soit faite sur la terre comme au ____",
-                     "Donne-nous aujourd'hui notre pain de ce jour",
+                     "Que ta volonté soit faite", 
+                     "Sur la terre comme au ____",
+                     "Donne-nous aujourd'hui",
+                     "Notre pain de ce jour",
                      "Pardonne-nous nos ________",
-                     "Comme nous pardonnons aussi à ceux qui nous ont offensés",
+                     "Comme nous pardonnons aussi",
+                     "A ceux qui nous ont offensés",
                      "Et ne nous laisse pas entrer en tentation",
                      "Mais délivre nous du ___", 
                      "Amen"],
@@ -76,7 +79,7 @@ PAROLES = {
         "Mots_non_accentues" : ["paille", "somnambule", "bulletin", "tintamarre", "marabout", "cheval"]}
 }
 
-def minijeu3(p, coord_monde, minijeu3_fini):
+def minijeu3(p, coord_monde, minijeu3_fini, armes_possedees):
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p)
         coord_screen = (300, 200)
@@ -90,7 +93,7 @@ def minijeu3(p, coord_monde, minijeu3_fini):
         victoire = noubliez_pas_les_paroles()
         anim_fin(victoire, SON)
         minijeu3_fini = True
-    return coord_monde, minijeu3_fini
+    return coord_monde, minijeu3_fini, armes_possedees
 
 def anim_debut(son):
     replique("Bien le bonjour ! Vous êtes venue pour prier j'imagine ?", GRIS_1, (0,0,0))
@@ -121,29 +124,27 @@ def anim_debut(son):
 
 def anim_fin(victoire, son):
     if victoire :
-        replique("Bien le bonjour ! Vous êtes venue pour prier j'imagine ?", GRIS_1, (0,0,0))
+        replique("Bravo ! Vous maitrisez vos classiques à ce que je vois.", GRIS_1, (0,0,0))
         play_sound(son)
-        replique("Moi ? (* regarde derrière elle *) Je... Ah oui, oui tout à fait.", GRIS_2, (0,0,0))
+        replique("Bien sûr !", GRIS_2, (0,0,0))
         play_sound(son)
-        replique("Parfait, dans ce cas prenez place ! On a essayé d'être un petit peu 'fun' comme disent les jeunes donc ce sera un peu différent aujourd'hui.", GRIS_1, (0,0,0))
+        replique("Oh, mais qu'est-ce que c'est que ça ??? Le halo du Saint Esprit qui vient sur vous ???", GRIS_1, (0,0,0))
         play_sound(son)
-        replique("C'est un prank ? Où sont les caméras ? Et d'ailleurs, je ne vois personne, est-ce Dieu qui me parle ?", GRIS_2, (0,0,0))
+        replique("Comment ? Dieu soit loué, je l'ai attendu toute ma vie !", GRIS_2, (0,0,0))
         play_sound(son)
-        replique("Et bien, on dirait qu'on ne peut rien vous cacher à vous... C'est un N'oubliez pas les paroles ! (Oui oui comme l'émission)", GRIS_1, (0,0,0))
+        replique("Chanceuse... j'aurais dû participer aussi finalement...", GRIS_1, (0,0,0))
         play_sound(son)
-        replique("Ça fait rêver... Un peu bizarre les développeurs quand même...", GRIS_2, (0,0,0))
+        replique("Mais Vous êtes déjà divin nan ?", GRIS_2, (0,0,0))
+        play_sound(son)
+        replique("Ah oui c'est vrai, j'avais oublié (my bad).", GRIS_1, (0,0,0))
     else :
-        replique("Bien le bonjour ! Vous êtes venue pour prier j'imagine ?", GRIS_1, (0,0,0))
+        replique("Que dire... vous avez échoué.", GRIS_1, (0,0,0))
         play_sound(son)
-        replique("Moi ? (* regarde derrière elle *) Je... Ah oui, oui tout à fait.", GRIS_2, (0,0,0))
+        replique("Je vais me confesser tout de suite alors.", GRIS_2, (0,0,0))
         play_sound(son)
-        replique("Parfait, dans ce cas prenez place ! On a essayé d'être un petit peu 'fun' comme disent les jeunes donc ce sera un peu différent aujourd'hui.", GRIS_1, (0,0,0))
+        replique("Non non hors de question, vous m'avez cruellement déçue. Hors de mon église svp.", GRIS_1, (0,0,0))
         play_sound(son)
-        replique("C'est un prank ? Où sont les caméras ? Et d'ailleurs, je ne vois personne, est-ce Dieu qui me parle ?", GRIS_2, (0,0,0))
-        play_sound(son)
-        replique("Et bien, on dirait qu'on ne peut rien vous cacher à vous... C'est un N'oubliez pas les paroles ! (Oui oui comme l'émission)", GRIS_1, (0,0,0))
-        play_sound(son)
-        replique("... Un peu bizarre les développeurs quand même... Et comment on joue ?", GRIS_2, (0,0,0))
+        replique("Ah... Bon, bonne journée alors (Amen).", GRIS_2, (0,0,0))
     frame = 0
     i = 0
     while i < 21 :
@@ -163,7 +164,7 @@ def pause_differenciee(chant, j):
     elif chant == "Je vous salue Marie":
         pyg.time.delay(5300)
     else :
-        pyg.time.delay(5300)
+        pyg.time.delay(5000)
 
 def noubliez_pas_les_paroles():
     i = 0
