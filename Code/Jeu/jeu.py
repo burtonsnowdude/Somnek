@@ -29,10 +29,10 @@ def jeu(perso):
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
-    perso = "Nerd"
+    
     p = Player(perso)
     # Initialisation des variables
-    monstres_presents, armes_possedees, xp_dispo, boss_acheves = [], [], [], []
+    monstres_presents, armes_possedees, xp_dispo, boss_acheves, items_possedes = [], [], [], [], []
 
     start_time = time.time()  
 
@@ -65,8 +65,11 @@ def jeu(perso):
             frame += 1
             #if not minijeu3_fini :
             #   coord_monde3, minijeu3_fini = minijeu3(p, coord_monde3, minijeu3_fini)
-            if not minijeu2_fini :
-                coord_monde, minijeu2_fini = minijeu2(p, coord_monde, minijeu2_fini)
+            """if not minijeu2_fini :
+                coord_monde, minijeu2_fini, armes_possedees = minijeu2(p, coord_monde, minijeu2_fini, armes_possedees)
+            """
+            if not minijeu3_fini :
+                coord_monde, minijeu3_fini =minijeu3(p, coord_monde, minijeu3_fini)
             p.lancer_projectile()
             p.update_cooldown()
             # déplace les projectiles
