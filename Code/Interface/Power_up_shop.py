@@ -2,6 +2,7 @@ import pygame
 import Interface.pygameui as pygameui
 import Interface.variable_power_up as data
 from Interface.Class_Button import Button
+from Fichiers_variables.gestion_fichiers import replace_player_money
 
 WIDTH, HEIGHT = 550, 500
 
@@ -60,7 +61,7 @@ shop_items = [
 Boutons = Button("Acheter", "acheter", 390, 450, 120, 40, FONT_BUTTON)
 
 
-def open_shop(events, WIN, mouse_pos, mouse_pressed, close_button, FONT_BUTTON):
+def open_shop(events, WIN, mouse_pos, mouse_pressed, close_button, FONT_BUTTON, player_money, player):
     global current_price
     sync_checkboxes()
     WIN.blit(shop_bg_img, (0, 0))
@@ -80,13 +81,13 @@ def open_shop(events, WIN, mouse_pos, mouse_pressed, close_button, FONT_BUTTON):
 
     if Boutons.is_clicked(mouse_pos, mouse_pressed):
         pygame.time.delay(150)
-        buy_selected()
+        buy_selected(player_money, player)
     close_button.draw(WIN, mouse_pos)
 
     return close_button.is_clicked(mouse_pos, mouse_pressed)
 
 
-def buy_selected():
+def buy_selected(player_money, player):
     global selected_item
 
     if not selected_item:
@@ -102,7 +103,8 @@ def buy_selected():
 
     price = prices[level]
 
-    if data.player_money >= price:
-        data.player_money -= price
+    if player_money >= price:
+        player_money -= price
         data.playerInventory[power] += 1
         sync_checkboxes()
+        replace_player_money(player, player_money)

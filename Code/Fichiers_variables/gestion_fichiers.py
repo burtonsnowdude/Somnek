@@ -156,3 +156,20 @@ def reecrire_fichier(fichier, new_tab, noms):
             for row in new_tab:
                 writer.writerow(row)
 
+def get_info(joueur, info, arme):
+    if info == "argent" :
+        tab = det_noms()[1]
+        return int(tab[1][joueur])
+    if info == "arme":
+        tab = contenu_fichier_armes()
+        for row in tab :
+            if row["Type"] == arme :
+                if row[joueur] == 1 :
+                    return True
+                else : 
+                    return False
+                
+def replace_player_money(joueur, argent):
+    noms, new_tab = det_noms()
+    new_tab[1][joueur] = argent
+    reecrire_fichier("niveau_argent", new_tab, noms)

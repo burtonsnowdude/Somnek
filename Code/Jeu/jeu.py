@@ -16,7 +16,7 @@ from Minijeux.all_mj import mj
 
 def jeu(perso):
     noms, new_tab = det_noms()
-    nom = "Feerose"
+    nom = "Daphne"
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
         argent = int(new_tab[1][nom])

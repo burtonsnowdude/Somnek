@@ -12,6 +12,7 @@ import Interface.variable_power_up as data
 from Interface.collection import open_collection
 from Interface.start import open_start
 from Interface.collection import selected_item
+from Fichiers_variables.gestion_fichiers import get_info
 
 pyg.init()
 pyg.font.init()
@@ -103,6 +104,10 @@ def interface():
     musique_close_played = False
     musique_back_played = False
     argent = 0
+
+    joueur = "Daphne"
+    player_money = get_info(joueur, "argent", None)
+
     reset_clicked = False
     clock = pyg.time.Clock()
     running = True
@@ -130,7 +135,7 @@ def interface():
             title = FONT_TITLE.render("SOMNEK", True, (255, 255, 255))
             WIN.blit(title, (210, 150))
 
-            argent_text = FONT_BUTTON.render(f"Argent: {data.player_money}", True, (0, 0, 0))
+            argent_text = FONT_BUTTON.render(f"Argent: {player_money}", True, (0, 0, 0))
             WIN.blit(argent_text, (330, 50))
 
             for btn in buttons:
@@ -243,13 +248,14 @@ def interface():
             if show_shop:
                 from Interface.Power_up_shop import open_shop, buy_selected
 
-                close = open_shop(events, WIN, mouse_pos, mouse_pressed, btn_rev_opt, FONT_BUTTON)
+                close = open_shop(events, WIN, mouse_pos, mouse_pressed, btn_rev_opt, FONT_BUTTON, player_money, joueur)
 
                 if btn_confirm_nerd.is_clicked(mouse_pos, mouse_pressed):
-                    buy_selected()
+                    buy_selected(player_money, joueur)
 
                 if close:
                     show_shop = False
+                player_money = get_info(joueur, "argent", None)    
             if show_image:
                     close = open_collection(events, WIN, mouse_pos, mouse_pressed, btn_rev_coll)
 
