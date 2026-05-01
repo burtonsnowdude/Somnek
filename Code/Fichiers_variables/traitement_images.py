@@ -32,7 +32,7 @@ KILL_SIGN = pyg.image.load("Images/Autre/kill.png")
 
 # NERD
 LUNETTES_CASSEES = pyg.image.load("Images/Armes_items/lunettes_cassees.png")
-BERSEK = pyg.image.load("Images/Armes_items/bersek.png")
+BERSEK = pyg.image.load("Images/Armes_items/berserk.png")
 CAHIER_DE_NSI = pyg.image.load("Images/Armes_items/cahier_de_nsi.png")
 NAIN = pyg.image.load("Images/Armes_items/nain.png")
 CHAUSSETTES = pyg.image.load("Images/Armes_items/chaussettes.png")

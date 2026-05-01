@@ -1,6 +1,6 @@
 import time
 from Fichiers_variables.variables import *
-from Fichiers_variables.gestion_fichiers import reecrire_fichier_niveau_argent, reecrire_fichier_armes
+from Fichiers_variables.gestion_fichiers import reecrire_fichier
 from Affichage.affichage_divers import PopupAchievement
 from Interface.Class_Button import Button
 FONT_PAUSE = pyg.font.SysFont("Press Start 2P", 50) 
@@ -93,7 +93,7 @@ def menu_pause(new_tab, noms, armes_joueur):
     return pause, run, time.time()-debut
 
 def sauvegarde(new_tab, noms, armes_joueur):
-    reecrire_fichier_niveau_argent(new_tab, noms) 
-    reecrire_fichier_armes(armes_joueur, noms) 
+    reecrire_fichier("niveau_argent", new_tab, noms)
+    reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
 
 

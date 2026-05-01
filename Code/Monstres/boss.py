@@ -206,9 +206,7 @@ class Boss :
         self.vitesse -= 10
 
     def follow_player(self, p):
-        old = self.x_monde
         self.follow(p.x_monde, p.y_monde)
-        print("delta move:", self.x_monde - old)
 
     def attaque_dist(self):
         self.action_is_over = True
@@ -223,7 +221,7 @@ def spawn_boss(temps, boss_present, boss_acheves, p, boss, perso):
     return boss_present, boss
 
 
-def gestion_boss(boss, boss_present, p, frame):
+def gestion_boss(boss, boss_present, p, frame, boss_acheves):
     """Choisit une action du boss et l'exécute jusqu'à sa fin"""
     if boss_present:
         particularites = boss.particularites # liste d'actions que le boss peut faire
@@ -270,6 +268,7 @@ def gestion_boss(boss, boss_present, p, frame):
 
         if boss.hp <= 0:
             boss_present = False
+            boss_acheves.append(boss.temps)
             boss = None
 
-    return boss_present
+    return boss_present, boss_acheves

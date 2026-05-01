@@ -16,7 +16,7 @@ from Minijeux.all_mj import mj
 
 def jeu(perso):
     noms, new_tab = det_noms()
-    nom = "Daphne"
+    nom = "Feerose"
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
         argent = int(new_tab[1][nom])
@@ -95,7 +95,7 @@ def jeu(perso):
             monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p, perso)
 
             boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p, boss, perso)
-            boss_present = gestion_boss(boss, boss_present, p, frame)
+            boss_present, boss_acheves = gestion_boss(boss, boss_present, p, frame, boss_acheves)
             # Gestion des coffres
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout != False :
@@ -155,11 +155,11 @@ def jeu(perso):
             
             pyg.display.flip()
     
-    
-    pyg.quit() 
     # Reecriture des fichiers csv avec les données actualisées de la partie
-    reecrire_fichier_niveau_argent(new_tab, noms) 
-    reecrire_fichier_armes(armes_joueur, noms) 
+    reecrire_fichier("niveau_argent", new_tab, noms)
+    reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
+    pyg.quit() 
+
 
 
 

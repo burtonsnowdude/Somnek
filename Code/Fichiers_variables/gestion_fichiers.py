@@ -83,23 +83,6 @@ def actualiser_donnees(nom, niveau, argent, new_tab):
     return new_tab
 
 
-def reecrire_fichier_niveau_argent(new_tab, noms):
-    """Réécrit le fichier csv avec les données actualisées
-    
-    Parameters
-    ----------
-    new_tab : list(dict)
-        La liste actualisée contenant les lignes de données sous forme de dictionnaires
-    noms : list
-        La liste des joueurs inscrits
-    """
-
-    with open("Fichiers_csv/niveau_argent.csv", "w", newline = "") as fichier_niveau :
-        writer = csv.DictWriter(fichier_niveau, noms)
-        writer.writeheader()
-        for row in new_tab:
-            writer.writerow(row)
-
 ########################## Armes ###########################
 
 def definir_fichier_nouv_armes(noms):
@@ -153,8 +136,8 @@ def ajouter_arme(nom, arme, new_tab):
             if int(row[nom]) == 0:
                 row[nom] = 1
             return new_tab
-    
-def reecrire_fichier_armes(new_tab, noms):
+
+def reecrire_fichier(fichier, new_tab, noms):
     """Réécrit le fichier csv avec les données actualisées
 
     Parameters
@@ -162,9 +145,13 @@ def reecrire_fichier_armes(new_tab, noms):
     new_tab : list(dict)
         La liste actualisée contenant les lignes de données sous forme de dictionnaires
     """
-    headers = ["Type"] + noms
-    with open("Fichiers_csv/armes_obtenues_par_joueur.csv", "w", newline = "") as fichier_niveau :
-            writer = csv.DictWriter(fichier_niveau, headers)
+    if fichier == "armes_obtenues_par_joueur" :
+        headers = ["Type"] + noms
+    else :
+        headers = noms
+    fichier = "Fichiers_csv/"+fichier+".csv"
+    with open(fichier, "w", newline = "") as tab :
+            writer = csv.DictWriter(tab, headers)
             writer.writeheader()
             for row in new_tab:
                 writer.writerow(row)

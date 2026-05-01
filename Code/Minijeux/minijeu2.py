@@ -60,6 +60,7 @@ def spawn_objet(x_debut, x_fin, y_debut, y_fin, p):
     y_fin += nb_aleat2 * BGY
     coord = (randint(x_debut, x_fin), randint(y_debut, y_fin))
     coord = screen_to_world(coord[0], coord[1], p)
+    coord = (300, 200)
     return coord
 
 def draw_objet(coord, image):
