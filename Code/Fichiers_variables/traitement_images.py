@@ -25,6 +25,27 @@ TRESOR = pyg.image.load("Images/Coffres/tresor.png")
 ARGENT = pyg.image.load("Images/Coffres/argent.png")
 KILL_SIGN = pyg.image.load("Images/Autre/kill.png")
 
+###################################### ARMES ###############################################################
+
+
+########################### ARMES ##########################################################################
+
+# NERD
+LUNETTES_CASSEES = pyg.image.load("Images/Armes_items/lunettes_cassees.png")
+BERSEK = pyg.image.load("Images/Armes_items/bersek.png")
+CAHIER_DE_NSI = pyg.image.load("Images/Armes_items/cahier_de_nsi.png")
+NAIN = pyg.image.load("Images/Armes_items/nain.png")
+CHAUSSETTES = pyg.image.load("Images/Armes_items/chaussettes.png")
+SOURIS = pyg.image.load("Images/Armes_items/souris.png")
+CLE_USB = pyg.image.load("Images/Armes_items/cle_usb.png")
+
+# FILLE POPULAIRE
+
+
+# NONNE 
+CROIX_DE_BASE = pyg.image.load("Images/Armes_items/croix_de_base.png")
+
+
 ###################################### PERSONNAGES ##########################################################
 # FILLE POPULAIRE
 FILLE_POPULAIRE_L = pyg.image.load("Images/Persos/fille_populaire_l.png")
