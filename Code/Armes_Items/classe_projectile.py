@@ -1,51 +1,60 @@
+import math
 import pygame as pyg
-import random
-pyg.font.init() # initialiser le module font de pygame
 
-# class qui gère et défini le projectile du joueur
+PROJECTILES = { "bullet": "Images/Armes_items/projectile/feu esprit sain.png",
+    "fireball" : "Images/Armes_items/projectile/feu esprit saint.png",
+    "slash": "Images/Armes_items/projectile/proj_ticket.png"
+}
+
+
 class Projectile(pyg.sprite.Sprite):
-    #definir le créateur de la classe
-    def __init__(self,player):
+    """Projectile générique"""
+
+    def __init__(self, player, proj_type="bullet"):
         super().__init__()
-        self.velocity = 5
+
         self.player = player
-        self.image = pyg.image.load("Images/Armes_items/projectile_pistolet.png").convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.center = player.pos.center
-        self.origin_image = self.image
-        self.angle = 0
-        
-        
-    def rotate(self): 
-         #tourner le projectile
-         self.angle +=16
-         self.image = pyg.transform.rotozoom(self.origin_image, self.angle, 1)
-         self.rect = self.image.get_rect(center = self.rect.center)
-    def remove(self):
-         self.kill()
-        
-    def check_collision(self, sprite, group):
-        """Vérifier les collisions avec un groupe de sprites"""
-        return pyg.sprite.spritecollide(sprite, group, False, pyg.sprite.collide_mask)
-    def move(self):
-            self.rect.y -= self.velocity  
-            #self.rotate()
-            """for monster in self.check_collision(self,monstres_presents):"""
-            """self.remove()"""
-            # infliger des degats
-            """monster.degats(self.player.attack)"""
-            #verifier si le projectile est présent
-            if self.rect.y <0:
-                 #suppprimer le projectile en dehors de l'écran
-                 self.remove()
-    
-                
-         
-    
+        self.type = proj_type
 
+        self.speed = 7
+        self.damage = 10
+        self.piercing = 1
 
-    
-                
-         
-    
+        self.image = pyg.image.load(PROJECTILES[self.type]).convert_alpha()
+        if self.type == "bullet":
+            self.image = pyg.transform.scale(self.image, (30, 30))
+        self.rect = self.image.get_rect(center=player.pos.center)
 
+        self.dx = 0
+        self.dy = -1
+
+    def set_direction(self, angle):
+        rad = math.radians(angle)
+        self.dx = math.cos(rad)
+        self.dy = math.sin(rad)
+
+        length = math.sqrt(self.dx**2 + self.dy**2)
+        if length != 0:
+            self.dx /= length
+            self.dy /= length
+
+    def update(self):
+        self.rect.x += self.dx * self.speed
+        self.rect.y += self.dy * self.speed
+
+        self.check_bounds()
+
+    def check_bounds(self):
+        if (
+            self.rect.right < 0 or
+            self.rect.left > 1920 or
+            self.rect.bottom < 0 or
+            self.rect.top > 1080
+        ):
+            self.kill()
+
+    def hit(self, enemy):
+        enemy.degats(self.damage)
+        self.piercing -= 1
+        if self.piercing <= 0:
+            self.kill()

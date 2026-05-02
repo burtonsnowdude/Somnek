@@ -3,6 +3,7 @@ from Fichiers_variables.variables import *
 import math
 from Armes_Items.classe_projectile import Projectile
 from Affichage.fonctionnement_divers import camera
+from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone
 
 class Player:
     """Class Player"""
@@ -13,7 +14,10 @@ class Player:
             self.image_r = PERSOS[perso]["image"]["horizon_r"]
             self.image_l = PERSOS[perso]["image"]["horizon_l"]
             self.image = self.image_r
+            
             self.pos = self.image.get_rect()
+
+            
         else :
             self.index = 0
             self.anim_avant = PERSOS[perso]["anim"]["avant"]
@@ -23,6 +27,14 @@ class Player:
             self.anim = self.anim_avant
             self.pos = self.anim[0].get_rect()
         
+        self.arme_active = 0
+        self.armes = [
+                ArmeProjectile(self),
+                ArmeEpee(self),
+                ArmeZone(self)
+                        ]
+        self.arme_active = 0
+        self.all_zones = pyg.sprite.Group() 
         self.pos.center = CENTREx, CENTREy
         self.vitesse = PLAYER_VIT
         self.xp = 0
@@ -34,7 +46,8 @@ class Player:
         self.y_monde = CENTREy
         #Liste spéciale pygame
 
-        self.all_projectiles = pyg.sprite.Group()   
+        self.all_projectiles = pyg.sprite.Group()  
+        
         self.projectile_cooldown = 0
         self.projectile_cadence = 30
 
@@ -47,6 +60,12 @@ class Player:
             WIN.blit(self.anim[self.index], self.pos)
         else:
             WIN.blit(self.image, self.pos)
+    def attack(self):
+        self.armes[self.arme_active].trigger()
+    def update_armes(self):
+        for arme in self.armes:
+            arme.update()
+
 
 
     def move_bg(self, monstres, xp, monstres_vague, boss, boss_present):
@@ -131,15 +150,10 @@ class Player:
             return True
         return False
     
-    def lancer_projectile(self):
-        """Créer un projectile avec cooldown"""
-        # Vérifier si l'on peut tirer 
-        if self.projectile_cooldown <= 0:
-            projectile = Projectile(self)
-            self.all_projectiles.add(projectile)
-            self.projectile_cooldown = self.projectile_cadence  # Reset cooldown
+   
     
     def update_cooldown(self):
         """À appeler chaque frame pour réduire le cooldown"""
         if self.projectile_cooldown > 0:
             self.projectile_cooldown -= 1
+    
