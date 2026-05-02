@@ -6,6 +6,8 @@ import pygame as pyg
 from Fichiers_variables.variables import *
 from random import shuffle
 from Affichage.fonctionnement_divers import screen_to_world, camera
+from Fichiers_variables.gestion_fichiers import ajouter_arme
+
 import time
 pyg.init()
 pyg.mixer.init()
@@ -79,7 +81,7 @@ PAROLES = {
         "Mots_non_accentues" : ["paille", "somnambule", "bulletin", "tintamarre", "marabout", "cheval"]}
 }
 
-def minijeu3(p, coord_monde, minijeu3_fini, armes_possedees):
+def minijeu3(p, coord_monde, minijeu3_fini, armes_possedees, armes_joueur):
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p)
         coord_screen = (300, 200)
@@ -91,9 +93,12 @@ def minijeu3(p, coord_monde, minijeu3_fini, armes_possedees):
     if collision(coord_screen, OBJET, p):
         anim_debut(SON)
         victoire = noubliez_pas_les_paroles()
+        if victoire :
+            armes_possedees.append("Aura_divine")
+            armes_joueur = ajouter_arme(p.nom, "Aura_divine", armes_joueur)
         anim_fin(victoire, SON)
         minijeu3_fini = True
-    return coord_monde, minijeu3_fini, armes_possedees
+    return coord_monde, minijeu3_fini, armes_possedees, armes_joueur
 
 def anim_debut(son):
     replique("Bien le bonjour ! Vous êtes venue pour prier j'imagine ?", GRIS_1, (0,0,0))

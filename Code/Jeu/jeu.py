@@ -30,7 +30,7 @@ def jeu(perso):
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     
-    p = Player(perso)
+    p = Player(perso, nom)
     # Initialisation des variables
     monstres_presents, armes_possedees, xp_dispo, boss_acheves, items_possedes = [], [], [], [], []
 
@@ -63,7 +63,7 @@ def jeu(perso):
             remplir_fond(p)
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
-            coord_monde, minijeu_fini, armes_possedees = mj(perso, coord_monde, minijeu_fini, p, armes_possedees)
+            coord_monde, minijeu_fini, armes_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_possedees, armes_joueur)
             p.lancer_projectile()
             p.update_cooldown()
             # déplace les projectiles
@@ -138,7 +138,6 @@ def jeu(perso):
             # Passage de niveau
             if p.update_xp(xp, xp_attendu):
                 seuil, xp_attendu = passage(xp_attendu, seuil)
-
                 arme, pause_time = choix_arme(p, seuil, armes_possedees)
                 armes_possedees.append(arme)
                 print(armes_possedees)

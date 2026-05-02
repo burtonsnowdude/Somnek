@@ -6,8 +6,9 @@ from Affichage.fonctionnement_divers import camera
 
 class Player:
     """Class Player"""
-    def __init__(self, perso):
+    def __init__(self, perso, nom):
         self.hp = PLAYER_PV
+        self.nom = nom
         if "image" in PERSOS[perso] :
             self.image_r = PERSOS[perso]["image"]["horizon_r"]
             self.image_l = PERSOS[perso]["image"]["horizon_l"]

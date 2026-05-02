@@ -144,7 +144,7 @@ Items = {
         "prix": 10
     }},
 
-    "Soeur": {
+    "Nonne": {
     "Eau_benite": {
         
         "effet": "multi",
@@ -433,7 +433,7 @@ GESTION_NIVEAU_ITEMS = {
     },
 
 
-    "Soeur": {
+    "Nonne": {
 
         "Niveau 1": {
             "Eau_benite": 0.10,
@@ -636,7 +636,7 @@ TYPES_ITEMS = {
         }
     },
 
-    "Soeur": {
+    "Nonne": {
 
         "Croix_marron": {
             "image": None,

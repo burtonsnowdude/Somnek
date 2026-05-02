@@ -87,7 +87,7 @@ TYPES_ARMES = {
         }
     },
 
-    "Soeur": {
+    "Nonne": {
 
         "Croix_marron": {
             "type_arme": "poison",
@@ -195,35 +195,35 @@ ARMES = {
         }
     },
 
-    "Soeur": {
+    "Nonne": {
 
         "Croix_marron": {
-            **TYPES_ARMES["Soeur"]["Croix_marron"],
+            **TYPES_ARMES["Nonne"]["Croix_marron"],
             "niveau_req": 0
         },
 
         "Feu_de_l'Esprit_Saint": {
-            **TYPES_ARMES["Soeur"]["Feu_de_l'Esprit_Saint"],
+            **TYPES_ARMES["Nonne"]["Feu_de_l'Esprit_Saint"],
             "niveau_req": 4
         },
 
         "Medaille_de_bapteme": {
-            **TYPES_ARMES["Soeur"]["Medaille_de_bapteme"],
+            **TYPES_ARMES["Nonne"]["Medaille_de_bapteme"],
             "niveau_req": 4
         },
 
         "Coiffe_de_rameau": {
-            **TYPES_ARMES["Soeur"]["Coiffe_de_rameau"],
+            **TYPES_ARMES["Nonne"]["Coiffe_de_rameau"],
             "niveau_req": 5
         },
 
         "Lance_sacree": {
-            **TYPES_ARMES["Soeur"]["Lance_sacree"],
+            **TYPES_ARMES["Nonne"]["Lance_sacree"],
             "niveau_req": 19
         },
 
         "Aura_divine": {
-            **TYPES_ARMES["Soeur"]["Aura_divine"],
+            **TYPES_ARMES["Nonne"]["Aura_divine"],
             "niveau_req": 24
         }
     }

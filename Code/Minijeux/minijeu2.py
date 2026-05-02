@@ -9,6 +9,8 @@ from Affichage.fonctionnement_divers import screen_to_world, camera
 from Interface.Class_Button import Button
 from Fichiers_variables.variables import *
 from Fichiers_variables.traitement_images import decouper_image
+from Fichiers_variables.gestion_fichiers import ajouter_arme
+
 import time
 pyg.init()
 pyg.mixer.init()
@@ -238,7 +240,7 @@ def retour_ligne(texte):
     return liste
 
 
-def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees):
+def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees, armes_joueur):
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p)
         coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
@@ -249,7 +251,10 @@ def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees):
     if collision(coord_screen, OBJET, p):
         anim_quizz(SON)
         victoire = quizz(SON)
+        if victoire :
+            armes_possedees.append("Aura_divine")
+            armes_joueur = ajouter_arme(p.nom, "Aura_divine", armes_joueur)
         anim_fin(victoire, SON)
         minijeu2_fini = True
         pyg.mixer.music.stop()
-    return coord_monde, minijeu2_fini, armes_possedees
+    return coord_monde, minijeu2_fini, armes_possedees, armes_joueur
