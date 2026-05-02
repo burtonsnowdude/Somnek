@@ -146,7 +146,7 @@ def ajouter_arme(nom, arme, new_tab):
         if row["Type"] == arme:
             if int(row[nom]) == 0:
                 row[nom] = 1
-            return new_tab
+    return new_tab
 
 def reecrire_fichier(fichier, new_tab, noms):
     """Réécrit le fichier csv avec les données actualisées

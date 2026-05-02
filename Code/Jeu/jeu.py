@@ -17,6 +17,7 @@ from Minijeux.all_mj import mj
 def jeu(perso):
     perso = "Nerd"
     noms, new_tab = det_noms()
+    print("1 :", new_tab)
     nom = "Daphne"
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
@@ -26,19 +27,20 @@ def jeu(perso):
         noms = res
         argent = 0
         new_tab[0][nom] = 1 #niveau
+    print("2 :", new_tab)
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
     
     p = Player(perso, nom)
     # Initialisation des variables
-    monstres_presents, armes_possedees, xp_dispo, boss_acheves, items_possedes = [], [], [], [], []
+    monstres_presents, armes_et_items_possedees, xp_dispo, boss_acheves, armes_possedees, items_possedes = [], [], [], [], [], []
 
     start_time = time.time()  
 
     frame, pause_time, xp, dernier_coffre_apparu, derniere_vague, time_map = [0]*6
     xp_attendu = 20 # xp attendu pour passer un niveau (croît exponentiellement)
-    seuil = 2
+    
     monstres_vague, boss, coord_monde = [None] * 3
     vague, pause, boss_present, test_popup_triggered, coffre_existant, minijeu_fini = [False]*6
     popup_message = None
@@ -63,7 +65,7 @@ def jeu(perso):
             remplir_fond(p)
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
-            coord_monde, minijeu_fini, armes_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_possedees, armes_joueur)
+            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur)
             p.lancer_projectile()
             p.update_cooldown()
             # déplace les projectiles
@@ -105,14 +107,18 @@ def jeu(perso):
                 nouveau_coffre.pointer_coffre(p)
                 
                 if p.pos.colliderect(nouveau_coffre.rect):
-                    gain = nouveau_coffre.determiner_recompense(armes_possedees, seuil, p)
+                    gain = nouveau_coffre.determiner_recompense(armes_et_items_possedees, p)
                     if type(gain) == int :
                         argent += gain
                         print(argent)
                     else :
-                        armes_possedees.append(gain)
-                        ajouter_arme(nom, gain, armes_joueur)
-                        print(armes_possedees)
+                        armes_et_items_possedees.append(gain[1])
+                        armes_joueur = ajouter_arme(nom, gain, armes_joueur)
+                        if gain[0] == "arme":
+                            armes_possedees.append(gain[1])
+                        else :
+                            items_possedes.append(gain[1])
+                        print(armes_et_items_possedees)
                     coffre_existant = False
             dernier_coffre_apparu += 1 
 
@@ -129,7 +135,7 @@ def jeu(perso):
                 completed_kill_quests.add(kill_quest)
 
             # Vérifier et déclencher les quêtes d'acquisition
-            acquire_quest = verif_q(len(armes_possedees))  # Passe le nombre actuel d'armes
+            acquire_quest = verif_q(len(armes_et_items_possedees))  # Passe le nombre actuel d'armes
             if acquire_quest and acquire_quest not in completed_acquire_quests:
                 popup = PopupAchievement(acquire_quest)
                 popup_group.add(popup)
@@ -137,12 +143,17 @@ def jeu(perso):
 
             # Passage de niveau
             if p.update_xp(xp, xp_attendu):
-                seuil, xp_attendu = passage(xp_attendu, seuil)
-                arme, pause_time = choix_arme(p, seuil, armes_possedees)
-                armes_possedees.append(arme)
-                print(armes_possedees)
-                armes_joueur = ajouter_arme(nom, arme, armes_joueur)
+                xp_attendu = passage(xp_attendu)
+                objet, pause_time = choix_arme(p, armes_possedees)
+                armes_et_items_possedees.append(objet[1])
+                if objet[0] == "arme" : 
+                    armes_possedees.append(objet[1])
+                else : 
+                    items_possedes.append(objet[1])
+                print(armes_et_items_possedees)
+                armes_joueur = ajouter_arme(nom, objet, armes_joueur)
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
+                print("3", new_tab)
             p.move_bg(monstres_presents, xp_dispo, monstres_vague, boss, boss_present)
             
             popup_group.update()  # Met à jour les popups

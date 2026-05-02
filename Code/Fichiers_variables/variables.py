@@ -155,7 +155,8 @@ TYPES_MONSTRES = {
 TYPES = [type for type in TYPES_MONSTRES]
 
 # Dictionnaire ARMES qui n'a aucun sens juste pour test mon code
-
+"""
 ARMES = {}
 for i in range(1,61):
     ARMES["nawak"+str(i)] = i
+"""

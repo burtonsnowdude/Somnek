@@ -3,6 +3,8 @@ from math import *
 import pygame as pyg
 from Fichiers_variables.variables import *
 from Affichage.fonctionnement_divers import remplir_fond
+from Fichiers_variables.dictionnaire_armes import GESTION_DES_NIVEAUX_ARMES
+from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS
 
 DISTANCE_MIN = -2000
 DISTANCE_MAX = 2000
@@ -48,7 +50,7 @@ class Coffre :
         WIN.blit(TRESOR, (x_screen_coffre, y_screen_coffre))
         self.rect.topleft = (x_screen_coffre, y_screen_coffre)
     
-    def determiner_recompense(self, armes_possedees, seuil, p) :
+    def determiner_recompense(self, armes_et_items_possedees, p) :
         """Détermine la récompense obtenue par le joueur quand il atteint un coffre
 
         Parameters
@@ -71,11 +73,25 @@ class Coffre :
             WIN.blit(i, (CENTREx-COFFRE_W/2, CENTREy-COFFRE_H/2))
             pyg.display.flip()
             pyg.time.delay(200)
-        armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
-        for arme in armes_dispo[:]:
-            if arme in armes_possedees :
-                armes_dispo.remove(arme)
-        argent_dispo = int(seuil * randint(1, seuil))
+        armes_dispo = []
+        items_dispo = []
+        niveau = 1
+        while niveau < p.niveau :
+            for item in GESTION_NIVEAU_ITEMS[p.perso]["Niveau "+str(niveau)]:
+                items_dispo.append(item)
+            niveau += 1
+        niveau = 1
+        while niveau < p.niveau :
+            if "Niveau "+str(niveau) in GESTION_DES_NIVEAUX_ARMES[p.perso] :
+                for arme in GESTION_DES_NIVEAUX_ARMES[p.perso]["Niveau "+str(niveau)]:
+                    if niveau != 1 :
+                        armes_dispo.append(arme)
+            niveau += 1
+        dispo = items_dispo+armes_dispo
+        for arme in dispo[:]:
+            if arme in armes_et_items_possedees :
+                dispo.remove(arme)
+        argent_dispo = int(p.niveau*50 * randint(1, p.niveau))
         choix_aleat = choice((True, False))
         if choix_aleat :
             WIN.blit(ARGENT, (CENTREx-ARGENT_W/2, CENTREy - ARGENT_H/2))
@@ -85,8 +101,13 @@ class Coffre :
             pyg.time.delay(2000)
             return argent_dispo
         else : 
-            return choice(armes_dispo)
-        
+            choix = choice(dispo)
+            if choix in armes_dispo : 
+                type_objet = "arme"
+            else :
+                type_objet = "item"
+            return type_objet, choix
+    
 
 def ajout_coffre(dernier_coffre_apparu, coffre_existant, p):
     if randint(1,100) == 1 and dernier_coffre_apparu > 100 and not coffre_existant:
