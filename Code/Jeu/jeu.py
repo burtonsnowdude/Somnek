@@ -26,6 +26,7 @@ def jeu(perso):
         noms = res
         argent = 0
         new_tab[0][nom] = 1 #niveau
+    definir_fichier_nouv_armes(noms)
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True

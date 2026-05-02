@@ -5,19 +5,19 @@ TYPES_ARMES = {
 
     "Nerd": {
 
-        "Epée bleue": {
+        "Epee_bleue": {
             "type_arme": "coup",
             "image": None,
             "texte": None
         },
 
-        "Clé USB": {
+        "Cle_USB": {
             "type_arme": "zone",
             "image": CLE_USB,
             "texte": None
         },
 
-        "Epée enflammée": {
+        "Epee_enflammee": {
             "type_arme": "coup",
             "image": None,
             "texte": None
@@ -25,30 +25,30 @@ TYPES_ARMES = {
 
         "Pistolets": {
             "type_arme": "balle",
-            "image": PISTOLETS,
+            "image": None,
             "texte": None
         },
 
-        "Ticket de métro": {
+        "Ticket_de_metro": {
             "type_arme": "trait",
             "image": None,
             "texte": None
         },
 
-        "Epée de Guts": {
+        "Epee_de_Guts": {
             "type_arme": "coup",
             "image": None,
             "texte": None
         },
 
-        "Console allumée": {
+        "Console_allumee": {
             "type_arme": "zone",
             "image": None,
             "texte": None
         }
     },
 
-    "Fille populaire": {
+    "Fille_populaire": {
 
         "Faux-cils": {
             "type_arme": "trait",
@@ -56,70 +56,70 @@ TYPES_ARMES = {
             "texte": None
         },
 
-        "Faux ongles roses": {
+        "Faux_ongles_roses": {
             "type_arme": "zone",
             "image": None,
             "texte": None
         },
 
-        "Bracelet de sa soeur": {
+        "Bracelet_de_sa_soeur": {
             "type_arme": "balle",
             "image": None,
             "texte": None
         },
 
-        "Fer à lisser": {
-            "type_arme": "zone multiples",
+        "Fer_a_lisser": {
+            "type_arme": "zone_multiples",
             "image": None,
             "texte": None
         },
 
-        "Pass Navigo": {
+        "Pass_Navigo": {
             "type_arme": "trait",
             "image": None,
             "texte": None
         },
 
-        "Ring light": {
-            "type_arme": "zone multiples",
+        "Ring_light": {
+            "type_arme": "zone_multiples",
             "image": None,
             "texte": None
         }
     },
 
-    "La soeur": {
+    "Soeur": {
 
-        "Croix Marron": {
+        "Croix_marron": {
             "type_arme": "poison",
             "image": None,
             "texte": None
         },
 
-        "Feu de l’Esprit Saint": {
+        "Feu_de_l'Esprit_Saint": {
             "type_arme": "zone",
             "image": None,
             "texte": None
         },
 
-        "Médaille de baptême": {
+        "Medaille_de_bapteme": {
             "type_arme": "balle",
             "image": None,
             "texte": None
         },
 
-        "Coiffe de rameau": {
+        "Coiffe_de_rameau": {
             "type_arme": "zone",
             "image": None,
             "texte": None
         },
 
-        "Lance sacrée": {
+        "Lance_sacree": {
             "type_arme": "trait",
             "image": None,
             "texte": None
         },
 
-        "Aura divine": {
+        "Aura_divine": {
             "type_arme": "poison",
             "image": None,
             "texte": None
@@ -131,38 +131,18 @@ ARMES = {
 
     "Nerd": {
 
-        "Epée bleue": {
-            **TYPES_ARMES["Nerd"]["Epée bleue"],
+        "Epee_bleue": {
+            **TYPES_ARMES["Nerd"]["Epee_bleue"],
             "niveau_req": 1
         },
 
-        "Lunettes cassées": {
-            **TYPES_ARMES["Nerd"]["Lunettes cassées"],
-            "niveau_req": 1
-        },
-
-        "Souris de PC": {
-            **TYPES_ARMES["Nerd"]["Souris de PC"],
-            "niveau_req": 1
-        },
-
-        "Chaussettes propres": {
-            **TYPES_ARMES["Nerd"]["Chaussettes propres"],
-            "niveau_req": 1
-        },
-
-        "Cahier de NSI": {
-            **TYPES_ARMES["Nerd"]["Cahier de NSI"],
-            "niveau_req": 3
-        },
-
-        "Clé USB": {
-            **TYPES_ARMES["Nerd"]["Clé USB"],
+        "Cle_USB": {
+            **TYPES_ARMES["Nerd"]["Cle_USB"],
             "niveau_req": 4
         },
 
-        "Epée enflammée": {
-            **TYPES_ARMES["Nerd"]["Epée enflammée"],
+        "Epee_enflammee": {
+            **TYPES_ARMES["Nerd"]["Epee_enflammee"],
             "niveau_req": 4
         },
 
@@ -171,79 +151,79 @@ ARMES = {
             "niveau_req": 5
         },
 
-        "Ticket de métro": {
-            **TYPES_ARMES["Nerd"]["Ticket de métro"],
+        "Ticket_de_metro": {
+            **TYPES_ARMES["Nerd"]["Ticket_de_metro"],
             "niveau_req": 19
         },
 
-        "Epée de Guts": {
-            **TYPES_ARMES["Nerd"]["Epée de Guts"],
+        "Epee_de_Guts": {
+            **TYPES_ARMES["Nerd"]["Epee_de_Guts"],
             "niveau_req": 24
         }
     },
 
-    "Fille populaire": {
+    "Fille_populaire": {
 
         "Faux-cils": {
-            **TYPES_ARMES["Fille populaire"]["Faux-cils"],
+            **TYPES_ARMES["Fille_populaire"]["Faux-cils"],
             "niveau_req": 1
         },
 
-        "Faux ongles roses": {
-            **TYPES_ARMES["Fille populaire"]["Faux ongles roses"],
+        "Faux_ongles_roses": {
+            **TYPES_ARMES["Fille_populaire"]["Faux_ongles_roses"],
             "niveau_req": 4
         },
 
-        "Bracelet de sa soeur": {
-            **TYPES_ARMES["Fille populaire"]["Bracelet de sa soeur"],
+        "Bracelet_de_sa_soeur": {
+            **TYPES_ARMES["Fille_populaire"]["Bracelet_de_sa_soeur"],
             "niveau_req": 4
         },
 
-        "Fer à lisser": {
-            **TYPES_ARMES["Fille populaire"]["Fer à lisser"],
+        "Fer_a_lisser": {
+            **TYPES_ARMES["Fille_populaire"]["Fer_a_lisser"],
             "niveau_req": 5
         },
 
-        "Pass Navigo": {
-            **TYPES_ARMES["Fille populaire"]["Pass Navigo"],
+        "Pass_Navigo": {
+            **TYPES_ARMES["Fille_populaire"]["Pass_Navigo"],
             "niveau_req": 19
         },
 
-        "Ring light": {
-            **TYPES_ARMES["Fille populaire"]["Ring light"],
+        "Ring_light": {
+            **TYPES_ARMES["Fille_populaire"]["Ring_light"],
             "niveau_req": 24
         }
     },
 
-    "La soeur": {
+    "Soeur": {
 
-        "Croix Marron": {
-            **TYPES_ARMES["La soeur"]["Croix Marron"],
+        "Croix_marron": {
+            **TYPES_ARMES["Soeur"]["Croix_marron"],
             "niveau_req": 0
         },
 
-        "Feu de l’Esprit Saint": {
-            **TYPES_ARMES["La soeur"]["Feu de l’Esprit Saint"],
+        "Feu_de_l'Esprit_Saint": {
+            **TYPES_ARMES["Soeur"]["Feu_de_l'Esprit_Saint"],
             "niveau_req": 4
         },
 
-        "Médaille de baptême": {
-            **TYPES_ARMES["La soeur"]["Médaille de baptême"],
+        "Medaille_de_bapteme": {
+            **TYPES_ARMES["Soeur"]["Medaille_de_bapteme"],
             "niveau_req": 4
         },
 
-        "Coiffe de rameau": {
-            **TYPES_ARMES["La soeur"]["Coiffe de rameau"],
+        "Coiffe_de_rameau": {
+            **TYPES_ARMES["Soeur"]["Coiffe_de_rameau"],
             "niveau_req": 5
         },
 
-        "Lance sacrée": {
-            **TYPES_ARMES["La soeur"]["Lance sacrée"],
+        "Lance_sacree": {
+            **TYPES_ARMES["Soeur"]["Lance_sacree"],
             "niveau_req": 19
         },
 
-        "Aura divine": {
-            **TYPES_ARMES["La soeur"]["Aura divine"],
+        "Aura_divine": {
+            **TYPES_ARMES["Soeur"]["Aura_divine"],
             "niveau_req": 24
         }
     }
@@ -251,249 +231,249 @@ ARMES = {
 
 GESTION_DES_NIVEAUX_ARMES = {
 
-"Nerd": {
+    "Nerd": {
 
-    "Niveau 4": {
-        "Clé USB": "23 PV",
-        "Épée enflammée": "10 PV",
-        "Pistolets": "15 PV"
+        "Niveau 4": {
+            "Cle_USB": "23 PV",
+            "Epee_enflammee": "10 PV",
+            "Pistolets": "15 PV"
+        },
+
+        "Niveau 5": {
+            "Pistolets": "15 PV"
+        },
+
+        "Niveau 7": {
+            "Cle_USB": "+20% dégâts",
+            "Epee_enflammee": "+10% dégâts"
+        },
+
+        "Niveau 10": {
+            "Cle_USB": "+20% dégâts",
+            "Epee_enflammee": "+10% dégâts"
+        },
+
+        "Niveau 11": {
+            "Pistolets": "+7% dégâts"
+        },
+
+        "Niveau 12": {
+            "Epee_enflammee": "+10% dégâts"
+        },
+
+        "Niveau 14": {
+            "Epee_enflammee": "+3% dégâts"
+        },
+
+        "Niveau 15": {
+            "Pistolets": "+7% dégâts"
+        },
+
+        "Niveau 16": {
+            "Pistolets": "+7% dégâts"
+        },
+
+        "Niveau 17": {
+            "Epee_enflammee": "+10% dégâts"
+        },
+
+        "Niveau 18": {
+            "Epee_enflammee": "+15% dégâts"
+        },
+
+        "Niveau 19": {
+            "Ticket_de_metro": "20 PV",
+            "Cle_USB": "+10% dégâts"
+        },
+
+        "Niveau 20": {
+            "Ticket_de_metro": "20 PV",
+            "Epee_enflammee": "+15% dégâts"
+        },
+
+        "Niveau 21": {
+            "Ticket_de_metro": "20 PV",
+            "Cle_USB": "+10% dégâts"
+        },
+
+        "Niveau 22": {
+            "Cle_USB": "+10% dégâts"
+        },
+
+        "Niveau 23": {
+            "Pistolets": "+7% dégâts"
+        },
+
+        "Niveau 24": {
+            "Pistolets": "+7% dégâts",
+            "Epee_de_Guts": "40 PV"
+        },
+
+        "Niveau 26": {
+            "Epee_enflammee": "+15% dégâts",
+            "Cle_USB": "+20% dégâts"
+        }
     },
 
-    "Niveau 5": {
-        "Pistolets": "15 PV"
+
+    "Fille_populaire": {
+
+        "Niveau 1": {
+            "Faux-cils": "15 PV",
+            "Fer_a_lisser": "19 PV"
+        },
+
+        "Niveau 2": {
+            "Faux-cils": "+10% dégâts"
+        },
+
+        "Niveau 3": {
+            "Faux-cils": "+15% dégâts"
+        },
+
+        "Niveau 4": {
+            "Faux_ongles_roses": "23 PV",
+            "Bracelet_de_sa_soeur": "10 PV"
+        },
+
+        "Niveau 5": {
+            "Bracelet_de_sa_soeur": "+9% dégâts",
+            "Fer_a_lisser": "19 PV"
+        },
+
+        "Niveau 7": {
+            "Faux_ongles_roses": "+20% dégâts",
+            "Bracelet_de_sa_soeur": "+7% dégâts"
+        },
+
+        "Niveau 8": {
+            "Faux-cils": "+10% dégâts"
+        },
+
+        "Niveau 9": {
+            "Fer_a_lisser": "+10% dégâts"
+        },
+
+        "Niveau 10": {
+            "Faux_ongles_roses": "+20% dégâts",
+            "Bracelet_de_sa_soeur": "+10% dégâts"
+        },
+
+        "Niveau 11": {
+            "Fer_a_lisser": "+7% dégâts"
+        },
+
+        "Niveau 12": {
+            "Bracelet_de_sa_soeur": "+10% dégâts",
+            "Faux-cils": "+15% dégâts"
+        },
+
+        "Niveau 13": {
+            "Bracelet_de_sa_soeur": "+10% dégâts"
+        },
+
+        "Niveau 15": {
+            "Fer_a_lisser": "+7% dégâts"
+        },
+
+        "Niveau 16": {
+            "Fer_a_lisser": "+7% dégâts"
+        },
+
+        "Niveau 17": {
+            "Bracelet_de_sa_soeur": "+10% dégâts"
+        },
+
+        "Niveau 18": {
+            "Bracelet_de_sa_soeur": "+15% dégâts"
+        },
+
+        "Niveau 19": {
+            "Faux_ongles_roses": "+12% dégâts"
+        },
+
+        "Niveau 21": {
+            "Faux-cils": "+15% dégâts"
+        },
+
+        "Niveau 23": {
+            "Fer_a_lisser": "+7% dégâts"
+        },
+
+        "Niveau 24": {
+            "Fer_a_lisser": "+7% dégâts",
+            "Ring_light": "40 PV"
+        },
+
+        "Niveau 26": {
+            "Bracelet_de_sa_soeur": "+15% dégâts",
+            "Faux_ongles_roses": "+20% dégâts"
+        }
     },
 
-    "Niveau 7": {
-        "Clé USB": "+20% dégâts",
-        "Épée enflammée": "+10% dégâts"
-    },
 
-    "Niveau 10": {
-        "Clé USB": "+20% dégâts",
-        "Épée enflammée": "+10% dégâts"
-    },
+    "Nonne": {
 
-    "Niveau 11": {
-        "Pistolets": "+7% dégâts"
-    },
+        "Niveau 1": {
+            "Croix_marron": "14 PV",
+            "Feu_de_l'Esprit_Saint": "23 PV"
+        },
 
-    "Niveau 12": {
-        "Épée enflammée": "+10% dégâts"
-    },
+        "Niveau 3": {
+            "Croix_marron": "+15% dégâts"
+        },
 
-    "Niveau 14": {
-        "Épée enflammée": "+3% dégâts"
-    },
+        "Niveau 4": {
+            "Feu_de_l'Esprit_Saint": "23 PV",
+            "Medaille_de_bapteme": "15 PV"
+        },
 
-    "Niveau 15": {
-        "Pistolets": "+7% dégâts"
-    },
+        "Niveau 7": {
+            "Feu_de_l'Esprit_Saint": "+20% dégâts"
+        },
 
-    "Niveau 16": {
-        "Pistolets": "+7% dégâts"
-    },
+        "Niveau 8": {
+            "Coiffe_de_rameau": "19 PV"
+        },
 
-    "Niveau 17": {
-        "Épée enflammée": "+10% dégâts"
-    },
+        "Niveau 10": {
+            "Feu_de_l'Esprit_Saint": "+20% dégâts",
+            "Medaille_de_bapteme": "+10% dégâts"
+        },
 
-    "Niveau 18": {
-        "Épée enflammée": "+15% dégâts"
-    },
+        "Niveau 12": {
+            "Medaille_de_bapteme": "+10% dégâts"
+        },
 
-    "Niveau 19": {
-        "Ticket de métro": "20 PV",
-        "Clé USB": "+10% dégâts"
-    },
+        "Niveau 13": {
+            "Medaille_de_bapteme": "+10% dégâts"
+        },
 
-    "Niveau 20": {
-        "Ticket de métro": "20 PV",
-        "Épée enflammée": "+15% dégâts"
-    },
+        "Niveau 14": {
+            "Feu_de_l'Esprit_Saint": "+20% dégâts"
+        },
 
-    "Niveau 21": {
-        "Ticket de métro": "20 PV",
-        "Clé USB": "+10% dégâts"
-    },
+        "Niveau 17": {
+            "Medaille_de_bapteme": "+10% dégâts"
+        },
 
-    "Niveau 22": {
-        "Clé USB": "+10% dégâts"
-    },
+        "Niveau 18": {
+            "Medaille_de_bapteme": "+15% dégâts"
+        },
 
-    "Niveau 23": {
-        "Pistolets": "+7% dégâts"
-    },
+        "Niveau 20": {
+            "Medaille_de_bapteme": "+15% dégâts"
+        },
 
-    "Niveau 24": {
-        "Pistolets": "+7% dégâts",
-        "Épée de Guts": "40 PV"
-    },
+        "Niveau 24": {
+            "Ring_light": "40 PV"
+        },
 
-    "Niveau 26": {
-        "Épée enflammée": "+15% dégâts",
-        "Clé USB": "+20% dégâts"
+        "Niveau 26": {
+            "Medaille_de_bapteme": "+15% dégâts",
+            "Feu_de_l'Esprit_Saint": "+20% dégâts"
+        }
     }
-},
 
-
-"Fille populaire": {
-
-    "Niveau 1": {
-        "Faux-cils": "15 PV",
-        "Fer à lisser": "19 PV"
-    },
-
-    "Niveau 2": {
-        "Faux-cils": "+10% dégâts"
-    },
-
-    "Niveau 3": {
-        "Faux-cils": "+15% dégâts"
-    },
-
-    "Niveau 4": {
-        "Faux ongles roses": "23 PV",
-        "Bracelet": "10 PV"
-    },
-
-    "Niveau 5": {
-        "Bracelet": "+9% dégâts",
-        "Fer à lisser": "19 PV"
-    },
-
-    "Niveau 7": {
-        "Faux ongles roses": "+20% dégâts",
-        "Bracelet": "+7% dégâts"
-    },
-
-    "Niveau 8": {
-        "Faux-cils": "+10% dégâts"
-    },
-
-    "Niveau 9": {
-        "Fer à lisser": "+10% dégâts"
-    },
-
-    "Niveau 10": {
-        "Faux ongles roses": "+20% dégâts",
-        "Bracelet": "+10% dégâts"
-    },
-
-    "Niveau 11": {
-        "Fer à lisser": "+7% dégâts"
-    },
-
-    "Niveau 12": {
-        "Bracelet": "+10% dégâts",
-        "Faux-cils": "+15% dégâts"
-    },
-
-    "Niveau 13": {
-        "Bracelet": "+10% dégâts"
-    },
-
-    "Niveau 15": {
-        "Fer à lisser": "+7% dégâts"
-    },
-
-    "Niveau 16": {
-        "Fer à lisser": "+7% dégâts"
-    },
-
-    "Niveau 17": {
-        "Bracelet": "+10% dégâts"
-    },
-
-    "Niveau 18": {
-        "Bracelet": "+15% dégâts"
-    },
-
-    "Niveau 19": {
-        "Faux ongles roses": "+12% dégâts"
-    },
-
-    "Niveau 21": {
-        "Faux-cils": "+15% dégâts"
-    },
-
-    "Niveau 23": {
-        "Fer à lisser": "+7% dégâts"
-    },
-
-    "Niveau 24": {
-        "Fer à lisser": "+7% dégâts",
-        "Ring light": "40 PV"
-    },
-
-    "Niveau 26": {
-        "Bracelet": "+15% dégâts",
-        "Faux ongles roses": "+20% dégâts"
     }
-},
-
-
-"La soeur": {
-
-    "Niveau 1": {
-        "Croix marron": "14 PV",
-        "Feu de l’Esprit Saint": "23 PV"
-    },
-
-    "Niveau 3": {
-        "Croix marron": "+15% dégâts"
-    },
-
-    "Niveau 4": {
-        "Feu de l’Esprit Saint": "23 PV",
-        "Médaille de baptême": "15 PV"
-    },
-
-    "Niveau 7": {
-        "Feu de l’Esprit Saint": "+20% dégâts"
-    },
-
-    "Niveau 8": {
-        "Coiffe de rameau": "19 PV"
-    },
-
-    "Niveau 10": {
-        "Feu de l’Esprit Saint": "+20% dégâts",
-        "Médaille de baptême": "+10% dégâts"
-    },
-
-    "Niveau 12": {
-        "Médaille de baptême": "+10% dégâts"
-    },
-
-    "Niveau 13": {
-        "Médaille de baptême": "+10% dégâts"
-    },
-
-    "Niveau 14": {
-        "Feu de l’Esprit Saint": "+20% dégâts"
-    },
-
-    "Niveau 17": {
-        "Médaille de baptême": "+10% dégâts"
-    },
-
-    "Niveau 18": {
-        "Médaille de baptême": "+15% dégâts"
-    },
-
-    "Niveau 20": {
-        "Médaille de baptême": "+15% dégâts"
-    },
-
-    "Niveau 24": {
-        "Ring light": "40 PV"
-    },
-
-    "Niveau 26": {
-        "Médaille de baptême": "+15% dégâts",
-        "Feu de l’Esprit Saint": "+20% dégâts"
-    }
-}
-
-}
 

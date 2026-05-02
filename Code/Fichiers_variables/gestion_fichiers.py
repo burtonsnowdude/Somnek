@@ -1,6 +1,7 @@
 import csv
 from Fichiers_variables.variables import *
 from Fichiers_variables.dictionnaire_items import TYPES_ITEMS
+from Fichiers_variables.dictionnaire_armes import GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
 """
 Niveau atteint
 Argent obtenu
@@ -100,6 +101,15 @@ def definir_fichier_nouv_armes(noms):
             writer.writeheader()
             for perso in TYPES_ITEMS : 
                 for arme in TYPES_ITEMS[perso]:
+                    row = {}
+                    row["Type"] = arme
+                    for nom in noms :
+                        row[nom] = 0
+                    writer.writerow(row)
+            for perso in TYPES_ARMES:
+                print("TYPE perso =", type(perso))
+                print("VALEUR perso =", perso)
+                for arme in TYPES_ARMES[perso]:
                     row = {}
                     row["Type"] = arme
                     for nom in noms :
