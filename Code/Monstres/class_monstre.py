@@ -141,10 +141,8 @@ def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
     for xp in xp_dispo[:]:
         xp.show_xp()
         if p.pos.colliderect(xp.rect):
-            obtenu += xp.puissance
-            p.update_xp(xp.valeur, xp_attendu)
+            obtenu += xp.valeur
+            p.xp += xp.valeur  
             xp_dispo.remove(xp)
     return xp_dispo, obtenu
 
-
-        

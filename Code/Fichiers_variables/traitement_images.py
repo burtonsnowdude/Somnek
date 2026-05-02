@@ -25,10 +25,8 @@ TRESOR = pyg.image.load("Images/Coffres/tresor.png")
 ARGENT = pyg.image.load("Images/Coffres/argent.png")
 KILL_SIGN = pyg.image.load("Images/Autre/kill.png")
 
-###################################### ARMES ###############################################################
 
-
-########################### ARMES ##########################################################################
+########################### ARMES ET ITEMS ##########################################################################
 
 # NERD
 LUNETTES_CASSEES = pyg.image.load("Images/Armes_items/lunettes_cassees.png")

@@ -26,7 +26,6 @@ def jeu(perso):
         noms = res
         argent = 0
         new_tab[0][nom] = 1 #niveau
-    definir_fichier_nouv_armes(noms)
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock() # crée une horloge pour gérer le temps
     run = True
@@ -136,15 +135,10 @@ def jeu(perso):
                 popup_group.add(popup)
                 completed_acquire_quests.add(acquire_quest)
 
-            # Optionnel : Garder le popup de test pour le débogage
-            if temps_ecoule >= 5 and not test_popup_triggered:
-                popup = PopupAchievement("Test Achievement: 5 Seconds Passed!")
-                popup_group.add(popup)
-                test_popup_triggered = True
-
             # Passage de niveau
             if p.update_xp(xp, xp_attendu):
                 seuil, xp_attendu = passage(xp_attendu, seuil)
+
                 arme, pause_time = choix_arme(p, seuil, armes_possedees)
                 armes_possedees.append(arme)
                 print(armes_possedees)

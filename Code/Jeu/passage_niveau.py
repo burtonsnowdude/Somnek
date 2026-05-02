@@ -73,10 +73,15 @@ def choix_arme(p, seuil, armes_possedees):
             if arme not in choix :
                 choix.append(arme) 
                 compteur += 1
+        affich = []
+        for mot in choix :
+            m = mot.replace("_", " ")
+            m = m.upper()
+            affich.append(m)
         vert = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
         vert.fill((204, 237, 204, 200))
         texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (17, 97, 17))
-        buttons = [Button(choix[i], choix[i], 400, 200+100*i, 650, 80, FONT) for i in range(3)]
+        buttons = [Button(affich[i], choix[i], 400, 200+100*i, 650, 80, FONT) for i in range(3)]
         for b in buttons :
             b.color1 = (17, 97, 17)
             b.color2 = (43, 119, 52)
