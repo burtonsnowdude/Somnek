@@ -79,16 +79,12 @@ def jeu(perso):
                 perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur
             )
 
-            # =====================
-            # UPDATE ARMES / GROUPES
-            # =====================
+          
             p.update_armes()
             p.all_projectiles.update()
             for zone in p.all_zones:
                 zone.update(p)
-            # =====================
-            # COLLISIONS ZONES
-            # =====================
+
             for zone in p.all_zones:
                 for m in monstres_presents:
                     if zone.rect.colliderect(m.rect):
@@ -99,9 +95,7 @@ def jeu(perso):
                     boss.degats(10)
                     
 
-            # =====================
-            # COLLISIONS PROJECTILES
-            # =====================
+          
             for projectile in p.all_projectiles:
                 for m in monstres_presents:
                     if projectile.rect.colliderect(m.rect):
@@ -112,9 +106,7 @@ def jeu(perso):
                     boss.degats(10)
                     projectile.kill()
 
-            # =====================
-            # SPAWN / LOGIQUE MONSTRES
-            # =====================
+            
             if frame % FREQUENCE == 0:
                 monstres_presents = ajouter_monstre(monstres_presents, p, perso)
 
@@ -148,9 +140,7 @@ def jeu(perso):
                 boss, boss_present, p, frame, boss_acheves
             )
 
-            # =====================
-            # COFFRES
-            # =====================
+           
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout != False:
                 nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
@@ -178,9 +168,7 @@ def jeu(perso):
 
             dernier_coffre_apparu += 1 
 
-            # =====================
-            # AFFICHAGE
-            # =====================
+            
             p.draw_player(frame)
 
             # arme active visible
@@ -194,9 +182,7 @@ def jeu(perso):
             afficher_xp(xp_attendu, p)
             afficher_timer_vie(temps_ecoule, p)
 
-            # =====================
-            # QUÊTES
-            # =====================
+            
             kill_quest = verif_k(p)
             if kill_quest and kill_quest not in completed_kill_quests:
                 popup_group.add(PopupAchievement(kill_quest))
@@ -207,9 +193,6 @@ def jeu(perso):
                 popup_group.add(PopupAchievement(acquire_quest))
                 completed_acquire_quests.add(acquire_quest)
 
-            # =====================
-            # LEVEL UP
-            # =====================
             if p.update_xp(xp, xp_attendu):
                 xp_attendu = passage(xp_attendu)
 
