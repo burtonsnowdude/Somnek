@@ -15,6 +15,7 @@ from Monstres.boss import spawn_boss, gestion_boss
 from Minijeux.all_mj import mj
 
 def jeu(perso):
+    perso = "Nerd"
     noms, new_tab = det_noms()
     nom = "Daphne"
     res = ajouter_utilisateur(nom, noms)

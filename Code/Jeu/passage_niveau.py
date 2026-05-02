@@ -4,6 +4,8 @@ import time
 import pygame as pyg
 from math import ceil
 from Interface.Class_Button import Button
+from Fichiers_variables.dictionnaire_items import *
+
 FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
 def passage(xp_attendu, seuil):
     """Incrémente le seuil et augmente l'xp attendu pour le prochain niveau
@@ -47,7 +49,12 @@ def choix_arme(p, seuil, armes_possedees):
     if p.niveau < seuil :
         debut = time.time()
         clock = pyg.time.Clock()
-        armes_dispo = [arme for arme in ARMES if ARMES[arme] < seuil]
+        armes_dispo = []
+        niveau = 1
+        while niveau < p.niveau :
+            for arme in GESTION_NIVEAU_ITEMS[p.perso]["Niveau "+str(niveau)]:
+                armes_dispo.append(arme)
+            niveau += 1
         for arme in armes_dispo[:]:
             if arme in armes_possedees :
                 armes_dispo.remove(arme)

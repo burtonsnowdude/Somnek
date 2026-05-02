@@ -1,6 +1,6 @@
 import pygame as pyg
 from Fichiers_variables.traitement_images import *
-
+from Fichiers_variables.traitement_images import *
 
 Items = {
 
@@ -212,7 +212,7 @@ Items = {
     }}
 }
 
-Gestion_niveaux_items = {
+GESTION_NIVEAU_ITEMS = {
 
     "Nerd": {
 
@@ -532,130 +532,160 @@ TYPES_ITEMS = {
 
     "Nerd": {
 
-        "Lunettes cassées": {
-            "image": None  # LUNETTES
+        "Lunettes_cassees": {
+            "image": LUNETTES_CASSEES,
+            "texte": "TEST"
         },
 
-        "Souris de pc": {
-            "image": None  # SOURIS
+        "Souris_pc": {
+            "image": SOURIS,
+            "texte": "TEST"
         },
 
-        "Chaussettes propres": {
-            "image": None  # CHAUSSETTES
+        "Chaussettes_propres": {
+            "image": CHAUSSETTES,
+            "texte": "TEST"
         },
 
-        "Cahier de NSI": {
-            "image": None  # CAHIER
+        "Cahier_NSI": {
+            "image": CAHIER_DE_NSI,
+            "texte": "TEST"
         },
 
-        "Vody Lemonade": {
-            "image": None  # VODY
+        "Vody_Lemonade": {
+            "image": SOURIS,
+            "texte": "TEST"
         },
 
-        "Déodorant": {
-            "image": None  # DEODORANT
+        "Deodorant": {
+            "image": SOURIS,
+            "texte": "TEST"
         },
 
-        "Pomme du scientifique": {
-            "image": None  # POMME
+        "Pomme_scientifique": {
+            "image": SOURIS,
+            "texte": "TEST"
         },
 
-        "Armure de bronze": {
-            "image": None  # ARMURE
+        "Armure_de_bronze": {
+            "image": SOURIS,
+            "texte": "TEST"
         },
 
-        "Petit nain roux": {
-            "image": None  # NAIN
+        "Petit_nain_roux": {
+            "image": NAIN,
+            "texte": "TEST"
         },
 
-        "Serviette nettoyante": {
-            "image": None  # SERVIETTE
+        "Serviette_nettoyante": {
+            "image": SOURIS,
+            "texte": "TEST"
         }
     },
 
     "Fille populaire": {
 
-        "Gloss rose": {
-            "image": None  # GLOSS
+        "Gloss_rose": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Chew gum": {
-            "image": None  # CHEW_GUM
+        "Chew_gum": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Talons noirs": {
-            "image": None  # TALONS
+        "Talons_noirs": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Carte bleue": {
-            "image": None  # CARTE
+        "Carte_bleue": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Parfum Dioru": {
-            "image": None  # PARFUM
+        "Parfum_Dioru": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Pilule verte": {
-            "image": None  # PILULE
+        "Pilule_verte": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Crop-top rose": {
-            "image": None  # CROP_TOP
+        "Crop_top_rose": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Coque trèfle": {
-            "image": None  # COQUE
+        "Coque_trefle": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Mousse à la vanille": {
-            "image": None  # MOUSSE
+        "Mousse_a_la_vanille": {
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Sac à main violet": {
-            "image": None  # SAC
+        "Sac_a_main_violet": {
+            "image": None,
+            "texte": "TEST"
         }
     },
 
-    "La soeur": {
+    "Soeur": {
 
-        "Croix marron": {
-            "image": None  # CROIX
+        "Croix_marron": {
+            "image": None,
+            "texte": "TEST"
         },
 
         "Chapelet": {
-            "image": None  # CHAPELET
+            "image": None,
+            "texte": "TEST"
         },
 
         "Mocassin": {
-            "image": None  # MOCASSIN
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Tableau sacré": {
-            "image": None  # TABLEAU
+        "Tableau_sacre": {
+            "image": None,
+            "texte": "TEST"
         },
 
         "Bourse": {
-            "image": None  # BOURSE
+            "image": None,
+            "texte": "TEST"
         },
 
         "Bougie": {
-            "image": None  # BOUGIE
+            "image": None,
+            "texte": "TEST"
         },
 
         "Voile": {
-            "image": None  # VOILE
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Huile bénie": {
-            "image": None  # HUILE
+        "Huile_benie": {
+            "image": None,
+            "texte": "TEST"
         },
 
         "Ostie": {
-            "image": None  # OSTIE
+            "image": None,
+            "texte": "TEST"
         },
 
-        "Sac à dos bleu": {
-            "image": None  # SAC_BLEU
+        "Sac_a_dos_bleu": {
+            "image": None,
+            "texte": "TEST"
         }
     }
 }

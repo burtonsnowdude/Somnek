@@ -1,6 +1,6 @@
 import csv
 from Fichiers_variables.variables import *
-
+from Fichiers_variables.dictionnaire_items import TYPES_ITEMS
 """
 Niveau atteint
 Argent obtenu
@@ -98,12 +98,13 @@ def definir_fichier_nouv_armes(noms):
     with open("Fichiers_csv/armes_obtenues_par_joueur.csv", "w", newline = "") as fichier_niveau :
             writer = csv.DictWriter(fichier_niveau, headers)
             writer.writeheader()
-            for arme in ARMES:
-                row = {}
-                row["Type"] = arme
-                for nom in noms :
-                    row[nom] = 0
-                writer.writerow(row)
+            for perso in TYPES_ITEMS : 
+                for arme in TYPES_ITEMS[perso]:
+                    row = {}
+                    row["Type"] = arme
+                    for nom in noms :
+                        row[nom] = 0
+                    writer.writerow(row)
 
 def contenu_fichier_armes():
     """Récupère les données du fichier armes_obtenues_par_joueur.csv"""
