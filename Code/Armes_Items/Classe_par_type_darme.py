@@ -2,9 +2,7 @@ import pygame as pyg
 from Armes_Items.classe_projectile import Projectile
 
 
-# =========================
-# BASE WEAPON
-# =========================
+
 class ArmeBase:
     def __init__(self, player):
         self.player = player
@@ -29,18 +27,14 @@ class ArmeBase:
         pass
 
 
-# =========================
-# PROJECTILE WEAPON
-# =========================
+
 class ArmeProjectile(ArmeBase):
     def tirer(self):
         projectile = Projectile(self.player)
         self.player.all_projectiles.add(projectile)
 
 
-# =========================
-# ZONE D'ATTAQUE
-# =========================
+
 class ZoneAttaque(pyg.sprite.Sprite):
     def __init__(self, pos, player, duration=9600):
         super().__init__()  # ← SANS arguments
@@ -70,9 +64,7 @@ class ZoneAttaque(pyg.sprite.Sprite):
         self.rect.center = (sx, sy)
 
 
-# =========================
-# ARME ZONE
-# =========================
+
 class ArmeZone(ArmeBase):
     def __init__(self, player):
         super().__init__(player)
@@ -86,9 +78,7 @@ class ArmeZone(ArmeBase):
         self.player.all_zones.add(zone)
 
 
-# =========================
-# MULTI DIRECTION
-# =========================
+
 class ArmeMultiDirection(ArmeBase):
     def tirer(self):
         for angle in range(0, 360, 45):
@@ -97,9 +87,6 @@ class ArmeMultiDirection(ArmeBase):
             self.player.all_projectiles.add(proj)
 
 
-# =========================
-# EPEE / ORBITE
-# =========================
 class ArmeEpee(ArmeBase):
     def __init__(self, player):
         super().__init__(player)
