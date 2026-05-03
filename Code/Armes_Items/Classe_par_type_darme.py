@@ -6,7 +6,7 @@ import math
 class ArmeBase:
     def __init__(self, player):
         self.player = player
-        self.cooldown = 30
+        self.cooldown = 60
         self.timer = 0
         self.visible = False
         self.damage = 10
