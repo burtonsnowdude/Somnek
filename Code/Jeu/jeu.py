@@ -84,8 +84,7 @@ def jeu(perso):
             # =====================
             p.update_armes()
             p.all_projectiles.update()
-            for zone in p.all_zones:
-                zone.update(p)
+            p.all_zones.update()
             # =====================
             # COLLISIONS ZONES
             # =====================
@@ -184,9 +183,9 @@ def jeu(perso):
             p.draw_player(frame)
 
             # arme active visible
-            arme = p.armes[p.arme_active]
-            if arme.visible:
-                arme.draw(WIN)
+            for arme in p.armes:
+                if arme.visible:
+                    arme.draw(WIN)
 
             p.all_projectiles.draw(WIN)
             p.all_zones.draw(WIN)

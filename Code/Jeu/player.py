@@ -31,7 +31,8 @@ class Player:
         self.armes = [
                 ArmeProjectile(self),
                 ArmeEpee(self),
-                ArmeZone(self)
+                ArmeZone(self),
+                ArmeMultiDirection(self)
                         ]
         self.arme_active = 0
         self.all_zones = pyg.sprite.Group() 
