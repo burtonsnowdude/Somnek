@@ -13,7 +13,9 @@ from Monstres.vagues import *
 from Jeu.Quêtes import verif_k, verif_q
 from Monstres.boss import spawn_boss, gestion_boss
 from Minijeux.all_mj import mj
-
+from Armes_Items.classe_par_type_darme import *
+from Armes_Items.Explosions import Explosion
+Explosion.init_frames()  # ← charge les frames une seule fois
 def jeu(perso):
     perso = "Nerd"
     noms, new_tab = det_noms()
@@ -34,6 +36,7 @@ def jeu(perso):
     run = True
     
     p = Player(perso, nom)
+    explosions = []
 
     monstres_presents, armes_et_items_possedees, xp_dispo, boss_acheves, armes_possedees, items_possedes = [], [], [], [], [], []
 
@@ -83,7 +86,7 @@ def jeu(perso):
             p.update_armes()
             p.all_projectiles.update()
             p.all_zones.update()
-           
+            
             for zone in p.all_zones:
                 for m in monstres_presents:
                     if zone.rect.colliderect(m.rect):
@@ -92,19 +95,36 @@ def jeu(perso):
 
                 if boss_present and zone.rect.colliderect(boss.rect):
                     boss.degats(10)
-                    
+            # Dans la section UPDATE (après p.all_zones.update())
+            for explosion in explosions[:]:
+                explosion.update(clock.get_time())
 
+                # Dégâts au premier frame uniquement
+                if not explosion.a_fait_degats:
+                        for m in monstres_presents:
+                            if explosion.rect.colliderect(m.rect):
+                                m.degats(explosion.degats)
+                        if boss_present and explosion.rect.colliderect(boss.rect):
+                            boss.degats(explosion.degats)
+                        explosion.a_fait_degats = True  # ← ne refrappe plus
+
+                if explosion.finished():
+                    explosions.remove(explosion)
+
+            
             for projectile in p.all_projectiles:
                 for m in monstres_presents:
                     if projectile.rect.colliderect(m.rect):
                         m.degats(10)
+                        if projectile.explode:   # ← vérifie le projectile directement
+                            explosions.append(Explosion(m.x_monde, m.y_monde, p))
                         projectile.kill()
-
+                        break
                 if boss_present and projectile.rect.colliderect(boss.rect):
                     boss.degats(10)
                     projectile.kill()
 
-           
+            
             if frame % FREQUENCE == 0:
                 monstres_presents = ajouter_monstre(monstres_presents, p, perso)
 
@@ -138,9 +158,6 @@ def jeu(perso):
                 boss, boss_present, p, frame, boss_acheves
             )
 
-            # =====================
-            # COFFRES
-            # =====================
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout != False:
                 nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
@@ -168,7 +185,7 @@ def jeu(perso):
 
             dernier_coffre_apparu += 1 
 
-           
+            
             p.draw_player(frame)
 
             # arme active visible
@@ -178,11 +195,15 @@ def jeu(perso):
 
             p.all_projectiles.draw(WIN)
             p.all_zones.draw(WIN)
+            for explosion in explosions:
+                explosion.draw(WIN)
 
             afficher_xp(xp_attendu, p)
             afficher_timer_vie(temps_ecoule, p)
 
-           
+            # =====================
+            # QUÊTES
+            # =====================
             kill_quest = verif_k(p)
             if kill_quest and kill_quest not in completed_kill_quests:
                 popup_group.add(PopupAchievement(kill_quest))

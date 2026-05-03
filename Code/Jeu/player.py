@@ -3,7 +3,7 @@ from Fichiers_variables.variables import *
 import math
 from Armes_Items.classe_projectile import Projectile
 from Affichage.fonctionnement_divers import camera
-from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone
+from Armes_Items.classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion
 
 class Player:
     """Class Player"""
@@ -31,7 +31,9 @@ class Player:
         self.armes = [
                 ArmeProjectile(self),
                 ArmeEpee(self),
-                ArmeZone(self)
+                ArmeZone(self),
+                ArmeMultiDirection(self),
+                ArmeExplosion(self)
                         ]
         self.arme_active = 0
         self.all_zones = pyg.sprite.Group() 
