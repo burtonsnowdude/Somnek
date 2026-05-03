@@ -42,7 +42,7 @@ POMME_SCIENTIFIQUE = pyg.image.load("Images/Armes_items/pomme_scientifique.png")
 VODY = pyg.image.load("Images/Armes_items/vody.png")
 AMBROISIE = pyg.image.load("Images/Armes_items/ambroisie.png")
 # FILLE POPULAIRE
-GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose")
+GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose.png")
 TICKET =  pyg.image.load("Images/Armes_items/ticket.png")
 HIGLIGHTER =  pyg.image.load("Images/Armes_items/highlighter.png")
 FAUX_CILS = pyg.image.load("Images/Armes_items/faux_cils.png")

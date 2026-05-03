@@ -160,4 +160,19 @@ class Player:
         """À appeler chaque frame pour réduire le cooldown"""
         if self.projectile_cooldown > 0:
             self.projectile_cooldown -= 1
-    
+
+    def get_direction(self):
+        if "anim" in PERSOS[self.perso]:
+            if self.anim == self.anim_horizon_r:
+                return (1, 0)   # droite
+            elif self.anim == self.anim_horizon_l:
+             return (-1, 0)  # gauche
+            elif self.anim == self.anim_arriere:
+                return (0, -1)  # haut
+            else:
+                return (0, 1)   # bas (anim_avant = direction par défaut)
+        else:
+            if self.image == self.image_r:
+                return (1, 0)
+            else:
+                return (-1, 0)

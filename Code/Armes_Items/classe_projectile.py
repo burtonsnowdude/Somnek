@@ -26,9 +26,9 @@ class Projectile(pyg.sprite.Sprite):
             self.image = pyg.transform.scale(self.image, (30, 30))
         self.rect = self.image.get_rect(center=player.pos.center)
 
-        self.dx = 0
-        self.dy = -1
-
+        dx, dy = player.get_direction()
+        self.dx = dx
+        self.dy = dy
     def set_direction(self, angle):
         rad = math.radians(angle)
         self.dx = math.cos(rad)
