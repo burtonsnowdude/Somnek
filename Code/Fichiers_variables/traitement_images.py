@@ -41,6 +41,11 @@ CHARIOT_VIOLET = pyg.image.load("Images/Armes_items/chariot_violet.png")
 POMME_SCIENTIFIQUE = pyg.image.load("Images/Armes_items/pomme_scientifique.png")
 VODY = pyg.image.load("Images/Armes_items/vody.png")
 AMBROISIE = pyg.image.load("Images/Armes_items/ambroisie.png")
+NOKIA = pyg.image.load("Images/Armes_items/nokia.png")
+TREFLE = pyg.image.load("Images/Armes_items/trefle.png")
+ARMURE = pyg.image.load("Images/Armes_items/armure de bronze.png")
+CONSOLE = pyg.image.load("Images/Armes_items/console.png")
+SERVIETTETE = pyg.image.load("Images/Armes_items/serviette_nettoyante.png")
 # FILLE POPULAIRE
 GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose.png")
 TICKET =  pyg.image.load("Images/Armes_items/ticket.png")
@@ -60,7 +65,8 @@ TALON_LOUBOUTIN = pyg.image.load("Images/Armes_items/talon_louboutin.png")
 IPHONE_2000 = pyg.image.load("Images/Armes_items/iphone 2000.png")
 PASS_NAVIGO = pyg.image.load("Images/Armes_items/pass navigo.png")
 FER_A_LISSER = pyg.image.load("Images/Armes_items/fer_à_lisser.png")
-
+JEAN_STANLEY = pyg.image.load("Images/Armes_items/jean_stanley_cup.png")
+CHARGEUR = pyg.image.load("Images/Armes_items/chargeur.png")
 # NONNE 
 CROIX_DE_BASE = pyg.image.load("Images/Armes_items/croix_de_base.png")
 COURONNE =  pyg.image.load("Images/Armes_items/couronne.png")
@@ -71,6 +77,7 @@ OSTIE = pyg.image.load("Images/Armes_items/ostie.png")
 BOULE_DENERGIE = pyg.image.load("Images/Armes_items/boule_denergie.png")
 EAU_BENITE = pyg.image.load("Images/Armes_items/eau_bénite.png")
 MOCASSIN = pyg.image.load("Images/Armes_items/mocassin.png")
+HALO_LUMINEUX= pyg.image.load("Images/Armes_items/halo_lumineux.png")
 
 ###################################### PERSONNAGES ##########################################################
 # FILLE POPULAIRE

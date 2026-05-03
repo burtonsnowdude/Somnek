@@ -64,12 +64,11 @@ class Player:
             WIN.blit(self.anim[self.index], self.pos)
         else:
             WIN.blit(self.image, self.pos)
-    def attack(self):
-        self.armes[self.arme_active].trigger()
+    
     def update_armes(self):
         for arme in self.armes:
             arme.update()
-
+            arme.trigger() 
 
 
     def move_bg(self, monstres, xp, monstres_vague, boss, boss_present):

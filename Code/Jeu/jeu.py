@@ -68,8 +68,6 @@ def jeu(perso):
                 if event.key == pyg.K_z:
                     p.arme_active = (p.arme_active + 1) % len(p.armes)
 
-                if event.key == pyg.K_f:
-                    p.attack()
 
         if pause:
             pause, run, pause_time = menu_pause(new_tab, noms, armes_joueur)
