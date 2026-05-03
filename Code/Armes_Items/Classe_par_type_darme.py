@@ -1,7 +1,7 @@
 import pygame as pyg
 from Armes_Items.classe_projectile import Projectile
-
-
+import random
+import math
 
 class ArmeBase:
     def __init__(self, player):
@@ -77,14 +77,18 @@ class ArmeZone(ArmeBase):
     def __init__(self, player):
         super().__init__(player)
         self.cooldown = 120
+        self.rayon = 200  # distance max autour du joueur, ajuste à ta guise
 
     def tirer(self):
-        x = self.player.x_monde + 150
-        y = self.player.y_monde
+        angle = random.uniform(0, 360)
+        distance = random.uniform(50, self.rayon)
+        
+        rad = math.radians(angle)
+        x = self.player.x_monde + math.cos(rad) * distance
+        y = self.player.y_monde + math.sin(rad) * distance
 
-        zone = ZoneAttaque((x, y), self.player)  # ← on passe le player
+        zone = ZoneAttaque((x, y), self.player)
         self.player.all_zones.add(zone)
-
 
 
 class ArmeMultiDirection(ArmeBase):

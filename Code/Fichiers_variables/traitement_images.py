@@ -59,7 +59,7 @@ TALON_NOIR = pyg.image.load("Images/Armes_items/talon_noir.png")
 TALON_LOUBOUTIN = pyg.image.load("Images/Armes_items/talon_louboutin.png")
 IPHONE_2000 = pyg.image.load("Images/Armes_items/iphone 2000.png")
 PASS_NAVIGO = pyg.image.load("Images/Armes_items/pass navigo.png")
-FER_A_LISSER = pyg.image.load("Images/Armes_items/fer_a_lisser-removebg-preview.png")
+FER_A_LISSER = pyg.image.load("Images/Armes_items/fer_à_lisser.png")
 
 # NONNE 
 CROIX_DE_BASE = pyg.image.load("Images/Armes_items/croix_de_base.png")
@@ -69,7 +69,7 @@ BOUGIE = pyg.image.load("Images/Armes_items/bougie.png")
 BOURSE = pyg.image.load("Images/Armes_items/bourse.png")
 OSTIE = pyg.image.load("Images/Armes_items/ostie.png")
 BOULE_DENERGIE = pyg.image.load("Images/Armes_items/boule_denergie.png")
-EAU_BENITE = pyg.image.load("Images/Armes_items/eau_benite.png")
+EAU_BENITE = pyg.image.load("Images/Armes_items/eau_bénite.png")
 MOCASSIN = pyg.image.load("Images/Armes_items/mocassin.png")
 
 ###################################### PERSONNAGES ##########################################################
