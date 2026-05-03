@@ -14,6 +14,7 @@ from Jeu.Quêtes import verif_k, verif_q
 from Monstres.boss import spawn_boss, gestion_boss
 from Minijeux.all_mj import mj
 from Armes_Items.Classe_par_type_darme import *
+
 from Armes_Items.Explosions import Explosion
 Explosion.init_frames()  # ← charge les frames une seule fois
 def jeu(perso):

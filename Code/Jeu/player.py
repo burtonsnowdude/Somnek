@@ -3,7 +3,9 @@ from Fichiers_variables.variables import *
 import math
 from Armes_Items.classe_projectile import Projectile
 from Affichage.fonctionnement_divers import camera
+
 from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion
+
 
 class Player:
     """Class Player"""
