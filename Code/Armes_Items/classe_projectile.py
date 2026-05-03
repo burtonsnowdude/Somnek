@@ -2,7 +2,7 @@ import math
 import pygame as pyg
 
 PROJECTILES = { "bullet": "Images/Armes_items/projectile/feu esprit sain.png",
-    "fireball" : "Images/Armes_items/projectile/feu esprit sain.png",
+    "fireball" : "Images/Armes_items/projectile/proj_highliter.png",
     "slash": "Images/Armes_items/projectile/proj_ticket.png"
 }
 
@@ -24,6 +24,8 @@ class Projectile(pyg.sprite.Sprite):
         self.image = pyg.image.load(PROJECTILES[self.type]).convert_alpha()
         if self.type == "bullet":
             self.image = pyg.transform.scale(self.image, (30, 30))
+        elif self.type == "fireball":
+            self.image = pyg.transform.scale(self.image, (50, 50)) 
         self.rect = self.image.get_rect(center=player.pos.center)
 
         dx, dy = player.get_direction()

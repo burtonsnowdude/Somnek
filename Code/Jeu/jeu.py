@@ -85,15 +85,13 @@ def jeu(perso):
             p.update_armes()
             p.all_projectiles.update()
             p.all_zones.update()
-            
-            for zone in p.all_zones:
-                for m in monstres_presents:
-                    if zone.rect.colliderect(m.rect):
-                        m.degats(10)
-                        
-
-                if boss_present and zone.rect.colliderect(boss.rect):
-                    boss.degats(10)
+            if frame % 10 == 0:
+                for zone in p.all_zones:
+                    for m in monstres_presents:
+                        if zone.rect.colliderect(m.rect):
+                            m.degats(10)
+                    if boss_present and zone.rect.colliderect(boss.rect):
+                        boss.degats(10)
             # Dans la section UPDATE (après p.all_zones.update())
             for explosion in explosions[:]:
                 explosion.update(clock.get_time())
