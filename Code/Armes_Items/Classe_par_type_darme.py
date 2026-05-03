@@ -2,9 +2,7 @@ import pygame as pyg
 from Armes_Items.classe_projectile import Projectile
 
 
-# =========================
-# BASE WEAPON
-# =========================
+
 class ArmeBase:
     def __init__(self, player):
         self.player = player
@@ -29,18 +27,23 @@ class ArmeBase:
         pass
 
 
-# =========================
-# PROJECTILE WEAPON
-# =========================
+
 class ArmeProjectile(ArmeBase):
     def tirer(self):
         projectile = Projectile(self.player)
         self.player.all_projectiles.add(projectile)
 
 
-# =========================
-# ZONE D'ATTAQUE
-# =========================
+class ArmeExplosion(ArmeBase):
+    def __init__(self, player):
+        super().__init__(player)
+        self.cooldown = 90      # cadence de tir
+        self.has_explosion = True
+
+    def tirer(self):
+        proj = Projectile(self.player, proj_type="fireball", explode=True)  # ou "slash", au choix
+        self.player.all_projectiles.add(proj)
+
 class ZoneAttaque(pyg.sprite.Sprite):
     def __init__(self, pos, player, duration=150):
         super().__init__()  # ← SANS arguments
@@ -83,9 +86,7 @@ class ArmeZone(ArmeBase):
         self.player.all_zones.add(zone)
 
 
-# =========================
-# MULTI DIRECTION
-# =========================
+
 class ArmeMultiDirection(ArmeBase):
     def tirer(self):
         for angle in range(0, 360, 45):
@@ -94,16 +95,14 @@ class ArmeMultiDirection(ArmeBase):
             self.player.all_projectiles.add(proj)
 
 
-# =========================
-# EPEE / ORBITE
-# =========================
+
 class ArmeEpee(ArmeBase):
     def __init__(self, player):
         super().__init__(player)
         self.visible = True
         self.offset = (20, 10)
 
-        image = pyg.image.load("Images/Armes_items/ticket.png").convert_alpha()
+        image = pyg.image.load("Images/Armes_items/cle_usb.png").convert_alpha()
         self.image = pyg.transform.scale(image, (20, 20))
 
     def draw(self, win):

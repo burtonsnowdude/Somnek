@@ -2,7 +2,7 @@ import math
 import pygame as pyg
 
 PROJECTILES = { "bullet": "Images/Armes_items/projectile/feu esprit sain.png",
-    "fireball" : "Images/Armes_items/projectile/feu esprit saint.png",
+    "fireball" : "Images/Armes_items/projectile/feu esprit sain.png",
     "slash": "Images/Armes_items/projectile/proj_ticket.png"
 }
 
@@ -10,7 +10,7 @@ PROJECTILES = { "bullet": "Images/Armes_items/projectile/feu esprit sain.png",
 class Projectile(pyg.sprite.Sprite):
     """Projectile générique"""
 
-    def __init__(self, player, proj_type="bullet"):
+    def __init__(self, player, proj_type="bullet", explode=False):
         super().__init__()
 
         self.player = player
@@ -19,6 +19,7 @@ class Projectile(pyg.sprite.Sprite):
         self.speed = 7
         self.damage = 10
         self.piercing = 1
+        self.explode = explode 
 
         self.image = pyg.image.load(PROJECTILES[self.type]).convert_alpha()
         if self.type == "bullet":

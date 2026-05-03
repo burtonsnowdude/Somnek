@@ -36,18 +36,47 @@ NAIN = pyg.image.load("Images/Armes_items/nain.png")
 CHAUSSETTES = pyg.image.load("Images/Armes_items/chaussettes.png")
 SOURIS = pyg.image.load("Images/Armes_items/souris.png")
 CLE_USB = pyg.image.load("Images/Armes_items/cle_usb.png")
-
+PISTOLETS =  pyg.image.load("Images/Armes_items/pistolets.png")
+CHARIOT_VIOLET = pyg.image.load("Images/Armes_items/chariot_violet.png")
+POMME_SCIENTIFIQUE = pyg.image.load("Images/Armes_items/pomme_scientifique.png")
+VODY = pyg.image.load("Images/Armes_items/vody.png")
+AMBROISIE = pyg.image.load("Images/Armes_items/ambroisie.png")
 # FILLE POPULAIRE
-
+GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose")
+TICKET =  pyg.image.load("Images/Armes_items/ticket.png")
+HIGLIGHTER =  pyg.image.load("Images/Armes_items/highlighter.png")
+FAUX_CILS = pyg.image.load("Images/Armes_items/faux_cils.png")
+BRACELET_SOEUR = pyg.image.load("Images/Armes_items/bracelet_soeur.png")
+CARTE_BLEU = pyg.image.load("Images/Armes_items/carte_bleu.png")
+PILULE_VERTE = pyg.image.load("Images/Armes_items/pilule_verte.png")
+MOUSSE_VANILLE = pyg.image.load("Images/Armes_items/mousse_vanille.png")
+DEMAQUILLANT = pyg.image.load("Images/Armes_items/demaquillant.png")
+PARFUM_DIORU = pyg.image.load("Images/Armes_items/parfum_dioru.png")
+MINUTEUR = pyg.image.load("Images/Armes_items/minuteur.png")
+CHEW_GUM = pyg.image.load("Images/Armes_items/chew_gum.png")
+CROP_TOP_ROSE = pyg.image.load("Images/Armes_items/crop_top_rose.png")
+TALON_NOIR = pyg.image.load("Images/Armes_items/talon_noir.png")
+TALON_LOUBOUTIN = pyg.image.load("Images/Armes_items/talon_louboutin.png")
+IPHONE_2000 = pyg.image.load("Images/Armes_items/iphone 2000.png")
+PASS_NAVIGO = pyg.image.load("Images/Armes_items/pass navigo.png")
+FER_A_LISSER = pyg.image.load("Images/Armes_items/fer_a_lisser-removebg-preview.png")
 
 # NONNE 
 CROIX_DE_BASE = pyg.image.load("Images/Armes_items/croix_de_base.png")
-
+COURONNE =  pyg.image.load("Images/Armes_items/couronne.png")
+FEU_SAINT =  pyg.image.load("Images/Armes_items/projectile/feu esprit sain.png")
+BOUGIE = pyg.image.load("Images/Armes_items/bougie.png")
+BOURSE = pyg.image.load("Images/Armes_items/bourse.png")
+OSTIE = pyg.image.load("Images/Armes_items/ostie.png")
+BOULE_DENERGIE = pyg.image.load("Images/Armes_items/boule_denergie.png")
+EAU_BENITE = pyg.image.load("Images/Armes_items/eau_benite.png")
+MOCASSIN = pyg.image.load("Images/Armes_items/mocassin.png")
 
 ###################################### PERSONNAGES ##########################################################
 # FILLE POPULAIRE
 FILLE_POPULAIRE_L = pyg.image.load("Images/Persos/fille_populaire_l.png")
 FILLE_POPULAIRE_R = pyg.image.load("Images/Persos/fille_populaire_r.png")
+
 
 #NERD
 spritesheet_nerd_avant = pyg.image.load("Images/Persos/nerd_avant.png")
