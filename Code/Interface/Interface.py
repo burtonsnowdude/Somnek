@@ -1,4 +1,3 @@
-from turtle import position
 from Interface.option import settings, flashing_effect, black_and_white
 import pygame as pyg
 import sys
@@ -21,8 +20,6 @@ pyg.mixer.init()
 WIN = pyg.display.set_mode((WIDTH, HEIGHT))
 pyg.display.set_caption("SOMNEK")
 
-
-
 def play_music(path):
     pyg.mixer.music.stop()
     pyg.mixer.music.load(path)
@@ -38,23 +35,6 @@ except:
 FONT_BUTTON = pyg.font.SysFont(None, 36)
 
 
-buttons = [
-    Button("COMMENCER", "load", 400, 305, 300, 65, FONT_BUTTON),
-    Button("COLLECTION", "collection", 150, 440, 220, 60, FONT_BUTTON),
-    Button("POWER UP", "power_up", 400, 440, 250, 70, FONT_BUTTON),
-    Button("REALISATIONS", "realisations", 670, 440, 260, 60, FONT_BUTTON),
-    Button("Credits", "credits", 400, 520, 200, 50, FONT_BUTTON),
-    Button("Options", "options", 100, 50, 180, 45, FONT_BUTTON),
-    Button("QUITTER", "quit", 700, 50, 180, 45, FONT_BUTTON),
-]
-
-btn_rev_coll = Button("X", "rev_coll", 550, 130, 40, 40, FONT_BUTTON)
-btn_rev_real = Button("X", "rev_real", 550, 130, 40, 40, FONT_BUTTON)
-btn_rev_cre = Button("X", "rev_cre", 550, 130, 40, 40, FONT_BUTTON)
-btn_rev_opt = Button("X", "rev_opt", 550, 130, 40, 40, FONT_BUTTON)  # Bouton pour fermer les options
-btn_confirm_nerd = Button("Confirmer", "confirm", 550, 500, 80, 40, FONT_BUTTON)
-btn_rev_start = Button("X", "rev_start", 550, 130, 40, 40, FONT_BUTTON)
-
 def interface():
     fond_intro = pyg.image.load("Images/Interface/press.png")
     fond_intro = pyg.transform.scale(fond_intro, (WIDTH, HEIGHT))
@@ -62,25 +42,23 @@ def interface():
     fond_menu = pyg.image.load("Images/Interface/fond_accueil.png")
     fond_menu = pyg.transform.scale(fond_menu, (WIDTH, HEIGHT))
 
-
-
     fond_credits = pyg.image.load("Images/Interface/fond_credits.png")
     fond_credits = pyg.transform.scale(fond_credits, (350, 400))
 
     buttons = [
-    Button("COMMENCER", "load", 400, 305, 300, 65, FONT_BUTTON),
-    Button("COLLECTION", "collection", 150, 440, 220, 60, FONT_BUTTON),
-    Button("POWER UP", "power_up", 400, 440, 250, 70, FONT_BUTTON),
-    Button("REALISATIONS", "realisations", 670, 440, 260, 60, FONT_BUTTON),
-    Button("Credits", "credits", 400, 520, 200, 50, FONT_BUTTON),
-    Button("Options", "options", 100, 50, 180, 45, FONT_BUTTON),
-    Button("QUITTER", "quit", 700, 50, 180, 45, FONT_BUTTON),
+        Button("COMMENCER", "load", 400, 305, 300, 65, FONT_BUTTON),
+        Button("COLLECTION", "collection", 150, 440, 220, 60, FONT_BUTTON),
+        Button("POWER UP", "power_up", 400, 440, 250, 70, FONT_BUTTON),
+        Button("REALISATIONS", "realisations", 670, 440, 260, 60, FONT_BUTTON),
+        Button("Credits", "credits", 400, 520, 200, 50, FONT_BUTTON),
+        Button("Options", "options", 100, 50, 180, 45, FONT_BUTTON),
+        Button("QUITTER", "quit", 700, 50, 180, 45, FONT_BUTTON),
     ]
 
     btn_rev_coll = Button("X", "rev_coll", 550, 130, 40, 40, FONT_BUTTON)
     btn_rev_real = Button("X", "rev_real", 550, 130, 40, 40, FONT_BUTTON)
     btn_rev_cre = Button("X", "rev_cre", 550, 130, 40, 40, FONT_BUTTON)
-    btn_rev_opt = Button("X", "rev_opt", 550, 130, 40, 40, FONT_BUTTON)  # Bouton pour fermer les options
+    btn_rev_opt = Button("X", "rev_opt", 550, 130, 40, 40, FONT_BUTTON)
     btn_confirm_nerd = Button("Confirmer", "confirm", 550, 500, 80, 40, FONT_BUTTON)
     btn_rev_start = Button("X", "rev_start", 550, 130, 40, 40, FONT_BUTTON)
 
@@ -89,26 +67,20 @@ def interface():
     show_realisation = False
     show_credits = False
     show_start = False
-    show_options = False  # Ajoutez cette variable
+    show_options = False
     show_shop = False
-
-
 
     musique_bout = False
     musique_load = False
     musique_close = False
-    musique_back = False
 
     musique_bout_played = False
     musique_load_played = False
     musique_close_played = False
-    musique_back_played = False
-    argent = 0
 
     joueur = "Daphne"
     player_money = get_info(joueur, "argent", None)
 
-    reset_clicked = False
     clock = pyg.time.Clock()
     running = True
 
@@ -119,7 +91,6 @@ def interface():
         mouse_pressed = pyg.mouse.get_pressed()
         events = pyg.event.get()
 
-        # RESET AUDIO FLAGS CHAQUE FRAME
         musique_bout_played = False
         musique_load_played = False
         musique_close_played = False
@@ -138,18 +109,19 @@ def interface():
             argent_text = FONT_BUTTON.render(f"Argent: {player_money}", True, (0, 0, 0))
             WIN.blit(argent_text, (330, 50))
 
+            # ← clé : on ne traite les clics que si aucune fenêtre n'est ouverte
+            aucune_fenetre_ouverte = not (show_image or show_realisation or show_credits or show_start or show_options or show_shop)
+
             for btn in buttons:
                 btn.draw(WIN, mouse_pos)
 
-                if btn.is_clicked(mouse_pos, mouse_pressed):
-                    pyg.time.delay(200)
-
+                if aucune_fenetre_ouverte and btn.is_clicked(mouse_pos, mouse_pressed):
                     if btn.action == "collection":
                         show_image = True
                         musique_bout = True
 
                     elif btn.action == "options":
-                        show_options = True  # Afficher les options
+                        show_options = True
                         musique_bout = True
 
                     elif btn.action == "quit":
@@ -170,12 +142,11 @@ def interface():
                     elif btn.action == "load":
                         musique_load = True
                         show_start = True
-                        
 
                     elif btn.action == "power_up":
+                        show_shop = True
                         musique_bout = True
-                        if btn.action == "power_up":
-                            show_shop = True
+
             if not settings["music"]:
                 pyg.mixer.music.stop()
 
@@ -191,8 +162,9 @@ def interface():
 
             if musique_close and not musique_close_played:
                 if settings["sound"]:
-                        play_music("Sons/rev.mp3")
-                        musique_close = False
+                    play_music("Sons/rev.mp3")
+                    musique_close = False
+
             if settings["music"]:
                 if pyg.mixer.music.get_busy() == False:
                     pyg.mixer.music.load("Sons/music_interface.mp3")
@@ -200,16 +172,10 @@ def interface():
 
             if show_realisation:
                 popup = realisation_brouillon(events)
-
-                WIN.blit(
-                    popup,
-                    ((WIDTH - POPUP_W)//2, (HEIGHT - POPUP_H)//2)
-                )
-
+                WIN.blit(popup, ((WIDTH - POPUP_W)//2, (HEIGHT - POPUP_H)//2))
                 btn_rev_real.draw(WIN, mouse_pos)
 
                 if btn_rev_real.is_clicked(mouse_pos, mouse_pressed):
-                    pyg.time.delay(200)
                     show_realisation = False
                     musique_close = True
 
@@ -218,36 +184,28 @@ def interface():
                 btn_rev_cre.draw(WIN, mouse_pos)
 
                 if btn_rev_cre.is_clicked(mouse_pos, mouse_pressed):
-                    pyg.time.delay(200)
                     show_credits = False
                     musique_close = True
-                    
 
             if show_start:
                 result = open_start(WIN, events, mouse_pos, mouse_pressed, btn_rev_start, FONT_BUTTON)
-                print(result)
-                if result is not None :
+                if result is not None:
                     if result == "close":
                         show_start = False
-
                     elif result[0] == "start_game":
                         show_start = False
                         return result[1]
 
-            # AFFICHER LES OPTINS
             if show_options:
-                # Vérifiez que events contient les bonnes données
                 options(events, mouse_pos, mouse_pressed, WIN)
-                
                 btn_rev_opt.draw(WIN, mouse_pos)
 
                 if btn_rev_opt.is_clicked(mouse_pos, mouse_pressed):
-                    pyg.time.delay(200)
                     show_options = False
                     musique_close = True
+
             if show_shop:
                 from Interface.Power_up_shop import open_shop, buy_selected
-
                 close = open_shop(events, WIN, mouse_pos, mouse_pressed, btn_rev_opt, FONT_BUTTON, player_money, joueur)
 
                 if btn_confirm_nerd.is_clicked(mouse_pos, mouse_pressed):
@@ -255,27 +213,27 @@ def interface():
 
                 if close:
                     show_shop = False
-                player_money = get_info(joueur, "argent", None)    
-            if show_image:
-                    close = open_collection(events, WIN, mouse_pos, mouse_pressed, btn_rev_coll)
+                player_money = get_info(joueur, "argent", None)
 
-                    if close:
-                        show_image = False
-                        musique_close = True
-            
+            if show_image:
+                close = open_collection(events, WIN, mouse_pos, mouse_pressed, btn_rev_coll)
+
+                if close:
+                    show_image = False
+                    musique_close = True
 
         for event in events:
-                if event.type == pyg.QUIT:
-                    running = False
-                    return False
-                if event.type == pyg.KEYDOWN:
-                    if event.key == pyg.K_SPACE:
-                        game = True
+            if event.type == pyg.QUIT:
+                running = False
+                return False
+            if event.type == pyg.KEYDOWN:
+                if event.key == pyg.K_SPACE:
+                    game = True
 
         if settings["bw"]:
             black_and_white(WIN)
 
         if settings["vfx"]:
             flashing_effect(WIN)
-        pyg.display.flip()
 
+        pyg.display.flip()

@@ -20,4 +20,6 @@ class Button:
         win.blit(text, text.get_rect(center=self.rect.center))
 
     def is_clicked(self, mouse_pos, mouse_pressed):
-        return self.rect.collidepoint(mouse_pos) and mouse_pressed[0]
+        if self.rect.collidepoint(mouse_pos) and mouse_pressed[0]:
+            return True
+        return False
