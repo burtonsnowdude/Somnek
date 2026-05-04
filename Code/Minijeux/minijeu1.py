@@ -3,8 +3,8 @@ mini jeu du nerd : binaire
 """
 import pygame as pyg
 from Minijeux.minijeu2 import spawn_objet, draw_objet, collision
-from fonctionnement_divers import screen_to_world, camera
-from variables import *
+from Affichage.fonctionnement_divers import screen_to_world, camera
+from Fichiers_variables.variables import *
 from random import randint
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200
