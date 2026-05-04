@@ -1,7 +1,7 @@
-from variables import *
+from Fichiers_variables.variables import *
 from random import choice, randint
 from Monstres.class_monstre import Monstre
-from fonctionnement_divers import screen_to_world
+from Affichage.fonctionnement_divers import screen_to_world
 from math import sqrt
 
 ################## FONCTION QUI REGROUPE TOUS LES EVENEMENTS ################

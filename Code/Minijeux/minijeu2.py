@@ -5,16 +5,24 @@ Minijeu Fille_populaire : QUIZZ SUR LE MAQUILLAGE
 import pygame as pyg
 from random import randint, shuffle
 from math import sqrt
-from fonctionnement_divers import screen_to_world, camera
-from Class_Button import Button
-from variables import *
+from Affichage.fonctionnement_divers import screen_to_world, camera
+from Interface.Class_Button import Button
+from Fichiers_variables.variables import *
+from Fichiers_variables.traitement_images import decouper_image
+from Fichiers_variables.gestion_fichiers import ajouter_arme
 
+import time
 pyg.init()
 pyg.mixer.init()
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200 # c'est faux c'est juste pour test
-OBJET = pyg.image.load("Images/Armes_items/berserk.png")
-SON = pyg.mixer.Sound("Sons/son_quete2.mp3")
+OBJET = pyg.image.load("Images/Armes_items/highlighter.png")
+SON = "Sons/son_quete2.mp3"
+spritesheet_quizz = pyg.image.load("Images/Autre/anim_quizz.png")
+ANIM_QUIZZ = decouper_image(spritesheet_quizz, 5, 5, 3)
+ROSE = (255, 182, 229, 200)
+BLEU = (154, 158, 200, 200)
+ECRITURE = (167, 67, 86)
 
 QUIZZ = { 
     0 :
@@ -46,15 +54,15 @@ def spawn_objet(x_debut, x_fin, y_debut, y_fin, p):
     p : Self@Player
         Le joueur
     """
-    nb_aleat1 = randint(-2, 2)
-    nb_aleat2 = randint(-2, 2)
-    x_debut += nb_aleat1 * WIDTH
-    y_debut += nb_aleat2 * HEIGHT
-    x_fin += nb_aleat1 * WIDTH
-    y_fin += nb_aleat2 * HEIGHT
+    nb_aleat1 = randint(-1, 1)
+    nb_aleat2 = randint(-1, 1)
+    x_debut += nb_aleat1 * BGX
+    y_debut += nb_aleat2 * BGY
+    x_fin += nb_aleat1 * BGX
+    y_fin += nb_aleat2 * BGY
     coord = (randint(x_debut, x_fin), randint(y_debut, y_fin))
     coord = screen_to_world(coord[0], coord[1], p)
-    print(coord)
+    coord = (300, 200)
     return coord
 
 def draw_objet(coord, image):
@@ -71,19 +79,94 @@ def regler_volume(coord, p, son):
     dist = sqrt((coord[0] - p.x_monde)**2 + (coord[1] - p.y_monde)**2)
 
     # distance max d'entente 
-    max_dist = 2*WIDTH
+    max_dist = 2*BGX
 
     volume = 1 - (dist / max_dist)
     volume = max(0, min(1, volume))
-
-    son.set_volume(volume)
+    pyg.mixer.music.set_volume(volume)
+    #son.set_volume(volume)
     
 
 def play_sound(son):
-    if not pyg.mixer.get_busy():
-        son.play()
+    if not pyg.mixer.music.get_busy():
+        pyg.mixer.music.load(son)
+        pyg.mixer.music.play()
 
-def quizz():
+def replique(texte, color, text_color):
+    textes = retour_ligne(texte)
+    temps_debut = time.time()
+    fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
+    fond.fill(color)
+    while time.time() - temps_debut < 3:
+        for event in pyg.event.get():
+            if event.type == pyg.QUIT:
+                pyg.quit()
+                exit()
+            if event.type == pyg.KEYDOWN :
+                keys = pyg.key.get_pressed()
+                if keys[pyg.K_RETURN]:
+                    return
+        WIN.blit(fond, (20, HEIGHT-100))
+        for t in textes :
+            texte = FONT.render(t, True, text_color)
+            WIN.blit(texte, (30, HEIGHT-90+20*textes.index(t)))
+        pyg.display.update()
+
+def anim_quizz(son):
+    replique("Bonjour ! Bienvenue au magasin !", ROSE, ECRITURE)
+    play_sound(son)
+    replique("Heuu... qui êtes vous ? Je ne vois personne.", BLEU, ECRITURE)
+    play_sound(son)
+    replique("T'inquièteeeee, je sais pourquoi tu viens.", ROSE, ECRITURE)
+    play_sound(son)
+    replique("Ah bonn moi-même je ne savais pas pour être honnête.", BLEU, ECRITURE)
+    play_sound(son)
+    replique("Bon, assez parlé. Venez à bout de ce quizz et vous remporterez un lot incroyable !", ROSE, ECRITURE)
+    play_sound(son)
+    replique("Ça fait rêver...", BLEU, ECRITURE)
+    frame = 0
+    i = 0
+    while i < 21 :
+        play_sound(son)
+        frame += 1
+        WIN.blit(ANIM_QUIZZ[i], (0,0))
+        if frame%6 == 0:
+            i += 1
+        pyg.display.update()
+
+def anim_fin(victoire, son):
+    play_sound(son)
+    if victoire :
+        play_sound(son)
+        replique("Bravo ! Vous avez réussi à avoir la moyenne ! Vous repartez avec ce magnifique highlighter, et ce sans le payer !", ROSE, ECRITURE)
+        play_sound(son)
+        replique("Je suis émue là... Tout d'abord j'aimerais remercier mes parents qui m'ont toujours soutenue et mes a-", BLEU, ECRITURE)
+        play_sound(son)
+        replique("Bon chut maintenant on en a marre.", ROSE, ECRITURE)
+        play_sound(son)
+        replique("Ah... Ok... Merci quand même...", BLEU, ECRITURE)
+    else : 
+        play_sound(son)
+        replique("Malheureusement pour vous, vous avez lamentablement échoué. Vous repartez bredouille de ce magasin.", ROSE, ECRITURE)
+        play_sound(son)
+        replique("...", BLEU, ECRITURE)
+        play_sound(son)
+        replique("Le lot était un highlighter de trèèèèèès haute qualité !", ROSE, ECRITURE)
+        play_sound(son)
+        replique("De toute façon c'est nul les highlighters.", BLEU, ECRITURE)
+        play_sound(son)
+        replique("Arrêtez d'avoir le seum et fichez le camp de mon magasin s'il vous plait.", ROSE, ECRITURE)        
+    frame = 0
+    i = 0
+    while i < 21 :
+        play_sound(son)
+        frame += 1
+        WIN.blit(ANIM_QUIZZ[i], (0,0))
+        if frame%6 == 0:
+            i += 1
+        pyg.display.update()
+              
+def quizz(son):
     run = True
     i = 0
     clock = pyg.time.Clock()
@@ -112,7 +195,7 @@ def quizz():
             b.color2 = (232, 73, 105)
         waiting = True
         while waiting:
-
+            play_sound(son)
             for event in pyg.event.get():
                 if event.type == pyg.QUIT:
                     pyg.quit()
@@ -143,13 +226,21 @@ def retour_ligne(texte):
         while texte[i] != " " :
             i -= 1
         liste = [texte[0:i], texte[i+1:nb_carac] ]
+        nb_carac = len(liste[1])
+        if nb_carac >= 80:
+            i = 79
+            while liste[1][i] != " " :
+                i -= 1
+            liste2 = [liste[1][0:i], liste[1][i+1:nb_carac] ]
+            liste.remove(liste[1])
+            liste += liste2
     else : 
         liste = [texte]
 
     return liste
 
 
-def minijeu2(p, coord_monde, minijeu2_fini):
+def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees, armes_joueur):
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p)
         coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
@@ -158,7 +249,12 @@ def minijeu2(p, coord_monde, minijeu2_fini):
     play_sound(SON)
     draw_objet(coord_screen, OBJET)
     if collision(coord_screen, OBJET, p):
-        quizz()
+        anim_quizz(SON)
+        victoire = quizz(SON)
+        if victoire :
+            armes_possedees.append("Aura_divine")
+            armes_joueur = ajouter_arme(p.nom, "Aura_divine", armes_joueur)
+        anim_fin(victoire, SON)
         minijeu2_fini = True
-        SON.stop()
-    return coord_monde, minijeu2_fini
+        pyg.mixer.music.stop()
+    return coord_monde, minijeu2_fini, armes_possedees, armes_joueur
