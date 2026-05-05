@@ -19,70 +19,70 @@ TYPES_ARMES = {
 
         "Epee_enflammee": {
             "type_arme": "coup",
-            "image": None,
+            "image": PISTOLETS,
             "texte": None
         },
 
         "Pistolets": {
             "type_arme": "balle",
-            "image": None,
+            "image": PISTOLETS,
             "texte": None
         },
 
         "Ticket_de_metro": {
             "type_arme": "trait",
-            "image": None,
+            "image": TICKET,
             "texte": None
         },
 
         "Epee_de_Guts": {
             "type_arme": "coup",
-            "image": None,
+            "image": TICKET,
             "texte": None
         },
 
         "Console_allumee": {
             "type_arme": "zone",
-            "image": None,
+            "image": CONSOLE,
             "texte": None
         }
     },
 
     "Fille_populaire": {
 
-        "Faux-cils": {
+        "Faux_cils": {
             "type_arme": "trait",
-            "image": None,
+            "image": FAUX_CILS,
             "texte": None
         },
 
         "Faux_ongles_roses": {
             "type_arme": "zone",
-            "image": None,
+            "image" : FAUX_CILS,
             "texte": None
         },
 
         "Bracelet_de_sa_soeur": {
             "type_arme": "balle",
-            "image": None,
+            "image": BRACELET_SOEUR,
             "texte": None
         },
 
         "Fer_a_lisser": {
             "type_arme": "zone_multiples",
-            "image": None,
+            "image": FER_A_LISSER,
             "texte": None
         },
 
         "Pass_Navigo": {
             "type_arme": "trait",
-            "image": None,
+            "image": PASS_NAVIGO,
             "texte": None
         },
 
         "Ring_light": {
             "type_arme": "zone_multiples",
-            "image": None,
+            "image": PASS_NAVIGO,
             "texte": None
         }
     },
@@ -91,37 +91,37 @@ TYPES_ARMES = {
 
         "Croix_marron": {
             "type_arme": "poison",
-            "image": None,
+            "image": CROIX_DE_BASE,
             "texte": None
         },
 
         "Feu_de_l'Esprit_Saint": {
             "type_arme": "zone",
-            "image": None,
+            "image": FEU_SAINT,
             "texte": None
         },
 
         "Medaille_de_bapteme": {
             "type_arme": "balle",
-            "image": None,
+            "image": FEU_SAINT,
             "texte": None
         },
 
         "Coiffe_de_rameau": {
             "type_arme": "zone",
-            "image": None,
+            "image": FEU_SAINT,
             "texte": None
         },
 
         "Lance_sacree": {
             "type_arme": "trait",
-            "image": None,
+            "image": FEU_SAINT,
             "texte": None
         },
 
         "Aura_divine": {
             "type_arme": "poison",
-            "image": None,
+            "image": HALO_LUMINEUX,
             "texte": None
         }
     }
@@ -164,8 +164,8 @@ ARMES = {
 
     "Fille_populaire": {
 
-        "Faux-cils": {
-            **TYPES_ARMES["Fille_populaire"]["Faux-cils"],
+        "Faux_cils": {
+            **TYPES_ARMES["Fille_populaire"]["Faux_cils"],
             "niveau_req": 1
         },
 

@@ -4,8 +4,8 @@ import time
 import pygame as pyg
 from math import ceil
 from Interface.Class_Button import Button
-from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS
-from Fichiers_variables.dictionnaire_armes import  GESTION_DES_NIVEAUX_ARMES
+from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS, TYPES_ITEMS
+from Fichiers_variables.dictionnaire_armes import  GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
 
 FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
 def passage(xp_attendu):
@@ -26,6 +26,15 @@ def passage(xp_attendu):
     xp_attendu = ceil(1.5*xp_attendu)
     return  xp_attendu
     
+def show_image(button, p):
+    y = button.rect.center[1]
+    if button.action in TYPES_ARMES[p.perso] :
+        image = TYPES_ARMES[p.perso][button.action]["image"]
+    else : 
+        image = TYPES_ITEMS[p.perso][button.action]["image"]
+    rect = image.get_rect()
+    rect.center = (700, y)
+    WIN.blit(image, rect)
 
 def choix_arme(p, armes_et_items_possedees):
     """Permet au joueur de choisir une arme à la fin d'un niveau
@@ -84,6 +93,7 @@ def choix_arme(p, armes_et_items_possedees):
     for b in buttons :
         b.color1 = (17, 97, 17)
         b.color2 = (43, 119, 52)
+        show_image(b, p)
     waiting = True
     selec = 0
 
@@ -127,6 +137,7 @@ def choix_arme(p, armes_et_items_possedees):
         WIN.blit(vert, (0, 0))
         for btn in buttons:
             btn.draw(WIN, mouse_pos)
+            show_image(btn, p)
         WIN.blit(texte, texte.get_rect(center=(CENTREx, 100)))
         pyg.display.update()
     return (type_objet, choix), time.time()-debut

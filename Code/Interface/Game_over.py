@@ -1,12 +1,12 @@
 import pygame as pyg
-from collection import HEIGHT, WIDTH
+
 from Fichiers_variables.traitement_images import decouper_image
 from Class_Button import Button
 from Code.Interface.menu import interface
 
 pyg.init()
 
-WIN = pyg.display.set_mode((WIDTH, HEIGHT))
+WIN = pyg.display.set_mode((500, 400))
 pyg.display.set_caption("SOMNEK-Game-Over")
 
 spritesheet_game_over = pyg.image.load("Images/Interface/game_over.png").convert_alpha()
@@ -45,8 +45,8 @@ while run:
     WIN.blit(
         image,
         (
-            WIDTH / 2 - image.get_width() / 2,
-            HEIGHT / 2 - image.get_height() / 2,
+            500 / 2 - image.get_width() / 2,
+            400 / 2 - image.get_height() / 2,
         ),
     )
 
