@@ -8,6 +8,8 @@ from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS, TYPES_IT
 from Fichiers_variables.dictionnaire_armes import  GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
 
 FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
+FONT_TEXTE_ARME = pyg.font.SysFont("Press Start 2P", 17)
+
 def passage(xp_attendu):
     """Incrémente le seuil et augmente l'xp attendu pour le prochain niveau
 
@@ -41,7 +43,7 @@ def show_texte(button, p):
         texte = TYPES_ARMES[p.perso][button.action]["texte"]
     else : 
         texte = TYPES_ITEMS[p.perso][button.action]["texte"]
-    texte = FONT.render(texte, True, (0, 0, 0))
+    texte = FONT_TEXTE_ARME.render(texte, True, (255, 255, 255))
     rect = texte.get_rect()
     rect.center = button.rect.center
     WIN.blit(texte, rect)
@@ -97,12 +99,12 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
         m = m.upper()
         affich.append(m)
     vert = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
-    vert.fill((204, 237, 204, 200))
-    texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (17, 97, 17))
+    vert.fill((102, 62, 86, 200))
+    texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (122, 48, 113))
     buttons = [Button(affich[i], choix[i], 400, 200+100*i, 400, 80, FONT) for i in range(3)]
     for b in buttons :
-        b.color1 = (17, 97, 17)
-        b.color2 = (43, 119, 52)
+        b.color1 = (122, 48, 113)
+        b.color2 = (161, 99, 158)
         b.rect_center = (400, b.rect.topleft[1]+15)
         show_image(b, p)
         show_texte(b, p)

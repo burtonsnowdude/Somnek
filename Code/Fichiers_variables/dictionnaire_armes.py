@@ -59,13 +59,13 @@ TYPES_ARMES = {
         "Faux_ongles_roses": {
             "type_arme": "zone",
             "image" : FAUX_CILS,
-            "texte": "TEST"
+            "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée."
         },
 
         "Bracelet_de_sa_soeur": {
             "type_arme": "balle",
             "image": BRACELET_SOEUR,
-            "texte": "TEST"
+            "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts."
         },
 
         "Fer_a_lisser": {

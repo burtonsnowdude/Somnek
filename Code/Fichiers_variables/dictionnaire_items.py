@@ -534,22 +534,22 @@ TYPES_ITEMS = {
 
         "Lunettes_cassees": {
             "image": LUNETTES_CASSEES,
-            "texte": "TEST"
+            "texte": "Augmente la zone d'attaque de 10 %."
         },
 
         "Souris_pc": {
             "image": SOURIS,
-            "texte": "TEST"
+            "texte": "Le personnage gagne 10 % de pièces en plus."
         },
 
         "Chaussettes_propres": {
             "image": CHAUSSETTES,
-            "texte": "TEST"
+            "texte": "Le personnage se déplace 10 % plus vite."
         },
 
         "Cahier_NSI": {
             "image": CAHIER_DE_NSI,
-            "texte": "TEST"
+            "texte": "Le personnage gagne 8 % d'attirance en plus."
         },
 
         "Vody_Lemonade": {
@@ -587,16 +587,20 @@ TYPES_ITEMS = {
 
         "Gloss_rose": {
             "image": GLOSS_ROSE,
-            "texte": "TEST"
+            "texte": "Augmente votre attirance de 15%."
         },
 
         "Chew_gum": {
             "image": CHEW_GUM,
-            "texte": "TEST"
+            "texte": "Augmente la santé maximale de 20 %."
         },
 
         "Talons_noirs": {
             "image": TALON_NOIR,
+            "texte": "Le personnage se déplace 10 % plus vite."
+        },
+        "Bracelet_soeur": {
+            "image": BRACELET_SOEUR,
             "texte": "TEST"
         },
 
