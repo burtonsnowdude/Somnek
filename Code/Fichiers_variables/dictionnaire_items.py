@@ -639,52 +639,52 @@ TYPES_ITEMS = {
     "Nonne": {
 
         "Croix_marron": {
-            "image": None,
+            "image": CROIX_DE_BASE,
             "texte": "TEST"
         },
 
         "Chapelet": {
-            "image": None,
+            "image": CROIX_DE_BASE,
             "texte": "TEST"
         },
 
         "Mocassin": {
-            "image": None,
+            "image": MOCASSIN,
             "texte": "TEST"
         },
 
         "Tableau_sacre": {
-            "image": None,
+            "image": MOCASSIN,
             "texte": "TEST"
         },
 
         "Bourse": {
-            "image": None,
+            "image": BOURSE,
             "texte": "TEST"
         },
 
         "Bougie": {
-            "image": None,
+            "image": BOUGIE,
             "texte": "TEST"
         },
 
         "Voile": {
-            "image": None,
+            "image": BOUGIE,
             "texte": "TEST"
         },
 
         "Huile_benie": {
-            "image": None,
+            "image": BOUGIE,
             "texte": "TEST"
         },
 
         "Ostie": {
-            "image": None,
+            "image": OSTIE,
             "texte": "TEST"
         },
 
         "Sac_a_dos_bleu": {
-            "image": None,
+            "image": OSTIE,
             "texte": "TEST"
         }
     }

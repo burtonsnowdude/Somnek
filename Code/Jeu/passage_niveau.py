@@ -33,10 +33,20 @@ def show_image(button, p):
     else : 
         image = TYPES_ITEMS[p.perso][button.action]["image"]
     rect = image.get_rect()
-    rect.center = (700, y)
+    rect.center = (550, y)
     WIN.blit(image, rect)
 
-def choix_arme(p, armes_et_items_possedees):
+def show_texte(button, p):
+    if button.action in TYPES_ARMES[p.perso] :
+        texte = TYPES_ARMES[p.perso][button.action]["texte"]
+    else : 
+        texte = TYPES_ITEMS[p.perso][button.action]["texte"]
+    texte = FONT.render(texte, True, (0, 0, 0))
+    rect = texte.get_rect()
+    rect.center = button.rect.center
+    WIN.blit(texte, rect)
+
+def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
     """Permet au joueur de choisir une arme à la fin d'un niveau
 
     Parameters
@@ -89,11 +99,13 @@ def choix_arme(p, armes_et_items_possedees):
     vert = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
     vert.fill((204, 237, 204, 200))
     texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (17, 97, 17))
-    buttons = [Button(affich[i], choix[i], 400, 200+100*i, 650, 80, FONT) for i in range(3)]
+    buttons = [Button(affich[i], choix[i], 400, 200+100*i, 400, 80, FONT) for i in range(3)]
     for b in buttons :
         b.color1 = (17, 97, 17)
         b.color2 = (43, 119, 52)
+        b.rect_center = (400, b.rect.topleft[1]+15)
         show_image(b, p)
+        show_texte(b, p)
     waiting = True
     selec = 0
 
@@ -132,12 +144,17 @@ def choix_arme(p, armes_et_items_possedees):
         for t in range(-BGX, WIDTH + BGX, BGX):
             for j in range(-BGY, HEIGHT + BGY, BGY):
                     WIN.blit(BG, (t, j))
+        for m in monstres_presents :
+            m.show(1)
+        for xp in xp_present :
+            xp.show_xp()
         mouse_pos = pyg.mouse.get_pos()
 
         WIN.blit(vert, (0, 0))
         for btn in buttons:
             btn.draw(WIN, mouse_pos)
             show_image(btn, p)
+            show_texte(btn, p)
         WIN.blit(texte, texte.get_rect(center=(CENTREx, 100)))
         pyg.display.update()
     return (type_objet, choix), time.time()-debut

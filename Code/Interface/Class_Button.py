@@ -9,6 +9,8 @@ class Button:
         self.font = font  
         self.color1 = (0, 0, 200)
         self.color2 = (0, 0, 255, 128)
+        self.rect_center = self.rect.center
+
     def draw(self, win, mouse_pos):
         color = self.color1 if self.rect.collidepoint(mouse_pos) else self.color2
 
@@ -17,7 +19,7 @@ class Button:
         win.blit(surface, self.rect)
 
         text = self.font.render(self.text, True, (255, 255, 255))
-        win.blit(text, text.get_rect(center=self.rect.center))
+        win.blit(text, text.get_rect(center=self.rect_center))
 
     def is_clicked(self, mouse_pos, mouse_pressed):
         if self.rect.collidepoint(mouse_pos) and mouse_pressed[0]:

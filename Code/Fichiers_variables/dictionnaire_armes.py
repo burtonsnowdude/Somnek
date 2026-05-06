@@ -7,44 +7,44 @@ TYPES_ARMES = {
 
         "Epee_bleue": {
             "type_arme": "coup",
-            "image": None,
-            "texte": None
+            "image": "TEST",
+            "texte": "TEST"
         },
 
         "Cle_USB": {
             "type_arme": "zone",
             "image": CLE_USB,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Epee_enflammee": {
             "type_arme": "coup",
             "image": PISTOLETS,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Pistolets": {
             "type_arme": "balle",
             "image": PISTOLETS,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Ticket_de_metro": {
             "type_arme": "trait",
             "image": TICKET,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Epee_de_Guts": {
             "type_arme": "coup",
             "image": TICKET,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Console_allumee": {
             "type_arme": "zone",
             "image": CONSOLE,
-            "texte": None
+            "texte": "TEST"
         }
     },
 
@@ -53,37 +53,37 @@ TYPES_ARMES = {
         "Faux_cils": {
             "type_arme": "trait",
             "image": FAUX_CILS,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Faux_ongles_roses": {
             "type_arme": "zone",
             "image" : FAUX_CILS,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Bracelet_de_sa_soeur": {
             "type_arme": "balle",
             "image": BRACELET_SOEUR,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Fer_a_lisser": {
             "type_arme": "zone_multiples",
             "image": FER_A_LISSER,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Pass_Navigo": {
             "type_arme": "trait",
             "image": PASS_NAVIGO,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Ring_light": {
             "type_arme": "zone_multiples",
             "image": PASS_NAVIGO,
-            "texte": None
+            "texte": "TEST"
         }
     },
 
@@ -92,37 +92,37 @@ TYPES_ARMES = {
         "Croix_marron": {
             "type_arme": "poison",
             "image": CROIX_DE_BASE,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Feu_de_l'Esprit_Saint": {
             "type_arme": "zone",
             "image": FEU_SAINT,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Medaille_de_bapteme": {
             "type_arme": "balle",
             "image": FEU_SAINT,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Coiffe_de_rameau": {
             "type_arme": "zone",
             "image": FEU_SAINT,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Lance_sacree": {
             "type_arme": "trait",
             "image": FEU_SAINT,
-            "texte": None
+            "texte": "TEST"
         },
 
         "Aura_divine": {
             "type_arme": "poison",
             "image": HALO_LUMINEUX,
-            "texte": None
+            "texte": "TEST"
         }
     }
 }
@@ -319,16 +319,16 @@ GESTION_DES_NIVEAUX_ARMES = {
     "Fille_populaire": {
 
         "Niveau 1": {
-            "Faux-cils": "15 PV",
+            "Faux_cils": "15 PV",
             "Fer_a_lisser": "19 PV"
         },
 
         "Niveau 2": {
-            "Faux-cils": "+10% dégâts"
+            "Faux_cils": "+10% dégâts"
         },
 
         "Niveau 3": {
-            "Faux-cils": "+15% dégâts"
+            "Faux_cils": "+15% dégâts"
         },
 
         "Niveau 4": {
@@ -347,7 +347,7 @@ GESTION_DES_NIVEAUX_ARMES = {
         },
 
         "Niveau 8": {
-            "Faux-cils": "+10% dégâts"
+            "Faux_cils": "+10% dégâts"
         },
 
         "Niveau 9": {
@@ -365,7 +365,7 @@ GESTION_DES_NIVEAUX_ARMES = {
 
         "Niveau 12": {
             "Bracelet_de_sa_soeur": "+10% dégâts",
-            "Faux-cils": "+15% dégâts"
+            "Faux_cils": "+15% dégâts"
         },
 
         "Niveau 13": {
@@ -393,7 +393,7 @@ GESTION_DES_NIVEAUX_ARMES = {
         },
 
         "Niveau 21": {
-            "Faux-cils": "+15% dégâts"
+            "Faux_cils": "+15% dégâts"
         },
 
         "Niveau 23": {

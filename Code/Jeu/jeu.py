@@ -18,13 +18,7 @@ from Armes_Items.Classe_par_type_darme import *
 from Armes_Items.Explosions import Explosion
 Explosion.init_frames()  # ← charge les frames une seule fois
 def jeu(perso):
-<<<<<<< HEAD
-    #perso = "Nerd"
-=======
-    
->>>>>>> 2beaadc8ea006692a1478225abc0f86c52247f10
     noms, new_tab = det_noms()
-    print("1 :", new_tab)
     nom = "Daphne"
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
@@ -96,18 +90,16 @@ def jeu(perso):
                             m.degats(10)
                     if boss_present and zone.rect.colliderect(boss.rect):
                         boss.degats(10)
-            # Dans la section UPDATE (après p.all_zones.update())
             for explosion in explosions[:]:
                 explosion.update(clock.get_time())
 
-                # Dégâts au premier frame uniquement
                 if not explosion.a_fait_degats:
                         for m in monstres_presents:
                             if explosion.rect.colliderect(m.rect):
                                 m.degats(explosion.degats)
                         if boss_present and explosion.rect.colliderect(boss.rect):
                             boss.degats(explosion.degats)
-                        explosion.a_fait_degats = True  # ← ne refrappe plus
+                        explosion.a_fait_degats = True  
 
                 if explosion.finished():
                     explosions.remove(explosion)
@@ -117,7 +109,7 @@ def jeu(perso):
                 for m in monstres_presents:
                     if projectile.rect.colliderect(m.rect):
                         m.degats(10)
-                        if projectile.explode:   # ← vérifie le projectile directement
+                        if projectile.explode:  
                             explosions.append(Explosion(m.x_monde, m.y_monde, p))
                         projectile.kill()
                         break
@@ -143,45 +135,27 @@ def jeu(perso):
                 derniere_vague += 1
 
             if monstres_vague is not None:
-                monstres_vague, p.kill_count = traverser_ecran(
-                    monstres_vague, p, frame, xp_dispo, x_monde, y_monde
-                )
-
-            monstres_presents, vague = vague_130(
-                temps_ecoule, monstres_presents, vague, p, perso
-            )
-
-            boss_present, boss = spawn_boss(
-                temps_ecoule, boss_present, boss_acheves, p, boss, perso
-            )
-
-            boss_present, boss_acheves = gestion_boss(
-                boss, boss_present, p, frame, boss_acheves
-            )
-
+                monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
+                monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p, perso)
+            boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p, boss, perso)
+            boss_present, boss_acheves = gestion_boss(boss, boss_present, p, frame, boss_acheves)
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout != False:
                 nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
 
             if coffre_existant:
                 nouveau_coffre.pointer_coffre(p)
-
                 if p.pos.colliderect(nouveau_coffre.rect):
-                    gain = nouveau_coffre.determiner_recompense(
-                        armes_et_items_possedees, p
-                    )
-
+                    gain = nouveau_coffre.determiner_recompense(armes_et_items_possedees, p)
                     if type(gain) == int:
                         argent += gain
                     else:
                         armes_et_items_possedees.append(gain[1])
                         armes_joueur = ajouter_arme(nom, gain, armes_joueur)
-
                         if gain[0] == "arme":
                             armes_possedees.append(gain[1])
                         else:
                             items_possedes.append(gain[1])
-
                     coffre_existant = False
 
             dernier_coffre_apparu += 1 
@@ -202,9 +176,6 @@ def jeu(perso):
             afficher_xp(xp_attendu, p)
             afficher_timer_vie(temps_ecoule, p)
 
-            # =====================
-            # QUÊTES
-            # =====================
             kill_quest = verif_k(p)
             if kill_quest and kill_quest not in completed_kill_quests:
                 popup_group.add(PopupAchievement(kill_quest))
@@ -219,7 +190,7 @@ def jeu(perso):
             if p.update_xp(xp, xp_attendu):
                 xp_attendu = passage(xp_attendu)
 
-                objet, pause_time = choix_arme(p, armes_possedees)
+                objet, pause_time = choix_arme(p, armes_possedees, monstres_presents, xp_dispo)
                 armes_et_items_possedees.append(objet[1])
 
                 if objet[0] == "arme":
