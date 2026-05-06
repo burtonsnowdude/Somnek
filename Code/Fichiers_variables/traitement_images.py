@@ -17,7 +17,7 @@ def decouper_image(image, cols, rows, nb_a_enlever):
 ################################ IMAGES FIXES ################################################################
 
 XP = pyg.image.load("Images/Autre/xp.jpg")
-BG = pyg.image.load("Images/Maps/map_cour_vraie.png") # charger le fond d'ecran
+BG = pyg.image.load("Images/Maps/metro.png") # charger le fond d'ecran
 BGX, BGY = BG.get_size()
 FLECHE = pyg.image.load("Images/Coffres/fleche.png")
 FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
@@ -119,6 +119,7 @@ CHEWING_GUM = pyg.image.load("Images/Monstres/chewing_gum.png")
 CROIX_ENVERS = pyg.image.load("Images/Monstres/croix_envers.png")
 OSTIE_PERIMEE = pyg.image.load("Images/Monstres/ostie_perimee.png")
 MONDE = pyg.image.load("Images/Monstres/monde.png")
+
 ########################### ANIMS ##########################################################################
 
 #SPRITESHEET
@@ -156,6 +157,8 @@ spritesheet_bisous =  pyg.image.load("Images/Monstres/bisous.png")
 spritesheet_666 = pyg.image.load("Images/Monstres/666.png")
 spritesheet_fruit_defendu = pyg.image.load("Images/Monstres/fruit_defendu.png")
 spritesheet_miroir = pyg.image.load("Images/Monstres/miroir.png")
+spritesheet_demon = pyg.image.load("Images/Monstres/demon.png")
+spritesheet_diablotin = pyg.image.load("Images/Monstres/diablotin.png")
 
 
 ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 3, 0)
@@ -191,3 +194,5 @@ ANIM_BISOUS = decouper_image(spritesheet_bisous, 3, 3, 0)
 ANIM_666 = decouper_image(spritesheet_666, 2, 3, 1)
 ANIM_FRUIT_DEFENDU = decouper_image(spritesheet_fruit_defendu, 3, 3, 1)
 ANIM_MIROIR = decouper_image(spritesheet_miroir, 3, 4, 0)
+ANIM_DEMON = decouper_image(spritesheet_demon, 6, 1, 0)
+ANIM_DIABLOTIN = decouper_image(spritesheet_diablotin, 9, 1, 0)

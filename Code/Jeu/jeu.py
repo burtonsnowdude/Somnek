@@ -18,7 +18,7 @@ from Armes_Items.Classe_par_type_darme import *
 from Armes_Items.Explosions import Explosion
 Explosion.init_frames()  # ← charge les frames une seule fois
 def jeu(perso):
-    perso = "Nerd"
+    #perso = "Nerd"
     noms, new_tab = det_noms()
     print("1 :", new_tab)
     nom = "Daphne"

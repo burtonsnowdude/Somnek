@@ -76,7 +76,7 @@ class ZoneAttaque(pyg.sprite.Sprite):
 class ArmeZone(ArmeBase):
     def __init__(self, player):
         super().__init__(player)
-        self.cooldown = 120
+        self.cooldown = 600
         self.rayon = 200  # distance max autour du joueur, ajuste à ta guise
 
     def tirer(self):

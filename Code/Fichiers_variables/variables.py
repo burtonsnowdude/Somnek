@@ -39,7 +39,7 @@ CATEGORIE = {}
 for i in range(1, 51):
     t = "Type " + str(i)
     CATEGORIE[t] = {"puissance" : i,
-                "hp" : 10*i,
+                "hp" : 50*i,
                 "vitesse" : ceil(i/10),
                 "niveau" : i}
     
@@ -129,6 +129,12 @@ TYPES_MONSTRES = {
                 "anim" : ANIM_ODEURS},
 
     # NONNE
+    "Demon" : { ** CATEGORIE["Type 1"],
+            "perso" : "Nonne",
+            "anim" : ANIM_DEMON},
+    "Diablotin" : { ** CATEGORIE["Type 2"],
+            "perso" : "Nonne",
+            "anim" : ANIM_DIABLOTIN},
     "Bisous" : { ** CATEGORIE["Type 4"],
                 "perso" : "Nonne",
                 "anim" : ANIM_BISOUS},
