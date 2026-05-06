@@ -6,9 +6,7 @@ pygame.init()
 WIDTH, HEIGHT = 550, 400
 FONT_BUTTON = pygame.font.SysFont(None, 24)
 
-# -----------------
-# IMAGES
-# -----------------
+
 shop_bg_img = pygame.image.load("Images/Interface/choix_du_personnage.png")
 shop_bg_img = pygame.transform.scale(shop_bg_img, (WIDTH, HEIGHT))
 
@@ -44,18 +42,13 @@ player_Inventory_charact = ["Fille"]
 selected_item = None
 
 
-# -----------------
-# UTIL
-# -----------------
+
 def pas_trouve(img):
     s = img.copy()
     s.fill((0, 0, 0), special_flags=pygame.BLEND_RGB_MULT)
     return s
 
 
-# -----------------
-# CLASS ITEM
-# -----------------
 class ShopItem:
     def __init__(self, name, image, affich, x, y):
         self.name = name
@@ -91,9 +84,7 @@ class ShopItem:
             pygame.draw.rect(surface, (255, 255, 0), self.rect, 3)
 
 
-# -----------------
-# CREATE ITEMS
-# -----------------
+
 def create_items():
     items = []
     spacing = 140
@@ -111,9 +102,7 @@ def create_items():
 items = create_items()
 
 
-# -----------------
-# PANEL BUTTONS
-# -----------------
+
 btn_confirm = Button("Confirmer", "confirm", 330, 360, 140, 45, FONT_BUTTON)
 btn_unlock = Button("Débloquer", "unlock", 330, 360, 140, 45, FONT_BUTTON)
 

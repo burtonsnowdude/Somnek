@@ -1,5 +1,5 @@
 from Jeu.jeu import jeu
-from Interface.Interface import interface
+from Interface.menu import interface
 
 def main():
     res = interface()

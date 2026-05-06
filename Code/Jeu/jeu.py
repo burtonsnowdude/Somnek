@@ -18,7 +18,11 @@ from Armes_Items.Classe_par_type_darme import *
 from Armes_Items.Explosions import Explosion
 Explosion.init_frames()  # ← charge les frames une seule fois
 def jeu(perso):
+<<<<<<< HEAD
     #perso = "Nerd"
+=======
+    
+>>>>>>> 2beaadc8ea006692a1478225abc0f86c52247f10
     noms, new_tab = det_noms()
     print("1 :", new_tab)
     nom = "Daphne"
@@ -30,7 +34,7 @@ def jeu(perso):
         noms = res
         argent = 0
         new_tab[0][nom] = 1
-    print("2 :", new_tab)
+    
 
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock()

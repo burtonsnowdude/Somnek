@@ -583,55 +583,55 @@ TYPES_ITEMS = {
         }
     },
 
-    "Fille populaire": {
+    "Fille_populaire": {
 
         "Gloss_rose": {
-            "image": None,
+            "image": GLOSS_ROSE,
             "texte": "TEST"
         },
 
         "Chew_gum": {
-            "image": None,
+            "image": CHEW_GUM,
             "texte": "TEST"
         },
 
         "Talons_noirs": {
-            "image": None,
+            "image": TALON_NOIR,
             "texte": "TEST"
         },
 
         "Carte_bleue": {
-            "image": None,
+            "image": CARTE_BLEU,
             "texte": "TEST"
         },
 
         "Parfum_Dioru": {
-            "image": None,
+            "image": PARFUM_DIORU,
             "texte": "TEST"
         },
 
         "Pilule_verte": {
-            "image": None,
+            "image": PILULE_VERTE,
             "texte": "TEST"
         },
 
         "Crop_top_rose": {
-            "image": None,
+            "image": CROP_TOP_ROSE,
             "texte": "TEST"
         },
 
         "Coque_trefle": {
-            "image": None,
+            "image": CROP_TOP_ROSE,
             "texte": "TEST"
         },
 
         "Mousse_a_la_vanille": {
-            "image": None,
+            "image": MOUSSE_VANILLE,
             "texte": "TEST"
         },
 
         "Sac_a_main_violet": {
-            "image": None,
+            "image": MOUSSE_VANILLE,
             "texte": "TEST"
         }
     },
