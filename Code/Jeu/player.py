@@ -5,7 +5,7 @@ from Armes_Items.classe_projectile import Projectile
 from Affichage.fonctionnement_divers import camera
 from Interface.Game_over import game_over
 from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion
-
+from Jeu.power_up import apply_powerups
 from Armes_Items.class_armes_sans_bugs import Arme
 
 
@@ -25,6 +25,7 @@ class Player:
             self.image_r = PERSOS[perso]["image"]["horizon_r"]
             self.image_l = PERSOS[perso]["image"]["horizon_l"]
             self.image = self.image_r
+            self.hp_max = PLAYER_PV
             
             self.pos = self.image.get_rect()
 

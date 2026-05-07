@@ -17,7 +17,7 @@ frame = 0
 def game_over():
     global frame
     
-    # Capture l'écran du jeu UNE SEULE FOIS
+    
     fond_jeu = WIN.copy()
     
     filtre = pyg.Surface((800, 600), pyg.SRCALPHA)
@@ -33,7 +33,7 @@ def game_over():
                 if bouton_revenir_menu.is_clicked(pyg.mouse.get_pos(), pyg.mouse.get_pressed()):
                     return "menu"
 
-        # Repose le fond figé + filtre à chaque frame
+        
         WIN.blit(fond_jeu, (0, 0))
         WIN.blit(filtre, (0, 0))
         
