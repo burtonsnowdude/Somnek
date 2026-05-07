@@ -103,6 +103,11 @@ def ajouter_monstre(monstres_presents, p, perso):
     list 
         La liste des monstres presents"""
     choix_possibles = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= p.niveau and TYPES_MONSTRES[monstre]["perso"] == perso]
+    if not choix_possibles:
+        choix_possibles = [m for m in TYPES_MONSTRES 
+                           if TYPES_MONSTRES[m]["perso"] == perso]
+        choix_possibles = [min(choix_possibles, 
+                           key=lambda m: TYPES_MONSTRES[m]["niveau"])]
     monstres_presents.append(Monstre(choice(choix_possibles), p)) # crée un nouveau monstre de type aléatoire
     return monstres_presents
 
@@ -125,6 +130,7 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     """
     kill_count = p.kill_count
     for m in monstres_presents[:]:
+        print(f"monstre {m.type} hp={m.hp}")
         m.show(frame) # affiche tous les monstres existant
         if m.hp > 0 :
             m.follow(p.x_monde, p.y_monde) # monstres suivant le joueur

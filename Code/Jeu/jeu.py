@@ -14,9 +14,18 @@ from Jeu.Quêtes import verif_k, verif_q
 from Monstres.boss import spawn_boss, gestion_boss
 from Minijeux.all_mj import mj
 from Armes_Items.Classe_par_type_darme import *
-
+from Armes_Items.class_armes_sans_bugs import Arme
+from Interface.Game_over import game_over  
 from Armes_Items.Explosions import Explosion
-Explosion.init_frames()  # ← charge les frames une seule fois
+Explosion.init_frames()  
+
+
+def on_level_up(player):
+    niveau = player.niveau
+    for arme_obj in Arme.arme_possede:
+        arme_obj.levelup_depuis_niveau(niveau)
+    
+    player.armes = player._construire_armes()
 def jeu(perso):
     noms, new_tab = det_noms()
     nom = "Daphne"
@@ -66,6 +75,14 @@ def jeu(perso):
                 if event.key == pyg.K_z:
                     p.arme_active = (p.arme_active + 1) % len(p.armes)
 
+        if not p.alive:
+            action = game_over()
+
+            if action == "menu":
+                return "menu"
+
+            if action == "quit":
+                return "quit"
 
         if pause:
             pause, run, pause_time = menu_pause(new_tab, noms, armes_joueur)
@@ -87,7 +104,7 @@ def jeu(perso):
                 for zone in p.all_zones:
                     for m in monstres_presents:
                         if zone.rect.colliderect(m.rect):
-                            m.degats(10)
+                            m.degats(p.armes[p.arme_active].damage)
                     if boss_present and zone.rect.colliderect(boss.rect):
                         boss.degats(10)
             for explosion in explosions[:]:
@@ -108,7 +125,9 @@ def jeu(perso):
             for projectile in p.all_projectiles:
                 for m in monstres_presents:
                     if projectile.rect.colliderect(m.rect):
+                        print(f"COLLISION ! projectile={projectile.rect.center} monstre={m.rect.center} hp avant={m.hp}")
                         m.degats(10)
+                        print(f"hp après={m.hp}")
                         if projectile.explode:  
                             explosions.append(Explosion(m.x_monde, m.y_monde, p))
                         projectile.kill()
@@ -200,6 +219,7 @@ def jeu(perso):
 
                 armes_joueur = ajouter_arme(nom, objet, armes_joueur)
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
+                on_level_up(p) 
 
             p.move_bg(monstres_presents, xp_dispo, monstres_vague, boss, boss_present)
 
@@ -210,4 +230,4 @@ def jeu(perso):
 
     reecrire_fichier("niveau_argent", new_tab, noms)
     reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
-    pyg.quit()
+    

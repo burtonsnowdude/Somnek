@@ -7,7 +7,7 @@ def main():
 
     while running:
         res = interface(skip_intro=skip_intro)
-        skip_intro = False  # reset
+        skip_intro = False 
 
         if res is False:
             running = False
@@ -15,7 +15,7 @@ def main():
             result = jeu(res)
 
             if result == "menu":
-                skip_intro = True  # ← saute l'intro au prochain tour
+                skip_intro = True  #
                 continue
 
             elif result == "quit":
