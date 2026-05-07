@@ -29,6 +29,7 @@ def on_level_up(player):
 def jeu(perso):
     noms, new_tab = det_noms()
     nom = "Daphne"
+    perso = "Nerd"
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
         argent = int(new_tab[1][nom])

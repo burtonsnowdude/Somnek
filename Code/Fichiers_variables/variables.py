@@ -13,15 +13,17 @@ FONT = pyg.font.SysFont("Press Start 2P", 24) # definir la police d'ecriture
 CENTREx, CENTREy = WIDTH//2, HEIGHT//2 
 PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
 PLAYER_VIT = 2 # vitesse de deplacement du joueur
-PLAYER_PV = 50 # points de vie du joueur
+PLAYER_PV = 200 # points de vie du joueur
 
 FREQUENCE = 50
 
 
 PERSOS =  {
-    "Fille_populaire" : {"image" : 
-                            {"horizon_r" : FILLE_POPULAIRE_R,
-                            "horizon_l" : FILLE_POPULAIRE_L},
+    "Fille_populaire" : {"anim" : 
+                {"avant" : ANIM_FILLE_POPULAIRE_AVANT,
+                "arriere" : ANIM_FILLE_POPULAIRE_ARRIERE,
+                "horizon_r" : ANIM_FILLE_POPULAIRE_HORIZON_R,
+                "horizon_l" : ANIM_FILLE_POPULAIRE_HORIZON_L},
                         "color" : (167, 67, 86, 200)},
     "Nonne" : {"image" :
                     {"horizon_r" : NONNE,
@@ -161,7 +163,10 @@ TYPES_MONSTRES = {
                 "image" : OSTIE_PERIMEE}, 
     "Miroir" : { ** CATEGORIE["Type 22"],
                 "perso" : "Nonne",
-                "anim" : ANIM_MIROIR}
+                "anim" : ANIM_MIROIR},
+    "Lucifer" : { ** CATEGORIE["Type 26"],
+                "perso" : "Nonne",
+                "anim" : ANIM_LUCIFER}
 }
 
 TYPES = [type for type in TYPES_MONSTRES]

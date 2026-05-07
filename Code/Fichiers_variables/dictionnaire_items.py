@@ -209,6 +209,13 @@ Items = {
         
         "max": 3.0,
         "prix": 5
+    },
+    "Nokia": {
+        
+        "effet": "regen",
+        
+        "max": 3.0,
+        "prix": 5
     }}
 }
 
@@ -442,7 +449,9 @@ GESTION_NIVEAU_ITEMS = {
         },
 
         "Niveau 2": {
-            "Tableau_vierge": 0.08
+            "Eau_benite" : 0.10,
+            "Tableau_sacre": 0.08,
+            "Mocassin" : 0.10
         },
 
         "Niveau 3": {
@@ -532,168 +541,170 @@ TYPES_ITEMS = {
 
     "Nerd": {
 
-        "Lunettes_cassees": {
-            "image": LUNETTES_CASSEES,
-            "texte": "Augmente la zone d'attaque de 10 %."
-        },
-
-        "Souris_pc": {
-            "image": SOURIS,
-            "texte": "Le personnage gagne 10 % de pièces en plus."
-        },
-
-        "Chaussettes_propres": {
-            "image": CHAUSSETTES,
-            "texte": "Le personnage se déplace 10 % plus vite."
-        },
-
-        "Cahier_NSI": {
-            "image": CAHIER_DE_NSI,
-            "texte": "Le personnage gagne 8 % d'attirance en plus."
-        },
-
-        "Vody_Lemonade": {
-            "image": SOURIS,
-            "texte": "TEST"
-        },
-
-        "Deodorant": {
-            "image": SOURIS,
-            "texte": "TEST"
-        },
-
-        "Pomme_scientifique": {
-            "image": SOURIS,
-            "texte": "TEST"
-        },
-
-        "Armure_de_bronze": {
-            "image": SOURIS,
-            "texte": "TEST"
-        },
-
-        "Petit_nain_roux": {
-            "image": NAIN,
-            "texte": "TEST"
-        },
-
-        "Serviette_nettoyante": {
-            "image": SOURIS,
-            "texte": "TEST"
-        }
+    "Lunettes_cassees": {
+        "image": LUNETTES_CASSEES,
+        "texte": "Augmente la zone d'attaque de 10 %."
     },
+
+    "Souris_pc": {
+        "image": SOURIS,
+        "texte": "Le personnage gagne 10 % de pièces en plus."
+    },
+
+    "Chaussettes_propres": {
+        "image": CHAUSSETTES,
+        "texte": "Le personnage se déplace 10 % plus vite."
+    },
+
+    "Cahier_NSI": {
+        "image": CAHIER_DE_NSI,
+        "texte": "Le personnage gagne 8 % d'attirance en plus."
+    },
+
+    "Vody_Lemonade": {
+        "image": VODY,
+        "texte": "+20 % de santé maximale (max 200 %)"
+    },
+
+    "Deodorant": {
+        "image": DEMAQUILLANT,#en attente
+        "texte": "Le personnage diminue le temps entre les attaques de 3 % (max +40 %)"
+    },
+
+    "Pomme_scientifique": {
+        "image": POMME_SCIENTIFIQUE,
+        "texte": "+2% de santé maximale (max 200 %)"
+    },
+
+    "Armure_de_bronze": {
+        "image": ARMURE,
+        "texte": "Réduit les dégâts des ennemis de 20%"
+    },
+
+    "Petit_nain_roux": {
+        "image": NAIN,
+        "texte": "Le personnage a 7 % de chance de plus à chaque niveau.(max +70%)"
+    },
+
+    "Serviette_nettoyante": {
+        "image": SERVIETTE,
+        "texte": "Le personnage récupère 0,6PV par seconde."
+    }
+},
 
     "Fille_populaire": {
 
-        "Gloss_rose": {
-            "image": GLOSS_ROSE,
-            "texte": "Augmente votre attirance de 15%."
-        },
+    "Gloss_rose": {
+        "image": GLOSS_ROSE,
+        "texte": "Le personnage gagne 8 % d'attirance en plus. (max +40 %)"
+    },
 
-        "Chew_gum": {
-            "image": CHEW_GUM,
-            "texte": "Augmente la santé maximale de 20 %."
-        },
+    "Chew_gum": {
+        "image": CHEW_GUM,
+        "texte": "Augmente la santé maximale de 20 %."
+    },
 
-        "Talons_noirs": {
-            "image": TALON_NOIR,
-            "texte": "Le personnage se déplace 10 % plus vite."
-        },
-        "Bracelet_soeur": {
-            "image": BRACELET_SOEUR,
-            "texte": "TEST"
-        },
+    "Talons_noirs": {
+        "image": TALON_NOIR,
+        "texte": "Le personnage se déplace 10 % plus vite."
+    },
 
-        "Carte_bleue": {
-            "image": CARTE_BLEU,
-            "texte": "TEST"
-        },
+    "Bracelet_soeur": {
+        "image": BRACELET_SOEUR,
+        "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 10PV"
+    },
 
-        "Parfum_Dioru": {
-            "image": PARFUM_DIORU,
-            "texte": "TEST"
-        },
+    "Carte_bleue": {
+        "image": CARTE_BLEU,
+        "texte": "Le personnage gagne 5% de pièces supplémentaire.(max +50 %)"
+    },
 
-        "Pilule_verte": {
-            "image": PILULE_VERTE,
-            "texte": "TEST"
-        },
+    "Parfum_Dioru": {
+        "image": PARFUM_DIORU,
+        "texte": "Le personnage diminue le temps entre les attaques de 30 % (max +40 %)"
+    },
 
-        "Crop_top_rose": {
-            "image": CROP_TOP_ROSE,
-            "texte": "TEST"
-        },
+    "Pilule_verte": {
+        "image": PILULE_VERTE,
+        "texte": "+13% de santé maximale (max 200 %)"
+    },
 
-        "Coque_trefle": {
-            "image": CROP_TOP_ROSE,
-            "texte": "TEST"
-        },
+    "Crop_top_rose": {
+        "image": CROP_TOP_ROSE,
+        "texte": "Réduit les dégâts des ennemis de 20%"
+    },
 
-        "Mousse_a_la_vanille": {
-            "image": MOUSSE_VANILLE,
-            "texte": "TEST"
-        },
+    "Coque_trefle": {
+        "image": TREFLE,#en attente
+        "texte": "Le personnage a 7 % de chance de plus à chaque niveau.(max +70%)"
+    },
 
-        "Sac_a_main_violet": {
-            "image": MOUSSE_VANILLE,
-            "texte": "TEST"
-        }
+    "Mousse_a_la_vanille": {
+        "image": MOUSSE_VANILLE,
+        "texte": "Le personnage récupère 0,6PV par seconde."
+    },
+
+    "Sac_a_main_violet": {
+        "image": MOUSSE_VANILLE,#en attente
+        "texte": "Le personnage augmente la quantité de ses projectiles de 18% (max +40 %)"
+    }
     },
 
     "Nonne": {
 
-        "Croix_marron": {
-            "image": CROIX_DE_BASE,
-            "texte": "TEST"
-        },
+    "Croix_marron": {
+        "image": CROIX_DE_BASE,
+        "texte": "Augmente les dégâts infligés de 15 %(max+60%)"
+    },
 
-        "Chapelet": {
-            "image": CROIX_DE_BASE,
-            "texte": "TEST"
-        },
+    "Chapelet": {
+        "image": CROIX_DE_BASE,
+        "texte": "Le personnage a 10 % de chances supplémentaires."
+    },
 
-        "Mocassin": {
-            "image": MOCASSIN,
-            "texte": "TEST"
-        },
+    "Mocassin": {
+        "image": MOCASSIN,
+        "texte": "Le personnage se déplace 10 % plus vite."
+    },
 
-        "Tableau_sacre": {
-            "image": MOCASSIN,
-            "texte": "TEST"
-        },
+    "Tableau_sacre": {
+        "image": MOCASSIN,
+        "texte": "Réduit le temps de recharge des armes de 8 %"
+    },
 
-        "Bourse": {
-            "image": BOURSE,
-            "texte": "TEST"
-        },
+    "Bourse": {
+        "image": BOURSE,
+        "texte": "Le personnage gagne 5% de pièces supplémentaire.(max +50 %)"
+    },
 
-        "Bougie": {
-            "image": BOUGIE,
-            "texte": "TEST"
-        },
+    "Bougie": {
+        "image": BOUGIE,
+        "texte": "Le personnage gagne 8 % d'attirance en plus. (max +40 %)"
+    },
 
-        "Voile": {
-            "image": BOUGIE,
-            "texte": "TEST"
-        },
+    "Voile": {
+        "image": VOILE,
+        "texte": "Réduit les dégâts des ennemis de 20%"
+    },
 
-        "Huile_benie": {
-            "image": BOUGIE,
-            "texte": "TEST"
-        },
+    "Huile_benie": {
+        "image": EAU_BENITE,#en attente
+        "texte": "Le personnage diminue le temps entre les attaques de 3 % (max +40 %)"
+    },
 
-        "Ostie": {
-            "image": OSTIE,
-            "texte": "TEST"
-        },
+    "Ostie": {
+        "image": OSTIE,
+        "texte": "Augmente la santé maximale de 20 %."
+    },
 
-        "Sac_a_dos_bleu": {
-            "image": OSTIE,
-            "texte": "TEST"
-        },
-        "Eau_benite": {
-            "image": OSTIE,
-            "texte": "TEST"
-        }
+    "Sac_a_dos_bleu": {
+        "image": OSTIE,#en attente
+        "texte": "Le personnage augmente la quantité de ses projectiles de 18% (max +40 %)"
+    },
+
+    "Eau_benite": {
+        "image": OSTIE,
+        "texte": "Augmente la vitesse + 10%, la santé +12%, la quantité et la fréquence des ennemis de 10 %."
     }
+}
 }
