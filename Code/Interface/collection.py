@@ -1,7 +1,7 @@
 import pygame
 import Interface.variable_power_up as data
 from Interface.Class_Button import Button
-
+from Fichiers_variables.gestion_fichiers import liste_armes_acquises
 pygame.init()
 
 WOR = pygame.display.set_mode((500, 500))
@@ -91,7 +91,7 @@ palette_affich = load_big("Images/Interface/palette_affich.png")
 berserk_affich = load_big("Images/Interface/berserk_affich.png")
 pas_trouve = load_big("Images/Interface/pas_trouvé.png")
 
-
+"""
 liste_all_item = {
     "Palette": (img_palette, palette_affich),
     "Berserk": (img_berserk, berserk_affich),
@@ -143,6 +143,58 @@ liste_all_item = {
     "Eau bénite": (img_eau_benite, palette_affich),
     "Mocassin": (img_mocassin, palette_affich),
     "Halo lumineux": (img_halo_lumineux, palette_affich),
+}
+"""
+liste_all_item = {
+    "Palette": (img_palette, palette_affich),
+    "Berserk": (img_berserk, berserk_affich),
+
+    "Petit_nain_roux": (img_nain, pas_trouve),
+
+    "Lunettes_cassees": (img_lunettes_cassees, palette_affich),
+    "Souris_pc": (img_souris, palette_affich),
+    "Chaussettes_propres": (img_chaussettes, palette_affich),
+    "Cahier_NSI": (img_cahier_de_nsi, palette_affich),
+
+    "Vody_Lemonade": (img_vody, palette_affich),
+    "Deodorant": (img_serviette, palette_affich),
+    "Pomme_scientifique": (img_pomme_scientifique, palette_affich),
+    "Armure_de_bronze": (img_armure, palette_affich),
+
+    "Cle_USB": (img_cle_usb, palette_affich),
+    "Pistolets": (img_pistolets, palette_affich),
+    "Console_allumee": (img_console, palette_affich),
+
+    "Chariot_violet": (img_chariot_violet, palette_affich),
+    "Nokia": (img_nokia, palette_affich),
+    "Trefle": (img_trefle, palette_affich),
+    "Serviette_nettoyante": (img_serviette, palette_affich),
+
+    # FILLE POPULAIRE
+    "Gloss_rose": (img_gloss_rose, palette_affich),
+    "Chew_gum": (img_chew_gum, palette_affich),
+    "Talons_noirs": (img_talon_noir, palette_affich),
+    "Bracelet_soeur": (img_bracelet_soeur, palette_affich),
+    "Carte_bleue": (img_carte_bleu, palette_affich),
+    "Parfum_Dioru": (img_parfum_dioru, palette_affich),
+    "Pilule_verte": (img_pilule_verte, palette_affich),
+    "Crop_top_rose": (img_crop_top_rose, palette_affich),
+    "Coque_trefle": (img_crop_top_rose, palette_affich),
+    "Mousse_a_la_vanille": (img_mousse_vanille, palette_affich),
+    "Sac_a_main_violet": (img_mousse_vanille, palette_affich),
+
+    # NONNE
+    "Croix_marron": (img_croix_de_base, palette_affich),
+    "Chapelet": (img_croix_de_base, palette_affich),
+    "Mocassin": (img_mocassin, palette_affich),
+    "Tableau_sacre": (img_mocassin, palette_affich),
+    "Bourse": (img_bourse, palette_affich),
+    "Bougie": (img_bougie, palette_affich),
+    "Voile": (img_bougie, palette_affich),
+    "Huile_benie": (img_bougie, palette_affich),
+    "Ostie": (img_ostie, palette_affich),
+    "Sac_a_dos_bleu": (img_ostie, palette_affich),
+    "Eau_benite": (img_ostie, palette_affich),
 }
 
 player_Inventory = [
@@ -224,6 +276,8 @@ class ShopItem:
             pygame.draw.rect(surface, (255, 255, 0), self.rect, 3)
 
 def create_items():
+    joueur = "Daphne"
+    player_inventory = liste_armes_acquises(joueur)
     items = []
     i = 0
     keys = list(liste_all_item.keys())
@@ -237,7 +291,7 @@ def create_items():
             if i < len(keys):
                 name = keys[i]
 
-                if name in player_Inventory:
+                if name in player_inventory:
                     image, affich = liste_all_item[name]
                 else:
                     image = inconnu
