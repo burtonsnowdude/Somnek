@@ -87,62 +87,110 @@ img_mocassin = load_small("Images/Armes_items/mocassin.png")
 img_halo_lumineux = load_small("Images/Armes_items/halo_lumineux.png")
 
 # grandes images
-palette_affich = load_big("Images/Interface/palette_affich.png")
-berserk_affich = load_big("Images/Interface/berserk_affich.png")
-pas_trouve = load_big("Images/Interface/pas_trouvé.png")
+palette_affich = load_big("Images/Interface/affiche/palette_affich.png")
+berserk_affich = load_big("Images/Interface/affiche/berserk_affich.png")
+nain_affich = load_big("Images/Interface/affiche/nain_affiche.png")
+lunettes_cassees_affich = load_big("Images/Interface/affiche/lunettes_cassees_affiche.png")
+cahier_de_nsi_affich = load_big("Images/Interface/affiche/cahier_NSI_affiche.png")
+chaussettes_affich = load_big("Images/Interface/affiche/chaussettes_affiche.png")
+souris_affich = load_big("Images/Interface/affiche/souris_affiche.png")
+cle_usb_affich = load_big("Images/Interface/affiche/cle_usb_affiche.png")
+pistolets_affich = load_big("Images/Interface/affiche/pistolets_affiche.png")
+chariot_violet_affich = load_big("Images/Interface/affiche/chariot_affiche.png")
+pomme_scientifique_affich = load_big("Images/Interface/affiche/pomme_affiche.png")
+vody_affich = load_big("Images/Interface/affiche/vody_affiche.png")
+ambroisie_affich = load_big("Images/Interface/affiche/ambroisie_affiche.png")
+nokia_affich = load_big("Images/Interface/affiche/nokia_affiche.png")
+trefle_affich = load_big("Images/Interface/affiche/trefle_affiche.png")
+armure_affich = load_big("Images/Interface/affiche/armure_affiche.png")
+console_affich = load_big("Images/Interface/affiche/console_affiche.png")
+serviette_affich = load_big("Images/Interface/affiche/serviette_affiche.png")
+# FILLE POPULAIRE
+gloss_rose_affich = load_big("Images/Interface/affiche/gloss_affiche.png")
+ticket_affich = load_big("Images/Interface/affiche/ticket_affiche.png")
+highlighter_affich = load_big("Images/Interface/affiche/highlighter_affiche.png")
+faux_cils_affich = load_big("Images/Interface/affiche/cils_affiche.png")
+bracelet_soeur_affich = load_big("Images/Interface/affiche/bracelet_affiche.png")
+carte_bleu_affich = load_big("Images/Interface/affiche/carte_affiche.png")
+pilule_verte_affich = load_big("Images/Interface/affiche/pilule_affiche.png")
+mousse_vanille_affich = load_big("Images/Interface/affiche/mousse_affiche.png")
+demaquillant_affich = load_big("Images/Interface/affiche/demaquillant_affiche.png")
+parfum_dioru_affich = load_big("Images/Interface/affiche/parfum_affiche.png")
+minuteur_affich = load_big("Images/Interface/affiche/minuteur_affiche.png")
+chew_gum_affich = load_big("Images/Interface/affiche/chew_gum_affiche.png")
+crop_top_rose_affich = load_big("Images/Interface/affiche/crop_top_affiche.png")
+talon_noir_affich = load_big("Images/Interface/affiche/talon_n_affiche.png")
+talon_louboutin_affich = load_big("Images/Interface/affiche/talon_l_affiche.png")
+iphone_2000_affich = load_big("Images/Interface/affiche/iphone_affiche.png")
+pass_navigo_affich = load_big("Images/Interface/affiche/pass_affiche.png")
+fer_a_lisser_affich = load_big("Images/Interface/affiche/fer_affiche.png")
+jean_stanley_affich = load_big("Images/Interface/affiche/jean_stanley_affiche.png")
+chargeur_affich = load_big("Images/Interface/affiche/chargeur_affiche.png")
+# NONNE
+croix_de_base_affich = load_big("Images/Interface/affiche/croix_affiche.png")
+couronne_affich = load_big("Images/Interface/affiche/couronne_affiche.png")
+feu_saint_affich = load_big("Images/Interface/affiche/feu_affiche.png")
+bougie_affich = load_big("Images/Interface/affiche/bougie_affiche.png")
+bourse_affich = load_big("Images/Interface/affiche/bourse_affiche.png")
+ostie_affich = load_big("Images/Interface/affiche/hostie_affiche.png")
+boule_denergie_affich = load_big("Images/Interface/affiche/boule_energie_affiche.png")
+eau_benite_affich = load_big("Images/Interface/affiche/eau_affiche.png")
+mocassin_affich = load_big("Images/Interface/affiche/mocassin_affiche.png")
+halo_lumineux_affich = load_big("Images/Interface/affiche/halo_affiche.png")
+pas_trouve = load_big("Images/Interface/affiche/pas_trouvé.png")
 
 
 liste_all_item = {
     "Palette": (img_palette, palette_affich),
     "Berserk": (img_berserk, berserk_affich),
-    "Nain riche": (img_nain, pas_trouve),
-    "Lunettes cassées": (img_lunettes_cassees, palette_affich),
-    "Cahier de NSI": (img_cahier_de_nsi, palette_affich),
-    "Chaussettes": (img_chaussettes, palette_affich),
-    "Souris": (img_souris, palette_affich),
-    "Clé USB": (img_cle_usb, palette_affich),
-    "Pistolets": (img_pistolets, palette_affich),
-    "Chariot violet": (img_chariot_violet, palette_affich),
-    "Pomme scientifique": (img_pomme_scientifique, palette_affich),
-    "Vody": (img_vody, palette_affich),
-    "Ambroisie": (img_ambroisie, palette_affich),
-    "Nokia": (img_nokia, palette_affich),
-    "Trèfle": (img_trefle, palette_affich),
-    "Armure": (img_armure, palette_affich),
-    "Console": (img_console, palette_affich),
-    "Serviette nettoyante": (img_serviette, palette_affich),
+    "Nain riche": (img_nain, nain_affich),
+    "Lunettes cassées": (img_lunettes_cassees, lunettes_cassees_affich),
+    "Cahier de NSI": (img_cahier_de_nsi, cahier_de_nsi_affich),
+    "Chaussettes": (img_chaussettes, chaussettes_affich),
+    "Souris": (img_souris, souris_affich),
+    "Clé USB": (img_cle_usb, cle_usb_affich),
+    "Pistolets": (img_pistolets, pistolets_affich),
+    "Chariot violet": (img_chariot_violet, chariot_violet_affich),
+    "Pomme scientifique": (img_pomme_scientifique, pomme_scientifique_affich),
+    "Vody": (img_vody, vody_affich),
+    "Ambroisie": (img_ambroisie, ambroisie_affich),
+    "Nokia": (img_nokia, nokia_affich),
+    "Trèfle": (img_trefle, trefle_affich),
+    "Armure": (img_armure, armure_affich),
+    "Console": (img_console, console_affich),
+    "Serviette nettoyante": (img_serviette, serviette_affich),
     # FILLE POPULAIRE
-    "Gloss rose": (img_gloss_rose, palette_affich),
-    "Ticket": (img_ticket, palette_affich),
-    "Highlighter": (img_highlighter, palette_affich),
-    "Faux cils": (img_faux_cils, palette_affich),
-    "Bracelet soeur": (img_bracelet_soeur, palette_affich),
-    "Carte bleu": (img_carte_bleu, palette_affich),
-    "Pilule verte": (img_pilule_verte, palette_affich),
-    "Mousse vanille": (img_mousse_vanille, palette_affich),
-    "Démaquillant": (img_demaquillant, palette_affich),
-    "Parfum Dioru": (img_parfum_dioru, palette_affich),
-    "Minuteur": (img_minuteur, palette_affich),
-    "Chew gum": (img_chew_gum, palette_affich),
-    "Crop top rose": (img_crop_top_rose, palette_affich),
-    "Talon noir": (img_talon_noir, palette_affich),
-    "Talon Louboutin": (img_talon_louboutin, palette_affich),
-    "iPhone 2000": (img_iphone_2000, palette_affich),
-    "Pass Navigo": (img_pass_navigo, palette_affich),
-    "Fer à lisser": (img_fer_a_lisser, palette_affich),
-    "Jean Stanley": (img_jean_stanley, palette_affich),
-    "Chargeur": (img_chargeur, palette_affich),
+    "Gloss rose": (img_gloss_rose, gloss_rose_affich),
+    "Ticket": (img_ticket, ticket_affich),
+    "Highlighter": (img_highlighter, highlighter_affich),
+    "Faux cils": (img_faux_cils, faux_cils_affich),
+    "Bracelet soeur": (img_bracelet_soeur, bracelet_soeur_affich),
+    "Carte bleu": (img_carte_bleu, carte_bleu_affich),
+    "Pilule verte": (img_pilule_verte, pilule_verte_affich),
+    "Mousse vanille": (img_mousse_vanille, mousse_vanille_affich),
+    "Démaquillant": (img_demaquillant, demaquillant_affich),
+    "Parfum Dioru": (img_parfum_dioru, parfum_dioru_affich),
+    "Minuteur": (img_minuteur, minuteur_affich),
+    "Chew gum": (img_chew_gum, chew_gum_affich),
+    "Crop top rose": (img_crop_top_rose, crop_top_rose_affich),
+    "Talon noir": (img_talon_noir, talon_noir_affich),
+    "Talon Louboutin": (img_talon_louboutin, talon_louboutin_affich),
+    "iPhone 2000": (img_iphone_2000, iphone_2000_affich),
+    "Pass Navigo": (img_pass_navigo, pass_navigo_affich),
+    "Fer à lisser": (img_fer_a_lisser, fer_a_lisser_affich),
+    "Jean Stanley": (img_jean_stanley, jean_stanley_affich),
+    "Chargeur": (img_chargeur, chargeur_affich),
     # NONNE
-    "Croix de base": (img_croix_de_base, palette_affich),
-    "Couronne": (img_couronne, palette_affich),
-    "Feu saint": (img_feu_saint, palette_affich),
-    "Bougie": (img_bougie, palette_affich),
-    "Bourse": (img_bourse, palette_affich),
-    "Ostie": (img_ostie, palette_affich),
-    "Boule d'énergie": (img_boule_denergie, palette_affich),
-    "Eau bénite": (img_eau_benite, palette_affich),
-    "Mocassin": (img_mocassin, palette_affich),
-    "Halo lumineux": (img_halo_lumineux, palette_affich),
+    "Croix de base": (img_croix_de_base, croix_de_base_affich),
+    "Couronne": (img_couronne, couronne_affich),
+    "Feu saint": (img_feu_saint, feu_saint_affich),
+    "Bougie": (img_bougie, bougie_affich),
+    "Bourse": (img_bourse, bourse_affich),
+    "Ostie": (img_ostie, ostie_affich),
+    "Boule d'énergie": (img_boule_denergie, boule_denergie_affich),
+    "Eau bénite": (img_eau_benite, eau_benite_affich),
+    "Mocassin": (img_mocassin, mocassin_affich),
+    "Halo lumineux": (img_halo_lumineux, halo_lumineux_affich),
 }
 
 player_Inventory = [
