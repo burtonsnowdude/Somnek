@@ -4,10 +4,11 @@ import random
 import math
 
 class ArmeBase:
-    def __init__(self, player):
+    def __init__(self, player,nom_arme=None ):
         self.player = player
         self.cooldown = 60
         self.timer = 0
+        self.nom = nom_arme
         self.visible = False
         self.damage = 10
 

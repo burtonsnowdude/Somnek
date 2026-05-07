@@ -15,7 +15,7 @@ def main():
             result = jeu(res)
 
             if result == "menu":
-                skip_intro = True  # ← saute l'intro au prochain tour
+                skip_intro = True  #
                 continue
 
             elif result == "quit":

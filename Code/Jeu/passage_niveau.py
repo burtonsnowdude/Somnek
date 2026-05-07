@@ -115,7 +115,6 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
         clock.tick(60)
         for event in pyg.event.get():
             if event.type == pyg.QUIT:
-                pyg.quit()
                 exit()
             if event.type == pyg.KEYDOWN:
                 if event.key == pyg.K_UP and selec != 0:

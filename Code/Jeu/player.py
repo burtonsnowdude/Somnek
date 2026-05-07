@@ -3,10 +3,19 @@ from Fichiers_variables.variables import *
 import math
 from Armes_Items.classe_projectile import Projectile
 from Affichage.fonctionnement_divers import camera
-
+from Interface.Game_over import game_over
 from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion
 
+from Armes_Items.class_armes_sans_bugs import Arme
 
+
+TYPE_VERS_CLASSE = {
+    "balle":         ArmeProjectile,
+    "zone":          ArmeZone,
+    "coup":          ArmeEpee,   
+    "trait":         ArmeMultiDirection,
+    "zone_multiples": ArmeExplosion,
+}
 class Player:
     """Class Player"""
     def __init__(self, perso, nom):
@@ -44,7 +53,10 @@ class Player:
         self.xp = 0
         self.niveau = 1
         self.kill_count = 0
+        self.alive = True
         self.perso = perso
+        self.armes_data = Arme.arme_possede  
+        self.armes = self._construire_armes()
         self.color = PERSOS[perso]["color"]
         self.x_monde = CENTREx
         self.y_monde = CENTREy
@@ -69,6 +81,22 @@ class Player:
         for arme in self.armes:
             arme.update()
             arme.trigger() 
+
+    def _construire_armes(self):
+        armes = []
+        for arme_obj in self.armes_data:
+            type_arme = arme_obj.caracteristiques.get("type_arme")
+            classe = TYPE_VERS_CLASSE.get(type_arme)
+            if classe:
+                instance = classe(self, arme_obj.nom)
+                armes.append(instance)
+        return armes if armes else [ArmeProjectile(self, "Epee_bleu")]  # arme par défaut
+
+    def equiper_arme(self, nom_arme):
+        """Ajoute une arme en cours de partie (niveau-up, shop)"""
+        arme_obj = Arme(nom_arme)
+        Arme.arme_possede.append(arme_obj)
+        self.armes = self._construire_armes() 
 
 
     def move_bg(self, monstres, xp, monstres_vague, boss, boss_present):
@@ -140,10 +168,11 @@ class Player:
         ----------
         degats : int
         """
+        if not self.alive:
+            return
         self.hp -= degats
         if self.hp <= 0 :
-            #pyg.quit() #à remplacer plus tard
-            pass # car ça fait buguer
+            self.alive = False
 
     def update_xp(self, xp, xp_attendu):
         self.xp += xp

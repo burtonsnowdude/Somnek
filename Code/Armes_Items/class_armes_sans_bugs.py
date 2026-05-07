@@ -1,14 +1,6 @@
-import pygame as pyg 
-import time
-
-from random import *
-import math
-import random
-import pygame as pyg
+from Fichiers_variables.dictionnaire_armes import TYPES_ARMES, GESTION_DES_NIVEAUX_ARMES
 
 class Arme:
-    """Class arme"""
-
     Carac_base = {
         "type_arme": None,
         "dgbase": 0,
@@ -42,48 +34,31 @@ class Arme:
             "niveau": 1
         }
     }
-    
-    def __init__(self, nom_arme):
-        """Initialise une arme
-        
-        Parameters
-        ----------
-        nom_arme : str
-            Le nom de l'arme à créer
-        """
+
+    def __init__(self, nom_arme, perso="Nerd"):
         if nom_arme not in self.ARMES:
-            raise ValueError(f"Arme '{nom_arme}' non trouvée")
-        
+            raise ValueError(f"Arme '{nom_arme}' inconnue")
         self.nom = nom_arme
+        self.perso = perso
         self.caracteristiques = self.ARMES[nom_arme].copy()
-        self.attack = self.ARMES[nom_arme]["dgbase"]
+        self.attack = self.caracteristiques["dgbase"]
 
-    def equiper_arme(self, arme):
-        """Equiper l'arme"""
-        if isinstance(arme, Arme):
-            self.arme_possede.append(arme)
+        type_data = TYPES_ARMES.get(perso, {}).get(nom_arme, {})
+        self.image = type_data.get("image", None)
 
-    def ameliorer_arme(self, nv_degat):
-        niveau_req = self.caracteristiques["niveau_req"]
-        niveau_actuel = self.caracteristiques["niveau"]
-        
-        if niveau_actuel >= niveau_req:
-            self.caracteristiques["dgbase"] += nv_degat
-            self.caracteristiques["niveau"] += 1
-            return True
-        return False
-
-    def est_a_portee(self, distance_monstre):
-        return distance_monstre <= self.caracteristiques["portee"]
+    def levelup_depuis_niveau(self, niveau_joueur):
+        nv_key = f"Niveau {niveau_joueur}"
+        bonus = GESTION_DES_NIVEAUX_ARMES.get(self.perso, {}).get(nv_key, {})
+        if self.nom in bonus:
+            valeur = bonus[self.nom]
+            if isinstance(valeur, str) and "%" in valeur:
+                pct = float(valeur.replace("+", "").replace("% dégâts", "").strip()) / 100
+                self.caracteristiques["dgbase"] *= (1 + pct)
+            elif isinstance(valeur, (int, float)):
+                self.caracteristiques["dgbase"] += valeur
+        self.attack = self.caracteristiques["dgbase"]
 
     def calculer_degat(self):
         degat = self.caracteristiques["dgbase"]
         reduction = self.caracteristiques["reduction"]
-        
         return degat - reduction if reduction > 0 else degat
-
-    def get_prix(self):
-        return self.caracteristiques["prix"]
-    """def afficher_arme_map(self): focntion pour afficher les armes en haut à gauche"""
-
-

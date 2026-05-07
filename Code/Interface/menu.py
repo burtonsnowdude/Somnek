@@ -35,7 +35,7 @@ except:
 FONT_BUTTON = pyg.font.SysFont(None, 36)
 
 
-def interface():
+def interface(skip_intro=False):
     fond_intro = pyg.image.load("Images/Interface/press.png")
     fond_intro = pyg.transform.scale(fond_intro, (WIDTH, HEIGHT))
 
@@ -45,15 +45,32 @@ def interface():
     fond_credits = pyg.image.load("Images/Interface/fond_credits.png")
     fond_credits = pyg.transform.scale(fond_credits, (350, 400))
 
+    img_title = pyg.image.load("Images/Interface/titre.png").convert_alpha()
+    img_title = pyg.transform.smoothscale(img_title, (600, 250))
+    rect_title = img_title.get_rect(center=(WIDTH // 2, 180))
+    
+    img_commencer = pyg.image.load("Images/Interface/commencer_btn.png").convert_alpha()
+    img_collection = pyg.image.load("Images/Interface/collection_btn.png").convert_alpha()
+    img_option = pyg.image.load("Images/Interface/options_btn.png").convert_alpha()
+    img_power_up = pyg.image.load("Images/Interface/power_up_btn.png").convert_alpha()
+    img_credit = pyg.image.load("Images/Interface/credit_btn.png").convert_alpha()
+    img_avancement = pyg.image.load("Images/Interface/avancement_btn.png").convert_alpha()
+    img_quitter = pyg.image.load("Images/Interface/quitter_btn.png").convert_alpha()
+
+    img_argent = pyg.image.load("Images/Interface/argent.png").convert_alpha()
+    img_argent = pyg.transform.smoothscale(img_argent, (130, 120))  
+    rect_argent = img_argent.get_rect(center=(WIDTH // 2, 50))
+
+
     buttons = [
-        Button("COMMENCER", "load", 400, 305, 300, 65, FONT_BUTTON),
-        Button("COLLECTION", "collection", 150, 440, 220, 60, FONT_BUTTON),
-        Button("POWER UP", "power_up", 400, 440, 250, 70, FONT_BUTTON),
-        Button("REALISATIONS", "realisations", 670, 440, 260, 60, FONT_BUTTON),
-        Button("Credits", "credits", 400, 520, 200, 50, FONT_BUTTON),
-        Button("Options", "options", 100, 50, 180, 45, FONT_BUTTON),
-        Button("QUITTER", "quit", 700, 50, 180, 45, FONT_BUTTON),
-    ]
+    Button("COMMENCER", "load",       400, 300, 400, 95,  FONT_BUTTON, image=img_commencer),   
+    Button("COLLECTION", "collection", 150, 390, 290, 65, FONT_BUTTON, image=img_collection),  # gauche
+    Button("POWER UP",  "power_up",   423, 387, 310, 65,  FONT_BUTTON, image=img_power_up),    # centre
+    Button("REALISATIONS","realisations", 650, 390, 485, 270, FONT_BUTTON, image=img_avancement), # droite
+    Button("Credits",   "credits",    370, 560, 200, 45,  FONT_BUTTON, image=img_credit),      # bas centré
+    Button("Options",   "options",    110, 40,  210, 80,  FONT_BUTTON, image=img_option),      # haut gauche
+    Button("QUITTER",   "quit",       700, 40,  200, 350,  FONT_BUTTON, image=img_quitter),     # haut droite
+]
 
     btn_rev_coll = Button("X", "rev_coll", 550, 130, 40, 40, FONT_BUTTON)
     btn_rev_real = Button("X", "rev_real", 550, 130, 40, 40, FONT_BUTTON)
@@ -62,7 +79,7 @@ def interface():
     btn_confirm_nerd = Button("Confirmer", "confirm", 550, 500, 80, 40, FONT_BUTTON)
     btn_rev_start = Button("X", "rev_start", 550, 130, 40, 40, FONT_BUTTON)
 
-    game = False
+    game = skip_intro
     show_image = False
     show_realisation = False
     show_credits = False
@@ -102,14 +119,12 @@ def interface():
 
         else:
             WIN.blit(fond_menu, (0, 0))
+            WIN.blit(img_title, rect_title)
+            WIN.blit(img_argent, (270, 3))
+            argent_text = FONT_BUTTON.render(f"{player_money}", True, (0, 0, 0))
+            WIN.blit(argent_text, (380, 50))
 
-            title = FONT_TITLE.render("SOMNEK", True, (255, 255, 255))
-            WIN.blit(title, (210, 150))
-
-            argent_text = FONT_BUTTON.render(f"Argent: {player_money}", True, (0, 0, 0))
-            WIN.blit(argent_text, (330, 50))
-
-            # ← clé : on ne traite les clics que si aucune fenêtre n'est ouverte
+            
             aucune_fenetre_ouverte = not (show_image or show_realisation or show_credits or show_start or show_options or show_shop)
 
             for btn in buttons:

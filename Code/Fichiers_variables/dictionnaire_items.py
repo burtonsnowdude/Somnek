@@ -1,6 +1,6 @@
 import pygame as pyg
 from Fichiers_variables.traitement_images import *
-from Fichiers_variables.traitement_images import *
+
 
 Items = {
 
