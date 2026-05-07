@@ -35,7 +35,7 @@ except:
 FONT_BUTTON = pyg.font.SysFont(None, 36)
 
 
-def interface():
+def interface(skip_intro):
     fond_intro = pyg.image.load("Images/Interface/press.png")
     fond_intro = pyg.transform.scale(fond_intro, (WIDTH, HEIGHT))
 
