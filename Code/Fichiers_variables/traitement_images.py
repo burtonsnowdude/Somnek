@@ -17,7 +17,7 @@ def decouper_image(image, cols, rows, nb_a_enlever):
 ################################ IMAGES FIXES ################################################################
 
 XP = pyg.image.load("Images/Autre/xp.jpg")
-BG = pyg.image.load("Images/Maps/metro.png") # charger le fond d'ecran
+BG = pyg.image.load("Images/Maps/map_foire.png") # charger le fond d'ecran
 BGX, BGY = BG.get_size()
 FLECHE = pyg.image.load("Images/Coffres/fleche.png")
 FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
@@ -148,6 +148,7 @@ spritesheet_rouge_a_levre = pyg.image.load("Images/Monstres/rouge_a_levre.png")
 spritesheet_ex_amies = pyg.image.load("Images/Monstres/ex_amies.png")
 spritesheet_pipi = pyg.image.load("Images/Monstres/pipi.png")
 spritesheet_odeurs = pyg.image.load("Images/Monstres/odeurs.png")
+spritesheet_ex = pyg.image.load("Images/Monstres/ex.png")
 
 # NONNE
 spritesheet_nonne = pyg.image.load("Images/Monstres/nonne.png")
@@ -159,9 +160,10 @@ spritesheet_fruit_defendu = pyg.image.load("Images/Monstres/fruit_defendu.png")
 spritesheet_miroir = pyg.image.load("Images/Monstres/miroir.png")
 spritesheet_demon = pyg.image.load("Images/Monstres/demon.png")
 spritesheet_diablotin = pyg.image.load("Images/Monstres/diablotin.png")
+spritesheet_gargouille = pyg.image.load("Images/Monstres/gargouille.png")
 
 
-ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 3, 0)
+ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 6, 0)
 
 # NERD
 ANIM_DRAGON = decouper_image(spritesheet_dragon, 3, 4, 6)
@@ -185,6 +187,7 @@ ANIM_ROUGE_A_LEVRE = decouper_image(spritesheet_rouge_a_levre, 3, 3, 1)
 ANIM_EX_AMIES = decouper_image(spritesheet_ex_amies, 3, 3, 0)
 ANIM_PIPI = decouper_image(spritesheet_pipi, 3, 3, 0)
 ANIM_ODEURS = decouper_image(spritesheet_odeurs, 3, 3, 2)
+ANIM_EX = decouper_image(spritesheet_ex, 2, 3, 0)
 
 # NONNE
 ANIM_NONNE = decouper_image(spritesheet_nonne, 5, 5, 4)
@@ -196,3 +199,4 @@ ANIM_FRUIT_DEFENDU = decouper_image(spritesheet_fruit_defendu, 3, 3, 1)
 ANIM_MIROIR = decouper_image(spritesheet_miroir, 3, 4, 0)
 ANIM_DEMON = decouper_image(spritesheet_demon, 6, 1, 0)
 ANIM_DIABLOTIN = decouper_image(spritesheet_diablotin, 9, 1, 0)
+ANIM_GARGOUILLE = decouper_image(spritesheet_gargouille, 8, 1, 0)

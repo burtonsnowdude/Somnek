@@ -690,6 +690,10 @@ TYPES_ITEMS = {
         "Sac_a_dos_bleu": {
             "image": OSTIE,
             "texte": "TEST"
+        },
+        "Eau_benite": {
+            "image": OSTIE,
+            "texte": "TEST"
         }
     }
 }

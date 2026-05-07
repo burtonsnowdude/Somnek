@@ -7,7 +7,7 @@ def main():
 
     while running:
         res = interface(skip_intro=skip_intro)
-        skip_intro = False  # reset
+        skip_intro = False 
 
         if res is False:
             running = False
