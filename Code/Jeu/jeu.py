@@ -26,9 +26,8 @@ def on_level_up(player):
         arme_obj.levelup_depuis_niveau(niveau)
     
     player.armes = player._construire_armes()
-def jeu(perso):
+def jeu(perso,nom):
     noms, new_tab = det_noms()
-    nom = "Daphne"
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
         argent = int(new_tab[1][nom])
@@ -37,6 +36,8 @@ def jeu(perso):
         noms = res
         argent = 0
         new_tab[0][nom] = 1
+        new_tab[1][nom] = 0
+        reecrire_fichier("niveau_argent", new_tab, noms)
     
 
     armes_joueur = contenu_fichier_armes()

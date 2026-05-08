@@ -24,8 +24,8 @@ PERSOS =  {
                             "horizon_l" : FILLE_POPULAIRE_L},
                         "color" : (167, 67, 86, 200)},
     "Nonne" : {"image" :
-                    {"horizon_r" : NONNE,
-                    "horizon_l" : NONNE},
+                {"horizon_r" : NONNE_R,
+                "horizon_l" : NONNE_L},
                 "color" : (92, 60, 61, 200)},
     "Nerd" : {"anim" : 
                 {"avant" : ANIM_NERD_AVANT,

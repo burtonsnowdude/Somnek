@@ -170,11 +170,15 @@ def reecrire_fichier(fichier, new_tab, noms):
 def get_info(joueur, info, arme):
     if info == "argent" :
         tab = det_noms()[1]
+        if joueur not in tab[1]:
+            return 0
         return int(tab[1][joueur])
     if info == "arme":
         tab = contenu_fichier_armes()
         for row in tab :
             if row["Type"] == arme :
+                if joueur not in row:
+                    return False
                 if row[joueur] == 1 :
                     return True
                 else : 

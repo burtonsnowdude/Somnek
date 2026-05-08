@@ -96,8 +96,8 @@ ANIM_NERD_HORIZON_R = decouper_image(spritesheet_nerd_horizon_r, 3, 3, 0)
 ANIM_NERD_HORIZON_L = decouper_image(spritesheet_nerd_horizon_l, 3, 3, 0)
 
 #NONNE
-NONNE = pyg.image.load("Images/Persos/nonne.png")
-
+NONNE_R = pyg.image.load("Images/Persos/nonne_r.png")
+NONNE_L = pyg.image.load("Images/Persos/nonne_l.png")
 
 #MONSTRES NERD
 SPIDER = pyg.image.load("Images/Monstres/spider.png")

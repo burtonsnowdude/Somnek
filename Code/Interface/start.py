@@ -19,7 +19,7 @@ def load_big(path):
 
 
 img_fille = load_small("Images/Persos/fille_populaire_l.png")
-img_nonne = load_small("Images/Persos/nonne.png")
+img_nonne = load_small("Images/Persos/nonne_r.png")
 
 fille_affich = load_big("Images/Interface/affiche_perso_fille.png")
 nonne_affich = load_big("Images/Interface/affiche_perso_soeur.png")
