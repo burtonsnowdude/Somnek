@@ -150,15 +150,9 @@ def ajouter_arme(nom, arme, new_tab):
     list(dict)
         La liste de données qui seront réécrites dans le fichier csv
     """
-    print("nom =", repr(nom))
-    print("arme =", repr(arme))
-
     for row in new_tab :
-        print("ligne =", row)
         if row["Type"] == arme:
-            print("arme trouvée")
             if int(row[nom]) == 0:
-                print("mise à jour")
                 row[nom] = 1
     return new_tab
 

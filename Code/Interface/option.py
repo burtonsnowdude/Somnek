@@ -4,6 +4,7 @@ from Interface.Class_Button import Button
 import Interface.variable_power_up as data
 from Interface.Power_up_shop import checkboxes as shop_checkboxes
 from Interface.Power_up_shop import sync_checkboxes
+from Fichiers_variables.gestion_fichiers import replace_player_money
 sync_checkboxes()
 pygame.init()
 
@@ -48,13 +49,15 @@ instructions = [
     pygameui.Text((160, 390), "Filtre noir et blanc", (0, 0, 0)),
 ]
 
-def refund_power_up():
+def refund_power_up(joueur, player_money):
     for power in data.playerInventory:
         niveau = data.playerInventory[power]
 
         if niveau > 0:
             prix_list, _ = data.liste_power_up[power]
-            data.player_money += sum(prix_list[:niveau])
+            player_money += sum(prix_list[:niveau])
+            #data.player_money += sum(prix_list[:niveau])
+            replace_player_money(joueur, player_money)
             data.playerInventory[power] = 0
 
     # reset shop checkboxes pygameui (IMPORTANT)
@@ -70,7 +73,7 @@ def sync_settings():
     settings["bw"] = checkboxes[4].is_checked()
 
 
-def options(events, mouse_pos, mouse_pressed, surface):
+def options(events, mouse_pos, mouse_pressed, surface, joueur, player_money):
     global reset_clicked
 
     surface.fill(fond)
@@ -92,7 +95,7 @@ def options(events, mouse_pos, mouse_pressed, surface):
             pygame.time.delay(150)
 
             if btn.action == "rénitialiser":
-                refund_power_up()
+                refund_power_up(joueur, player_money)
                 reset_clicked = True
     
 def black_and_white(surface):

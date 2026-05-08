@@ -216,11 +216,12 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                         return perso, map_choisie, joueur
 
             if show_options:
-                options(events, mouse_pos, mouse_pressed, WIN)
+                options(events, mouse_pos, mouse_pressed, WIN, joueur, player_money)
                 btn_rev_opt.draw(WIN, mouse_pos)
                 if btn_rev_opt.is_clicked(mouse_pos, mouse_pressed):
                     show_options = False
                     musique_close = True
+                player_money = get_info(joueur, "argent", None)
 
             if show_shop:
                 from Interface.Power_up_shop import open_shop, buy_selected
