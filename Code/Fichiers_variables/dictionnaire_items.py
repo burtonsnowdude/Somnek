@@ -189,7 +189,7 @@ Items = {
         "max": 40,
         "prix": 3
     },
-    "Huile_benediction": {
+    "Huile_benie": {
         
         "effet": "cooldown",
         
@@ -203,7 +203,7 @@ Items = {
         "max": 0.40,
         "prix": 5
     },
-    "Mousse": {
+    "Mousse_vanille": {
         
         "effet": "regen",
         
@@ -639,12 +639,12 @@ TYPES_ITEMS = {
         "texte": "Le personnage a 7 % de chance de plus à chaque niveau.(max +70%)"
     },
 
-    "Mousse_a_la_vanille": {
+    "Mousse_vanille": {
         "image": MOUSSE_VANILLE,
         "texte": "Le personnage récupère 0,6PV par seconde."
     },
 
-    "Sac_a_main_violet": {
+    "Sac_main_violet": {
         "image": MOUSSE_VANILLE,#en attente
         "texte": "Le personnage augmente la quantité de ses projectiles de 18% (max +40 %)"
     }
@@ -703,7 +703,7 @@ TYPES_ITEMS = {
     },
 
     "Eau_benite": {
-        "image": OSTIE,
+        "image": EAU_BENITE,
         "texte": "Augmente la vitesse + 10%, la santé +12%, la quantité et la fréquence des ennemis de 10 %."
     }
 }

@@ -130,7 +130,6 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     """
     kill_count = p.kill_count
     for m in monstres_presents[:]:
-        print(f"monstre {m.type} hp={m.hp}")
         m.show(frame) # affiche tous les monstres existant
         if m.hp > 0 :
             m.follow(p.x_monde, p.y_monde) # monstres suivant le joueur

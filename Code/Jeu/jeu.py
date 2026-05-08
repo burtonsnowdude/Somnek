@@ -28,7 +28,6 @@ def on_level_up(player):
     player.armes = player._construire_armes()
 def jeu(perso, nom, map_choisie="Cour"):
     noms, new_tab = det_noms()
-
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
         argent = int(new_tab[1][nom])
@@ -129,9 +128,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             for projectile in p.all_projectiles:
                 for m in monstres_presents:
                     if projectile.rect.colliderect(m.rect):
-                        print(f"COLLISION ! projectile={projectile.rect.center} monstre={m.rect.center} hp avant={m.hp}")
                         m.degats(10)
-                        print(f"hp après={m.hp}")
                         if projectile.explode:  
                             explosions.append(Explosion(m.x_monde, m.y_monde, p))
                         projectile.kill()
@@ -221,7 +218,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                 else:
                     items_possedes.append(objet[1])
 
-                armes_joueur = ajouter_arme(nom, objet, armes_joueur)
+                armes_joueur = ajouter_arme(nom, objet[1], armes_joueur)
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
                 on_level_up(p) 
 
@@ -232,6 +229,7 @@ def jeu(perso, nom, map_choisie="Cour"):
 
             pyg.display.flip()
 
+    new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
     reecrire_fichier("niveau_argent", new_tab, noms)
     reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
     

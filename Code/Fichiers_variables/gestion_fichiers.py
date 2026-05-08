@@ -54,6 +54,9 @@ def ajouter_utilisateur(nom, noms):
     """
     if nom not in noms :
         noms.append(nom)
+        new_tab_armes = contenu_fichier_armes()
+        for ligne in new_tab_armes:
+            ligne[nom] = 0
         return noms
     return False 
 
@@ -147,9 +150,15 @@ def ajouter_arme(nom, arme, new_tab):
     list(dict)
         La liste de données qui seront réécrites dans le fichier csv
     """
+    print("nom =", repr(nom))
+    print("arme =", repr(arme))
+
     for row in new_tab :
+        print("ligne =", row)
         if row["Type"] == arme:
+            print("arme trouvée")
             if int(row[nom]) == 0:
+                print("mise à jour")
                 row[nom] = 1
     return new_tab
 
@@ -193,3 +202,4 @@ def replace_player_money(joueur, argent):
     noms, new_tab = det_noms()
     new_tab[1][joueur] = argent
     reecrire_fichier("niveau_argent", new_tab, noms)
+
