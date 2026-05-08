@@ -93,7 +93,7 @@ def play_sound(son):
         pyg.mixer.music.play()
 
 def replique(texte, color, text_color):
-    textes = retour_ligne(texte)
+    textes = retour_ligne(texte, 80)
     temps_debut = time.time()
     fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
     fond.fill(color)
@@ -183,7 +183,7 @@ def quizz(son):
         rose.fill((255, 182, 229, 200))  
         WIN.blit(rose, (0, 0))
         texte = QUIZZ[i][0]
-        texte = retour_ligne(texte)
+        texte = retour_ligne(texte, 80)
         for t in texte :
             question = FONT.render(t, True, (163, 38, 47))
             WIN.blit(question, (80, 100+20*texte.index(t)))
@@ -219,16 +219,16 @@ def quizz(son):
     return win_count >= (len(QUIZZ)+2)/2 # moyenne des questions sans les 2 cadeaux
 # (oui c'est de la fausse générosité) comme ça vous pouvez ajouter des questions sans tout casser
         
-def retour_ligne(texte):
+def retour_ligne(texte, longueur):
     nb_carac = len(texte)
-    if nb_carac >= 80:
-        i = 79
+    if nb_carac >= longueur:
+        i = longueur - 1
         while texte[i] != " " :
             i -= 1
         liste = [texte[0:i], texte[i+1:nb_carac] ]
         nb_carac = len(liste[1])
-        if nb_carac >= 80:
-            i = 79
+        if nb_carac >= longueur:
+            i = longueur - 1
             while liste[1][i] != " " :
                 i -= 1
             liste2 = [liste[1][0:i], liste[1][i+1:nb_carac] ]

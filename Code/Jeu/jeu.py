@@ -26,6 +26,7 @@ def on_level_up(player):
         arme_obj.levelup_depuis_niveau(niveau)
     
     player.armes = player._construire_armes()
+
 def jeu(perso, nom, map_choisie="Cour"):
     noms, new_tab = det_noms()
     res = ajouter_utilisateur(nom, noms)
@@ -33,13 +34,13 @@ def jeu(perso, nom, map_choisie="Cour"):
         argent = int(new_tab[1][nom])
         new_tab[0][nom] = int(new_tab[0][nom])
     else :
-        noms = res
+        noms, new_tab_armes = res
         argent = 0
         new_tab[0][nom] = 1
         new_tab[1][nom] = 0
         reecrire_fichier("niveau_argent", new_tab, noms)
+        reecrire_fichier("niveau_argent", new_tab_armes, noms)
     
-
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock()
     run = True
@@ -80,7 +81,9 @@ def jeu(perso, nom, map_choisie="Cour"):
 
         if not p.alive:
             action = game_over()
-
+            new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
+            reecrire_fichier("niveau_argent", new_tab, noms)
+            reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
             if action == "menu":
                 return "menu"
 

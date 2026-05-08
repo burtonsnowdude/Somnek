@@ -15,14 +15,14 @@ shop_bg_img = pygame.transform.scale(shop_bg_img, (500, 500))
 
 
 
-AFFICH_SIZE = (250, 70)
+AFFICH_SIZE = (375, 105)
 
 ITEM_SIZE = 30
 START_X = 67
-START_Y = 49     # ← plus bas
+START_Y = 49    
 COLS = 8
-ROWS = 6          # ← supprime la dernière ligne
-SPACING_X = 50    # ← réduit
+ROWS = 6          
+SPACING_X = 50   
 SPACING_Y = 38  
 
 def load_small(path):
@@ -53,6 +53,7 @@ img_trefle = load_small("Images/Armes_items/trefle.png")
 img_armure = load_small("Images/Armes_items/armure de bronze.png")
 img_console = load_small("Images/Armes_items/console.png")
 img_serviette = load_small("Images/Armes_items/serviette_nettoyante.png")
+
 # FILLE POPULAIRE
 img_gloss_rose = load_small("Images/Armes_items/gloss_rose.png")
 img_ticket = load_small("Images/Armes_items/ticket.png")
@@ -74,6 +75,7 @@ img_pass_navigo = load_small("Images/Armes_items/pass navigo.png")
 img_fer_a_lisser = load_small("Images/Armes_items/fer_à_lisser.png")
 img_jean_stanley = load_small("Images/Armes_items/jean_stanley_cup.png")
 img_chargeur = load_small("Images/Armes_items/chargeur.png")
+
 # NONNE
 img_croix_de_base = load_small("Images/Armes_items/croix_de_base.png")
 img_couronne = load_small("Images/Armes_items/couronne.png")
@@ -159,6 +161,7 @@ liste_all_item = {
     "Armure": (img_armure, armure_affich),
     "Console": (img_console, console_affich),
     "Serviette nettoyante": (img_serviette, serviette_affich),
+
     # FILLE POPULAIRE
     "Gloss rose": (img_gloss_rose, gloss_rose_affich),
     "Ticket": (img_ticket, ticket_affich),
@@ -180,6 +183,7 @@ liste_all_item = {
     "Fer à lisser": (img_fer_a_lisser, fer_a_lisser_affich),
     "Jean Stanley": (img_jean_stanley, jean_stanley_affich),
     "Chargeur": (img_chargeur, chargeur_affich),
+
     # NONNE
     "Croix de base": (img_croix_de_base, croix_de_base_affich),
     "Couronne": (img_couronne, couronne_affich),
@@ -196,107 +200,62 @@ liste_all_item = {
 liste_all_item = {
     "Palette": (img_palette, palette_affich),
     "Berserk": (img_berserk, berserk_affich),
-
     "Petit_nain_roux": (img_nain, pas_trouve),
-
-    "Lunettes_cassees": (img_lunettes_cassees, palette_affich),
-    "Souris_pc": (img_souris, palette_affich),
-    "Chaussettes_propres": (img_chaussettes, palette_affich),
-    "Cahier_NSI": (img_cahier_de_nsi, palette_affich),
-
-    "Vody_Lemonade": (img_vody, palette_affich),
-    "Deodorant": (img_serviette, palette_affich),
-    "Pomme_scientifique": (img_pomme_scientifique, palette_affich),
-    "Armure_de_bronze": (img_armure, palette_affich),
-
-    "Cle_USB": (img_cle_usb, palette_affich),
-    "Pistolets": (img_pistolets, palette_affich),
-    "Console_allumee": (img_console, palette_affich),
-
-    "Chariot_violet": (img_chariot_violet, palette_affich),
-    "Nokia": (img_nokia, palette_affich),
-    "Trefle": (img_trefle, palette_affich),
-    "Serviette_nettoyante": (img_serviette, palette_affich),
+    "Lunettes_cassees": (img_lunettes_cassees, lunettes_cassees_affich),
+    "Souris_pc": (img_souris, souris_affich),
+    "Chaussettes_propres": (img_chaussettes, chaussettes_affich),
+    "Cahier_NSI": (img_cahier_de_nsi, cahier_de_nsi_affich),
+    "Vody_Lemonade": (img_vody, vody_affich),
+    "Deodorant": (img_serviette, vody_affich),#en attente
+    "Pomme_scientifique": (img_pomme_scientifique, pomme_scientifique_affich),
+    "Armure_de_bronze": (img_armure, armure_affich),
+    "Cle_USB": (img_cle_usb, cle_usb_affich),
+    "Pistolets": (img_pistolets, pistolets_affich),
+    "Console_allumee": (img_console, console_affich),
+    "Chariot_violet": (img_chariot_violet, chariot_violet_affich),
+    "Nokia": (img_nokia, nokia_affich),
+    "Trefle": (img_trefle, trefle_affich),
+    "Serviette_nettoyante": (img_serviette, serviette_affich),
 
     # FILLE POPULAIRE
-    "Gloss_rose": (img_gloss_rose, palette_affich),
-    "Chew_gum": (img_chew_gum, palette_affich),
-    "Talons_noirs": (img_talon_noir, palette_affich),
-    "Bracelet_soeur": (img_bracelet_soeur, palette_affich),
-    "Carte_bleue": (img_carte_bleu, palette_affich),
-    "Parfum_Dioru": (img_parfum_dioru, palette_affich),
-    "Pilule_verte": (img_pilule_verte, palette_affich),
-    "Crop_top_rose": (img_crop_top_rose, palette_affich),
-    "Coque_trefle": (img_crop_top_rose, palette_affich),
-    "Mousse_a_la_vanille": (img_mousse_vanille, palette_affich),
-    "Sac_a_main_violet": (img_mousse_vanille, palette_affich),
+    "Gloss_rose": (img_gloss_rose, gloss_rose_affich),
+    "Ticket" : (img_ticket, ticket_affich),
+    "Faux_cils" : (img_faux_cils, faux_cils_affich),
+    "Minuteur" : (img_minuteur, minuteur_affich),
+    "Highlighter" : (img_highlighter, highlighter_affich),
+    "Chew_gum": (img_chew_gum, chew_gum_affich),
+    "Talons_noirs": (img_talon_noir, talon_noir_affich),
+    "Talon_louboutin" : (img_talon_louboutin, talon_louboutin_affich),
+    "Iphone_2000" : (img_iphone_2000, iphone_2000_affich),
+    "Pass_navigo" : (img_pass_navigo, pass_navigo_affich),
+    "Bracelet_soeur": (img_bracelet_soeur, bracelet_soeur_affich),
+    "Carte_bleue": (img_carte_bleu, carte_bleu_affich),
+    "Parfum_Dioru": (img_parfum_dioru, parfum_dioru_affich),
+    "Pilule_verte": (img_pilule_verte, pilule_verte_affich),
+    "Crop_top_rose": (img_crop_top_rose, crop_top_rose_affich),
+    "Coque_trefle": (img_trefle, trefle_affich),
+    "Mousse_a_la_vanille": (img_mousse_vanille, mousse_vanille_affich),
+    "Sac_a_main_violet": (img_mousse_vanille, crop_top_rose_affich),
+    "Jean_stanley" : (img_jean_stanley, jean_stanley_affich),
+    "Chargeur" : (img_chargeur, chargeur_affich),
 
     # NONNE
-    "Croix_marron": (img_croix_de_base, palette_affich),
-    "Chapelet": (img_croix_de_base, palette_affich),
-    "Mocassin": (img_mocassin, palette_affich),
-    "Tableau_sacre": (img_mocassin, palette_affich),
-    "Bourse": (img_bourse, palette_affich),
-    "Bougie": (img_bougie, palette_affich),
-    "Voile": (img_bougie, palette_affich),
-    "Huile_benie": (img_bougie, palette_affich),
-    "Ostie": (img_ostie, palette_affich),
-    "Sac_a_dos_bleu": (img_ostie, palette_affich),
-    "Eau_benite": (img_ostie, palette_affich),
+    "Croix_marron": (img_croix_de_base, croix_de_base_affich),
+    "Coiffe_de_rameau" : (img_couronne, couronne_affich),
+    "Feu_saint" : (img_feu_saint, feu_saint_affich),
+    "Chapelet": (img_croix_de_base, croix_de_base_affich),
+    "Mocassin": (img_mocassin, mocassin_affich),
+    "Tableau_sacre": (img_mocassin, croix_de_base_affich),
+    "Bourse": (img_bourse, bourse_affich),
+    "Bougie": (img_bougie, bougie_affich),
+    "Voile": (img_bougie, bougie_affich),
+    "Huile_benie": (img_bougie, eau_benite_affich),
+    "Ostie": (img_ostie, ostie_affich),
+    "Sac_a_dos_bleu": (img_ostie, eau_benite_affich),
+    "Eau_benite": (img_ostie, eau_benite_affich),
+    "Halo_lumineux": (img_halo_lumineux, halo_lumineux_affich),
+    "Boule_denergie" : (img_boule_denergie, boule_denergie_affich)
 }
-
-player_Inventory = [
-    "Palette",
-    "Berserk",
-    "Nain riche",
-    "Lunettes cassées",
-    "Cahier de NSI",
-    "Chaussettes",
-    "Souris",
-    "Clé USB",
-    "Pistolets",
-    "Chariot violet",
-    "Pomme scientifique",
-    "Vody",
-    "Ambroisie",
-    "Nokia",
-    "Trèfle",
-    "Armure",
-    "Console",
-    "Serviette nettoyante",
-    "Gloss rose",
-    "Ticket",
-    "Highlighter",
-    "Faux cils",
-    "Bracelet soeur",
-    "Carte bleu",
-    "Pilule verte",
-    "Mousse vanille",
-    "Démaquillant",
-    "Parfum Dioru",
-    "Minuteur",
-    "Chew gum",
-    "Crop top rose",
-    "Talon noir",
-    "Talon Louboutin",
-    "iPhone 2000",
-    "Pass Navigo",
-    "Fer à lisser",
-    "Jean Stanley",
-    "Chargeur",
-    "Croix de base",
-    "Couronne",
-    "Feu saint",
-    "Bougie",
-    "Bourse",
-    "Ostie",
-    "Boule d'énergie",
-    "Eau bénite",
-    "Mocassin",
-    "Halo lumineux",
-]
-
-
 
 selected_item = None
 
@@ -323,8 +282,8 @@ class ShopItem:
         if selected_item == self:
             pygame.draw.rect(surface, (255, 255, 0), self.rect, 3)
 
-def create_items():
-    joueur = "Daphne"
+def create_items(joueur):
+    
     player_inventory = liste_armes_acquises(joueur)
     items = []
     i = 0
@@ -354,27 +313,29 @@ def create_items():
 
 
 
-def open_collection(events, WIN, mouse_pos, mouse_pressed, close_button):
-    global items, selected_item
+def open_collection(events, WIN, mouse_pos, mouse_pressed, close_button, joueur):
 
-    # fond
+    global selected_item
+
+    items = create_items(joueur)
+
     WIN.blit(shop_bg_img, (0, 0))
 
-    # update + draw items
     for item in items:
         item.update(events)
         item.draw(WIN)
+
     if selected_item:
-        WIN.blit(selected_item.affich, (150, 300))  # ajuste si besoin
-    # bouton fermer
+        WIN.blit(selected_item.affich, (90, 265))
+
     close_button.draw(WIN, mouse_pos)
 
     return close_button.is_clicked(mouse_pos, mouse_pressed)
-
 btn_close = Button("X", "close", 500, 20, 40, 40, FONT_BUTTON)
 clock = pygame.time.Clock()
 
-items = create_items()
+
+"""
 if __name__ == "__main__":
   running = True
 
@@ -408,6 +369,5 @@ if __name__ == "__main__":
     if btn_close.is_clicked(mouse_pos, mouse_pressed):
         pygame.time.delay(150)
         running = False
-
-    
+"""
 

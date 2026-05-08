@@ -57,7 +57,7 @@ def ajouter_utilisateur(nom, noms):
         new_tab_armes = contenu_fichier_armes()
         for ligne in new_tab_armes:
             ligne[nom] = 0
-        return noms
+        return noms, new_tab_armes
     return False 
 
 ######################### Niveau et argent #################################
@@ -197,3 +197,28 @@ def replace_player_money(joueur, argent):
     new_tab[1][joueur] = argent
     reecrire_fichier("niveau_argent", new_tab, noms)
 
+def joueur_qui_a_tout(noms):
+    """Ajouter un nouvel utilisateur
+    
+    Parameters
+    ----------
+    nom : str
+        Le nom du joueur actuel
+    noms : str
+        La liste de tous les joueurs inscrits
+    
+    Returns
+    -------
+    list
+        La liste de joueurs inscrits actualisée
+    ou 
+    False
+    """
+    nom = "test"
+    noms.append(nom)
+    new_tab_armes = contenu_fichier_armes()
+    for ligne in new_tab_armes:
+        ligne[nom] = 1
+    reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
+    
+    
