@@ -13,7 +13,7 @@ def main():
         if res is False:
             running = False
         else:
-            perso, map_choisie ,joueur = res  # ← interface retourne (perso, map)
+            perso, map_choisie ,joueur = res 
             result = jeu(perso, joueur, map_choisie)
 
             if result == "menu":
