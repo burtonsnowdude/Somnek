@@ -204,10 +204,16 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                     if result == "close":
                         show_start = False
                     elif result[0] == "start_game":
-                        show_start = False
+                        show_start = False  
+            
+                        show_image = False
+                        show_realisation = False
+                        show_credits = False
+                        show_options = False
+                        show_shop = False
                         perso = result[1]
                         map_choisie = result[2]
-                        return perso, map_choisie, joueur  # ← ajoute joueur
+                        return perso, map_choisie, joueur
 
             if show_options:
                 options(events, mouse_pos, mouse_pressed, WIN)

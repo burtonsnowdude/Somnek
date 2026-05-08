@@ -3,6 +3,8 @@ from Fichiers_variables.variables import WIN, WIDTH, HEIGHT
 from Interface.Class_Button import Button
 
 FONT = pyg.font.SysFont(None, 24)
+fond_img = pyg.image.load("Images/Interface/fond_choix_map.png").convert_alpha()
+fond_img = pyg.transform.scale(fond_img, (WIDTH, HEIGHT))
 
 MAPS_DISPO = {
     "Metro": "Images/Interface/img_map_metro.png",
@@ -46,7 +48,8 @@ def open_choix_map(joueur_maps=None):
         clock.tick(60)
         mouse_pos = pyg.mouse.get_pos()
         mouse_pressed = pyg.mouse.get_pressed()
-
+        WIN.blit(fond_img, (0, 0))  # ← fond image
+        WIN.blit(fond, fond_rect)   
         for event in pyg.event.get():
             if event.type == pyg.QUIT:
                 pyg.quit()

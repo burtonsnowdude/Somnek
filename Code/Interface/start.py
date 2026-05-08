@@ -142,6 +142,8 @@ def open_start(WIN, events, mouse_pos, mouse_pressed, btn_close, font):
     if result is not None and result[0] == "start_game":
         perso = result[1]  # ← corrigé (était "perso" non défini)
         from Interface.choix_map import open_choix_map
+        WIN.fill((0, 0, 0))
+        pygame.display.flip()
         map_choisie = open_choix_map()
         return ("start_game", perso, map_choisie)
 
