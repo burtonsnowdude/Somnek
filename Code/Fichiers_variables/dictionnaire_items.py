@@ -66,21 +66,21 @@ Items = {
     }},
 
     "Nerd": {
-    "Lunettes": {
+    "Lunettes_cassees": {
         
         "effet": "zone",
         
         "max": 0.50,
         "prix": 3
     },
-    "Souris": {
+    "Souris_pc": {
        
         "effet": "cupidite",
         
         "max": 0.50,
         "prix": 3
     },
-    "Chaussettes": {
+    "Chaussettes_propres": {
         
         "effet": "vitesse",
 
@@ -247,7 +247,8 @@ GESTION_NIVEAU_ITEMS = {
         },
 
         "Niveau 5": {
-            "Pistolets": 15
+            "Pistolets": 15,
+            "Berserk" : 0 #à modifier mais j'ai pas capté à quoi servait ce truc
         },
 
         "Niveau 6": {
@@ -318,7 +319,8 @@ GESTION_NIVEAU_ITEMS = {
 
         "Niveau 22": {
             "Vody_Lemonade": 0.35,
-            "Serviette_nettoyante": 3
+            "Serviette_nettoyante": 3,
+            "Ambroisie" : 0.5
         },
 
         "Niveau 23": {
@@ -330,7 +332,7 @@ GESTION_NIVEAU_ITEMS = {
         },
 
         "Niveau 25": {
-            "Armure_chevalier": 0.50,
+            "Armure_de_chevalier": 0.50,
             "Pantalon_beige": 0.27
         },
 
@@ -471,6 +473,7 @@ GESTION_NIVEAU_ITEMS = {
         },
 
         "Niveau 7": {
+            "Armure_de_bronze" : 0.1 #jsp modifiez
         },
 
         "Niveau 8": {
@@ -481,6 +484,7 @@ GESTION_NIVEAU_ITEMS = {
         },
 
         "Niveau 10": {
+            "Armure_de_bronze" : 0.10
         },
 
         "Niveau 11": {
@@ -496,6 +500,7 @@ GESTION_NIVEAU_ITEMS = {
         },
 
         "Niveau 15": {
+            "Armure_de_bronze" : 0.10
         },
 
         "Niveau 16": {
@@ -575,10 +580,17 @@ TYPES_ITEMS = {
         "image": POMME_SCIENTIFIQUE,
         "texte": "+2% de santé maximale (max 200 %)"
     },
-
+    "Berserk" : {
+        "image" : BERSEK,
+        "texte" : "Tome 1 de Berserk : Augmente la puissance des ennemi de 10 % pendant 1 minute et augmente la Puissance du personnage  de 20% pendant 2 minutes."
+    },
     "Armure_de_bronze": {
         "image": ARMURE,
         "texte": "Réduit les dégâts des ennemis de 20%"
+    },
+    "Armure_de_chevalier": {
+        "image": ARMURE,
+        "texte": "+50 % de santé maximale (max 400 %) et réduit les dégâts des ennemis de 30%."
     },
 
     "Petit_nain_roux": {
