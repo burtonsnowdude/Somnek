@@ -3,128 +3,202 @@ from Fichiers_variables.traitement_images import *
 
 TYPES_ARMES = {
 
-    "Nerd": {
-
+    "Nerd": {    
         "Epee_bleue": {
-            "type_arme": "coup",
-            "image": "TEST",
-            "texte": "TEST"
-        },
-
-        "Cle_USB": {
-            "type_arme": "zone",
-            "image": CLE_USB,
-            "texte": "TEST"
-        },
-
-        "Epee_enflammee": {
-            "type_arme": "coup",
-            "image": PISTOLETS,
-            "texte": "TEST"
-        },
-
-        "Pistolets": {
-            "type_arme": "balle",
-            "image": PISTOLETS,
-            "texte": "TEST"
-        },
-
-        "Ticket_de_metro": {
-            "type_arme": "trait",
-            "image": TICKET,
-            "texte": "TEST"
-        },
-
-        "Epee_de_Guts": {
-            "type_arme": "coup",
-            "image": TICKET,
-            "texte": "TEST"
-        },
-
-        "Console_allumee": {
-            "type_arme": "zone",
-            "image": CONSOLE,
-            "texte": "TEST"
+                "type_arme": "coup",        
+                "image": ANIM_EPEE_BLEUE[0],        
+                "texte": "Donne +20% de douleur. Dégât de base : 4PV"    
+        },    
+        "Cle_USB": {        
+                "type_arme": "zone",        
+                "image": CLE_USB,        
+                "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée. Dégât de base : 23PV"    
+        },    
+        "Epee_enflammee": {        
+                "type_arme": "coup",        
+                "image": PISTOLETS,        
+                "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 10PV"    
+        },    
+        "Pistolets": {        
+                "type_arme": "balle",        
+                "image": PISTOLETS,        
+                "texte": "Génère de fines zones de dégâts. Échelle à haute quantité. Dégât de base : 15PV"    
+        },    
+        "Ticket_de_metro": {        
+            "type_arme": "trait",        
+            "image": TICKET,        
+            "texte": "Attaque verticalement, traverse les ennemis. Dégât de base : 20PV"    
+        },    
+        "Epee_de_Guts": {        
+                "type_arme": "coup",        
+                "image": EPEE_GUTS,        
+                "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV"    
+        },    
+        "Console_allumee": {        
+                    "type_arme": "zone",        
+                    "image": CONSOLE,        
+                    "texte": "Augmente la Puissance des ennemi de 10 % pendant 1 minutes et augmente la Puissance du personnage de 20% pendant 2 minutes"    
         }
-    },
+        },
 
     "Fille_populaire": {
 
-        "Faux_cils": {
-            "type_arme": "trait",
-            "image": FAUX_CILS,
-            "texte": "TEST"
-        },
-
-        "Faux_ongles_roses": {
-            "type_arme": "zone",
-            "image" : FAUX_CILS,
-            "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée."
-        },
-
-        "Bracelet_de_sa_soeur": {
-            "type_arme": "balle",
-            "image": BRACELET_SOEUR,
-            "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts."
-        },
-
-        "Fer_a_lisser": {
-            "type_arme": "zone_multiples",
-            "image": FER_A_LISSER,
-            "texte": "TEST"
-        },
-
-        "Pass_Navigo": {
-            "type_arme": "trait",
-            "image": PASS_NAVIGO,
-            "texte": "TEST"
-        },
-
-        "Ring_light": {
-            "type_arme": "zone_multiples",
-            "image": PASS_NAVIGO,
-            "texte": "TEST"
-        }
+    "Gloss_rose": {
+        "type_arme": "coup",
+        "image": GLOSS_ROSE,
+        "texte": "Augmente l'attirance de 15 % (max +45 %)."
     },
+
+    "Faux_cils": {
+        "type_arme": "trait",
+        "image": FAUX_CILS,
+        "texte": "Attaque horizontalement et traverse les ennemis. Réduit les dégâts entrants. Dégâts de base : 15PV."
+    },
+
+    "Faux_ongles_roses": {
+        "type_arme": "zone",
+        "image": FAUX_CILS, #en attente
+        "texte": "Crée une zone dévastatrice derrière le personnage. Dégâts de base : 23PV."
+    },
+
+    "Bracelet_de_sa_soeur": {
+        "type_arme": "balle",
+        "image": BRACELET_SOEUR,
+        "texte": "Tire sur un ennemi aléatoire et inflige de lourds dégâts. Dégâts de base : 16PV."
+    },
+
+    "Fer_a_lisser": {
+        "type_arme": "zone_multiples",
+        "image": FER_A_LISSER,
+        "texte": "Génère plusieurs zones de dégâts. Dégâts de base : 19PV."
+    },
+
+    "Pass_Navigo": {
+        "type_arme": "trait",
+        "image": PASS_NAVIGO,
+        "texte": "Attaque verticalement et traverse les ennemis. Dégâts de base : 20PV."
+    },
+
+    "Ring_light": {
+        "type_arme": "zone_multiples",
+        "image": PASS_NAVIGO,#en attente
+        "texte": "Tire rapidement dans quatre directions fixes. Dégâts de base : 40PV."
+    },
+
+    "Chew_gum": {
+        "image": CHEW_GUM,
+        "texte": "Augmente la santé maximale de 20 %."
+    },
+
+    "Talons_noirs": {
+        "image": TALON_NOIR,
+        "texte": "Augmente la vitesse de déplacement de 10 %."
+    },
+
+    "Iphone_2000": {
+        "image": IPHONE_2000,
+        "texte": "Augmente la puissance des ennemis de 10 % pendant 1 minute mais augmente celle du personnage de 20 % pendant 2 minutes."
+    },
+
+    "Coque_trefle": {
+        "image": TREFLE,#en attente
+        "texte": "Augmente les chances de 7 % à chaque niveau (max +70 %)."
+    },
+
+    "Crop_top_rose": {
+        "image": CROP_TOP_ROSE,
+        "texte": "Réduit les dégâts des ennemis de 20 %."
+    },
+
+    "Carte_bleu": {
+        "image": CARTE_BLEU,
+        "texte": "Le personnage gagne plus de pièces (max +50 %)."
+    },
+
+    "Chargeur": {
+        "image": CHARGEUR,
+        "texte": "Augmente la santé maximale de 20 %."
+    },
+
+    "Minuteur": {
+        "image": MINUTEUR,
+        "texte": "Les effets des attaques durent 1.5x plus longtemps."
+    },
+
+    "Pilule_verte": {
+        "image": PILULE_VERTE,
+        "texte": "Augmente la santé maximale."
+    },
+
+    "Parfum_Dioru": {
+        "image": PARFUM_DIORU,
+        "texte": "Réduit le temps entre les attaques."
+    },
+
+    "Sac_a_main_violet": {
+        "image": PARFUM_DIORU,#en attente
+        "texte": "Augmente la quantité de projectiles."
+    },
+
+    "Mousse_a_la_vanille": {
+        "image": MOUSSE_VANILLE,
+        "texte": "Régénère des PV chaque seconde."
+    },
+
+    "Ambroisie": {
+        "image": AMBROISIE,
+        "texte": "Permet de ressusciter une fois avec 50 % de vie."
+    },
+
+    "Ensemble_Juicy_Couture": {
+        "image": AMBROISIE,#en attente
+        "texte": "Augmente fortement la santé maximale et réduit les dégâts ennemis."
+    },
+
+    "Manteau_leopard": {
+        "image": AMBROISIE,#en attente
+        "texte": "Augmente les dégâts, réduit les dégâts reçus et augmente la portée."
+    }
+},
 
     "Nonne": {
 
-        "Croix_marron": {
-            "type_arme": "poison",
-            "image": CROIX_DE_BASE,
-            "texte": "TEST"
-        },
+    "Croix_marron": {
+        "type_arme": "poison",
+        "image": CROIX_DE_BASE,
+        "texte": "Une croix marron qui donne +22% en santé. Dégâts de base : 14PV."
+    },
 
-        "Feu_de_l'Esprit_Saint": {
-            "type_arme": "zone",
-            "image": FEU_SAINT,
-            "texte": "TEST"
-        },
+    "Feu_de_l'Esprit_Saint": {
+        "type_arme": "zone",
+        "image": FEU_SAINT,
+        "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée. Dégât de base : 23PV."
+    },
 
-        "Medaille_de_bapteme": {
-            "type_arme": "balle",
-            "image": FEU_SAINT,
-            "texte": "TEST"
-        },
+    "Medaille_de_bapteme": {
+        "type_arme": "balle",
+        "image": MEDAILLON,
+        "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 15PV."
+    },
 
-        "Coiffe_de_rameau": {
-            "type_arme": "zone",
-            "image": FEU_SAINT,
-            "texte": "TEST"
-        },
+    "Coiffe_de_rameau": {
+        "type_arme": "zone",
+        "image": COURONNE,
+        "texte": "Génère de fines zones de dégâts. Échelle à haute quantité. Dégât de base : 19PV."
+    },
 
-        "Lance_sacree": {
-            "type_arme": "trait",
-            "image": FEU_SAINT,
-            "texte": "TEST"
-        },
+    "Lance_sacree": {
+        "type_arme": "trait",
+        "image": FEU_SAINT,
+        "texte": "Attaque verticalement, traverse les ennemis. Dégât de base : 20PV."
+    },
 
-        "Aura_divine": {
-            "type_arme": "poison",
-            "image": HALO_LUMINEUX,
-            "texte": "TEST"
-        }
+    "Aura_divine": {
+        "type_arme": "poison",
+        "image": HALO_LUMINEUX,#en attente
+        "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV."
     }
+}
 }
 
 ARMES = {

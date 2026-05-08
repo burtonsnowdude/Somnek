@@ -68,9 +68,11 @@ class Coffre :
         str
             L'arme récupérée
         """
+        rect = ANIM_COFFRE[0].get_rect()
+        rect.center = (CENTREx, CENTREy)
         for i in ANIM_COFFRE :
             remplir_fond(p)
-            WIN.blit(i, (CENTREx-COFFRE_W/2, CENTREy-COFFRE_H/2))
+            WIN.blit(i, rect)
             pyg.display.flip()
             pyg.time.delay(200)
         armes_dispo = []
@@ -93,8 +95,10 @@ class Coffre :
                 dispo.remove(arme)
         argent_dispo = int(p.niveau*50 * randint(1, p.niveau))
         choix_aleat = choice((True, False))
-        if choix_aleat :
-            WIN.blit(ARGENT, (CENTREx-ARGENT_W/2, CENTREy - ARGENT_H/2))
+        if choix_aleat or len(dispo) == 0 :
+            rect = ARGENT.get_rect()
+            rect.center = (CENTREx, CENTREy)
+            WIN.blit(ARGENT, rect)
             txt = FONT.render(str(argent_dispo), 1, (255, 255, 255))
             WIN.blit(txt, (CENTREx, CENTREy-ARGENT_H/2+20))
             pyg.display.flip()

@@ -98,14 +98,14 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
         m = mot.replace("_", " ")
         m = m.upper()
         affich.append(m)
-    vert = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
-    vert.fill((102, 62, 86, 200))
-    texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (122, 48, 113))
+    violet = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
+    violet.fill((102, 62, 86, 200))
+    texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (255, 255, 255))
     buttons = [Button(affich[i], choix[i], 400, 200+100*i, 400, 80, FONT) for i in range(3)]
     for b in buttons :
         b.color1 = (122, 48, 113)
         b.color2 = (161, 99, 158)
-        b.rect_center = (400, b.rect.topleft[1]+15)
+        b.rect_center = (400, b.rect.topleft[1]+20)
         show_image(b, p)
         show_texte(b, p)
     waiting = True
@@ -151,7 +151,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
             xp.show_xp()
         mouse_pos = pyg.mouse.get_pos()
 
-        WIN.blit(vert, (0, 0))
+        WIN.blit(violet, (0, 0))
         for btn in buttons:
             btn.draw(WIN, mouse_pos)
             show_image(btn, p)

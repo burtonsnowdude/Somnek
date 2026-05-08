@@ -28,6 +28,7 @@ def on_level_up(player):
     player.armes = player._construire_armes()
 def jeu(perso,nom):
     noms, new_tab = det_noms()
+
     res = ajouter_utilisateur(nom, noms)
     if  res == False :
         argent = int(new_tab[1][nom])

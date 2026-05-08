@@ -17,7 +17,7 @@ def decouper_image(image, cols, rows, nb_a_enlever):
 ################################ IMAGES FIXES ################################################################
 
 XP = pyg.image.load("Images/Autre/xp.jpg")
-BG = pyg.image.load("Images/Maps/metro.png") # charger le fond d'ecran
+BG = pyg.image.load("Images/Maps/map_foire.png") # charger le fond d'ecran
 BGX, BGY = BG.get_size()
 FLECHE = pyg.image.load("Images/Coffres/fleche.png")
 FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
@@ -45,7 +45,11 @@ NOKIA = pyg.image.load("Images/Armes_items/nokia.png")
 TREFLE = pyg.image.load("Images/Armes_items/trefle.png")
 ARMURE = pyg.image.load("Images/Armes_items/armure de bronze.png")
 CONSOLE = pyg.image.load("Images/Armes_items/console.png")
-SERVIETTETE = pyg.image.load("Images/Armes_items/serviette_nettoyante.png")
+SERVIETTE = pyg.image.load("Images/Armes_items/serviette_nettoyante.png")
+spritesheet_epee_bleue = pyg.image.load("Images/Armes_items/epee_bleue.png")
+ANIM_EPEE_BLEUE = decouper_image(spritesheet_epee_bleue, 5, 1, 0)
+EPEE_GUTS = pyg.image.load("Images/Armes_items/epee_guts.png")
+
 # FILLE POPULAIRE
 GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose.png")
 TICKET =  pyg.image.load("Images/Armes_items/ticket.png")
@@ -67,6 +71,8 @@ PASS_NAVIGO = pyg.image.load("Images/Armes_items/pass navigo.png")
 FER_A_LISSER = pyg.image.load("Images/Armes_items/fer_à_lisser.png")
 JEAN_STANLEY = pyg.image.load("Images/Armes_items/jean_stanley_cup.png")
 CHARGEUR = pyg.image.load("Images/Armes_items/chargeur.png")
+
+
 # NONNE 
 CROIX_DE_BASE = pyg.image.load("Images/Armes_items/croix_de_base.png")
 COURONNE =  pyg.image.load("Images/Armes_items/couronne.png")
@@ -78,12 +84,20 @@ BOULE_DENERGIE = pyg.image.load("Images/Armes_items/boule_denergie.png")
 EAU_BENITE = pyg.image.load("Images/Armes_items/eau_bénite.png")
 MOCASSIN = pyg.image.load("Images/Armes_items/mocassin.png")
 HALO_LUMINEUX= pyg.image.load("Images/Armes_items/halo_lumineux.png")
-
+MEDAILLON = pyg.image.load("Images/Armes_items/medaillon.png")
+VOILE = pyg.image.load("Images/Armes_items/voile.png")
 ###################################### PERSONNAGES ##########################################################
 # FILLE POPULAIRE
 FILLE_POPULAIRE_L = pyg.image.load("Images/Persos/fille_populaire_l.png")
 FILLE_POPULAIRE_R = pyg.image.load("Images/Persos/fille_populaire_r.png")
-
+spritesheet_fille_populaire_avant = pyg.image.load("Images/Persos/fille_populaire_avant.png")
+spritesheet_fille_populaire_arriere = pyg.image.load("Images/Persos/fille_populaire_arriere.png")
+spritesheet_fille_populaire_horizon_r = pyg.image.load("Images/Persos/fille_populaire_horizon_r.png")
+spritesheet_fille_populaire_horizon_l = pyg.image.load("Images/Persos/fille_populaire_horizon_l.png")
+ANIM_FILLE_POPULAIRE_AVANT = decouper_image(spritesheet_fille_populaire_avant, 16, 1, 0)
+ANIM_FILLE_POPULAIRE_ARRIERE = decouper_image(spritesheet_fille_populaire_arriere, 16, 1, 0)
+ANIM_FILLE_POPULAIRE_HORIZON_R = decouper_image(spritesheet_fille_populaire_horizon_r, 2, 3, 0)
+ANIM_FILLE_POPULAIRE_HORIZON_L = decouper_image(spritesheet_fille_populaire_horizon_l, 2, 3, 0)
 
 #NERD
 spritesheet_nerd_avant = pyg.image.load("Images/Persos/nerd_avant.png")
@@ -148,6 +162,7 @@ spritesheet_rouge_a_levre = pyg.image.load("Images/Monstres/rouge_a_levre.png")
 spritesheet_ex_amies = pyg.image.load("Images/Monstres/ex_amies.png")
 spritesheet_pipi = pyg.image.load("Images/Monstres/pipi.png")
 spritesheet_odeurs = pyg.image.load("Images/Monstres/odeurs.png")
+spritesheet_ex = pyg.image.load("Images/Monstres/ex.png")
 
 # NONNE
 spritesheet_nonne = pyg.image.load("Images/Monstres/nonne.png")
@@ -159,9 +174,10 @@ spritesheet_fruit_defendu = pyg.image.load("Images/Monstres/fruit_defendu.png")
 spritesheet_miroir = pyg.image.load("Images/Monstres/miroir.png")
 spritesheet_demon = pyg.image.load("Images/Monstres/demon.png")
 spritesheet_diablotin = pyg.image.load("Images/Monstres/diablotin.png")
+spritesheet_gargouille = pyg.image.load("Images/Monstres/gargouille.png")
+spritesheet_lucifer = pyg.image.load("Images/Monstres/lucifer.png")
 
-
-ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 3, 0)
+ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 6, 0)
 
 # NERD
 ANIM_DRAGON = decouper_image(spritesheet_dragon, 3, 4, 6)
@@ -185,6 +201,7 @@ ANIM_ROUGE_A_LEVRE = decouper_image(spritesheet_rouge_a_levre, 3, 3, 1)
 ANIM_EX_AMIES = decouper_image(spritesheet_ex_amies, 3, 3, 0)
 ANIM_PIPI = decouper_image(spritesheet_pipi, 3, 3, 0)
 ANIM_ODEURS = decouper_image(spritesheet_odeurs, 3, 3, 2)
+ANIM_EX = decouper_image(spritesheet_ex, 2, 3, 0)
 
 # NONNE
 ANIM_NONNE = decouper_image(spritesheet_nonne, 5, 5, 4)
@@ -196,3 +213,5 @@ ANIM_FRUIT_DEFENDU = decouper_image(spritesheet_fruit_defendu, 3, 3, 1)
 ANIM_MIROIR = decouper_image(spritesheet_miroir, 3, 4, 0)
 ANIM_DEMON = decouper_image(spritesheet_demon, 6, 1, 0)
 ANIM_DIABLOTIN = decouper_image(spritesheet_diablotin, 9, 1, 0)
+ANIM_GARGOUILLE = decouper_image(spritesheet_gargouille, 8, 1, 0)
+ANIM_LUCIFER = decouper_image(spritesheet_lucifer, 8, 1, 0)

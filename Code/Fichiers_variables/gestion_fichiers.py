@@ -125,6 +125,11 @@ def contenu_fichier_armes():
         new_tab.append(row)
     return new_tab
 
+def liste_armes_acquises(joueur):
+    contenu = contenu_fichier_armes()
+    liste = [ligne["Type"] for ligne in contenu if ligne[joueur] == "1"]
+    return liste
+
 def ajouter_arme(nom, arme, new_tab):
     """Actualise les donnees des armes possedees par le joueur
     
