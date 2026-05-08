@@ -1,84 +1,77 @@
-import pygame
-
-import Interface.variable_power_up as data
+import pygame as pyg
+from Fichiers_variables.variables import WIN, WIDTH, HEIGHT
 from Interface.Class_Button import Button
 
-pygame.init()
+FONT = pyg.font.SysFont(None, 24)
 
-WOR = pygame.display.set_mode((500, 500))
-pygame.display.set_caption("selection de map")
+MAPS_DISPO = {
+    "Metro": "Images/Interface/img_map_metro.png",
+    "Cour":  "Images/Interface/img_map_cour.png",
+    "Rue":   "Images/Interface/img_map_rue.png",
+    "Ruelle":   "Images/Interface/img_map_ruelle.png",
+}
 
-FONT_BUTTON = pygame.font.SysFont(None, 24)
+MAPS_DEBLOQUEES = ["Metro", "Cour"]
 
+inconnu = pyg.image.load("Images/Maps/pas_map.png")
+inconnu = pyg.transform.scale(inconnu, (150, 120))
 
-selection_bg_img = pygame.image.load("Images/Interface/choix_map.png")
-selection_bg_img_img = pygame.transform.scale(selection_bg_img, (500, 500))
+def open_choix_map(joueur_maps=None):
+    if joueur_maps is None:
+        joueur_maps = MAPS_DEBLOQUEES
 
-img_map_metro = pygame.image.load("Images/Interface/map_metro.png")
-img_map_cour = pygame.image.load("Images/Interface/map_cour.png")
-img_map_rue = pygame.image.load("Images/Interface/rue_metro.png")
+    images = {}
+    for nom, path in MAPS_DISPO.items():
+        if nom in joueur_maps:
+            img = pyg.image.load(path).convert_alpha()
+            images[nom] = pyg.transform.scale(img, (150, 120))
+        else:
+            images[nom] = inconnu
 
-player_Inventory = ["Metro", "Cour"]
-inconnu = pygame.image.load("Images/Interface/pas_map.png")
-liste_all_map= { "Metro": (img_map_metro), "Rue" : (img_map_rue), "Cour" : (img_map_cour)}
+    fond = pyg.Surface((600, 400), pyg.SRCALPHA)
+    fond.fill((40, 40, 40, 230))
+    fond_rect = fond.get_rect(center=(WIDTH//2, HEIGHT//2))
 
-selected_item = None
-AFFICH_SIZE = (250, 70)
+    keys = list(MAPS_DISPO.keys())
+    nb = len(keys)
+    spacing = 180
+    start_x = WIDTH//2 - (nb-1) * spacing//2
+    positions = [(start_x + i * spacing, HEIGHT//2 - 30) for i in range(nb)]
 
-ITEM_SIZE = 30
-START_X = 67
-START_Y = 49     
-COLS = 8
-ROWS = 6        
-SPACING_X = 50    
-SPACING_Y = 38  
-START = Button("START", "entrer", 200, 395, 210, 60, FONT_BUTTON)
+    btn_start = Button("START", "start", WIDTH//2, HEIGHT//2 + 150, 200, 55, FONT)
+    selected = keys[0]
+    clock = pyg.time.Clock()
 
-class ShopItem:
-    def __init__(self, name, image,  x, y):
-        self.name = name
-        self.image = image
-        
-        self.rect = pygame.Rect(x, y, 41, 30)
+    while True:
+        clock.tick(60)
+        mouse_pos = pyg.mouse.get_pos()
+        mouse_pressed = pyg.mouse.get_pressed()
 
-    def update(self, events):
-        global selected_item
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
-                    selected_item = self
+        for event in pyg.event.get():
+            if event.type == pyg.QUIT:
+                pyg.quit()
+                exit()
+            if event.type == pyg.MOUSEBUTTONDOWN:
+                for i, (x, y) in enumerate(positions):
+                    rect = pyg.Rect(x - 75, y - 60, 150, 120)
+                    if rect.collidepoint(event.pos):
+                        if keys[i] in joueur_maps:
+                            selected = keys[i]
 
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        WIN.blit(fond, fond_rect)
 
-        pygame.draw.rect(surface, (80, 80, 80), self.rect, 2)
+        for i, (x, y) in enumerate(positions):
+            nom = keys[i]
+            img = images[nom]
+            rect = img.get_rect(center=(x, y))
+            WIN.blit(img, rect)
+            couleur = (255, 255, 0) if nom == selected else (80, 80, 80)
+            pyg.draw.rect(WIN, couleur, rect, 3)
+            texte = FONT.render(nom, True, (255, 255, 255))
+            WIN.blit(texte, texte.get_rect(center=(x, y + 75)))
 
-        if selected_item == self:
-            pygame.draw.rect(surface, (255, 255, 0), self.rect, 3)
+        btn_start.draw(WIN, mouse_pos)
+        if btn_start.is_clicked(mouse_pos, mouse_pressed):
+            return selected
 
-def create_items():
-    items = []
-    i = 0
-    keys = list(liste_all_map.keys())
-
-    for row in range(ROWS):
-        for col in range(COLS):
-
-            x = START_X + row
-            y = START_Y + row * SPACING_Y
-
-            if i < len(keys):
-                name = keys[i]
-
-                if name in player_Inventory:
-                    image = liste_all_map[name]
-                else:
-                    image = inconnu
-                    
-
-                items.append(ShopItem(name, image, x, y))
-                i += 1
-            else:
-                items.append(ShopItem("?", inconnu, x, y))
-
-    return items
+        pyg.display.flip()

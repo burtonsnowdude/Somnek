@@ -26,7 +26,7 @@ def on_level_up(player):
         arme_obj.levelup_depuis_niveau(niveau)
     
     player.armes = player._construire_armes()
-def jeu(perso,nom):
+def jeu(perso, nom, map_choisie="Cour"):
     noms, new_tab = det_noms()
 
     res = ajouter_utilisateur(nom, noms)
@@ -46,6 +46,8 @@ def jeu(perso,nom):
     run = True
     
     p = Player(perso, nom)
+    from Affichage.fonctionnement_divers import changer_map
+    changer_map(map_choisie)
     explosions = []
 
     monstres_presents, armes_et_items_possedees, xp_dispo, boss_acheves, armes_possedees, items_possedes = [], [], [], [], [], []
