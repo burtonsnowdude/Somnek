@@ -5,7 +5,7 @@ Power_up_shop.py - Version avec bouton acheter
 import pygame
 import Interface.variable_power_up as data
 from Jeu.power_up import apply_powerups
-from Fichiers_variables.gestion_fichiers import replace_player_money
+from Fichiers_variables.gestion_fichiers import replace_player_money, sauvegarder_powerup, charger_powerups_joueur
 import Interface.pygameui as pygameui
 
 WIDTH, HEIGHT = 500, 500
@@ -178,6 +178,7 @@ class ShopPowerUp:
         ox, oy = offset
 
         buy_clicked = False
+        data.playerInventory.update(charger_powerups_joueur(player))
         if self.selected:
             bx = ox + self.buy_rect.x
             by = oy + self.buy_rect.y
@@ -210,7 +211,7 @@ class ShopPowerUp:
 
         player_money -= prix
         data.playerInventory[self.selected.power] += 1
-
+        sauvegarder_powerup(player,self.selected.power,data.playerInventory[self.selected.power])
         if not isinstance(player, str):
             apply_powerups(player)
 

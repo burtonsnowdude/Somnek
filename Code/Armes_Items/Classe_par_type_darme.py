@@ -24,8 +24,8 @@ class ArmeBase:
         self.nom = nom_arme
         self.damage = 10
 
-        data = TYPES_ARMES.get(player.perso, {}).get(nom_arme, {})  # ← data AVANT proj_type
-        self.proj_type = data.get("type_arme", "balle")             # ← maintenant data existe
+        data = TYPES_ARMES.get(player.perso, {}).get(nom_arme, {}) 
+        self.proj_type = data.get("type_arme", "balle")             
 
         image = data.get("image")
         if image:
@@ -41,7 +41,7 @@ class ArmeBase:
 
     def trigger(self):
         if self.timer <= 0:
-            self.tirer()            # ← ne pas oublier self.tirer()
+            self.tirer()            
             self.timer = self.cooldown
 
     def tirer(self):
@@ -86,7 +86,7 @@ class ZoneAttaque(pyg.sprite.Sprite):
 
         image_path = ZONES_IMAGES.get(nom_arme, "Images/Armes_items/projectile/proj_couronne.png")
         self.image = pyg.image.load(image_path).convert_alpha()
-        self.image = pyg.transform.scale(self.image, (120, 120))  # ← augmente ces valeurs
+        self.image = pyg.transform.scale(self.image, (120, 120))  
 
         self.x_monde = pos[0]
         self.y_monde = pos[1]
@@ -115,7 +115,7 @@ class ArmeZone(ArmeBase):
         rad = math.radians(angle)
         x = self.player.x_monde + math.cos(rad) * distance
         y = self.player.y_monde + math.sin(rad) * distance
-        zone = ZoneAttaque((x, y), self.player, nom_arme=self.nom)  # ← passe self.nom
+        zone = ZoneAttaque((x, y), self.player, nom_arme=self.nom) 
         self.player.all_zones.add(zone)
 
 class ArmeMultiDirection(ArmeBase):
@@ -130,10 +130,10 @@ class ArmeMultiDirection(ArmeBase):
 
 
 class ZoneCoup(pyg.sprite.Sprite):
-    def __init__(self, player, nom_arme, duration=15):  # ← nom_arme en paramètre
+    def __init__(self, player, nom_arme, duration=15):  
         super().__init__()
         from Fichiers_variables.dictionnaire_armes import TYPES_ARMES
-        data = TYPES_ARMES.get(player.perso, {}).get(nom_arme, {})  # ← nom_arme direct
+        data = TYPES_ARMES.get(player.perso, {}).get(nom_arme, {})  
         image = data.get("image")
         if image:
             self.image = pyg.transform.scale(image, (50, 50))
@@ -160,7 +160,7 @@ class ArmeEpee(ArmeBase):
         self.cooldown = 40
 
     def tirer(self):
-        zone = ZoneCoup(self.player, self.nom)  # ← passe self.nom
+        zone = ZoneCoup(self.player, self.nom)  
         self.player.all_zones.add(zone)
     def draw(self, win):
         if self.image:

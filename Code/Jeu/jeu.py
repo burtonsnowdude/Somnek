@@ -37,13 +37,13 @@ def jeu(perso, nom, map_choisie="Cour"):
         argent = int(new_tab[1][nom])
         new_tab[0][nom] = int(new_tab[0][nom])
     else :
-        noms, new_tab_armes = res
+        noms, new_tab_armes, new_tab_quetes, new_tab_powerups = res
         argent = 0
         new_tab[0][nom] = 1
         new_tab[1][nom] = 0
         reecrire_fichier("niveau_argent", new_tab, noms)
-        reecrire_fichier("niveau_argent", new_tab_armes, noms)
-    
+        reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
+
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock()
     run = True
@@ -128,9 +128,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
 
-            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(
-                perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur
-            )
+            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur)
 
             
             p.update_armes()
@@ -176,9 +174,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             if frame % FREQUENCE == 0:
                 monstres_presents = ajouter_monstre(monstres_presents, p, perso)
 
-            monstres_presents, p.kill_count = gestion_monstres_presents(
-                monstres_presents, frame, p, xp_dispo
-            )
+            monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
 
             xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
 
@@ -215,7 +211,6 @@ def jeu(perso, nom, map_choisie="Cour"):
 
             dernier_coffre_apparu += 1 
 
-            print(p.hp, " / ", p.hp_max)
             p.draw_player(frame)
 
             # arme active visible
