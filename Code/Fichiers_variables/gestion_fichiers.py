@@ -57,8 +57,11 @@ def ajouter_utilisateur(nom, noms):
         new_tab_armes = contenu_fichier_armes()
         for ligne in new_tab_armes:
             ligne[nom] = 0
-        return noms, new_tab_armes
-    return False 
+        new_tab_quetes = contenu_fichier_quetes()
+        for ligne in new_tab_quetes:
+            ligne[nom] = 0
+        return noms, new_tab_armes, new_tab_quetes
+    return False
 
 ######################### Niveau et argent #################################
 
@@ -122,11 +125,13 @@ def definir_fichier_nouv_armes(noms):
 def contenu_fichier_armes():
     """Récupère les données du fichier armes_obtenues_par_joueur.csv"""
     contenu_niveau = csv.DictReader(open("Fichiers_csv/armes_obtenues_par_joueur.csv"))
-    
+
     new_tab = []
     for row in contenu_niveau :
         new_tab.append(row)
     return new_tab
+
+
 
 def liste_armes_acquises(joueur):
     contenu = contenu_fichier_armes()
@@ -164,7 +169,7 @@ def reecrire_fichier(fichier, new_tab, noms):
     new_tab : list(dict)
         La liste actualisée contenant les lignes de données sous forme de dictionnaires
     """
-    if fichier == "armes_obtenues_par_joueur" :
+    if fichier in ("armes_obtenues_par_joueur", "quetes_reussis") :
         headers = ["Type"] + noms
     else :
         headers = noms
@@ -222,3 +227,26 @@ def joueur_qui_a_tout(noms):
     reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
     
     
+########################### Quêtes ###########################
+
+def contenu_fichier_quetes():
+    """Récupère les données du fichier quetes_reussis.csv"""
+    contenu = csv.DictReader(open("Fichiers_csv/quetes_reussis.csv"))
+    return [row for row in contenu]
+
+def actualiser_quete(nom, quete):
+    """Marque une quête comme réussie pour un joueur et sauvegarde
+
+    Parameters
+    ----------
+    nom : str
+        Le nom du joueur
+    quete : str
+        L'identifiant de la quête (ex: 'Entrer_metro')
+    """
+    noms, _ = det_noms()
+    new_tab = contenu_fichier_quetes()
+    for row in new_tab:
+        if row["Type"] == quete:
+            row[nom] = 1
+    reecrire_fichier("quetes_reussis", new_tab, noms)

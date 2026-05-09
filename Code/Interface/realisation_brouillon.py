@@ -7,7 +7,7 @@ pygame.init()
 fond = (245, 245, 235)
 croix = (220, 40, 50)
 
-POPUP_W, POPUP_H = 350, 400
+POPUP_W, POPUP_H = 500, 400
 WORLD_H = 1000  
 
 world = pygame.Surface((POPUP_W, WORLD_H))
