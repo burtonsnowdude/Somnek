@@ -6,7 +6,7 @@ Applique les bonus de l'inventaire sur les stats du joueur.
 
 import Interface.variable_power_up as data
 
-# ── Valeurs de base du joueur ─────────────────────────────────────────────────
+
 BASE_VITESSE       = 5
 BASE_CADENCE       = 30      # frames entre deux tirs
 BASE_HP_MAX        = 100
@@ -39,7 +39,7 @@ def _bonus_additif(power: str):
     return sum(effets[:niveau])
 
 
-# ── Application globale sur le joueur ────────────────────────────────────────
+
 
 def apply_powerups(player):
     """
@@ -67,7 +67,6 @@ def apply_powerups(player):
         _appliquer_degats_arme(arme_instance, player.degats_bonus)
 
 
-# ── Dégâts par arme ──────────────────────────────────────────────────────────
 
 def _appliquer_degats_arme(arme_instance, multiplicateur: float):
     """
@@ -95,9 +94,7 @@ def _appliquer_degats_arme(arme_instance, multiplicateur: float):
     arme_instance.damage = dgbase * multiplicateur
 
 
-# ── Intégration dans Arme.levelup_depuis_niveau() ───────────────────────────
-#
-# Dans class_armes_sans_bugs.py, à la fin de levelup_depuis_niveau() :
+
 #
 #   def levelup_depuis_niveau(self, niveau_joueur):
 #       nv_key = f"Niveau {niveau_joueur}"
@@ -122,7 +119,7 @@ def _appliquer_degats_arme(arme_instance, multiplicateur: float):
 # ou passer par une fonction utilitaire appelée depuis Player.
 
 
-# ── Helpers utilisables partout ───────────────────────────────────────────────
+
 
 def calculer_degats_recus(player, degats_bruts: float) -> float:
     """
