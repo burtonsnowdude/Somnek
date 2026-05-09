@@ -1,4 +1,4 @@
-from Fichiers_variables.dictionnaire_armes import TYPES_ARMES, GESTION_DES_NIVEAUX_ARMES
+from Fichiers_variables.dictionnaire_armes import TYPES_ARMES, GESTION_DES_NIVEAUX_ARMES, ARMES as ARMES_PAR_PERSO
 
 class Arme:
     Carac_base = {
@@ -11,36 +11,12 @@ class Arme:
         "niveau": 0
     }
     arme_possede = []
-    ARMES = {
-        "Epee_bleu": {
-            **Carac_base,
-            "dgbase": 4,
-            "prix": 0,
-            "niveau_req": 0,
-            "niveau": 1
-        },
-        "Cle_usb": {
-            **Carac_base,
-            "dgbase": 23,
-            "prix": 9,
-            "niveau_req": 4,
-            "niveau": 1
-        },
-        "Epee_enflammee": {
-            **Carac_base,
-            "dgbase": 10,
-            "prix": 2,
-            "niveau_req": 4,
-            "niveau": 1
-        },
-        "Ticket_de_metro": {
-            **Carac_base,
-            "dgbase": 10,
-            "prix": 2,
-            "niveau_req": 4,
-            "niveau": 1
-        }
-    }
+
+    # Construction automatique : on aplatit ARMES_PAR_PERSO en un seul dico {nom_arme: data}
+    ARMES = {}
+    for _perso, _armes in ARMES_PAR_PERSO.items():
+        for _nom, _data in _armes.items():
+            ARMES[_nom] = {**Carac_base, **_data}
 
     def __init__(self, nom_arme, perso="Nerd"):
         if nom_arme not in self.ARMES:
@@ -48,7 +24,7 @@ class Arme:
         self.nom = nom_arme
         self.perso = perso
         self.caracteristiques = self.ARMES[nom_arme].copy()
-        self.attack = self.caracteristiques["dgbase"]
+        self.attack = self.caracteristiques.get("dgbase", 0)
 
         type_data = TYPES_ARMES.get(perso, {}).get(nom_arme, {})
         self.image = type_data.get("image", None)
@@ -67,5 +43,4 @@ class Arme:
 
     def calculer_degat(self):
         degat = self.caracteristiques["dgbase"]
-        reduction = self.caracteristiques["reduction"]
-        return degat - reduction if reduction > 0 else degat
+        reduction = self.caracteristiqu

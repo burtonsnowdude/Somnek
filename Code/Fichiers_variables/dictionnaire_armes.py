@@ -13,7 +13,7 @@ GESTION_DES_ARMES = {
 
     "Fille_populaire": {
         "Gloss_rose" : {"effet": "degats", "max": 45},
-        "Faux_cils " : {"effet": "degats", "max": 20},
+        "Faux_cils" : {"effet": "degats", "max": 20},
         "Bracelet_de_sa_soeur": {"effet": "degats", "max": 19},
         "Faux_ongles_roses": {"effet": "degats", "max": 23},
         "Fer_a_lisser": {"effet": "degats", "max": 19},

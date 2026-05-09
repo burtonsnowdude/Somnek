@@ -13,24 +13,24 @@ Layout (ordre d'affichage sur l'image) :
 import pygame
 import Interface.variable_power_up as data
 from Jeu.power_up import apply_powerups
-from Interface.Class_Button import Button
 from Fichiers_variables.gestion_fichiers import replace_player_money
+import Interface.pygameui as pygameui
 
-# ── Dimensions fenêtre (doit correspondre à fond_power_up.png) ───────────────
-WIDTH, HEIGHT = 320, 350
+WIDTH, HEIGHT = 500, 500
 
-# ── Couleurs ──────────────────────────────────────────────────────────────────
-COLOR_CELL      = (220, 180, 210, 180)   # rose translucide comme sur l'image
-COLOR_SELECTED  = (255, 220, 50)         # jaune vif
-COLOR_BORDER    = (140, 80, 140)         # bordure violette
-COLOR_BOUGHT    = (80, 200, 100)         # carré niveau acheté : vert
-COLOR_LOCKED    = (160, 120, 160)        # carré niveau non acheté : mauve sombre
-COLOR_TEXT      = (60, 20, 80)           # texte violet foncé
-COLOR_PRICE     = (180, 60, 60)          # prix en rouge foncé
-COLOR_MAX       = (80, 160, 80)          # MAX en vert
+NOMS_FR = {
+    "Pouvoir":         "Pouvoir",
+    "sante":           "Santé",
+    "Protection":      "Armure",
+    "refroidissement": "Cooldown",
+    "zone":            "Zone",
+    "vitesse_du_j":    "Vitesse",
+    "durabilite":      "Durée",
+    "attirance":       "Aimant",
+    "chance":          "Chance",
+    "croissance":      "Croissance",
+}
 
-# ── Positions et tailles des cases (en px, calquées sur l'image 320x350) ─────
-#   Chaque tuple : (x, y, w, h, clé_power_up, label)
 CELLS_LAYOUT = [
     # ── Ligne 1 : 3 cases en haut ─────────────────────────────────────────
     ( 10,  18,  85, 55, "Pouvoir",         "Pouvoir"),
@@ -163,17 +163,7 @@ class ShopPowerUp:
                player_money, player, offset=(0, 0)) -> tuple[bool, int]:
         ox, oy = offset
 
-        self.draw(win, mouse_pos, player_money, offset)
-
-        for cell in self.cells:
-            shifted = cell.rect.move(ox, oy)
-            original_rect = cell.rect
-            cell.rect = shifted
-            if cell.is_clicked(events):
-                self.selected = cell
-            cell.rect = original_rect
-
-        # Clic sur une case déjà sélectionnée = achat direct
+        buy_clicked = False
         if self.selected:
             shifted = self.selected.rect.move(ox, oy)
             for event in events:
@@ -194,7 +184,7 @@ class ShopPowerUp:
             return player_money
 
         player_money -= prix
-        data.playerInventory[cell.power] += 1
+        data.playerInventory[self.selected.power] += 1
 
         if not isinstance(player, str):
             apply_powerups(player)

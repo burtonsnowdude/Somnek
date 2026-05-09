@@ -1,7 +1,8 @@
 import csv
 from Fichiers_variables.variables import *
 from Fichiers_variables.dictionnaire_items import TYPES_ITEMS
-from Fichiers_variables.dictionnaire_armes import GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
+from Fichiers_variables.dictionnaire_armes import TYPES_ARMES
+import Interface.variable_power_up as data
 """
 Niveau atteint
 Argent obtenu
@@ -60,7 +61,10 @@ def ajouter_utilisateur(nom, noms):
         new_tab_quetes = contenu_fichier_quetes()
         for ligne in new_tab_quetes:
             ligne[nom] = 0
-        return noms, new_tab_armes, new_tab_quetes
+        new_tab_powerups = contenu_fichier_powerups()
+        for ligne in new_tab_powerups:
+                ligne[nom] = 0
+        return noms, new_tab_armes, new_tab_quetes, new_tab_powerups
     return False
 
 ######################### Niveau et argent #################################
@@ -113,8 +117,6 @@ def definir_fichier_nouv_armes(noms):
                         row[nom] = 0
                     writer.writerow(row)
             for perso in TYPES_ARMES:
-                print("TYPE perso =", type(perso))
-                print("VALEUR perso =", perso)
                 for arme in TYPES_ARMES[perso]:
                     row = {}
                     row["Type"] = arme
@@ -169,7 +171,7 @@ def reecrire_fichier(fichier, new_tab, noms):
     new_tab : list(dict)
         La liste actualisée contenant les lignes de données sous forme de dictionnaires
     """
-    if fichier in ("armes_obtenues_par_joueur", "quetes_reussis") :
+    if fichier in ("armes_obtenues_par_joueur", "quetes_reussis", "powerups") :
         headers = ["Type"] + noms
     else :
         headers = noms
@@ -250,3 +252,47 @@ def actualiser_quete(nom, quete):
         if row["Type"] == quete:
             row[nom] = 1
     reecrire_fichier("quetes_reussis", new_tab, noms)
+
+def contenu_fichier_powerups():
+    """Récupère les données du fichier powerups.csv"""
+    contenu = csv.DictReader(open("Fichiers_csv/powerups.csv"))
+    return [row for row in contenu]
+
+
+def definir_fichier_powerups(noms):
+    headers = ["Type"] + noms
+    with open("Fichiers_csv/powerups.csv", "w", newline="") as fichier:
+        writer = csv.DictWriter(fichier, headers)
+        writer.writeheader()
+        for powerup in data.playerInventory:
+            row = {}
+            row["Type"] = powerup
+            for nom in noms:
+                row[nom] = 0
+            writer.writerow(row)
+
+def sauvegarder_powerup(nom, powerup, niveau):
+    """Sauvegarde le niveau d'un power up pour un joueur"""
+
+    noms, _ = det_noms()
+    new_tab = contenu_fichier_powerups()
+
+    for row in new_tab:
+        if row["Type"] == powerup:
+            row[nom] = niveau
+
+    reecrire_fichier("powerups", new_tab, noms)
+
+
+def charger_powerups_joueur(nom):
+    """Charge les power ups d'un joueur"""
+
+    contenu = contenu_fichier_powerups()
+
+    powerups = {}
+
+    for row in contenu:
+        if nom in row:
+            powerups[row["Type"]] = int(row[nom])
+
+    return powerups

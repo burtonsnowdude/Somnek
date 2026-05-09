@@ -4,7 +4,7 @@ from Interface.Class_Button import Button
 import Interface.variable_power_up as data
 from Interface.Power_up_shop import checkboxes as shop_checkboxes
 from Interface.Power_up_shop import sync_checkboxes
-from Fichiers_variables.gestion_fichiers import replace_player_money
+from Fichiers_variables.gestion_fichiers import replace_player_money, sauvegarder_powerup
 sync_checkboxes()
 pygame.init()
 
@@ -57,12 +57,13 @@ def refund_power_up(joueur, player_money):
             player_money += sum(prix_list[:niveau])
             replace_player_money(joueur, player_money)
             data.playerInventory[power] = 0
-
+            sauvegarder_powerup(joueur, power,data.playerInventory[power])
+    
     # Reset checkboxes
     for cb in shop_checkboxes:
         cb.set_checked(False)
 
-    # ★ Si une partie est en cours, remet les stats à zéro
+    # Si une partie est en cours, remet les stats à zéro
     from Jeu.player_actif import get_player_actif
     p = get_player_actif()
     if p is not None:
