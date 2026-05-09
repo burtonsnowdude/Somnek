@@ -10,7 +10,7 @@ import Interface.variable_power_up as data
 from Interface.collection import open_collection
 from Interface.start import open_start
 from Interface.collection import selected_item
-from Fichiers_variables.gestion_fichiers import get_info, det_noms, ajouter_utilisateur, reecrire_fichier
+from Fichiers_variables.gestion_fichiers import get_info, det_noms, ajouter_utilisateur, reecrire_fichier, contenu_fichier_quetes
 
 pyg.init()
 pyg.font.init()
@@ -46,12 +46,13 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
             argent = int(new_tab[1][joueur])
             new_tab[0][joueur] = int(new_tab[0][joueur])
         else :
-            noms, new_tab_armes = res
+            noms, new_tab_armes, new_tab_quetes = res
             argent = 0
             new_tab[0][joueur] = 1
             new_tab[1][joueur] = 0
             reecrire_fichier("niveau_argent", new_tab, noms)
             reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
+            reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
 
     fond_menu = pyg.image.load("Images/Interface/fond_accueil.png")
     fond_menu = pyg.transform.scale(fond_menu, (WIDTH, HEIGHT))
@@ -101,12 +102,13 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
             argent = int(new_tab[1][joueur])
             new_tab[0][joueur] = int(new_tab[0][joueur])
         else :
-            noms, new_tab_armes = res
+            noms, new_tab_armes, new_tab_quetes = res
             argent = 0
             new_tab[0][joueur] = 1
             new_tab[1][joueur] = 0
             reecrire_fichier("niveau_argent", new_tab, noms)
-            reecrire_fichier("niveau_argent", new_tab_armes, noms)
+            reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
+            reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
 
 
     game = skip_intro

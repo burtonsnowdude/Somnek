@@ -25,15 +25,15 @@ class Player:
     def __init__(self, perso, nom):
         self.hp = PLAYER_PV
         self.nom = nom
+        self.hp_max = PLAYER_PV    
         if "image" in PERSOS[perso] :
             self.image_r = PERSOS[perso]["image"]["horizon_r"]
             self.image_l = PERSOS[perso]["image"]["horizon_l"]
             self.image = self.image_r
-            self.hp_max = PLAYER_PV
+
             
             self.pos = self.image.get_rect()
 
-            
         else :
             self.index = 0
             self.anim_avant = PERSOS[perso]["anim"]["avant"]

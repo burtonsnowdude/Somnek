@@ -91,7 +91,6 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
     while niveau < p.niveau :
         if "Niveau "+str(niveau) in GESTION_DES_NIVEAUX_ARMES[p.perso] :
             for arme in GESTION_DES_NIVEAUX_ARMES[p.perso]["Niveau "+str(niveau)]:
-                if niveau != 1 :
                     armes_dispo.append(arme)
         niveau += 1
     dispo = items_dispo+armes_dispo

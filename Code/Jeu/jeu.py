@@ -192,7 +192,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             if monstres_vague is not None:
                 monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
                 monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p, perso)
-            boss_present, boss = spawn_boss(temps_ecoule, boss_present, boss_acheves, p, boss, perso)
+            boss_present, boss = spawn_boss(map_choisie, boss_present, boss_acheves, p, boss, perso)
             boss_present, boss_acheves = gestion_boss(boss, boss_present, p, frame, boss_acheves)
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout != False:
@@ -215,7 +215,7 @@ def jeu(perso, nom, map_choisie="Cour"):
 
             dernier_coffre_apparu += 1 
 
-            
+            print(p.hp, " / ", p.hp_max)
             p.draw_player(frame)
 
             # arme active visible
