@@ -5,6 +5,7 @@ from Jeu.player import *
 from Jeu.coffres import ajout_coffre
 from Jeu.passage_niveau import *
 from Affichage.affichage_divers import *
+from Fichiers_variables.dictionnaire_armes import ARMES
 from Monstres.class_monstre import *
 from Affichage.fonctionnement_divers import *
 from Fichiers_variables.gestion_fichiers import *
@@ -22,10 +23,11 @@ Explosion.init_frames()
 
 def on_level_up(player):
     niveau = player.niveau
-    for arme_obj in Arme.arme_possede:
-        arme_obj.levelup_depuis_niveau(niveau)
-    
-    player.armes = player._construire_armes()
+    armes_dispos = ARMES[player.perso]
+
+    for nom_arme, data in armes_dispos.items():
+        if data["niveau_req"] == niveau:
+            player.ajouter_arme(nom_arme)
 def jeu(perso, nom, map_choisie="Cour"):
     noms, new_tab = det_noms()
     res = ajouter_utilisateur(nom, noms)
@@ -43,8 +45,35 @@ def jeu(perso, nom, map_choisie="Cour"):
     armes_joueur = contenu_fichier_armes()
     clock = pyg.time.Clock()
     run = True
-    
+    from Jeu.power_up import apply_powerups
     p = Player(perso, nom)
+
+    DEPART = {
+    "Nerd": {
+        "armes": ["Epee_bleue"],
+        "items": []
+    },
+    "Fille_populaire": {
+        "armes": ["Gloss_rose"],
+        "items": []
+    },
+    "Nonne": {
+        "armes": ["Croix_marron"],
+        "items": []
+    },
+    }
+
+    for nom_arme in DEPART[perso]["armes"]:
+        p.ajouter_arme(nom_arme)
+
+    for nom_item in DEPART[perso]["items"]: 
+        p.ajouter_item(nom_item)  # ← nouveau
+
+    
+    
+    apply_powerups(p)
+    from Jeu.player_actif import set_player_actif
+    set_player_actif(p)
     from Affichage.fonctionnement_divers import changer_map
     changer_map(map_choisie)
     explosions = []
@@ -131,6 +160,8 @@ def jeu(perso, nom, map_choisie="Cour"):
                         m.degats(10)
                         if projectile.explode:  
                             explosions.append(Explosion(m.x_monde, m.y_monde, p))
+                        if hasattr(projectile, "poison") and projectile.poison:
+                            m.empoisonner(projectile.duree_poison, projectile.degats_poison, projectile.tick)
                         projectile.kill()
                         break
                 if boss_present and projectile.rect.colliderect(boss.rect):
@@ -171,9 +202,9 @@ def jeu(perso, nom, map_choisie="Cour"):
                         argent += gain
                     else:
                         armes_et_items_possedees.append(gain[1])
-                        armes_joueur = ajouter_arme(nom, gain, armes_joueur)
                         if gain[0] == "arme":
                             armes_possedees.append(gain[1])
+                            Player.equiper_arme(perso, objet[1])
                         else:
                             items_possedes.append(gain[1])
                     coffre_existant = False
@@ -215,10 +246,12 @@ def jeu(perso, nom, map_choisie="Cour"):
 
                 if objet[0] == "arme":
                     armes_possedees.append(objet[1])
+                    Player.equiper_arme(perso, objet[1])
                 else:
                     items_possedes.append(objet[1])
 
-                armes_joueur = ajouter_arme(nom, objet[1], armes_joueur)
+                from Jeu.player_actif import set_player_actif
+                set_player_actif(None)
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
                 on_level_up(p) 
 

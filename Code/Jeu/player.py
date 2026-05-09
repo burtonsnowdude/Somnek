@@ -1,9 +1,12 @@
 import pygame as pyg
 from Fichiers_variables.variables import * 
 import math
+from Armes_Items.class_items_sans_bugs import Items 
 from Armes_Items.classe_projectile import Projectile
 from Affichage.fonctionnement_divers import camera
 from Interface.Game_over import game_over
+from Armes_Items.creer_arme import creer_arme
+from Fichiers_variables.dictionnaire_armes import ARMES
 from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion
 from Jeu.power_up import apply_powerups
 from Armes_Items.class_armes_sans_bugs import Arme
@@ -40,13 +43,8 @@ class Player:
             self.pos = self.anim[0].get_rect()
         
         self.arme_active = 0
-        self.armes = [
-                ArmeProjectile(self),
-                ArmeEpee(self),
-                ArmeZone(self),
-                ArmeMultiDirection(self),
-                ArmeExplosion(self)
-                        ]
+        self.armes = []          # toutes les armes actives
+        self.armes_unlock = set()  # armes déjà ajoutées
         self.arme_active = 0
         self.all_zones = pyg.sprite.Group() 
         self.pos.center = CENTREx, CENTREy
@@ -56,8 +54,8 @@ class Player:
         self.kill_count = 0
         self.alive = True
         self.perso = perso
-        self.armes_data = Arme.arme_possede  
-        self.armes = self._construire_armes()
+        self.armes_data = Arme.arme_possede
+        
         self.color = PERSOS[perso]["color"]
         self.x_monde = CENTREx
         self.y_monde = CENTREy
@@ -81,17 +79,16 @@ class Player:
     def update_armes(self):
         for arme in self.armes:
             arme.update()
-            arme.trigger() 
+            arme.trigger()
 
-    def _construire_armes(self):
-        armes = []
-        for arme_obj in self.armes_data:
-            type_arme = arme_obj.caracteristiques.get("type_arme")
-            classe = TYPE_VERS_CLASSE.get(type_arme)
-            if classe:
-                instance = classe(self, arme_obj.nom)
-                armes.append(instance)
-        return armes if armes else [ArmeProjectile(self, "Epee_bleu")]  # arme par défaut
+    def ajouter_arme(self, nom_arme):
+        if nom_arme in self.armes_unlock:
+            return
+
+        self.armes_unlock.add(nom_arme)
+
+        arme = creer_arme(self, nom_arme, self.perso)
+        self.armes.append(arme) # arme par défaut
 
     def equiper_arme(self, nom_arme):
         """Ajoute une arme en cours de partie (niveau-up, shop)"""
@@ -184,7 +181,19 @@ class Player:
         return False
     
    
-    
+    def ajouter_item(self, nom_item):
+         
+        item_obj = Items(nom_item)
+    # applique les effets directement sur le joueur
+        carac = item_obj.caracteristiques
+
+        if carac.get("vitesse_du_j"):
+            self.vitesse *= (1 + carac["vitesse_du_j"])
+        if carac.get("attirance"):
+            self.attirance = getattr(self, "attirance", 0) + carac["attirance"]
+        if carac.get("protection"):
+            self.protection = getattr(self, "protection", 0) + carac["protection"]
+    # ajoute d'autres effets selon tes besoins
     def update_cooldown(self):
         """À appeler chaque frame pour réduire le cooldown"""
         if self.projectile_cooldown > 0:

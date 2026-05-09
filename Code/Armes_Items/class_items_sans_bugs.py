@@ -212,6 +212,7 @@ def regen_hp(player, recuperation, interval=1):
             player.hp = player.hp_max
 
 
+
 def durabilite_effect(player, durabilite_val, damage_per_tick=5, interval=2):
     """Decrease HP based on item durability"""
     if durabilite_val is None:

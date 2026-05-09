@@ -1,30 +1,143 @@
-
+"""
+power_up.py
+Applique les bonus de l'inventaire sur les stats du joueur.
+À appeler : après chaque achat, après un level-up, au chargement de la partie.
+"""
 
 import Interface.variable_power_up as data
 
+# ── Valeurs de base du joueur ─────────────────────────────────────────────────
+BASE_VITESSE       = 5
+BASE_CADENCE       = 30      # frames entre deux tirs
+BASE_HP_MAX        = 100
+BASE_PROTECTION    = 0.0
+BASE_QUANTITE      = 1
+BASE_ZONE          = 1.0
+BASE_DUREE         = 1.0
+BASE_CHANCE        = 0
+BASE_ATTIRANCE     = 50      # portée XP en pixels
+BASE_CROISSANCE_XP = 1.0
+
+
+def _niveau(power: str) -> int:
+    return data.playerInventory.get(power, 0)
+
+
+def _bonus_multiplicatif(power: str) -> float:
+    niveau = _niveau(power)
+    if niveau == 0:
+        return 1.0
+    _, effets = data.liste_power_up[power]
+    return 1.0 + sum(effets[:niveau])
+
+
+def _bonus_additif(power: str):
+    niveau = _niveau(power)
+    if niveau == 0:
+        return 0
+    _, effets = data.liste_power_up[power]
+    return sum(effets[:niveau])
+
+
+# ── Application globale sur le joueur ────────────────────────────────────────
+
 def apply_powerups(player):
     """
-    Applique tous les bonus au joueur
+    Recalcule toutes les stats du joueur depuis les bases + inventaire.
+    Appeler à chaque achat et au démarrage.
     """
+    player.vitesse              = BASE_VITESSE * _bonus_multiplicatif("vitesse_du_j")
+    player.projectile_cadence   = max(5, int(BASE_CADENCE / _bonus_multiplicatif("refroidissement")))
+    player.hp_max               = BASE_HP_MAX + int(_bonus_additif("sante"))
+    player.protection           = min(0.75, _bonus_additif("Protection"))
+    player.quantite_projectiles = BASE_QUANTITE + int(_bonus_additif("quantite"))
+    player.zone_bonus           = _bonus_multiplicatif("zone")
+    player.duree_bonus          = _bonus_multiplicatif("durabilite")
+    player.chance               = BASE_CHANCE + int(_bonus_additif("chance") * 10)
+    player.portee_xp            = BASE_ATTIRANCE + int(_bonus_additif("attirance"))
+    player.croissance_xp        = BASE_CROISSANCE_XP * _bonus_multiplicatif("croissance")
+    player.degats_bonus         = _bonus_multiplicatif("Pouvoir")
 
-    
-    player.vitesse = 5
-    player.projectile_cadence = 30
-    player.hp_max = 100
+    # Clamp HP
+    if player.hp > player.hp_max:
+        player.hp = player.hp_max
 
-    
-    level = data.playerInventory.get("Pouvoir", 0)
+    # ★ Répercute le bonus Pouvoir sur chaque arme possédée
+    for arme_instance in player.armes:
+        _appliquer_degats_arme(arme_instance, player.degats_bonus)
 
-    
-    if level >= 1:
-        player.vitesse *= 1.2   # +20% vitesse
 
-    if level >= 2:
-        player.projectile_cadence -= 5  # tire plus vite
+# ── Dégâts par arme ──────────────────────────────────────────────────────────
 
-    if level >= 3:
-        player.hp_max += 50  # + vie
+def _appliquer_degats_arme(arme_instance, multiplicateur: float):
+    """
+    Met à jour arme_instance.damage en partant du dgbase propre à chaque arme
+    (ex : Epee_bleue=4, Cle_USB=23, Epee_enflammee=10...)
+    puis applique le multiplicateur Pouvoir du joueur.
 
-    # clamp sécurité
-    if player.projectile_cadence < 5:
-        player.projectile_cadence = 5
+    Si l'arme a déjà gagné des niveaux (levelup_depuis_niveau),
+    on utilise _dgbase_apres_levelup pour ne pas perdre ces bonus.
+    """
+    from Armes_Items.class_armes_sans_bugs import Arme  # import local : évite les imports circulaires
+
+    nom = getattr(arme_instance, "nom", None)
+    if nom is None:
+        return
+
+    arme_data = Arme.ARMES.get(nom)
+    if arme_data is None:
+        return
+
+    # Priorité : dgbase post-levelup stocké sur l'instance ArmeBase
+    # sinon : dgbase initial du dictionnaire
+    dgbase = getattr(arme_instance, "_dgbase_apres_levelup", arme_data.get("dgbase", 0))
+
+    arme_instance.damage = dgbase * multiplicateur
+
+
+# ── Intégration dans Arme.levelup_depuis_niveau() ───────────────────────────
+#
+# Dans class_armes_sans_bugs.py, à la fin de levelup_depuis_niveau() :
+#
+#   def levelup_depuis_niveau(self, niveau_joueur):
+#       nv_key = f"Niveau {niveau_joueur}"
+#       bonus = GESTION_DES_NIVEAUX_ARMES.get(self.perso, {}).get(nv_key, {})
+#       if self.nom in bonus:
+#           valeur = bonus[self.nom]
+#           if isinstance(valeur, str) and "%" in valeur:
+#               pct = float(valeur.replace("+","").replace("% dégâts","").strip()) / 100
+#               self.caracteristiques["dgbase"] *= (1 + pct)
+#           elif isinstance(valeur, (int, float)):
+#               self.caracteristiques["dgbase"] += valeur
+#       self.attack = self.caracteristiques["dgbase"]
+#
+#       # ★ AJOUTER CES 2 LIGNES :
+#       # Cherche l'instance ArmeBase correspondante dans player.armes et met à jour
+#       # son _dgbase_apres_levelup pour que apply_powerups() parte du bon dgbase
+#       arme_base = next((a for a in self._player.armes if a.nom == self.nom), None)
+#       if arme_base:
+#           arme_base._dgbase_apres_levelup = self.caracteristiques["dgbase"]
+#
+# Note : il faut que Arme() reçoive le player en paramètre (self._player = player)
+# ou passer par une fonction utilitaire appelée depuis Player.
+
+
+# ── Helpers utilisables partout ───────────────────────────────────────────────
+
+def calculer_degats_recus(player, degats_bruts: float) -> float:
+    """
+    Retourne les dégâts réels subis après réduction par la Protection.
+    À appeler dans player.degats() :
+        self.hp -= calculer_degats_recus(self, degats)
+    """
+    protection = getattr(player, "protection", 0.0)
+    return max(0.0, degats_bruts * (1.0 - protection))
+
+
+def calculer_xp_gagne(player, xp_base: float) -> float:
+    """
+    Retourne l'XP réellement gagné après bonus Croissance.
+    À appeler dans player.update_xp() :
+        self.xp += calculer_xp_gagne(self, xp)
+    """
+    return xp_base * getattr(player, "croissance_xp", 1.0)

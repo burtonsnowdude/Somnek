@@ -1,12 +1,42 @@
 from Fichiers_variables.traitement_images import *
 
+GESTION_DES_ARMES = {
+
+    "Nerd": {
+
+        "Cle_USB": {"effet": "degats", "max": 30},
+        "Epee_enflammee": {"effet": "degats", "max": 15},
+        "Pistolets": {"effet": "attaque", "max": 2.0},
+        "Ticket_de_metro": {"effet": "degats", "max": 20},
+        "Epee_de_Guts": {"effet": "degats", "max": 40}
+    },
+
+    "Fille_populaire": {
+        "Gloss_rose" : {"effet": "degats", "max": 45},
+        "Faux_cils " : {"effet": "degats", "max": 20},
+        "Bracelet_de_sa_soeur": {"effet": "degats", "max": 19},
+        "Faux_ongles_roses": {"effet": "degats", "max": 23},
+        "Fer_a_lisser": {"effet": "degats", "max": 19},
+        "Pass_Navigo": {"effet": "degats", "max": 20},
+        "Ring_light": {"effet": "degats", "max": 40}
+    },
+
+    "Nonne": {
+
+        "Feu_de_l'Esprit_Saint": {"effet": "degats", "max": 23},
+        "Medaille_de_bapteme": {"effet": "degats", "max": 16},
+        "Coiffe_de_rameau": {"effet": "degats", "max": 19},
+        "Croix_marron": {"effet": "degats", "max": 14},
+        "JALAMBAYA" : {"effet": "degats", "max": 20}
+    }
+}
 
 TYPES_ARMES = {
 
     "Nerd": {    
         "Epee_bleue": {
                 "type_arme": "coup",        
-                "image": ANIM_EPEE_BLEUE[0],        
+                "image": EPEE_BLEUE,        
                 "texte": "Donne +20% de douleur. Dégât de base : 4PV"    
         },    
         "Cle_USB": {        
@@ -16,7 +46,7 @@ TYPES_ARMES = {
         },    
         "Epee_enflammee": {        
                 "type_arme": "coup",        
-                "image": PISTOLETS,        
+                "image": EPEE_ENFLAMMEE,        
                 "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 10PV"    
         },    
         "Pistolets": {        
@@ -42,11 +72,10 @@ TYPES_ARMES = {
         },
 
     "Fille_populaire": {
-
     "Gloss_rose": {
-        "type_arme": "coup",
+        "type_arme": "zone",
         "image": GLOSS_ROSE,
-        "texte": "Augmente l'attirance de 15 % (max +45 %)."
+        "texte": "Crée des zones de destruction. Dégâts de base : 10PV."
     },
 
     "Faux_cils": {
@@ -57,7 +86,7 @@ TYPES_ARMES = {
 
     "Faux_ongles_roses": {
         "type_arme": "zone",
-        "image": FAUX_CILS, #en attente
+        "image": FAUX_ONGLE, #en attente
         "texte": "Crée une zone dévastatrice derrière le personnage. Dégâts de base : 23PV."
     },
 
@@ -81,84 +110,12 @@ TYPES_ARMES = {
 
     "Ring_light": {
         "type_arme": "zone_multiples",
-        "image": PASS_NAVIGO,#en attente
+        "image": RING_LIGHT,#en attente
         "texte": "Tire rapidement dans quatre directions fixes. Dégâts de base : 40PV."
     },
 
-    "Chew_gum": {
-        "image": CHEW_GUM,
-        "texte": "Augmente la santé maximale de 20 %."
-    },
+   
 
-    "Talons_noirs": {
-        "image": TALON_NOIR,
-        "texte": "Augmente la vitesse de déplacement de 10 %."
-    },
-
-    "Iphone_2000": {
-        "image": IPHONE_2000,
-        "texte": "Augmente la puissance des ennemis de 10 % pendant 1 minute mais augmente celle du personnage de 20 % pendant 2 minutes."
-    },
-
-    "Coque_trefle": {
-        "image": TREFLE,#en attente
-        "texte": "Augmente les chances de 7 % à chaque niveau (max +70 %)."
-    },
-
-    "Crop_top_rose": {
-        "image": CROP_TOP_ROSE,
-        "texte": "Réduit les dégâts des ennemis de 20 %."
-    },
-
-    "Carte_bleu": {
-        "image": CARTE_BLEU,
-        "texte": "Le personnage gagne plus de pièces (max +50 %)."
-    },
-
-    "Chargeur": {
-        "image": CHARGEUR,
-        "texte": "Augmente la santé maximale de 20 %."
-    },
-
-    "Minuteur": {
-        "image": MINUTEUR,
-        "texte": "Les effets des attaques durent 1.5x plus longtemps."
-    },
-
-    "Pilule_verte": {
-        "image": PILULE_VERTE,
-        "texte": "Augmente la santé maximale."
-    },
-
-    "Parfum_Dioru": {
-        "image": PARFUM_DIORU,
-        "texte": "Réduit le temps entre les attaques."
-    },
-
-    "Sac_a_main_violet": {
-        "image": PARFUM_DIORU,#en attente
-        "texte": "Augmente la quantité de projectiles."
-    },
-
-    "Mousse_a_la_vanille": {
-        "image": MOUSSE_VANILLE,
-        "texte": "Régénère des PV chaque seconde."
-    },
-
-    "Ambroisie": {
-        "image": AMBROISIE,
-        "texte": "Permet de ressusciter une fois avec 50 % de vie."
-    },
-
-    "Ensemble_Juicy_Couture": {
-        "image": AMBROISIE,#en attente
-        "texte": "Augmente fortement la santé maximale et réduit les dégâts ennemis."
-    },
-
-    "Manteau_leopard": {
-        "image": AMBROISIE,#en attente
-        "texte": "Augmente les dégâts, réduit les dégâts reçus et augmente la portée."
-    }
 },
 
     "Nonne": {
@@ -189,15 +146,20 @@ TYPES_ARMES = {
 
     "Lance_sacree": {
         "type_arme": "trait",
-        "image": FEU_SAINT,
+        "image": LANCE_SACREE,
         "texte": "Attaque verticalement, traverse les ennemis. Dégât de base : 20PV."
     },
 
     "Aura_divine": {
         "type_arme": "poison",
-        "image": HALO_LUMINEUX,#en attente
+        "image": AURA_DIVINE,
         "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV."
-    }
+    },
+    "JALAMBAYA": {
+        "type_arme": "balle",
+        "image": JALAMBAYA,
+        "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 70PV."
+    },
 }
 }
 
@@ -237,6 +199,10 @@ ARMES = {
     },
 
     "Fille_populaire": {
+        "Gloss_rose": {
+            **TYPES_ARMES["Fille_populaire"]["Gloss_rose"],
+            "niveau_req": 1
+        },
 
         "Faux_cils": {
             **TYPES_ARMES["Fille_populaire"]["Faux_cils"],
@@ -393,6 +359,7 @@ GESTION_DES_NIVEAUX_ARMES = {
     "Fille_populaire": {
 
         "Niveau 1": {
+            
             "Faux_cils": "15 PV",
             "Fer_a_lisser": "19 PV"
         },
@@ -425,7 +392,8 @@ GESTION_DES_NIVEAUX_ARMES = {
         },
 
         "Niveau 9": {
-            "Fer_a_lisser": "+10% dégâts"
+            "Fer_a_lisser": "+10% dégâts",
+            "Gloss_rose" : "9% dégats"
         },
 
         "Niveau 10": {
@@ -439,7 +407,8 @@ GESTION_DES_NIVEAUX_ARMES = {
 
         "Niveau 12": {
             "Bracelet_de_sa_soeur": "+10% dégâts",
-            "Faux_cils": "+15% dégâts"
+            "Faux_cils": "+15% dégâts", 
+            "Gloss_rose" : "12% dégâts"
         },
 
         "Niveau 13": {
@@ -451,11 +420,13 @@ GESTION_DES_NIVEAUX_ARMES = {
         },
 
         "Niveau 16": {
-            "Fer_a_lisser": "+7% dégâts"
+            "Fer_a_lisser": "+7% dégâts",
+            "Gloss_rose" : "12% dégâts"
         },
 
         "Niveau 17": {
-            "Bracelet_de_sa_soeur": "+10% dégâts"
+            "Bracelet_de_sa_soeur": "+10% dégâts",
+            "Gloss_rose" : "15% dégâts"
         },
 
         "Niveau 18": {

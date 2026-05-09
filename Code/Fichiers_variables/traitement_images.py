@@ -49,6 +49,7 @@ SERVIETTE = pyg.image.load("Images/Armes_items/serviette_nettoyante.png")
 spritesheet_epee_bleue = pyg.image.load("Images/Armes_items/epee_bleue.png")
 ANIM_EPEE_BLEUE = decouper_image(spritesheet_epee_bleue, 5, 1, 0)
 EPEE_GUTS = pyg.image.load("Images/Armes_items/epee_guts.png")
+EPEE_ENFLAMMEE = pyg.image.load("Images/Armes_items/Epee enflamee.png")
 
 # FILLE POPULAIRE
 GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose.png")
@@ -71,6 +72,12 @@ PASS_NAVIGO = pyg.image.load("Images/Armes_items/pass navigo.png")
 FER_A_LISSER = pyg.image.load("Images/Armes_items/fer_à_lisser.png")
 JEAN_STANLEY = pyg.image.load("Images/Armes_items/jean_stanley_cup.png")
 CHARGEUR = pyg.image.load("Images/Armes_items/chargeur.png")
+FAUX_ONGLES = pyg.image.load("Images/Armes_items/faux_ongles_roses.png")
+AURA_DIVINE = pyg.image.load("Images/Armes_items/aura divine.png")
+RING_LIGHT = pyg.image.load("Images/Armes_items/ring light.png")
+LIVRE_DU_LORE = pyg.image.load("Images/Armes_items/livre_du_lore.png")
+EPEE_BLEUE = pyg.image.load("Images/Armes_items/epee_bleue_img.png") 
+FAUX_ONGLE = pyg.image.load("Images/Armes_items/faux_ongles_roses.png") 
 
 
 # NONNE 
@@ -86,6 +93,13 @@ MOCASSIN = pyg.image.load("Images/Armes_items/mocassin.png")
 HALO_LUMINEUX= pyg.image.load("Images/Armes_items/halo_lumineux.png")
 MEDAILLON = pyg.image.load("Images/Armes_items/medaillon.png")
 VOILE = pyg.image.load("Images/Armes_items/voile.png")
+JALAMBAYA = pyg.image.load("Images/Armes_items/jambalaya.png")
+AURA_DIVINE = pyg.image.load("Images/Armes_items/aura divine.png")
+
+CHAPELET = pyg.image.load("Images/Armes_items/chapelet.png")
+LANCE_SACREE = pyg.image.load("Images/Armes_items/lance sacre.png")
+
+SAC_BLEU = pyg.image.load("Images/Armes_items/sac_bleu.png")
 ###################################### PERSONNAGES ##########################################################
 # FILLE POPULAIRE
 FILLE_POPULAIRE_L = pyg.image.load("Images/Persos/fille_populaire_l.png")

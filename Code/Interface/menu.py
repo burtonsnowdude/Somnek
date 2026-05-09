@@ -1,7 +1,6 @@
 from Interface.option import settings, flashing_effect, black_and_white
 import pygame as pyg
 import sys
-
 from Fichiers_variables.variables import *
 from Interface.realisation_brouillon import realisation_brouillon, POPUP_W, POPUP_H
 from Interface.Power_up_shop import open_shop

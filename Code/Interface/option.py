@@ -52,17 +52,22 @@ instructions = [
 def refund_power_up(joueur, player_money):
     for power in data.playerInventory:
         niveau = data.playerInventory[power]
-
         if niveau > 0:
             prix_list, _ = data.liste_power_up[power]
             player_money += sum(prix_list[:niveau])
-            #data.player_money += sum(prix_list[:niveau])
             replace_player_money(joueur, player_money)
             data.playerInventory[power] = 0
 
-    # reset shop checkboxes pygameui (IMPORTANT)
+    # Reset checkboxes
     for cb in shop_checkboxes:
         cb.set_checked(False)
+
+    # ★ Si une partie est en cours, remet les stats à zéro
+    from Jeu.player_actif import get_player_actif
+    p = get_player_actif()
+    if p is not None:
+        from Jeu.power_up import apply_powerups
+        apply_powerups(p)
 
     pygame.event.clear()
 def sync_settings():

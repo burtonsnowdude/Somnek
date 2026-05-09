@@ -47,20 +47,46 @@ class Monstre:
     def show(self, frame):
         """Dessine le monstre"""
         self.rect.center = (self.x_screen, self.y_screen)
-        if "image" in TYPES_MONSTRES[self.type] :
-            WIN.blit(self.image, self.rect)
-        elif frame%4 == 0 :
+        if "image" in TYPES_MONSTRES[self.type]:
+            img = self.image.copy()
+            WIN.blit(img, self.rect)
+        elif frame % 4 == 0:
             WIN.blit(self.anim[self.index], self.rect)
             self.index += 1
-            self.index = self.index%len(self.anim)
-        else :
+            self.index = self.index % len(self.anim)
+        else:
             WIN.blit(self.anim[self.index], self.rect)
+
+        if getattr(self, "est_empoisonne", False):
+            img = self.image.copy() if "image" in TYPES_MONSTRES[self.type] else self.anim[self.index].copy()
+            vert = pyg.Surface(img.get_size(), pyg.SRCALPHA)
+            vert.fill((0, 200, 0, 100))
+            img.blit(vert, (0, 0))
+            WIN.blit(img, self.rect)
     
     def show_xp(self):
         self.rect.center = (self.x_screen, self.y_screen)
         WIN.blit(XP, self.rect)
         self.valeur = self.puissance
+    
 
+    def empoisonner(self, duree, degats, tick):  # ← dans la classe
+        self.est_empoisonne = True
+        self.poison_duree = duree
+        self.poison_degats = degats
+        self.poison_tick = tick
+        self.poison_timer = 0
+
+    def update_poison(self):
+        if not getattr(self, "est_empoisonne", False):
+            return
+        self.poison_timer += 1
+        self.poison_duree -= 1
+        if self.poison_timer >= self.poison_tick:
+            self.degats(self.poison_degats)
+            self.poison_timer = 0
+        if self.poison_duree <= 0:
+            self.est_empoisonne = False
     def degats(self, degats):
         """Inflige des dégâts au monstre
 
@@ -131,6 +157,7 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     kill_count = p.kill_count
     for m in monstres_presents[:]:
         m.show(frame) # affiche tous les monstres existant
+        m.update_poison()
         if m.hp > 0 :
             m.follow(p.x_monde, p.y_monde) # monstres suivant le joueur
             if p.pos.colliderect(m.rect) and frame%10 == 0:
@@ -150,4 +177,21 @@ def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
             p.xp += xp.valeur  
             xp_dispo.remove(xp)
     return xp_dispo, obtenu
+def empoisonner(self, duree, degats, tick):
+    self.est_empoisonne = True
+    self.poison_duree = duree
+    self.poison_degats = degats
+    self.poison_tick = tick
+    self.poison_timer = 0
+
+def update_poison(self):
+    if not getattr(self, "est_empoisonne", False):
+        return
+    self.poison_timer += 1
+    self.poison_duree -= 1
+    if self.poison_timer >= self.poison_tick:
+        self.degats(self.poison_degats)
+        self.poison_timer = 0
+    if self.poison_duree <= 0:
+        self.est_empoisonne = False
 

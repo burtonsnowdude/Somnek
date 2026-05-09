@@ -32,6 +32,13 @@ class Arme:
             "prix": 2,
             "niveau_req": 4,
             "niveau": 1
+        },
+        "Ticket_de_metro": {
+            **Carac_base,
+            "dgbase": 10,
+            "prix": 2,
+            "niveau_req": 4,
+            "niveau": 1
         }
     }
 

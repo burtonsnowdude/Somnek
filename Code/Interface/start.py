@@ -17,24 +17,28 @@ def load_big(path):
 
 img_fille = load_small("Images/Persos/fille_populaire_l.png")
 img_nonne = load_small("Images/Persos/nonne_r.png")
+img_nerd = load_small("Images/Persos/nerd_r.png") 
 
+nerd_affich = load_big("Images/Interface/affiche_perso_soeur.png")  
 fille_affich = load_big("Images/Interface/affiche_perso_fille.png")
 nonne_affich = load_big("Images/Interface/affiche_perso_soeur.png")
 
 img_arme_base_fille = load_small("Images/Armes_items/gloss_rose.png")
 img_arme_base_nonne = load_small("Images/Armes_items/croix_de_base.png")
-
+img_arme_base_nerd = load_small("Images/Armes_items/epee_bleue_img.png")
 armes = {
     "Fille_populaire": img_arme_base_fille,
-    "Nonne": img_arme_base_nonne
+    "Nonne": img_arme_base_nonne,
+    "Nerd": img_arme_base_nerd
 }
 
 liste_all_charac = {
     "Fille_populaire": (img_fille, fille_affich),
-    "Nonne": (img_nonne, nonne_affich)
+    "Nonne": (img_nonne, nonne_affich),
+    "Nerd": (img_nerd, nonne_affich) 
 }
 
-player_Inventory_charact = ["Fille_populaire"]  # ← corrigé (était "Fille")
+player_Inventory_charact = ["Fille_populaire"]  
 
 selected_item = None
 

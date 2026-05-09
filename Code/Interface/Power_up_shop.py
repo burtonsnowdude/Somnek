@@ -1,110 +1,258 @@
+"""
+Power_up_shop.py
+Boutique power-up calquée sur fond_power_up.png (320x350px).
+
+Layout (ordre d'affichage sur l'image) :
+  Ligne 1 : [Pouvoir]  [sante]   [Protection]
+  Ligne 2 : [refroid.] ← sac →  [zone]
+  Ligne 3 : [vitesse]  ← sac →  [durabilite]
+  Ligne 4 : [attirance]          [chance]
+  Ligne 5 : [croissance]
+"""
+
 import pygame
-import Interface.pygameui as pygameui
 import Interface.variable_power_up as data
+from Jeu.power_up import apply_powerups
 from Interface.Class_Button import Button
 from Fichiers_variables.gestion_fichiers import replace_player_money
 
-WIDTH, HEIGHT = 550, 500
+# ── Dimensions fenêtre (doit correspondre à fond_power_up.png) ───────────────
+WIDTH, HEIGHT = 320, 350
 
-FONT_BUTTON = pygame.font.SysFont(None, 36)
+# ── Couleurs ──────────────────────────────────────────────────────────────────
+COLOR_CELL      = (220, 180, 210, 180)   # rose translucide comme sur l'image
+COLOR_SELECTED  = (255, 220, 50)         # jaune vif
+COLOR_BORDER    = (140, 80, 140)         # bordure violette
+COLOR_BOUGHT    = (80, 200, 100)         # carré niveau acheté : vert
+COLOR_LOCKED    = (160, 120, 160)        # carré niveau non acheté : mauve sombre
+COLOR_TEXT      = (60, 20, 80)           # texte violet foncé
+COLOR_PRICE     = (180, 60, 60)          # prix en rouge foncé
+COLOR_MAX       = (80, 160, 80)          # MAX en vert
 
-shop_bg_img = pygame.image.load("Images/Interface/power_shop.png")
-shop_bg_img = pygame.transform.scale(shop_bg_img, (WIDTH, HEIGHT))
-
-current_price = 0
-selected_item = None
-
-
-checkboxes = [
-    pygameui.Checkbox((60, 210), 40, 40, style="cross"),
-    pygameui.Checkbox((100, 210), 40, 40, style="cross"),
-    pygameui.Checkbox((140, 210), 40, 40, style="cross"),
+# ── Positions et tailles des cases (en px, calquées sur l'image 320x350) ─────
+#   Chaque tuple : (x, y, w, h, clé_power_up, label)
+CELLS_LAYOUT = [
+    # ── Ligne 1 : 3 cases en haut ─────────────────────────────────────────
+    ( 10,  18,  85, 55, "Pouvoir",         "Pouvoir"),
+    (115,  18,  85, 55, "sante",           "Max Heart"),
+    (220,  18,  85, 55, "Protection",      "Armor"),
+    # ── Ligne 2 : gauche + droite (sac au centre) ─────────────────────────
+    ( 10,  83, 100, 45, "refroidissement", "Cooldown"),
+    (205,  83, 100, 45, "zone",            "Zone"),
+    # ── Ligne 3 : gauche + droite ─────────────────────────────────────────
+    ( 10, 138, 100, 45, "vitesse_du_j",    "Speed"),
+    (205, 138, 100, 45, "durabilite",      "Duration"),
+    # ── Ligne 4 : gauche + droite ─────────────────────────────────────────
+    ( 10, 193, 100, 45, "attirance",       "Magnet"),
+    (205, 193, 100, 45, "chance",          "Luck"),
+    # ── Ligne 5 : une case en bas à gauche ────────────────────────────────
+    ( 10, 248,  95, 42, "croissance",      "Growth"),
 ]
 
-def sync_checkboxes():
-    for cb in checkboxes:
-        power = "Pouvoir"  # adapte si plusieurs powers
-        level = checkboxes.index(cb)
 
-        if data.playerInventory[power] > level:
-            cb.set_checked(True)
-        else:
-            cb.set_checked(False)
+class PowerUpCell:
+    def __init__(self, x, y, w, h, power, label, font_title, font_small):
+        self.rect       = pygame.Rect(x, y, w, h)
+        self.power      = power
+        self.label      = label
+        self.font_title = font_title
+        self.font_small = font_small
 
-class ShopItem:
-    def __init__(self, x, y, w, h, power, level):
-        self.rect = pygame.Rect(x, y, w, h)
-        self.power = power
-        self.level = level
+    # ── Données ──────────────────────────────────────────────────────────────
+    @property
+    def niveau(self):
+        return data.playerInventory.get(self.power, 0)
 
-    def update(self, events):
-        global selected_item, current_price
+    @property
+    def max_niveau(self):
+        return data.MAX_NIVEAUX.get(self.power, 0)
 
+    @property
+    def prix_prochain(self):
+        if self.niveau >= self.max_niveau:
+            return None
+        prices, _ = data.liste_power_up[self.power]
+        return prices[self.niveau]
+
+    # ── Interaction ──────────────────────────────────────────────────────────
+    def is_clicked(self, events):
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
-                    selected_item = self
-                    prices, _ = data.liste_power_up[self.power]
-                    current_price = prices[self.level]
+                    return True
+        return False
 
-    def draw(self, surface):
-        pygame.draw.rect(surface, (120, 120, 120), self.rect, 3)
+    # ── Dessin ───────────────────────────────────────────────────────────────
+    def draw(self, surface, selected):
+        # Fond semi-transparent
+        cell_surf = pygame.Surface((self.rect.w, self.rect.h), pygame.SRCALPHA)
+        cell_surf.fill(COLOR_CELL)
+        surface.blit(cell_surf, (self.rect.x, self.rect.y))
 
-        if selected_item == self:
-            pygame.draw.rect(surface, (255, 255, 0), self.rect, 3)
+        # Bordure
+        border_color = COLOR_SELECTED if selected else COLOR_BORDER
+        border_w     = 3 if selected else 2
+        pygame.draw.rect(surface, border_color, self.rect, border_w)
 
-shop_items = [
-    ShopItem(60, 130, 120, 80, "Pouvoir", 0),
-    ShopItem(200, 130, 120, 80, "Pouvoir", 1),
-    ShopItem(340, 130, 120, 80, "Pouvoir", 2),
-]
-Boutons = Button("Acheter", "acheter", 390, 450, 120, 40, FONT_BUTTON)
+        # Label
+        txt = self.font_title.render(self.label, True, COLOR_TEXT)
+        surface.blit(txt, (self.rect.x + 4, self.rect.y + 3))
 
+        # Petits carrés de niveau
+        box_size = 8
+        box_gap  = 3
+        total_w  = self.max_niveau * (box_size + box_gap) - box_gap
+        bx_start = self.rect.x + (self.rect.w - total_w) // 2
+        by       = self.rect.bottom - box_size - 4
 
-def open_shop(events, WIN, mouse_pos, mouse_pressed, close_button, FONT_BUTTON, player_money, player):
-    global current_price
-    sync_checkboxes()
-    WIN.blit(shop_bg_img, (0, 0))
+        for i in range(self.max_niveau):
+            bx = bx_start + i * (box_size + box_gap)
+            br = pygame.Rect(bx, by, box_size, box_size)
+            color = COLOR_BOUGHT if i < self.niveau else COLOR_LOCKED
+            pygame.draw.rect(surface, color, br)
+            pygame.draw.rect(surface, (80, 40, 80), br, 1)
 
-    # IMPORTANT : update + draw pygameui
-    for item in shop_items:
-        item.update(events)
-        item.draw(WIN)
-
-    for cb in checkboxes:
-        cb.update(events)
-        cb.draw(WIN)
-
-    price_text = FONT_BUTTON.render(f"Prix: {current_price}", True, (255, 255, 255))
-    WIN.blit(price_text, (350, 400))
-    Boutons.draw(WIN, mouse_pos)
-
-    if Boutons.is_clicked(mouse_pos, mouse_pressed):
-        pygame.time.delay(150)
-        buy_selected(player_money, player)
-    close_button.draw(WIN, mouse_pos)
-
-    return close_button.is_clicked(mouse_pos, mouse_pressed)
+        # Prix ou MAX
+        prix = self.prix_prochain
+        if self.max_niveau > 0:
+            if prix is not None:
+                p_surf = self.font_small.render(f"{prix}g", True, COLOR_PRICE)
+            else:
+                p_surf = self.font_small.render("MAX", True, COLOR_MAX)
+            surface.blit(p_surf, (self.rect.x + 4, self.rect.bottom - box_size - 16))
 
 
-def buy_selected(player_money, player):
-    global selected_item
+class ShopPowerUp:
+    def __init__(self):
+        pygame.font.init()
+        self.font_title = pygame.font.SysFont("Arial", 11, bold=True)
+        self.font_small = pygame.font.SysFont("Arial", 9)
 
-    if not selected_item:
-        return
+        self.cells = [
+            PowerUpCell(x, y, w, h, power, label, self.font_title, self.font_small)
+            for (x, y, w, h, power, label) in CELLS_LAYOUT
+        ]
+        self.selected = None
 
-    power = selected_item.power
-    level = selected_item.level
+        # Fond image
+        try:
+            self.bg = pygame.image.load("Images/Interface/fond_power_up.png").convert_alpha()
+            self.bg = pygame.transform.scale(self.bg, (WIDTH, HEIGHT))
+        except Exception:
+            self.bg = pygame.Surface((WIDTH, HEIGHT))
+            self.bg.fill((200, 160, 200))
 
-    prices, _ = data.liste_power_up[power]
+    def draw(self, win, mouse_pos, player_money, offset=(0, 0)):
+        ox, oy = offset
+        win.blit(self.bg, (ox, oy))
 
-    if data.playerInventory[power] != level:
-        return
+        for cell in self.cells:
+            # Décale le rect pour l'affichage si la boutique n'est pas en (0,0)
+            shifted = cell.rect.move(ox, oy)
+            original_rect = cell.rect
+            cell.rect = shifted
+            cell.draw(win, selected=(cell is self.selected))
+            cell.rect = original_rect
 
-    price = prices[level]
+        # Argent
+        font = self.font_title
+        money_surf = font.render(f"Or: {player_money}", True, (60, 20, 80))
+        win.blit(money_surf, (ox + WIDTH - 70, oy + HEIGHT - 20))
 
-    if player_money >= price:
-        player_money -= price
-        data.playerInventory[power] += 1
-        sync_checkboxes()
+    def update(self, events, win, mouse_pos, mouse_pressed,
+               player_money, player, offset=(0, 0)) -> tuple[bool, int]:
+        ox, oy = offset
+
+        self.draw(win, mouse_pos, player_money, offset)
+
+        for cell in self.cells:
+            shifted = cell.rect.move(ox, oy)
+            original_rect = cell.rect
+            cell.rect = shifted
+            if cell.is_clicked(events):
+                self.selected = cell
+            cell.rect = original_rect
+
+        # Clic sur une case déjà sélectionnée = achat direct
+        if self.selected:
+            shifted = self.selected.rect.move(ox, oy)
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if shifted.collidepoint(event.pos):
+                        player_money = self._buy(player_money, player)
+
+        return False, player_money
+
+    def _buy(self, player_money, player):
+        if self.selected is None:
+            return player_money
+
+        cell = self.selected
+        prix = cell.prix_prochain
+
+        if prix is None or player_money < prix:
+            return player_money
+
+        player_money -= prix
+        data.playerInventory[cell.power] += 1
+
+        if not isinstance(player, str):
+            apply_powerups(player)
+
         replace_player_money(player, player_money)
+        return player_money
+
+
+# ── Instance unique ───────────────────────────────────────────────────────────
+_shop_instance: ShopPowerUp | None = None
+
+def _get_shop() -> ShopPowerUp:
+    global _shop_instance
+    if _shop_instance is None:
+        _shop_instance = ShopPowerUp()
+    return _shop_instance
+
+
+# ── Compatibilité menu.py ─────────────────────────────────────────────────────
+def open_shop(events, WIN, mouse_pos, mouse_pressed,
+              close_button, FONT_BUTTON, player_money, player) -> bool:
+    """
+    Appelé chaque frame par menu.py quand show_shop == True.
+    Affiche la boutique centrée dans la fenêtre principale.
+    Retourne True pour fermer.
+    """
+    shop = _get_shop()
+
+    # Centre la boutique dans la fenêtre principale
+    win_w, win_h = WIN.get_size()
+    ox = (win_w - WIDTH)  // 2
+    oy = (win_h - HEIGHT) // 2
+
+    _fermer, player_money = shop.update(
+        events, WIN, mouse_pos, mouse_pressed, player_money, player, offset=(ox, oy)
+    )
+
+    if close_button.is_clicked(mouse_pos, mouse_pressed):
+        return True
+
+    return False
+
+
+def buy_selected(player_money: int, player) -> int:
+    shop = _get_shop()
+    return shop._buy(player_money, player)
+
+
+# ── Compatibilité option.py ───────────────────────────────────────────────────
+try:
+    import Interface.pygameui as pygameui
+    checkboxes = [pygameui.Checkbox((0, 0), 1, 1) for _ in data.playerInventory]
+except Exception:
+    checkboxes = []
+
+def sync_checkboxes():
+    for i, power in enumerate(data.playerInventory):
+        niveau  = data.playerInventory[power]
+        max_niv = data.MAX_NIVEAUX.get(power, 0)
+        if i < len(checkboxes):
+            checkboxes[i].set_checked(niveau >= max_niv and max_niv > 0)
