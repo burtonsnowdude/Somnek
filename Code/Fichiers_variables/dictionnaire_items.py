@@ -194,7 +194,7 @@ TYPES_ITEMS = {
         "Minuteur": {"image": MINUTEUR, "texte": "Augmente la durée des bonus."},
         "Ambroisie": {"image": AMBROISIE, "texte": "Permet de ressusciter."},
         "Ensemble_juicy": {"image": CROP_TOP_ROSE, "texte": "Bonus global."},
-        "Manteau_leopard": {"image": CROP_TOP_ROSE, "texte": "Augmente la résistance."},
+        "Manteau_leopard": {"image": CROP_TOP_ROSE, "texte": "Augmente la résistance."}
         
     },
 
