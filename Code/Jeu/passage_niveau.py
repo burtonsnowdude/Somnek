@@ -6,9 +6,11 @@ from math import ceil
 from Interface.Class_Button import Button
 from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS, TYPES_ITEMS
 from Fichiers_variables.dictionnaire_armes import  GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
+from Minijeux.minijeu2 import retour_ligne
 
 FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
 FONT_TEXTE_ARME = pyg.font.SysFont("Press Start 2P", 17)
+GEMMES = pyg.image.load("Images/Autre/gemmes.png")
 
 def passage(xp_attendu):
     """Incrémente le seuil et augmente l'xp attendu pour le prochain niveau
@@ -43,10 +45,20 @@ def show_texte(button, p):
         texte = TYPES_ARMES[p.perso][button.action]["texte"]
     else : 
         texte = TYPES_ITEMS[p.perso][button.action]["texte"]
-    texte = FONT_TEXTE_ARME.render(texte, True, (255, 255, 255))
-    rect = texte.get_rect()
-    rect.center = button.rect.center
-    WIN.blit(texte, rect)
+    texte = retour_ligne(texte, 50)
+    for t in range(len(texte)):
+        txt = FONT_TEXTE_ARME.render(texte[t], True, (255, 255, 255))
+        rect = txt.get_rect()
+        x, y = button.rect.center 
+        rect.center = (x, y + t*15)
+        WIN.blit(txt, rect)
+
+def scroll_gemme(frame):
+    y = frame%HEIGHT
+    if y != 0 :
+        y2 = y - HEIGHT
+        WIN.blit(GEMMES, (0,y2))
+    WIN.blit(GEMMES, (0, y))
 
 def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
     """Permet au joueur de choisir une arme à la fin d'un niveau
@@ -99,7 +111,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
         m = m.upper()
         affich.append(m)
     violet = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
-    violet.fill((102, 62, 86, 200))
+    violet.fill((102, 62, 86, 150))
     texte = FONT_NIVEAU.render("Niveau "+str(p.niveau)+" atteint !", True, (255, 255, 255))
     buttons = [Button(affich[i], choix[i], 400, 200+100*i, 400, 80, FONT) for i in range(3)]
     for b in buttons :
@@ -110,7 +122,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
         show_texte(b, p)
     waiting = True
     selec = 0
-
+    frame = 0
     while waiting:
         clock.tick(60)
         for event in pyg.event.get():
@@ -150,8 +162,9 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
         for xp in xp_present :
             xp.show_xp()
         mouse_pos = pyg.mouse.get_pos()
-
         WIN.blit(violet, (0, 0))
+        scroll_gemme(frame)
+        frame += 1
         for btn in buttons:
             btn.draw(WIN, mouse_pos)
             show_image(btn, p)
