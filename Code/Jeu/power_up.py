@@ -7,9 +7,9 @@ Applique les bonus de l'inventaire sur les stats du joueur.
 import Interface.variable_power_up as data
 
 
-BASE_VITESSE       = 5
+BASE_VITESSE       = 2
 BASE_CADENCE       = 30      # frames entre deux tirs
-BASE_HP_MAX        = 100
+BASE_HP_MAX        = 200
 BASE_PROTECTION    = 0.0
 BASE_QUANTITE      = 1
 BASE_ZONE          = 1.0

@@ -24,52 +24,52 @@ REPLIQUES_ELEVES = [
     "En vrai ça reste mieux que les cours..."
 ]
 BOSS = {}
-temps = [15, 25]
-for t in temps :
+maps= ["Ruelle", "Foire"]
+for t in maps :
     BOSS[t] = {"hp" : t*1000,
-               "vitesse" : temps.index(t)+1,
-               "puissance" : 10* temps.index(t)}
+               "vitesse" : maps.index(t)+1,
+               "puissance" : 10* maps.index(t)}
 
-BOSS[15]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
-BOSS[25]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss", "hallucination"]
+BOSS["Ruelle"]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
+BOSS["Foire"]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss", "hallucination"]
 
 
 BOSS_PAR_PERSO = {
     "Nerd" : {
-            15 : {** BOSS[15],
+            "Ruelle" : {** BOSS["Ruelle"],
               "anim" : ANIM_HARCELEUR},
-            25 : {** BOSS[25],
+            "Foire" : {** BOSS["Foire"],
               "image" : DARK_VADARO}
     },
     "Fille_populaire": {
-            15 : {** BOSS[15],
+            "Ruelle" : {** BOSS["Ruelle"],
               "anim" : ANIM_EX_AMIES},
-            25 : {** BOSS[25],
+            "Foire" : {** BOSS["Foire"],
               "image" : PALETTE}
     },
     "Nonne" : {
-            15 : {** BOSS[15],
+            "Ruelle" : {** BOSS["Ruelle"],
               "anim" : ANIM_NONNE},
-            25 : {** BOSS[25],
+            "Foire" : {** BOSS["Foire"],
               "anim" : ANIM_HOMME_MI_DEMON}
     }
 }
 # Class Boss 
 class Boss :
-    def __init__(self, temps, p, perso):
-        self.hp = BOSS_PAR_PERSO[perso][temps]["hp"]
-        self.temps = temps
+    def __init__(self, maps, p, perso):
+        self.hp = BOSS_PAR_PERSO[perso][maps]["hp"]
+        self.maps = maps
         self.perso = perso
-        self.puissance = BOSS_PAR_PERSO[perso][temps]["puissance"]
-        if "image" in BOSS_PAR_PERSO[perso][temps]:
-            self.image = BOSS_PAR_PERSO[perso][temps]["image"]
+        self.puissance = BOSS_PAR_PERSO[perso][maps]["puissance"]
+        if "image" in BOSS_PAR_PERSO[perso][maps]:
+            self.image = BOSS_PAR_PERSO[perso][maps]["image"]
             self.rect = self.image.get_rect()
-        elif "anim" in BOSS_PAR_PERSO[perso][temps]:
-            self.anim = BOSS_PAR_PERSO[perso][temps]["anim"]
+        elif "anim" in BOSS_PAR_PERSO[perso][maps]:
+            self.anim = BOSS_PAR_PERSO[perso][maps]["anim"]
             self.index = 0
             self.rect = self.anim[0].get_rect()
-        self.vitesse = BOSS_PAR_PERSO[perso][temps]["vitesse"]
-        self.particularites = BOSS_PAR_PERSO[perso][temps]["particularites"]
+        self.vitesse = BOSS_PAR_PERSO[perso][maps]["vitesse"]
+        self.particularites = BOSS_PAR_PERSO[perso][maps]["particularites"]
         self.color_boss = (54, 78, 125)
         self.color_joueur = (107, 120, 146)
         self.action_is_over = True
@@ -88,7 +88,7 @@ class Boss :
     def draw_boss(self, frame):
         """Dessine le boss"""
         self.rect.center = (self.x_screen, self.y_screen)
-        if "image" in BOSS_PAR_PERSO[self.perso][self.temps]:
+        if "image" in BOSS_PAR_PERSO[self.perso][self.maps]:
             WIN.blit(self.image, self.rect)
         elif frame%4 == 0 :
             WIN.blit(self.anim[self.index], self.rect)
@@ -212,12 +212,10 @@ class Boss :
         self.action_is_over = True
 
 
-def spawn_boss(temps, boss_present, boss_acheves, p, boss, perso):
-    temps /= 60
-    temps = int(temps)
-    if not boss_present and temps in BOSS and not temps in boss_acheves : 
+def spawn_boss(map, boss_present, boss_acheves, p, boss, perso):
+    if not boss_present and map in BOSS and not map in boss_acheves : 
         boss_present = True
-        boss = Boss(temps, p, perso)
+        boss = Boss(map, p, perso)
     return boss_present, boss
 
 
@@ -268,7 +266,7 @@ def gestion_boss(boss, boss_present, p, frame, boss_acheves):
 
         if boss.hp <= 0:
             boss_present = False
-            boss_acheves.append(boss.temps)
+            boss_acheves.append(boss.map)
             boss = None
 
     return boss_present, boss_acheves
