@@ -253,6 +253,8 @@ def actualiser_quete(nom, quete):
             row[nom] = 1
     reecrire_fichier("quetes_reussis", new_tab, noms)
 
+############################ Power ups ###########################
+
 def contenu_fichier_powerups():
     """Récupère les données du fichier powerups.csv"""
     contenu = csv.DictReader(open("Fichiers_csv/powerups.csv"))
