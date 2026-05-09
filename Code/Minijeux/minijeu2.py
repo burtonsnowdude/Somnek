@@ -47,7 +47,7 @@ QUIZZ = {
     }
 
 
-def spawn_objet(x_debut, x_fin, y_debut, y_fin, p):
+def spawn_objet(x_debut, x_fin, y_debut, y_fin, p, map):
     """Faire spawn l'objet dans un des magasins
     x_debut, x_fin, y_debut, y_fin : int
         Les coordonnées du magasin
@@ -56,10 +56,11 @@ def spawn_objet(x_debut, x_fin, y_debut, y_fin, p):
     """
     nb_aleat1 = randint(-1, 1)
     nb_aleat2 = randint(-1, 1)
-    x_debut += nb_aleat1 * BGX
-    y_debut += nb_aleat2 * BGY
-    x_fin += nb_aleat1 * BGX
-    y_fin += nb_aleat2 * BGY
+    mapX, mapY = map.get_size()
+    x_debut += nb_aleat1 * mapX
+    y_debut += nb_aleat2 * mapY
+    x_fin += nb_aleat1 * mapX
+    y_fin += nb_aleat2 * mapY
     coord = (randint(x_debut, x_fin), randint(y_debut, y_fin))
     coord = screen_to_world(coord[0], coord[1], p)
     coord = (300, 200)
@@ -75,11 +76,11 @@ def collision(coord, image, p):
         return True
     return False
 
-def regler_volume(coord, p, son):
+def regler_volume(coord, p, map):
     dist = sqrt((coord[0] - p.x_monde)**2 + (coord[1] - p.y_monde)**2)
-
+    mapX, mapY = map.get_size()
     # distance max d'entente 
-    max_dist = 2*BGX
+    max_dist = 2*mapX
 
     volume = 1 - (dist / max_dist)
     volume = max(0, min(1, volume))
@@ -166,7 +167,8 @@ def anim_fin(victoire, son):
             i += 1
         pyg.display.update()
               
-def quizz(son):
+def quizz(son, map):
+    mapX, mapY = map.get_size()
     run = True
     i = 0
     clock = pyg.time.Clock()
@@ -174,9 +176,9 @@ def quizz(son):
     while run and i < max(QUIZZ)+1:
         clock.tick(60)
         WIN.fill((225, 225, 225))
-        for t in range(-BGX, WIDTH + BGX, BGX):
-            for j in range(-BGY, HEIGHT + BGY, BGY):
-                    WIN.blit(BG, (t, j))
+        for t in range(-mapX, WIDTH + mapX, mapX):
+            for j in range(-mapY, HEIGHT + mapY, mapY):
+                    WIN.blit(map, (t, j))
         mouse_pos = pyg.mouse.get_pos()
 
         rose = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
@@ -240,17 +242,17 @@ def retour_ligne(texte, longueur):
     return liste
 
 
-def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees, armes_joueur):
+def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees, armes_joueur, map):
     if coord_monde == None:
-        coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p)
+        coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p, map)
         coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
     coord_screen = camera(coord_monde[0], coord_monde[1], p)
-    regler_volume(coord_monde, p, SON)
+    regler_volume(coord_monde, p, map)
     play_sound(SON)
     draw_objet(coord_screen, OBJET)
     if collision(coord_screen, OBJET, p):
         anim_quizz(SON)
-        victoire = quizz(SON)
+        victoire = quizz(SON, map)
         if victoire :
             armes_possedees.append("Aura_divine")
             armes_joueur = ajouter_arme(p.nom, "Aura_divine", armes_joueur)

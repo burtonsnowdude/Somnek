@@ -93,7 +93,7 @@ class Coffre :
         for arme in dispo[:]:
             if arme in armes_et_items_possedees :
                 dispo.remove(arme)
-        argent_dispo = int(p.niveau*50 * randint(1, p.niveau))
+        argent_dispo = randint(p.niveau*50, p.niveau*200)
         choix_aleat = choice((True, False))
         if choix_aleat or len(dispo) == 0 :
             rect = ARGENT.get_rect()

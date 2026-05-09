@@ -128,7 +128,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
 
-            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur)
+            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur, map_choisie)
 
             
             p.update_armes()
@@ -240,7 +240,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             if p.update_xp(xp, xp_attendu):
                 xp_attendu = passage(xp_attendu)
 
-                objet, pause_time = choix_arme(p, armes_possedees, monstres_presents, xp_dispo)
+                objet, pause_time = choix_arme(p, armes_possedees, monstres_presents, xp_dispo, map_choisie)
                 armes_et_items_possedees.append(objet[1])
 
                 if objet[0] == "arme":

@@ -7,6 +7,11 @@ from Interface.Class_Button import Button
 from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS, TYPES_ITEMS
 from Fichiers_variables.dictionnaire_armes import  GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
 from Minijeux.minijeu2 import retour_ligne
+from Interface.choix_map import MAPS_DISPO
+
+dico_images_maps = {}
+for map in MAPS_DISPO :
+    dico_images_maps[map] = pyg.image.load(MAPS_DISPO[map])
 
 FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
 FONT_TEXTE_ARME = pyg.font.SysFont("Press Start 2P", 17)
@@ -60,7 +65,7 @@ def scroll_gemme(frame):
         WIN.blit(GEMMES, (0,y2))
     WIN.blit(GEMMES, (0, y))
 
-def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
+def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map):
     """Permet au joueur de choisir une arme à la fin d'un niveau
 
     Parameters
@@ -77,7 +82,8 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
     tuple(list, float)
         contient la liste des armes possedees par le joueur et le temps de pause
     """
-
+    map = dico_images_maps[map]
+    mapX, mapY = map.get_size()
     debut = time.time()
     clock = pyg.time.Clock()
     armes_dispo = []
@@ -153,9 +159,9 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present):
         mouse_pos = pyg.mouse.get_pos()
         
         WIN.fill((225, 225, 225))
-        for t in range(-BGX, WIDTH + BGX, BGX):
-            for j in range(-BGY, HEIGHT + BGY, BGY):
-                    WIN.blit(BG, (t, j))
+        for t in range(-mapX, WIDTH + mapX, mapX):
+            for j in range(-mapY, HEIGHT + mapY, mapY):
+                    WIN.blit(map, (t, j))
         for m in monstres_presents :
             m.show(1)
         for xp in xp_present :

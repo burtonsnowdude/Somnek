@@ -81,9 +81,9 @@ def binary_quiz():
                     user_answer += event.unicode
 
 
-def minijeu1(p, coord_monde, minijeu1_fini):
+def minijeu1(p, coord_monde, minijeu1_fini, map):
     if coord_monde == None:
-        coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p)
+        coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p, map)
         coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
     
     coord_screen = camera(coord_monde[0], coord_monde[1], p)
