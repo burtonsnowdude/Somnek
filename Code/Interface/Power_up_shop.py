@@ -1,64 +1,82 @@
 """
-Power_up_shop.py
-Boutique power-up calquée sur fond_power_up.png (320x350px).
-
-Layout (ordre d'affichage sur l'image) :
-  Ligne 1 : [Pouvoir]  [sante]   [Protection]
-  Ligne 2 : [refroid.] ← sac →  [zone]
-  Ligne 3 : [vitesse]  ← sac →  [durabilite]
-  Ligne 4 : [attirance]          [chance]
-  Ligne 5 : [croissance]
+Power_up_shop.py - Version avec bouton acheter
 """
 
 import pygame
 import Interface.variable_power_up as data
 from Jeu.power_up import apply_powerups
-from Interface.Class_Button import Button
 from Fichiers_variables.gestion_fichiers import replace_player_money
+import Interface.pygameui as pygameui
 
-# ── Dimensions fenêtre (doit correspondre à fond_power_up.png) ───────────────
-WIDTH, HEIGHT = 320, 350
+WIDTH, HEIGHT = 500, 500
 
-# ── Couleurs ──────────────────────────────────────────────────────────────────
-COLOR_CELL      = (220, 180, 210, 180)   # rose translucide comme sur l'image
-COLOR_SELECTED  = (255, 220, 50)         # jaune vif
-COLOR_BORDER    = (140, 80, 140)         # bordure violette
-COLOR_BOUGHT    = (80, 200, 100)         # carré niveau acheté : vert
-COLOR_LOCKED    = (160, 120, 160)        # carré niveau non acheté : mauve sombre
-COLOR_TEXT      = (60, 20, 80)           # texte violet foncé
-COLOR_PRICE     = (180, 60, 60)          # prix en rouge foncé
-COLOR_MAX       = (80, 160, 80)          # MAX en vert
+NOMS_FR = {
+    "Pouvoir":         "Pouvoir",
+    "sante":           "Santé",
+    "Protection":      "Armure",
+    "refroidissement": "Cooldown",
+    "zone":            "Zone",
+    "vitesse_du_j":    "Vitesse",
+    "durabilite":      "Durée",
+    "attirance":       "Aimant",
+    "chance":          "Chance",
+    "croissance":      "Croissance",
+}
 
-# ── Positions et tailles des cases (en px, calquées sur l'image 320x350) ─────
-#   Chaque tuple : (x, y, w, h, clé_power_up, label)
 CELLS_LAYOUT = [
-    # ── Ligne 1 : 3 cases en haut ─────────────────────────────────────────
-    ( 10,  18,  85, 55, "Pouvoir",         "Pouvoir"),
-    (115,  18,  85, 55, "sante",           "Max Heart"),
-    (220,  18,  85, 55, "Protection",      "Armor"),
-    # ── Ligne 2 : gauche + droite (sac au centre) ─────────────────────────
-    ( 10,  83, 100, 45, "refroidissement", "Cooldown"),
-    (205,  83, 100, 45, "zone",            "Zone"),
-    # ── Ligne 3 : gauche + droite ─────────────────────────────────────────
-    ( 10, 138, 100, 45, "vitesse_du_j",    "Speed"),
-    (205, 138, 100, 45, "durabilite",      "Duration"),
-    # ── Ligne 4 : gauche + droite ─────────────────────────────────────────
-    ( 10, 193, 100, 45, "attirance",       "Magnet"),
-    (205, 193, 100, 45, "chance",          "Luck"),
-    # ── Ligne 5 : une case en bas à gauche ────────────────────────────────
-    ( 10, 248,  95, 42, "croissance",      "Growth"),
+    (43,  37, 117, 65, "Pouvoir"),
+    (185, 40, 117, 65, "sante"),
+    (340, 40, 117, 65, "Protection"),
+    (43, 130, 117, 65, "refroidissement"),
+    (340,130, 117, 65, "zone"),
+    (43, 200, 117, 65, "vitesse_du_j"),
+    (340,200, 117, 65, "durabilite"),
+    (43, 280, 117, 65, "attirance"),
+    (340,280, 117, 65, "chance"),
+    (43, 360, 117, 65, "croissance"),
 ]
 
 
 class PowerUpCell:
-    def __init__(self, x, y, w, h, power, label, font_title, font_small):
-        self.rect       = pygame.Rect(x, y, w, h)
-        self.power      = power
-        self.label      = label
-        self.font_title = font_title
-        self.font_small = font_small
+    def __init__(self, x, y, w, h, power):
+        self.rect  = pygame.Rect(x, y, w, h)
+        self.power = power
+        self.label = NOMS_FR.get(power, power)
 
-    # ── Données ──────────────────────────────────────────────────────────────
+        self.font = pygame.font.SysFont("Arial", 13, bold=True)
+        self.font_small = pygame.font.SysFont("Arial", 11)
+
+        self.checkboxes = []
+        self._build_checkboxes()
+
+    def _build_checkboxes(self):
+        self.checkboxes = []
+        max_niv = data.MAX_NIVEAUX.get(self.power, 0)
+
+        box_size = 12
+        gap = 4
+        total = max_niv * (box_size + gap) - gap
+        start_x = self.rect.x + (self.rect.w - total) // 2
+        y = self.rect.bottom - box_size - 6
+
+        for i in range(max_niv):
+            cb = pygameui.Checkbox(
+                (start_x + i * (box_size + gap), y),
+                width=box_size,
+                height=box_size,
+                style="square",
+                color=(80, 200, 100),
+                background_color=(60, 40, 80),
+                border_color=(150, 100, 150),
+                border_width=1
+            )
+            self.checkboxes.append(cb)
+
+    def sync_checkboxes(self):
+        niveau = data.playerInventory.get(self.power, 0)
+        for i, cb in enumerate(self.checkboxes):
+            cb.set_checked(i < niveau)
+
     @property
     def niveau(self):
         return data.playerInventory.get(self.power, 0)
@@ -74,112 +92,110 @@ class PowerUpCell:
         prices, _ = data.liste_power_up[self.power]
         return prices[self.niveau]
 
-    # ── Interaction ──────────────────────────────────────────────────────────
-    def is_clicked(self, events):
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
-                    return True
-        return False
+    def draw(self, surface, selected=False, offset=(0, 0)):
+        ox, oy = offset
+        r = self.rect.move(ox, oy)
 
-    # ── Dessin ───────────────────────────────────────────────────────────────
-    def draw(self, surface, selected):
-        # Fond semi-transparent
-        cell_surf = pygame.Surface((self.rect.w, self.rect.h), pygame.SRCALPHA)
-        cell_surf.fill(COLOR_CELL)
-        surface.blit(cell_surf, (self.rect.x, self.rect.y))
+        if selected:
+            s = pygame.Surface((r.w, r.h), pygame.SRCALPHA)
+            s.fill((255, 220, 50, 120))
+            surface.blit(s, (r.x, r.y))
+            pygame.draw.rect(surface, (255, 200, 0), r, 2, border_radius=6)
+        else:
+            pygame.draw.rect(surface, (80, 50, 100), r, 1, border_radius=6)
 
-        # Bordure
-        border_color = COLOR_SELECTED if selected else COLOR_BORDER
-        border_w     = 3 if selected else 2
-        pygame.draw.rect(surface, border_color, self.rect, border_w)
+        txt = self.font.render(self.label, True, (240, 230, 255))
+        surface.blit(txt, (r.x + 6, r.y + 6))
 
-        # Label
-        txt = self.font_title.render(self.label, True, COLOR_TEXT)
-        surface.blit(txt, (self.rect.x + 4, self.rect.y + 3))
+        if self.niveau >= self.max_niveau:
+            p = self.font_small.render("MAX", True, (80, 200, 80))
+            surface.blit(p, (r.x + 6, r.y + 24))
 
-        # Petits carrés de niveau
-        box_size = 8
-        box_gap  = 3
-        total_w  = self.max_niveau * (box_size + box_gap) - box_gap
-        bx_start = self.rect.x + (self.rect.w - total_w) // 2
-        by       = self.rect.bottom - box_size - 4
-
-        for i in range(self.max_niveau):
-            bx = bx_start + i * (box_size + box_gap)
-            br = pygame.Rect(bx, by, box_size, box_size)
-            color = COLOR_BOUGHT if i < self.niveau else COLOR_LOCKED
-            pygame.draw.rect(surface, color, br)
-            pygame.draw.rect(surface, (80, 40, 80), br, 1)
-
-        # Prix ou MAX
-        prix = self.prix_prochain
-        if self.max_niveau > 0:
-            if prix is not None:
-                p_surf = self.font_small.render(f"{prix}g", True, COLOR_PRICE)
-            else:
-                p_surf = self.font_small.render("MAX", True, COLOR_MAX)
-            surface.blit(p_surf, (self.rect.x + 4, self.rect.bottom - box_size - 16))
+        self.sync_checkboxes()
+        for cb in self.checkboxes:
+            shifted_rect = cb._rect.move(ox, oy)
+            orig = cb._rect
+            cb._rect = shifted_rect
+            cb.draw(surface)
+            cb._rect = orig
 
 
 class ShopPowerUp:
     def __init__(self):
         pygame.font.init()
-        self.font_title = pygame.font.SysFont("Arial", 11, bold=True)
-        self.font_small = pygame.font.SysFont("Arial", 9)
 
-        self.cells = [
-            PowerUpCell(x, y, w, h, power, label, self.font_title, self.font_small)
-            for (x, y, w, h, power, label) in CELLS_LAYOUT
-        ]
+        self.cells = [PowerUpCell(x, y, w, h, p) for (x, y, w, h, p) in CELLS_LAYOUT]
         self.selected = None
 
-        # Fond image
+        self.font_money = pygame.font.SysFont("Arial", 14, bold=True)
+        self.font_button = pygame.font.SysFont("Arial", 16, bold=True)
+
+        self.buy_rect = pygame.Rect(170, 430, 160, 43)
+
         try:
             self.bg = pygame.image.load("Images/Interface/fond_power_up.png").convert_alpha()
             self.bg = pygame.transform.scale(self.bg, (WIDTH, HEIGHT))
         except Exception:
             self.bg = pygame.Surface((WIDTH, HEIGHT))
-            self.bg.fill((200, 160, 200))
+            self.bg.fill((40, 25, 60))
 
-    def draw(self, win, mouse_pos, player_money, offset=(0, 0)):
+    def draw(self, win, player_money, offset=(0, 0)):
         ox, oy = offset
         win.blit(self.bg, (ox, oy))
 
         for cell in self.cells:
-            # Décale le rect pour l'affichage si la boutique n'est pas en (0,0)
-            shifted = cell.rect.move(ox, oy)
-            original_rect = cell.rect
-            cell.rect = shifted
-            cell.draw(win, selected=(cell is self.selected))
-            cell.rect = original_rect
+            cell.draw(win, selected=(cell is self.selected), offset=offset)
 
-        # Argent
-        font = self.font_title
-        money_surf = font.render(f"Or: {player_money}", True, (60, 20, 80))
-        win.blit(money_surf, (ox + WIDTH - 70, oy + HEIGHT - 20))
+        money = self.font_money.render(f"Or : {player_money}", True, (255, 230, 80))
+        win.blit(money, (ox + WIDTH - 110, oy + HEIGHT - 30))
+
+        if self.selected:
+            prix = self.selected.prix_prochain
+
+            bx = ox + self.buy_rect.x
+            by = oy + self.buy_rect.y
+            rect = pygame.Rect(bx, by, self.buy_rect.w, self.buy_rect.h)
+
+            if prix is None:
+                color = (100, 100, 100)
+                texte = "MAX"
+            elif player_money >= prix:
+                color = (80, 180, 100)
+                texte = f"Acheter ({prix} or)"
+            else:
+                color = (180, 80, 80)
+                texte = f"{prix} or"
+
+            pygame.draw.rect(win, color, rect, border_radius=8)
+            txt = self.font_button.render(texte, True, (255, 255, 255))
+            win.blit(txt, (bx + 10, by + 10))
 
     def update(self, events, win, mouse_pos, mouse_pressed,
-               player_money, player, offset=(0, 0)) -> tuple[bool, int]:
+               player_money, player, offset=(0, 0)):
+
+        self.draw(win, player_money, offset)
+
         ox, oy = offset
 
-        self.draw(win, mouse_pos, player_money, offset)
-
-        for cell in self.cells:
-            shifted = cell.rect.move(ox, oy)
-            original_rect = cell.rect
-            cell.rect = shifted
-            if cell.is_clicked(events):
-                self.selected = cell
-            cell.rect = original_rect
-
-        # Clic sur une case déjà sélectionnée = achat direct
+        buy_clicked = False
         if self.selected:
-            shifted = self.selected.rect.move(ox, oy)
+            bx = ox + self.buy_rect.x
+            by = oy + self.buy_rect.y
+            rect = pygame.Rect(bx, by, self.buy_rect.w, self.buy_rect.h)
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if shifted.collidepoint(event.pos):
-                        player_money = self._buy(player_money, player)
+                    if rect.collidepoint(event.pos):
+                        buy_clicked = True
+
+        if buy_clicked:
+            player_money = self._buy(player_money, player)
+        else:
+            for cell in self.cells:
+                shifted = cell.rect.move(ox, oy)
+                for event in events:
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if shifted.collidepoint(event.pos):
+                            self.selected = cell
 
         return False, player_money
 
@@ -187,72 +203,60 @@ class ShopPowerUp:
         if self.selected is None:
             return player_money
 
-        cell = self.selected
-        prix = cell.prix_prochain
+        prix = self.selected.prix_prochain
 
         if prix is None or player_money < prix:
             return player_money
 
         player_money -= prix
-        data.playerInventory[cell.power] += 1
+        data.playerInventory[self.selected.power] += 1
 
         if not isinstance(player, str):
             apply_powerups(player)
 
         replace_player_money(player, player_money)
+
         return player_money
 
 
-# ── Instance unique ───────────────────────────────────────────────────────────
-_shop_instance: ShopPowerUp | None = None
+_shop_instance = None
 
-def _get_shop() -> ShopPowerUp:
+def _get_shop():
     global _shop_instance
     if _shop_instance is None:
         _shop_instance = ShopPowerUp()
     return _shop_instance
 
 
-# ── Compatibilité menu.py ─────────────────────────────────────────────────────
 def open_shop(events, WIN, mouse_pos, mouse_pressed,
-              close_button, FONT_BUTTON, player_money, player) -> bool:
-    """
-    Appelé chaque frame par menu.py quand show_shop == True.
-    Affiche la boutique centrée dans la fenêtre principale.
-    Retourne True pour fermer.
-    """
+              close_button, FONT_BUTTON, player_money, player):
+
     shop = _get_shop()
 
-    # Centre la boutique dans la fenêtre principale
     win_w, win_h = WIN.get_size()
-    ox = (win_w - WIDTH)  // 2
+    ox = (win_w - WIDTH) // 2
     oy = (win_h - HEIGHT) // 2
 
-    _fermer, player_money = shop.update(
-        events, WIN, mouse_pos, mouse_pressed, player_money, player, offset=(ox, oy)
-    )
+    _, player_money = shop.update(events, WIN, mouse_pos, mouse_pressed,
+                                  player_money, player, offset=(ox, oy))
 
     if close_button.is_clicked(mouse_pos, mouse_pressed):
-        return True
+        return True, player_money
 
-    return False
+    return False, player_money
 
 
-def buy_selected(player_money: int, player) -> int:
+def sync_checkboxes():
     shop = _get_shop()
-    return shop._buy(player_money, player)
+    for cell in shop.cells:
+        cell.sync_checkboxes()
 
 
-# ── Compatibilité option.py ───────────────────────────────────────────────────
+def buy_selected(player_money, player):
+    return _get_shop()._buy(player_money, player)
+
+
 try:
-    import Interface.pygameui as pygameui
     checkboxes = [pygameui.Checkbox((0, 0), 1, 1) for _ in data.playerInventory]
 except Exception:
     checkboxes = []
-
-def sync_checkboxes():
-    for i, power in enumerate(data.playerInventory):
-        niveau  = data.playerInventory[power]
-        max_niv = data.MAX_NIVEAUX.get(power, 0)
-        if i < len(checkboxes):
-            checkboxes[i].set_checked(niveau >= max_niv and max_niv > 0)

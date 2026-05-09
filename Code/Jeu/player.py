@@ -7,7 +7,7 @@ from Affichage.fonctionnement_divers import camera
 from Interface.Game_over import game_over
 from Armes_Items.creer_arme import creer_arme
 from Fichiers_variables.dictionnaire_armes import ARMES
-from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion
+from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion, ArmePoison
 from Jeu.power_up import apply_powerups
 from Armes_Items.class_armes_sans_bugs import Arme
 
@@ -18,6 +18,7 @@ TYPE_VERS_CLASSE = {
     "coup":          ArmeEpee,   
     "trait":         ArmeMultiDirection,
     "zone_multiples": ArmeExplosion,
+    "poison":         ArmePoison
 }
 class Player:
     """Class Player"""
@@ -184,7 +185,7 @@ class Player:
     def ajouter_item(self, nom_item):
          
         item_obj = Items(nom_item)
-    # applique les effets directement sur le joueur
+    
         carac = item_obj.caracteristiques
 
         if carac.get("vitesse_du_j"):

@@ -90,6 +90,7 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
     btn_rev_opt   = Button("X", "rev_opt",   550, 130, 40, 40, FONT_BUTTON)
     btn_confirm_nerd = Button("Confirmer", "confirm", 550, 500, 80, 40, FONT_BUTTON)
     btn_rev_start = Button("X", "rev_start", 550, 130, 40, 40, FONT_BUTTON)
+    btn_rev_shop = Button("X", "rev_shop", 550, 130, 40, 40, FONT_BUTTON)
 
     if joueur is None:
         from Interface.utilisateur import get_user_name
@@ -247,12 +248,12 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                 player_money = get_info(joueur, "argent", None)
 
             if show_shop:
-                from Interface.Power_up_shop import open_shop, buy_selected
-                close = open_shop(events, WIN, mouse_pos, mouse_pressed, btn_rev_opt, FONT_BUTTON, player_money, joueur)
-                if btn_confirm_nerd.is_clicked(mouse_pos, mouse_pressed):
-                    buy_selected(player_money, joueur)
+                from Interface.Power_up_shop import open_shop
+                close, player_money = open_shop(events, WIN, mouse_pos, mouse_pressed, btn_rev_shop, FONT_BUTTON, player_money, joueur)
+                btn_rev_shop.draw(WIN, mouse_pos)
                 if close:
                     show_shop = False
+                    musique_close = True
                 player_money = get_info(joueur, "argent", None)
 
             if show_image:
