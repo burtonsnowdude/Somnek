@@ -101,6 +101,7 @@ pistolets_affich = load_big("Images/Interface/affiche/pistolets_affiche.png")
 chariot_violet_affich = load_big("Images/Interface/affiche/chariot_affiche.png")
 pomme_scientifique_affich = load_big("Images/Interface/affiche/pomme_affiche.png")
 vody_affich = load_big("Images/Interface/affiche/vody_affiche.png")
+deodorant_affich = load_big("Images/Interface/affiche/deodorant_affiche.png")
 ambroisie_affich = load_big("Images/Interface/affiche/ambroisie_affiche.png")
 nokia_affich = load_big("Images/Interface/affiche/nokia_affiche.png")
 trefle_affich = load_big("Images/Interface/affiche/trefle_affiche.png")
@@ -134,6 +135,8 @@ couronne_affich = load_big("Images/Interface/affiche/couronne_affiche.png")
 feu_saint_affich = load_big("Images/Interface/affiche/feu_affiche.png")
 bougie_affich = load_big("Images/Interface/affiche/bougie_affiche.png")
 bourse_affich = load_big("Images/Interface/affiche/bourse_affiche.png")
+voile_affiche = load_big("Images/Interface/affiche/voile_affiche.png")
+huile_affich = load_big("Images/Interface/affiche/huile_affiche.png")
 ostie_affich = load_big("Images/Interface/affiche/hostie_affiche.png")
 boule_denergie_affich = load_big("Images/Interface/affiche/boule_energie_affiche.png")
 eau_benite_affich = load_big("Images/Interface/affiche/eau_affiche.png")
@@ -155,6 +158,7 @@ liste_all_item = {
     "Chariot violet": (img_chariot_violet, chariot_violet_affich),
     "Pomme scientifique": (img_pomme_scientifique, pomme_scientifique_affich),
     "Vody": (img_vody, vody_affich),
+    "Deodorant": (img_serviette, deodorant_affich),
     "Ambroisie": (img_ambroisie, ambroisie_affich),
     "Nokia": (img_nokia, nokia_affich),
     "Trèfle": (img_trefle, trefle_affich),
@@ -190,6 +194,8 @@ liste_all_item = {
     "Feu saint": (img_feu_saint, feu_saint_affich),
     "Bougie": (img_bougie, bougie_affich),
     "Bourse": (img_bourse, bourse_affich),
+    "Voile": (img_bougie, voile_affiche),
+    "Huile bénite": (img_bougie, huile_affich),
     "Ostie": (img_ostie, ostie_affich),
     "Boule d'énergie": (img_boule_denergie, boule_denergie_affich),
     "Eau bénite": (img_eau_benite, eau_benite_affich),
@@ -206,7 +212,7 @@ liste_all_item = {
     "Chaussettes_propres": (img_chaussettes, chaussettes_affich),
     "Cahier_NSI": (img_cahier_de_nsi, cahier_de_nsi_affich),
     "Vody_Lemonade": (img_vody, vody_affich),
-    "Deodorant": (img_serviette, vody_affich),#en attente
+    "Deodorant": (img_serviette, deodorant_affich),
     "Pomme_scientifique": (img_pomme_scientifique, pomme_scientifique_affich),
     "Armure_de_bronze": (img_armure, armure_affich),
     "Cle_USB": (img_cle_usb, cle_usb_affich),
@@ -248,8 +254,8 @@ liste_all_item = {
     "Tableau_sacre": (img_mocassin, croix_de_base_affich),
     "Bourse": (img_bourse, bourse_affich),
     "Bougie": (img_bougie, bougie_affich),
-    "Voile": (img_bougie, bougie_affich),
-    "Huile_benie": (img_bougie, eau_benite_affich),
+    "Voile": (img_bougie, voile_affiche),
+    "Huile_benie": (img_bougie, huile_affich),
     "Ostie": (img_ostie, ostie_affich),
     "Sac_a_dos_bleu": (img_ostie, eau_benite_affich),
     "Eau_benite": (img_ostie, eau_benite_affich),
