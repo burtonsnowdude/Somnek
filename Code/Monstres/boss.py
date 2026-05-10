@@ -24,16 +24,16 @@ REPLIQUES_ELEVES = [
     "En vrai ça reste mieux que les cours..."
 ]
 BOSS = {}
-maps= ["Ruelle", "Foire"]
+maps = ["Ruelle", "Foire"] # maps des boss
 for t in maps :
     BOSS[t] = {"hp" : t*1000,
                "vitesse" : maps.index(t)+1,
                "puissance" : 10* maps.index(t)}
 
-BOSS["Ruelle"]["particularites"] = ["dialogue_boss", "attaque_a_distance", "rotation_boss", "move"]
-BOSS["Foire"]["particularites"] = ["dialogue_perso", "attaque_a_distance", "dash_boss", "hallucination"]
+BOSS["Ruelle"]["particularites"] = ["dialogue_boss", "rotation_boss", "move"]
+BOSS["Foire"]["particularites"] = ["dialogue_perso", "dash_boss", "hallucination"]
 
-
+# Dico des BOSS
 BOSS_PAR_PERSO = {
     "Nerd" : {
             "Ruelle" : {** BOSS["Ruelle"],
@@ -86,7 +86,13 @@ class Boss :
         self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
 
     def draw_boss(self, frame):
-        """Dessine le boss"""
+        """Dessine le boss
+        
+        Parameters
+        ----------
+        frame : int
+            Numéro de la frame actuelle
+        """
         self.rect.center = (self.x_screen, self.y_screen)
         if "image" in BOSS_PAR_PERSO[self.perso][self.maps]:
             WIN.blit(self.image, self.rect)
@@ -97,15 +103,8 @@ class Boss :
         else :
             WIN.blit(self.anim[self.index], self.rect)
 
-    def cinematique_spawn_boss(self):
-        """Cinématique d'apparition du boss"""
-        pass
-
-    def cinematique_mort_boss(self):
-        pass
-    
     def degats(self, degats):
-        """Inflige des dégâts au monstre
+        """Inflige des dégâts au boss
 
         Parameters
         ----------
@@ -114,7 +113,13 @@ class Boss :
         self.hp -= degats
 
     def dialogue_perso(self, p):
-        """Faire répondre le personnage parce que c'est encore plus sympathique"""
+        """Faire répondre le personnage parce que c'est encore plus sympathique
+        
+        Parameters
+        -----------
+        p : Self@Player
+            Le joueur
+        """
         if self.iteration1 :
             self.iteration1 = False
             self.temps_debut = time.time()
@@ -131,7 +136,13 @@ class Boss :
             self.action_is_over = True
 
     def dialogue_boss(self):
-        """Faire parler le boss parce que c'est sympathique"""
+        """Faire parler le boss parce que c'est sympathique
+
+        Parameters
+        -----------
+        p : Self@Player
+            Le joueur
+        """
         if self.iteration1 :
             self.iteration1 = False
             self.temps_debut = time.time()
@@ -148,22 +159,37 @@ class Boss :
             self.action_is_over = True
 
     def rotation_boss(self, p):
-        """Faire tourner le boss autour du joueur"""
+        """Faire tourner le boss autour du joueur
+
+        Parameters
+        -----------
+        p : Self@Player
+            Le joueur
+        """
         if self.iteration1 :
             self.iteration1 = False
             self.coord_a_atteindre = (self.x_screen, self.y_screen)
             self.dist = sqrt((self.x_screen-CENTREx)**2 + (self.y_screen-CENTREy)**2)
-            self.angle = 0
+            self.angle = 0 # initialisation de l'angle pour le déplacement
             self.debut = time.time()
-        if time.time() - self.debut > 10:
+        if time.time() - self.debut > 5:
             self.action_is_over = True
         else :
             self.angle += 0.02
+            # Trigo pour calculer les nouvelles coord
             self.x_screen = CENTREx + self.dist * cos(self.angle)
             self.y_screen = CENTREy + self.dist * sin(self.angle)
+        # Actualisation des coord monde
         self.x_monde, self.y_monde = screen_to_world(self.x_screen, self.y_screen, p)
         
     def follow(self, x, y):
+        """ Suivre un point de coordonnées x et y
+        
+        Parameters
+        ----------
+        x, y : int
+            Coordonnées monde du point
+        """
         dx = x - self.x_monde
         dy = y - self.y_monde
         distance = sqrt(dx**2 + dy**2)
@@ -174,6 +200,18 @@ class Boss :
             self.y_monde += (dy / distance) * self.vitesse
 
     def hallucination(self, surface):
+        """ Déforme la vision du joueur
+        
+        Parameters
+        ----------
+        surface : Surface
+            Fond
+
+        Returns
+        -------
+        Surface
+            surface déformée
+        """
         if self.iteration1 :
             self.debut = time.time()
             self.iteration1 = False
@@ -181,6 +219,7 @@ class Boss :
         new_surface = pyg.Surface((WIDTH, HEIGHT))
 
         for y in range(HEIGHT):
+            # modifie les coordonnées de chaque pixel avec un offset qui évolue avec le temps
             offset = int(10 * sin(y * 0.05 + temps_ecoule))
             new_surface.blit(surface, (offset, y), (0, y, WIDTH, 1))
         if temps_ecoule > 10 :
@@ -188,7 +227,13 @@ class Boss :
         return new_surface
 
     def move(self, p):
-        """Déplace le boss vers un point aléatoire"""
+        """Déplace le boss vers un point aléatoire
+
+        Parameters
+        -----------
+        p : Self@Player
+            Le joueur
+        """
 
         if self.iteration1:
             self.x_aleat_screen, self.y_aleat_screen = (randint(0, WIDTH), randint(0, HEIGHT))
@@ -201,18 +246,51 @@ class Boss :
             self.action_is_over = True
 
     def dash_boss(self, p):
+        """Déplace rapidement le boss vers un point aléatoire
+
+        Parameters
+        -----------
+        p : Self@Player
+            Le joueur
+        """
         self.vitesse += 10
         self.move(p)
         self.vitesse -= 10
 
     def follow_player(self, p):
-        self.follow(p.x_monde, p.y_monde)
+        """Déplace le boss vers le joueur
 
-    def attaque_dist(self):
-        self.action_is_over = True
+        Parameters
+        -----------
+        p : Self@Player
+            Le joueur
+        """
+        self.follow(p.x_monde, p.y_monde)
 
 
 def spawn_boss(map, boss_present, boss_acheves, p, boss, perso):
+    """Fait apparaitre un boss
+    
+    Parameters
+    ----------
+    map : str
+        Map choisie
+    boss_present : bool
+    boss_acheves : list
+        liste des boss déjà vaincus
+    p : Self@Player
+        Le joueur
+    boss : Self@Boss ou None
+    perso : str
+        Le perso sélectionné
+    
+    Returns
+    -------
+    bool 
+        boss présent ou non
+    boss 
+        l'objet Self@Boss ou None
+    """
     if not boss_present and map in BOSS and not map in boss_acheves : 
         boss_present = True
         boss = Boss(map, p, perso)
@@ -220,19 +298,34 @@ def spawn_boss(map, boss_present, boss_acheves, p, boss, perso):
 
 
 def gestion_boss(boss, boss_present, p, frame, boss_acheves):
-    """Choisit une action du boss et l'exécute jusqu'à sa fin"""
+    """Choisit une action du boss et l'exécute jusqu'à sa fin
+    
+    Parameters
+    ----------
+    boss : Self@Boss ou None
+    boss_present : bool
+    p : Self@Player
+        Le joueur
+    frame : int
+        Numéro de la frame actuelle
+    boss_acheves : list 
+        Liste des boss tués
+    
+    Returns
+    -------
+    bool
+        boss présent
+    list
+        boss achevés
+    """
     if boss_present:
         particularites = boss.particularites # liste d'actions que le boss peut faire
 
-        if boss.action_is_over :
-            boss.action = choice(particularites)
-            boss.iteration1 = True
+        if boss.action_is_over : # si l'action est terminée
+            boss.action = choice(particularites) # choix d'une nouvelle action
+            boss.iteration1 = True # réinitialisation des attributs
             boss.action_is_over = False
-            print(boss.action)
         action = boss.action
-
-        if action == "attaque_a_distance":
-            boss.attaque_dist()
 
         if action == "hallucination":
             effet = boss.hallucination(WIN)
@@ -264,7 +357,7 @@ def gestion_boss(boss, boss_present, p, frame, boss_acheves):
             p.degats(boss.puissance)
         boss.draw_boss(frame)
 
-        if boss.hp <= 0:
+        if boss.hp <= 0: # mort du boss
             boss_present = False
             boss_acheves.append(boss.map)
             boss = None
