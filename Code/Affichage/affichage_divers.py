@@ -1,9 +1,11 @@
+"""Affichage divers"""
+
 from Fichiers_variables.variables import *
 import pygame as pyg 
 
 FONT2 = pyg.font.SysFont("Press Start 2P", 16)
 def afficher_timer_vie(temps_ecoule, p) :
-    """Affiche le timer et la barre de PV
+    """Affiche le timer et la barre de PV et le compteur de morts
 
     Parameters
     ----------
@@ -28,14 +30,19 @@ def afficher_timer_vie(temps_ecoule, p) :
     barre_PV = pyg.Rect(CENTREx - PLAYER_WIDTH/2, CENTREy - height/2 - PLAYER_HEIGHT/2 - const, p.hp*unit, height)
     pyg.draw.rect(WIN, (255, 255, 255), barre_PV_blanc)
     pyg.draw.rect(WIN, (200, 0, 0), barre_PV)
+
+    # Niveau
     txt_niveau = FONT2.render(f"LVL {p.niveau}", 1, (0, 0, 0))
     rect = txt_niveau.get_rect()
     rect.topright = (780, 3)
     WIN.blit(txt_niveau, rect)
+
+    # placement de txt kill
     txt_kill = FONT.render(str(p.kill_count), 1, (255, 255, 255))
     rect1 = txt_kill.get_rect()
     rect1.topright = (780, 30)
     WIN.blit(txt_kill, rect1)
+    #placement de KILL_SIGN à sa gauche
     rect2 = KILL_SIGN.get_rect()
     x = rect1.topleft[0]- KILL_SIGN.get_width()/2
     y = rect1.center[1]

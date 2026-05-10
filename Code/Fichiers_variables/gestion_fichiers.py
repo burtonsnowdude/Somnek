@@ -1,31 +1,19 @@
+"""
+Gestion de fichiers en csv, ce fichier gère les sauvegardes
+    du niveau 
+    de l'argent
+    des armes et items acquises
+    des quêtes accomplies
+    des powerups achetés
+Il possède différentes fonctions non utilisées dans le code mais qui sont utiles pour réinitialiser les fichiers
+"""
+
 import csv
 from Fichiers_variables.variables import *
 from Fichiers_variables.dictionnaire_items import TYPES_ITEMS
 from Fichiers_variables.dictionnaire_armes import TYPES_ARMES
 import Interface.variable_power_up as data
-"""
-Niveau atteint
-Argent obtenu
-Personnages débloqués (pour le moment pas faisable) 
-Armes/ items débloqués
-Quêtes réussies (pareil pour le moment pas faisable) 
 
-
---> Mettre un système d'identifiant ? Parce que sinon dès qu'on fera une partie ça enregistrera pour tout
-le monde donc faudra en permanence supprimer les données créées.
---> Donc créer l'interface plus tôt que prévu
---> Pour l'instant juste stocker les infos mais tout sera affiché plus tard sur l'interface d'accueil
-
-Dans chaque fichier : une colonne par personne
-1 fichier par catégorie : persos, armes/items, quêtes, et niveau+argent ensemble
-    1 ligne par arme-item/perso/quête
-    Si obtenu : 1
-    Si pas obtenu : 0
-Dans 1 autre fichier : niveau + argent
-    1 ligne pour le niveau, 1 ligne pour l'argent
-    Avec juste les valeurs pour chacun dedans
-"""
-######################## Fonctions générales #############################
 
 def det_noms():
     """Récupère les noms des joueurs inscrits"""
@@ -48,14 +36,21 @@ def ajouter_utilisateur(nom, noms):
     
     Returns
     -------
-    list
+    list(dict) 
         La liste de joueurs inscrits actualisée
+    list(dict)
+        Le contenu actualisé du fichier armes
+    list(dict)
+        Le contenu actualisé du fichier quêtes
+    list(dict)
+        Le contenu actualisé du fichier powerups   
     ou 
     False
     """
     if nom not in noms:
         noms.append(nom)
 
+        # on met toutes les données du nouveau joueur à 0
         new_tab_armes = contenu_fichier_armes()
         for ligne in new_tab_armes:
             ligne[nom] = 0
@@ -103,6 +98,7 @@ def actualiser_donnees(nom, niveau, argent, new_tab):
     list(dict)
         La liste de données qui seront réécrites dans le fichier csv
     """
+    # seulement si le niveau est meilleur que celui précedemment atteint
     if new_tab[0][nom] < niveau :
         new_tab[0][nom] = niveau
     new_tab[1][nom] = argent
@@ -112,8 +108,8 @@ def actualiser_donnees(nom, niveau, argent, new_tab):
 ########################## Armes ###########################
 
 def definir_fichier_nouv_armes(noms):
-    """Réinitialise le fichier armes_obtenues_par_joueur.csv, sera utile quand on aura 
-    le bon dico pour les ARMES
+    """Réinitialise le fichier armes_obtenues_par_joueur.csv, est utile lorsuqu'il y a un changement
+    du dictionnaire des armes et items
     
     Parameters
     ----------
@@ -124,23 +120,30 @@ def definir_fichier_nouv_armes(noms):
     with open("Fichiers_csv/armes_obtenues_par_joueur.csv", "w", newline = "") as fichier_niveau :
             writer = csv.DictWriter(fichier_niveau, headers)
             writer.writeheader()
+            # On parcourt le dico de chaque perso dans les 2 dictionnaires
             for perso in TYPES_ITEMS : 
                 for arme in TYPES_ITEMS[perso]:
                     row = {}
                     row["Type"] = arme
                     for nom in noms :
-                        row[nom] = 0
+                        row[nom] = 0 # mettre à 0 toutes les données 
                     writer.writerow(row)
             for perso in TYPES_ARMES:
                 for arme in TYPES_ARMES[perso]:
                     row = {}
                     row["Type"] = arme
                     for nom in noms :
-                        row[nom] = 0
+                        row[nom] = 0 # mettre à 0 toutes les données 
                     writer.writerow(row)
 
 def contenu_fichier_armes():
-    """Récupère les données du fichier armes_obtenues_par_joueur.csv"""
+    """Récupère les données du fichier armes_obtenues_par_joueur.csv
+    
+    Returns
+    --------
+    list(dict)
+        le contenu du fichier armes
+    """
     contenu_niveau = csv.DictReader(open("Fichiers_csv/armes_obtenues_par_joueur.csv"))
     new_tab = []
     for row in contenu_niveau :
@@ -150,6 +153,18 @@ def contenu_fichier_armes():
 
 
 def liste_armes_acquises(joueur):
+    """Donne la liste des armes acquises par un joueur
+    
+    Parameters
+    ----------
+    joueur : str
+        Le nom du joueur
+    
+    Returns
+    -------
+    list
+        La liste des armes acquises par le joueur
+    """
     contenu = contenu_fichier_armes()
     liste = [ligne["Type"] for ligne in contenu if ligne[joueur] == "1"]
     return liste
@@ -178,23 +193,53 @@ def ajouter_arme(nom, arme, new_tab):
     return new_tab
 
 def reecrire_fichier(fichier, new_tab, noms):
+    """ Permet de réécrire un certain fichier avec des données actualisées
+    
+    Parameters
+    ----------
+    fichier : str
+        le nom du fichier
+    new_tab : list
+        Le contenu actualisé du fichier
+    noms : list(str)
+        La liste de noms de tous les joueurs enregistrés
+    """
     if fichier in ("armes_obtenues_par_joueur", "quetes_reussis", "powerups"):
         headers = ["Type"] + noms
     else:
         headers = noms
     fichier = "Fichiers_csv/" + fichier + ".csv"
     with open(fichier, "w", newline="") as tab:
-        # extrasaction="ignore" → ignore les colonnes en trop (FEE, Fee, None…)
+        # extrasaction="ignore", ignore les colonnes en trop 
         writer = csv.DictWriter(tab, headers, extrasaction="ignore")
         writer.writeheader()
         for row in new_tab:
-            # Nettoyer les clés parasites (virgule en trop dans le CSV)
+            # Nettoyer les clés parasites (virgule en trop dans le csv)
             for k in list(row.keys()):
                 if k is None or k == "":
                     del row[k]
             writer.writerow(row)
 
 def get_info(joueur, info, arme):
+    """Permet de déterminer soit l'argent possédé par le joueur soit s'il possède une arme ou non
+    
+    Parameters
+    ----------
+    joueur : str
+        Le nom du joueur
+    info : str
+        Le type d'infos souhaité
+    arme : str
+        L'arme en question
+    
+    Returns
+    -------
+    int
+        L'argent possédé par le joueur
+    ou
+    bool
+        Si l'arme a été acquise ou non
+    """
     if info == "argent" :
         tab = det_noms()[1]
         if joueur not in tab[1]:
@@ -212,26 +257,26 @@ def get_info(joueur, info, arme):
                     return False
                 
 def replace_player_money(joueur, argent):
+    """Actualise l'argent du joueur
+    
+    Parameters
+    ----------
+    joueur : str
+        Le nom du joueur
+    argent : int
+        L'argent actualisé du joueur
+    """
     noms, new_tab = det_noms()
     new_tab[1][joueur] = argent
     reecrire_fichier("niveau_argent", new_tab, noms)
 
 def joueur_qui_a_tout(noms):
-    """Ajouter un nouvel utilisateur
+    """Ajouter un utilisateur nommé test qui a absolument toutes les armes/items (pour tester)
     
     Parameters
     ----------
-    nom : str
-        Le nom du joueur actuel
     noms : str
         La liste de tous les joueurs inscrits
-    
-    Returns
-    -------
-    list
-        La liste de joueurs inscrits actualisée
-    ou 
-    False
     """
     nom = "test"
     noms.append(nom)
@@ -274,6 +319,13 @@ def contenu_fichier_powerups():
 
 
 def definir_fichier_powerups(noms):
+    """Réinitialise le fichier powerups
+    
+    Parameters
+    ----------
+    noms : list
+        La liste des noms des joueurs enregistrés
+    """
     headers = ["Type"] + noms
     with open("Fichiers_csv/powerups.csv", "w", newline="") as fichier:
         writer = csv.DictWriter(fichier, headers)
@@ -286,7 +338,17 @@ def definir_fichier_powerups(noms):
             writer.writerow(row)
 
 def sauvegarder_powerup(nom, powerup, niveau):
-    """Sauvegarde le niveau d'un power up pour un joueur"""
+    """Sauvegarde le niveau d'un power up pour un joueur
+    
+    Parameters
+    ----------
+    nom : str
+        Nom du joueur
+    powerup : str
+        Nom du powerup acheté
+    niveau :
+        Niveau du powerup acheté
+    """
 
     noms, _ = det_noms()
     new_tab = contenu_fichier_powerups()
@@ -299,7 +361,18 @@ def sauvegarder_powerup(nom, powerup, niveau):
 
 
 def charger_powerups_joueur(nom):
-    """Charge les power ups d'un joueur"""
+    """Charge les powerups d'un joueur
+
+    Parameters
+    ----------
+    nom : str
+        Nom du joueur
+    
+    Returns
+    --------
+    dict
+        Le dictionnaire des powerups du joueur
+    """
 
     contenu = contenu_fichier_powerups()
 
