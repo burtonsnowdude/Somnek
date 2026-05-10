@@ -1,52 +1,3 @@
-<<<<<<< HEAD
-Type,<<<<<<< HEAD,,liam_du_connecticut,nana,fee
-,Type,,0,0,0
-,Avoir_retrouve_quelquun,,0,0,0
-,Inspecter_livre_mysterieux,,0,0,0
-,Trouver_objet_mysterieux,,0,0,0
-,Eliminer_boss_final,,0,0,0
-,Entrer_metro,,0,0,0
-,kill_10,,0,0,0
-,kill_50,,0,0,0
-,kill_100,,0,0,0
-,kill_500,,0,0,0
-,aquerir_1,,0,0,0
-,aquerir_5,,0,0,0
-,aquerir_10,,0,0,0
-,aquerir_50,,0,0,0
-,=======,,0,0,0
-,Type,,0,0,0
-,Avoir_retrouve_quelquun,,0,0,0
-,Inspecter_livre_mysterieux,,0,0,0
-,Trouver_objet_mysterieux,,0,0,0
-,Eliminer_boss_final,,0,0,0
-,Entrer_metro,,0,0,0
-,kill_10,,0,0,0
-,kill_50,,0,0,0
-,kill_100,,0,0,0
-,kill_500,,0,0,0
-,aquerir_1,,0,0,0
-,aquerir_5,,0,0,0
-,aquerir_10,,0,0,0
-,aquerir_50,,0,0,0
-,>>>>>>> bbd798b221a025595dffd30ce9a5232eadedb55f,,0,0,0
-=======
-<<<<<<< HEAD
-Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee,new
-Avoir_retrouve_quelquun,0,0,0,0,0,0,0,,,,0
-Inspecter_livre_mysterieux,0,0,0,0,0,0,0,,,,0
-Trouver_objet_mysterieux,0,0,0,0,0,0,0,,,,0
-Eliminer_boss_final,0,0,0,0,0,0,0,,,,0
-Entrer_metro,0,0,0,0,0,0,0,,,,0
-kill_10,1,0,0,0,0,0,0,1,0,0,1
-kill_50,1,0,0,0,0,0,0,1,0,0,0
-kill_100,0,0,0,0,0,0,0,1,0,0,0
-kill_500,0,0,0,0,0,0,0,1,0,0,0
-aquerir_1,0,0,0,0,0,0,0,1,0,0,0
-aquerir_5,0,0,0,0,0,0,0,1,0,0,0
-aquerir_10,0,0,0,0,0,0,0,1,0,0,0
-aquerir_50,0,0,0,0,0,0,0,1,0,0,0
-=======
 Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee
 Avoir_retrouve_quelquun,0,0,0,0,0,0,0,,,
 Inspecter_livre_mysterieux,0,0,0,0,0,0,0,,,
@@ -61,5 +12,3 @@ aquerir_1,0,0,0,0,0,0,0,1,0,0
 aquerir_5,0,0,0,0,0,0,0,1,0,0
 aquerir_10,0,0,0,0,0,0,0,1,0,0
 aquerir_50,0,0,0,0,0,0,0,1,0,0
->>>>>>> 1fbfa0e9e86dc4301129524d14f90e5deea92277
->>>>>>> 41bf361d242f1c74b620a72e9ab7c9fb02802c26

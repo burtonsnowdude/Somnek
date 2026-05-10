@@ -1,4 +1,3 @@
-
 Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee
 Lunettes_cassees,0,0,0,0,1,0,0,1,0,0
 Souris_pc,0,0,0,0,1,0,0,1,0,0
@@ -42,7 +41,7 @@ Console_allumee,0,0,0,0,1,0,0,0,0,0
 Gloss_rose,0,0,0,0,1,0,0,0,0,0
 Faux_cils,1,0,0,0,1,0,0,0,0,0
 Faux_ongles_roses,0,0,0,0,1,0,0,0,0,0
-Bracelet_de_sa_soeur,0,0,0,0,1,0,0,0,0,0
+Bracelet_de_sa_soeur,1,0,0,0,1,0,0,0,0,0
 Fer_a_lisser,1,0,0,0,1,0,0,0,0,0
 Pass_Navigo,0,0,0,0,1,0,0,0,0,0
 Ring_light,0,0,0,0,1,0,0,0,0,0
@@ -67,4 +66,3 @@ Medaille_de_bapteme,0,0,0,0,1,0,0,1,0,0
 Coiffe_de_rameau,0,0,0,0,1,0,0,0,0,0
 Lance_sacree,0,0,0,0,1,0,0,0,0,0
 Aura_divine,1,0,0,0,1,0,0,0,0,0
-
