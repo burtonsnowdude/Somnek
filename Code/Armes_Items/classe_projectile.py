@@ -17,12 +17,12 @@ PROJECTILES = {
         "cols":    4, "rows": 1, "enlever": 0, "taille": (30, 30)
     },
     "Cle_USB":              "Images/Armes_items/projectile/proj_cleusb.png",
-    "Pistolets":            "Images/Armes_items/projectile/proj_pistolets.png",
+    "Pistolets":            "Images/Armes_items/projectile/proj_pistolet.png",
     "Ticket_de_metro":      "Images/Armes_items/projectile/proj_ticket.png",
 
     # Fille populaire
     "Gloss_rose":           "Images/Armes_items/projectile/proj_gloss_rose.png",
-    "Faux_cils":            "Images/Armes_items/projectile/proj_faux_cils.png",
+    "Faux_cils":            "Images/Armes_items/projectile/proj_faux_cil.png",
     "Faux_ongles_roses":    "Images/Armes_items/projectile/proj_ongles.png",
     "Bracelet_de_sa_soeur": {
         "path":    "Images/Armes_items/projectile/proj_bracelet.png",
@@ -33,7 +33,7 @@ PROJECTILES = {
         "cols":    4, "rows": 1, "enlever": 0, "taille": (30, 30)
     },
     "Pass_Navigo":          "Images/Armes_items/projectile/proj_ticket.png",
-    "Ring_light":           "Images/Armes_items/projectile/proj_ring.png",
+    "Ring_light":           "Images/Armes_items/projectile/proj_ringlight.png",
     "Highlighter":          "Images/Armes_items/projectile/proj_highliter.png",
 
     # Nonne
