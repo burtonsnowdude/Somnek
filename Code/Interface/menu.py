@@ -46,7 +46,7 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
             argent = int(new_tab[1][joueur])
             new_tab[0][joueur] = int(new_tab[0][joueur])
         else :
-            noms, new_tab_armes, new_tab_quetes = res
+            noms, new_tab_armes, new_tab_quetes, new_tab_powerups = res
             argent = 0
             new_tab[0][joueur] = 1
             new_tab[1][joueur] = 0
