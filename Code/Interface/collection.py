@@ -108,6 +108,9 @@ trefle_affich = load_big("Images/Interface/affiche/trefle_affiche.png")
 armure_affich = load_big("Images/Interface/affiche/armure_affiche.png")
 console_affich = load_big("Images/Interface/affiche/console_affiche.png")
 serviette_affich = load_big("Images/Interface/affiche/serviette_affiche.png")
+apple_watch_affich = load_big("Images/Interface/affiche/apple_watch_affiche.png")
+pantalon_beige_affich = load_big("Images/Interface/affiche/pantalon_beige_affiche.png")
+
 # FILLE POPULAIRE
 gloss_rose_affich = load_big("Images/Interface/affiche/gloss_affiche.png")
 ticket_affich = load_big("Images/Interface/affiche/ticket_affiche.png")
@@ -129,6 +132,9 @@ pass_navigo_affich = load_big("Images/Interface/affiche/pass_affiche.png")
 fer_a_lisser_affich = load_big("Images/Interface/affiche/fer_affiche.png")
 jean_stanley_affich = load_big("Images/Interface/affiche/jean_stanley_affiche.png")
 chargeur_affich = load_big("Images/Interface/affiche/chargeur_affiche.png")
+ensemble_jucy_affich = load_big("Images/Interface/affiche/ensemble_jucy_affiche.png")
+manteau_leopard_affich = load_big("Images/Interface/affiche/manteau_leopard_affiche.png")
+sac_a_main_violet_affich = load_big("Images/Interface/affiche/sac_violet_affiche.png")
 # NONNE
 croix_de_base_affich = load_big("Images/Interface/affiche/croix_affiche.png")
 couronne_affich = load_big("Images/Interface/affiche/couronne_affiche.png")
@@ -142,6 +148,12 @@ boule_denergie_affich = load_big("Images/Interface/affiche/boule_energie_affiche
 eau_benite_affich = load_big("Images/Interface/affiche/eau_affiche.png")
 mocassin_affich = load_big("Images/Interface/affiche/mocassin_affiche.png")
 halo_lumineux_affich = load_big("Images/Interface/affiche/halo_affiche.png")
+coeur_affiche = load_big("Images/Interface/affiche/coeur_affiche.png")
+cape_affiche = load_big("Images/Interface/affiche/cape_affiche.png")
+collant_affiche = load_big("Images/Interface/affiche/collant_affiche.png")
+sac_a_dos_bleu_affich = load_big("Images/Interface/affiche/sac_bleu_affiche.png")
+chapelet_affich = load_big("Images/Interface/affiche/chapelet_affiche.png")
+tableau_sacre_affich = load_big("Images/Interface/affiche/tableau_sacre_affiche.png")
 pas_trouve = load_big("Images/Interface/affiche/pas_trouvé.png")
 
 """
@@ -165,6 +177,8 @@ liste_all_item = {
     "Armure": (img_armure, armure_affich),
     "Console": (img_console, console_affich),
     "Serviette nettoyante": (img_serviette, serviette_affich),
+    "Apple Watch": (img_apple_watch, apple_watch_affich),
+    "Pantalon beige": (img_pantalon_beige, pantalon_beige_affich),
 
     # FILLE POPULAIRE
     "Gloss rose": (img_gloss_rose, gloss_rose_affich),
@@ -187,6 +201,9 @@ liste_all_item = {
     "Fer à lisser": (img_fer_a_lisser, fer_a_lisser_affich),
     "Jean Stanley": (img_jean_stanley, jean_stanley_affich),
     "Chargeur": (img_chargeur, chargeur_affich),
+    "Ensemble Juicy": (img_ensemble_jucy, ensemble_jucy_affich),
+    "Manteau léopard": (img_manteau_leopard, manteau_leopard_affich),
+    "Sac à main violet": (img_sac_a_main_violet, sac_a_main_violet_affich),
 
     # NONNE
     "Croix de base": (img_croix_de_base, croix_de_base_affich),
@@ -201,6 +218,9 @@ liste_all_item = {
     "Eau bénite": (img_eau_benite, eau_benite_affich),
     "Mocassin": (img_mocassin, mocassin_affich),
     "Halo lumineux": (img_halo_lumineux, halo_lumineux_affich),
+    "Coeur sacré": (img_coeur, coeur_affiche),
+    "Cape sacrée": (img_cape, cape_affiche),
+    "Collant sacré": (img_collant, collant_affiche)
 }
 """
 liste_all_item = {
@@ -241,7 +261,7 @@ liste_all_item = {
     "Crop_top_rose": (img_crop_top_rose, crop_top_rose_affich),
     "Coque_trefle": (img_trefle, trefle_affich),
     "Mousse_a_la_vanille": (img_mousse_vanille, mousse_vanille_affich),
-    "Sac_a_main_violet": (img_mousse_vanille, crop_top_rose_affich),
+    "Sac_a_main_violet": (img_mousse_vanille, sac_a_main_violet_affich),
     "Jean_stanley" : (img_jean_stanley, jean_stanley_affich),
     "Chargeur" : (img_chargeur, chargeur_affich),
 
@@ -249,15 +269,15 @@ liste_all_item = {
     "Croix_marron": (img_croix_de_base, croix_de_base_affich),
     "Coiffe_de_rameau" : (img_couronne, couronne_affich),
     "Feu_saint" : (img_feu_saint, feu_saint_affich),
-    "Chapelet": (img_croix_de_base, croix_de_base_affich),
+    "Chapelet": (img_croix_de_base, chapelet_affich),
     "Mocassin": (img_mocassin, mocassin_affich),
-    "Tableau_sacre": (img_mocassin, croix_de_base_affich),
+    "Tableau_sacre": (img_mocassin, tableau_sacre_affich),
     "Bourse": (img_bourse, bourse_affich),
     "Bougie": (img_bougie, bougie_affich),
     "Voile": (img_bougie, voile_affiche),
     "Huile_benie": (img_bougie, huile_affich),
     "Ostie": (img_ostie, ostie_affich),
-    "Sac_a_dos_bleu": (img_ostie, eau_benite_affich),
+    "Sac_a_dos_bleu": (img_ostie, sac_a_dos_bleu_affich),
     "Eau_benite": (img_ostie, eau_benite_affich),
     "Halo_lumineux": (img_halo_lumineux, halo_lumineux_affich),
     "Boule_denergie" : (img_boule_denergie, boule_denergie_affich)
