@@ -101,6 +101,7 @@ def jeu(perso, nom, map_choisie="Cour"):
     anim_item       = None
     derniere_regen  = time.time()
     victoire_decl   = False
+    force_victoire  = False
     TEMPS_OBJECTIF  = temps_limite(map_choisie)
 
     popup_group = pyg.sprite.Group()
@@ -117,6 +118,8 @@ def jeu(perso, nom, map_choisie="Cour"):
             if event.type == pyg.KEYDOWN:
                 if event.key == pyg.K_SPACE:
                     pause = not pause
+                if event.key == pyg.K_m:  # TEMP: forcer fin de map
+                    force_victoire = True
                 if event.key == pyg.K_z:
                     p.arme_active = (p.arme_active + 1) % len(p.armes)
 
@@ -146,13 +149,16 @@ def jeu(perso, nom, map_choisie="Cour"):
 
             coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur, map_choisie)
             # Victoire
-            if not victoire_decl and temps_ecoule >= TEMPS_OBJECTIF:
+            if not victoire_decl and (temps_ecoule >= TEMPS_OBJECTIF or force_victoire):
                 victoire_decl = True
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
                 reecrire_fichier("niveau_argent", new_tab, noms)
                 reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
 
-                nouvelle_map, nouveau_perso = map_terminee(nom, map_choisie, noms)
+                nouvelle_map, nouveau_perso, nouvel_item = map_terminee(nom, map_choisie, noms, perso, p)
+                if nouvel_item:
+                    armes_joueur = ajouter_arme(nom, nouvel_item, armes_joueur)
+                    reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
 
                 action = victoire(map_choisie, nouvelle_map, nouveau_perso)
                 if action == "menu":

@@ -12,7 +12,7 @@ Règles :
 
 import csv
 import os
-from Jeu.player import Player
+from Jeu.player import Player as p
 
 
 
@@ -136,7 +136,7 @@ def perso_est_debloque(joueur, nom_perso):
     return nom_perso in persos_debloques(joueur)
 
 
-def map_terminee(joueur, nom_map, noms):
+def map_terminee(joueur, nom_map, noms, perso=None, player=None):
     """
     Appelée à la victoire d'une map.
     Débloque la map suivante + le perso suivant non encore débloqué.
@@ -146,15 +146,18 @@ def map_terminee(joueur, nom_map, noms):
     """
     nouvelle_map  = None
     nouveau_perso = None
+    nouvel_item   = None
 
     #debloque item
-    if nom_map == "Metro":
-        if p.perso == "Nonne":
-            p.ajouter_item("Voile")
-        elif p.perso == "Nerd":
-            p.ajouter_item("Armure_chevalier")
-        elif p.perso == "Fille_populaire":
-            p.ajouter_item("jean_stanely")
+    if nom_map == "Metro" and perso is not None and player is not None:
+        if perso == "Nonne":
+            nouvel_item = "Voile"
+        elif perso == "Nerd":
+            nouvel_item = "Armure_chevalier"
+        elif perso == "Fille_populaire":
+            nouvel_item = "Ensemble_juicy"
+        if nouvel_item:
+            player.ajouter_item(nouvel_item)
 
     # ─── Map suivante ────────────────────────────────────────────────────
     if nom_map in ORDRE_MAPS:
@@ -181,7 +184,7 @@ def map_terminee(joueur, nom_map, noms):
             break
     _ecrire_csv(CHEMIN_PERSOS, persos_data, noms)
 
-    return nouvelle_map, nouveau_perso
+    return nouvelle_map, nouveau_perso, nouvel_item
 
 
 def temps_limite(nom_map):
