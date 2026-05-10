@@ -13,7 +13,8 @@ pyg.init()
 pyg.mixer.init()
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = [0]*4
-OBJET = pyg.image.load("Images/Armes_items/berserk.png")
+OBJET = pyg.image.load("Images/Maps/Eglise_exterieur.png")
+FOND = pyg.image.load("Images/Maps/Eglise_interieur.png")
 spritesheet_noubliez_pas_les_paroles = pyg.image.load("Images/Autre/anim_noubliez_pas_les_paroles.png")
 ANIM_NOUBLIEZ_PAS_LES_PAROLES = decouper_image(spritesheet_noubliez_pas_les_paroles, 5, 5, 3)
 SON = "Sons/son_quete2.mp3"
@@ -81,7 +82,7 @@ PAROLES = {
         "Mots_non_accentues" : ["paille", "somnambule", "bulletin", "tintamarre", "marabout", "cheval"]}
 }
 
-def minijeu3(p, coord_monde, minijeu3_fini, armes_possedees, armes_joueur, map):
+def minijeu3(p, coord_monde, minijeu3_fini,  armes_et_items_possedees, armes_possedees, armes_joueur, map):
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p, map)
         coord_screen = (300, 200)
@@ -92,13 +93,14 @@ def minijeu3(p, coord_monde, minijeu3_fini, armes_possedees, armes_joueur, map):
     draw_objet(coord_screen, OBJET)
     if collision(coord_screen, OBJET, p):
         anim_debut(SON)
-        victoire = noubliez_pas_les_paroles(map)
+        victoire = noubliez_pas_les_paroles()
         if victoire :
             armes_possedees.append("Aura_divine")
+            armes_et_items_possedees.append("Aura_divine")
             armes_joueur = ajouter_arme(p.nom, "Aura_divine", armes_joueur)
         anim_fin(victoire, SON)
         minijeu3_fini = True
-    return coord_monde, minijeu3_fini, armes_possedees, armes_joueur
+    return coord_monde, minijeu3_fini, armes_et_items_possedees, armes_possedees, armes_joueur
 
 def anim_debut(son):
     replique("Bien le bonjour ! Vous êtes venue pour prier j'imagine ?", GRIS_1, (0,0,0))
@@ -171,8 +173,8 @@ def pause_differenciee(chant, j):
     else :
         pyg.time.delay(5000)
 
-def noubliez_pas_les_paroles(map):
-    mapX, mapY = map.get_size()
+def noubliez_pas_les_paroles():
+    FONDX, FONDY = FOND.get_size()
     i = 0
     clock = pyg.time.Clock()
     win_count = 0
@@ -191,9 +193,9 @@ def noubliez_pas_les_paroles(map):
             for j in range(len(texte)) :
                 if j%3 == 0:
                     WIN.fill((225, 225, 225))
-                    for t in range(-mapX, WIDTH + mapX, mapX):
-                        for x in range(-mapY, HEIGHT + mapY, mapY):
-                                WIN.blit(map, (t, x))
+                    for t in range(-FONDX, WIDTH + FONDX, FONDX):
+                        for x in range(-FONDY, HEIGHT + FONDY, FONDY):
+                                WIN.blit(FOND, (t, x))
 
                     gris = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
                     gris.fill(GRIS_1)  
@@ -204,7 +206,7 @@ def noubliez_pas_les_paroles(map):
                 pyg.display.update()
                 if "_" in ligne :
                     pyg.mixer.music.pause()
-                    mot = ecrire(l, j, map)
+                    mot = ecrire(l, j, FOND)
                     if mot == PAROLES[chant]["Mots_non_accentues"][complete]:
                         win_count += 1
                     complete += 1
@@ -224,16 +226,16 @@ def noubliez_pas_les_paroles(map):
     return win_count >= 5
 
         
-def ecrire(l, k, map):
-    mapX, mapY = map.get_size()
+def ecrire(l, k, FOND):
+    FONDX, FONDY = FOND.get_size()
     waiting = True
     mot = ""
     while waiting:
         lettre = None
         WIN.fill((225, 225, 225))
-        for t in range(-mapX, WIDTH + mapX, mapX):
-            for j in range(-mapY, HEIGHT + mapY, mapY):
-                    WIN.blit(map, (t, j))
+        for t in range(-FONDX, WIDTH + FONDX, FONDX):
+            for j in range(-FONDY, HEIGHT + FONDY, FONDY):
+                    WIN.blit(FOND, (t, j))
         gris = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
         gris.fill(GRIS_1)  
         WIN.blit(gris, (0, 0))

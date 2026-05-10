@@ -15,14 +15,15 @@ import time
 pyg.init()
 pyg.mixer.init()
 
-X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 600, 650, 300, 350 # c'est faux c'est juste pour test
-OBJET = pyg.image.load("Images/Autre/sephora_exterieur.png")
+X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200 # c'est faux c'est juste pour test
+OBJET = pyg.image.load("Images/Maps/Sephora_exterieur.png")
 SON = "Sons/son_quete2.mp3"
 spritesheet_quizz = pyg.image.load("Images/Autre/anim_quizz.png")
 ANIM_QUIZZ = decouper_image(spritesheet_quizz, 5, 5, 3)
 ROSE = (255, 182, 229, 200)
 BLEU = (154, 158, 200, 200)
 ECRITURE = (167, 67, 86)
+FOND = pyg.image.load("Images/Maps/Sephora_interieur.png")
 
 QUIZZ = { 
     0 :
@@ -168,8 +169,9 @@ def anim_fin(victoire, son):
             i += 1
         pyg.display.update()
               
-def quizz(son, map):
-    mapX, mapY = map.get_size()
+def quizz(son):
+
+    FONDX, FONDY = FOND.get_size()
     run = True
     i = 0
     clock = pyg.time.Clock()
@@ -177,9 +179,9 @@ def quizz(son, map):
     while run and i < max(QUIZZ)+1:
         clock.tick(60)
         WIN.fill((225, 225, 225))
-        for t in range(-mapX, WIDTH + mapX, mapX):
-            for j in range(-mapY, HEIGHT + mapY, mapY):
-                    WIN.blit(map, (t, j))
+        for t in range(-FONDX, WIDTH + FONDX, FONDX):
+            for j in range(-FONDY, HEIGHT + FONDY, FONDY):
+                    WIN.blit(FOND, (t, j))
         mouse_pos = pyg.mouse.get_pos()
 
         rose = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
@@ -243,7 +245,7 @@ def retour_ligne(texte, longueur):
     return liste
 
 
-def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees, armes_joueur, map):
+def minijeu2(p, coord_monde, minijeu2_fini, armes_et_items_possedees, armes_possedees, armes_joueur, map):
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p, map)
         coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
@@ -253,11 +255,12 @@ def minijeu2(p, coord_monde, minijeu2_fini, armes_possedees, armes_joueur, map):
     draw_objet(coord_screen, OBJET)
     if collision(coord_screen, OBJET, p):
         anim_quizz(SON)
-        victoire = quizz(SON, map)
+        victoire = quizz(SON)
         if victoire :
-            armes_possedees.append("Aura_divine")
-            armes_joueur = ajouter_arme(p.nom, "Aura_divine", armes_joueur)
+            armes_possedees.append("Highlighter")
+            armes_et_items_possedees.append("Highlighter")
+            armes_joueur = ajouter_arme(p.nom, "Highlighter", armes_joueur)
         anim_fin(victoire, SON)
         minijeu2_fini = True
         pyg.mixer.music.stop()
-    return coord_monde, minijeu2_fini, armes_possedees, armes_joueur
+    return coord_monde, minijeu2_fini, armes_et_items_possedees, armes_possedees, armes_joueur

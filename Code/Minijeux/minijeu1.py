@@ -6,10 +6,12 @@ from Minijeux.minijeu2 import spawn_objet, draw_objet, collision
 from Affichage.fonctionnement_divers import screen_to_world, camera
 from Fichiers_variables.variables import *
 from random import randint
+from Fichiers_variables.gestion_fichiers import ajouter_arme
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200
-COMPUTER = pyg.image.load("Images/Autre/game_stop_exterieur.png")
-FOND_QUIZ = pyg.transform.scale(pyg.image.load("Images/Autre/game_stop_interieur.png"), (WIDTH, HEIGHT))
+COMPUTER = pyg.image.load("Images/Maps/Game_stop_exterieur.png") 
+FOND = pyg.image.load("Images/Maps/Game_stop_interieur.png")
+#pour l'instant, on utilise une image d'arme pour représenter l'ordinateur, mais on peut la changer plus tard
 
 
 def binary_quiz():
@@ -31,7 +33,7 @@ def binary_quiz():
     while True:
         clock.tick(60)
         
-        WIN.blit(FOND_QUIZ, (0, 0))
+        WIN.blit(FOND, (0, 0))
         
         # Popup box
         pyg.draw.rect(WIN, (50, 50, 50), (popup_x, popup_y, popup_width, popup_height))
@@ -69,8 +71,10 @@ def binary_quiz():
                 if event.key == pyg.K_RETURN and user_answer and not feedback:
                     if int(user_answer) == binary_number:
                         feedback = "Correct!"
+                        return True
                     else:
                         feedback = "Faux!"
+                        return False
                     feedback_time = 0
                 elif event.key == pyg.K_BACKSPACE:
                     user_answer = user_answer[:-1]
@@ -78,7 +82,7 @@ def binary_quiz():
                     user_answer += event.unicode
 
 
-def minijeu1(p, coord_monde, minijeu1_fini, map):
+def minijeu1(p, coord_monde, minijeu1_fini, armes_et_items_possedees, armes_possedees, armes_joueur, map):
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p, map)
         coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
@@ -87,8 +91,12 @@ def minijeu1(p, coord_monde, minijeu1_fini, map):
     draw_objet(coord_screen, COMPUTER)
     
     if collision(coord_screen, COMPUTER, p):
-        binary_quiz()
+        victoire = binary_quiz()
+        if victoire :
+            armes_possedees.append("Console_allumee")
+            armes_joueur = ajouter_arme(p.nom, "Console_allumee", armes_joueur)
+            armes_et_items_possedees.append("Console_allumee")
         minijeu1_fini = True
     
-    return coord_monde, minijeu1_fini
+    return coord_monde, minijeu1_fini, armes_et_items_possedees, armes_possedees, armes_joueur
     
