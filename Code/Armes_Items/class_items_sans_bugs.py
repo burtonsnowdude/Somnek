@@ -200,17 +200,23 @@ def calculer_application_refroidissement(dernier_tir, refroidissement):
     return False, dernier_tir
 
 
-def regen_hp(player, recuperation, interval=1):
-    """Regenere les points de vies par seconde"""
-    if recuperation is None or recuperation <= 0:
-        return
-    
-    while player.hp < player.hp_max:
-        time.sleep(interval)
-        player.hp += recuperation
-        if player.hp > player.hp_max:
-            player.hp = player.hp_max
+def regen_hp(player, dt=None):
+    """Régénère les PV au fil du temps.
+    À APPELER CHAQUE FRAME depuis la game loop.
 
+    `player.regen` est en HP par seconde (vient des items de regen).
+    `dt` est le temps écoulé depuis la frame précédente, en secondes.
+    Si dt n'est pas fourni, on suppose 60 FPS (1/60 s).
+    """
+    if not hasattr(player, "regen") or player.regen <= 0:
+        return
+    if player.hp >= player.hp_max:
+        return
+
+    if dt is None:
+        dt = 1 / 60.0
+
+    player.hp = min(player.hp + player.regen * dt, player.hp_max)
 
 
 def durabilite_effect(player, durabilite_val, damage_per_tick=5, interval=2):

@@ -1,18 +1,24 @@
 """
-Système d'items — SOMNEK
-Gère l'inventaire d'items d'un joueur et calcule les bonus actifs.
-S'intègre avec choix_arme() : equiper_item(nom, niveau) lit la valeur
-exacte définie dans GESTION_NIVEAU_ITEMS pour ce niveau.
+Item_system.py — SOMNEK
+Système d'items robuste : ne crashe jamais si une arme est accidentellement
+transmise, logique de valeur claire, stats plafonnées.
 """
 
 from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS, ITEMS_PAR_PERSO
 
 
+# ─────────────────────────────────────────────
+#  Item
+# ─────────────────────────────────────────────
+
 class Item:
     def __init__(self, nom: str, perso: str, valeur: float):
         catalogue = ITEMS_PAR_PERSO.get(perso, {})
         if nom not in catalogue:
-            raise ValueError(f"Item '{nom}' inconnu pour '{perso}'.")
+            raise ValueError(
+                f"[Item] '{nom}' inconnu pour '{perso}'. "
+                f"Items disponibles : {list(catalogue.keys())}"
+            )
         self.nom    = nom
         self.perso  = perso
         self.valeur = valeur
@@ -28,67 +34,68 @@ class Item:
         return f"<Item {self.nom} | {self.effet} | {self.valeur_plafonnee:.2f}/{self.max}>"
 
 
-
+# ─────────────────────────────────────────────
+#  InventaireItems
+# ─────────────────────────────────────────────
 
 class InventaireItems:
     """
     Inventaire d'items d'UN personnage.
 
-    Flux normal (en jeu) :
-        # choix_arme() retourne ("item", "Cle_USB") au niveau 4
-        p.inventaire_items.equiper_item("Cle_USB", p.niveau)
-        appliquer_stats_items(p, p.inventaire_items.calculer_stats())
+    Règle de sécurité clé :
+        Si un nom d'ARME est passé par erreur (ex. via coffre mal classifié),
+        l'objet est simplement ignoré avec un warning — le jeu ne plante pas.
     """
 
     def __init__(self, perso: str):
         if perso not in ITEMS_PAR_PERSO:
-            raise ValueError(f"Personnage '{perso}' inconnu.")
+            raise ValueError(f"[InventaireItems] Personnage '{perso}' inconnu.")
         self.perso  = perso
-        self._items: dict = {}
+        self._items: dict[str, Item] = {}
 
-    
+    # ── API publique ───────────────────────────────────────────────────────
 
     def equiper_item(self, nom_item: str, niveau: int):
         """
-        Appelé quand choix_arme() retourne ("item", nom_item).
-        Cherche la valeur dans GESTION_NIVEAU_ITEMS[perso]["Niveau N"].
-        Si absente à ce niveau, remonte aux niveaux précédents.
+        Équipe un item au niveau donné.
+        Si `nom_item` n'est pas dans le catalogue items (ex. c'est une arme),
+        on ignore proprement sans crasher.
         """
+        catalogue = ITEMS_PAR_PERSO.get(self.perso, {})
+        if nom_item not in catalogue:
+            # Arme ou objet inconnu passé par erreur — on ignore silencieusement
+            print(f"[InventaireItems] WARN: '{nom_item}' ignoré "
+                  f"(pas un item de '{self.perso}').")
+            return
+
         valeur = self._valeur_au_niveau(nom_item, niveau)
         if valeur == 0:
             valeur = self._derniere_valeur(nom_item, niveau)
-        if isinstance(valeur, tuple):
+
+        # Tuples (ex. Iphone_2000) → moyenne
+        if isinstance(valeur, (tuple, list)):
             valeur = sum(valeur) / len(valeur)
-        self._ajouter(nom_item, float(valeur))
+
+        valeur = float(valeur)
+        if valeur == 0.0:
+            # Item non encore défini à ce niveau → on met la valeur max / 10
+            valeur = catalogue[nom_item]["max"] / 10
+            print(f"[InventaireItems] WARN: valeur 0 pour '{nom_item}' "
+                  f"au niveau {niveau}. Fallback={valeur:.3f}")
+
+        self._ajouter(nom_item, valeur)
 
     def possede(self, nom_item: str) -> bool:
         return nom_item in self._items
 
-    def lister(self):
+    def lister(self) -> list:
         return list(self._items.values())
 
-   
+    # ── Calcul des stats ───────────────────────────────────────────────────
 
     def calculer_stats(self) -> dict:
         """
         Retourne tous les bonus actifs, plafonnés, prêts à être appliqués.
-
-        Clés retournées :
-            cooldown_reduction  [0, 0.90]
-            bonus_sante         [0, 2.0]
-            bonus_vitesse       [0, 0.50]
-            reduction_degats    [0, 0.90]   (multiplicatif)
-            bonus_cupidite      [0, 0.50]
-            bonus_quantite      int
-            regen_par_sec       float
-            bonus_chance        [0, 1.00]
-            bonus_duree         [0, 2.0]
-            resurrection        bool
-            bonus_zone          [0, 0.50]
-            bonus_attirance     float       (px supplémentaires)
-            bonus_degats        float       (dégâts fixes)
-            bonus_attaque       float       (multiplicateur, base 1.0)
-            multi_effets        dict
         """
         stats = {
             "cooldown_reduction": 0.0,
@@ -113,63 +120,89 @@ class InventaireItems:
             e = item.effet
 
             if   e == "cooldown":
-                stats["cooldown_reduction"] = min(stats["cooldown_reduction"] + v, 0.90)
+                stats["cooldown_reduction"] = min(
+                    stats["cooldown_reduction"] + v, 0.90)
             elif e == "sante":
-                stats["bonus_sante"]       += v
+                stats["bonus_sante"]        += v
             elif e == "vitesse":
-                stats["bonus_vitesse"]     += v
+                stats["bonus_vitesse"]      += v
             elif e == "protection":
-                stats["reduction_degats"]   = 1 - (1 - stats["reduction_degats"]) * (1 - v)
+                # Réduction multiplicative (empilement correct)
+                stats["reduction_degats"]    = 1 - (
+                    1 - stats["reduction_degats"]) * (1 - v)
             elif e == "cupidite":
-                stats["bonus_cupidite"]    += v
+                stats["bonus_cupidite"]     += v
             elif e == "quantite":
-                stats["bonus_quantite"]    += int(v)
+                stats["bonus_quantite"]     += int(v)
             elif e == "regen":
-                stats["regen_par_sec"]     += v
+                stats["regen_par_sec"]      += v
             elif e == "chance":
-                stats["bonus_chance"]      += v
+                stats["bonus_chance"]       += v
             elif e == "duree":
-                stats["bonus_duree"]       += v
+                stats["bonus_duree"]        += v
             elif e == "resurrection":
-                stats["resurrection"]       = True
+                stats["resurrection"]        = True
             elif e == "zone":
-                stats["bonus_zone"]        += v
+                stats["bonus_zone"]         += v
             elif e == "attirance":
-                stats["bonus_attirance"]   += v
+                stats["bonus_attirance"]    += v
             elif e == "degats":
-                stats["bonus_degats"]      += v
+                stats["bonus_degats"]       += v
             elif e == "attaque":
-                stats["bonus_attaque"]     += v
+                stats["bonus_attaque"]      += v
             elif e == "multi":
-                sous = {k: item.config[k] for k in item.config if k not in ("effet", "max")}
+                sous = {
+                    k: item.config[k]
+                    for k in item.config
+                    if k not in ("effet", "max")
+                }
                 for k, sv in sous.items():
-                    stats["multi_effets"][k] = stats["multi_effets"].get(k, 0) + sv
+                    stats["multi_effets"][k] = (
+                        stats["multi_effets"].get(k, 0) + sv)
 
+        # Plafonds globaux
         stats["reduction_degats"] = min(stats["reduction_degats"], 0.90)
         stats["bonus_chance"]     = min(stats["bonus_chance"],      1.00)
         return stats
 
-    
+    # ── Privé ──────────────────────────────────────────────────────────────
 
     def _ajouter(self, nom_item: str, valeur: float):
+        """Ajoute ou cumule la valeur d'un item — ne lève jamais d'erreur."""
+        catalogue = ITEMS_PAR_PERSO.get(self.perso, {})
+        if nom_item not in catalogue:
+            # Double vérification de sécurité
+            print(f"[InventaireItems] _ajouter ignoré: '{nom_item}' "
+                  f"absent du catalogue de '{self.perso}'.")
+            return
         if nom_item in self._items:
             self._items[nom_item].valeur += valeur
         else:
             self._items[nom_item] = Item(nom_item, self.perso, valeur)
 
     def _valeur_au_niveau(self, nom_item: str, niveau: int):
-        return GESTION_NIVEAU_ITEMS.get(self.perso, {}).get(f"Niveau {niveau}", {}).get(nom_item, 0)
+        """Valeur exacte définie pour ce niveau, ou 0."""
+        return (GESTION_NIVEAU_ITEMS
+                .get(self.perso, {})
+                .get(f"Niveau {niveau}", {})
+                .get(nom_item, 0))
 
     def _derniere_valeur(self, nom_item: str, jusqu_a: int):
+        """
+        Remonte les niveaux précédents pour trouver la dernière valeur définie.
+        Retourne 0.0 si aucune valeur trouvée.
+        """
         prog = GESTION_NIVEAU_ITEMS.get(self.perso, {})
-        for n in range(jusqu_a, 0, -1):
+        for n in range(jusqu_a - 1, 0, -1):
             val = prog.get(f"Niveau {n}", {}).get(nom_item)
             if val is not None:
                 return val
         return 0.0
 
 
-
+# ─────────────────────────────────────────────
+#  Application des stats sur le joueur
+# ─────────────────────────────────────────────
 
 def appliquer_stats_items(joueur, stats: dict):
     """
@@ -179,27 +212,41 @@ def appliquer_stats_items(joueur, stats: dict):
     Le joueur doit avoir (définis dans Player.__init__) :
         hp_max_base, vitesse_base, zone_base, portee_xp_base
     """
-    joueur.hp_max          = int(joueur.hp_max_base * (1 + stats["bonus_sante"]))
-    joueur.hp              = min(joueur.hp, joueur.hp_max)
-    joueur.vitesse         = joueur.vitesse_base * (1 + stats["bonus_vitesse"])
+    # On retient l'ancien max pour pouvoir SOIGNER du delta si il augmente
+    ancien_hp_max = getattr(joueur, "hp_max", joueur.hp_max_base)
 
-    # Bonus stockés sur le joueur, utilisés par les armes et la boucle de jeu
-    joueur.bonus_degats      = stats["bonus_degats"]
-    joueur.attaque_mult      = stats["bonus_attaque"]
-    joueur.cooldown_reduction= stats["cooldown_reduction"]
-    joueur.argent_bonus      = stats["bonus_cupidite"]
-    joueur.nb_projectiles    = max(1, 1 + stats["bonus_quantite"])
-    joueur.regen             = stats["regen_par_sec"]
-    joueur.chance            = stats["bonus_chance"]
-    joueur.duree_effets      = 1.0 + stats["bonus_duree"]
-    joueur.resurrection      = stats["resurrection"]
-    joueur.zone_attaque      = joueur.zone_base * (1 + stats["bonus_zone"])
-    joueur.portee_xp         = joueur.portee_xp_base + stats["bonus_attirance"]
-    joueur.reduction_degats  = stats["reduction_degats"]
+    # Recalcul du nouveau max
+    nouveau_hp_max = int(joueur.hp_max_base * (1 + stats["bonus_sante"]))
 
+    # Multi-effets (Eau_benite par ex)
+    multi_sante = stats["multi_effets"].get("sante", 0)
+    if multi_sante:
+        nouveau_hp_max = int(nouveau_hp_max * (1 + multi_sante))
+
+    # ⚡ LE FIX : si le max a augmenté, on rend la même quantité de PV
+    delta = nouveau_hp_max - ancien_hp_max
+    if delta > 0:
+        joueur.hp += delta
+
+    joueur.hp_max  = nouveau_hp_max
+    joueur.hp      = min(joueur.hp, joueur.hp_max)
+    joueur.vitesse = joueur.vitesse_base * (1 + stats["bonus_vitesse"])
+
+    joueur.bonus_degats       = stats["bonus_degats"]
+    joueur.attaque_mult       = stats["bonus_attaque"]
+    joueur.cooldown_reduction = stats["cooldown_reduction"]
+    joueur.argent_bonus       = stats["bonus_cupidite"]
+    joueur.nb_projectiles     = max(1, 1 + stats["bonus_quantite"])
+    joueur.regen              = stats["regen_par_sec"]
+    joueur.chance             = stats["bonus_chance"]
+    joueur.duree_effets       = 1.0 + stats["bonus_duree"]
+    joueur.resurrection       = stats["resurrection"]
+    joueur.zone_attaque       = joueur.zone_base * (1 + stats["bonus_zone"])
+    joueur.portee_xp          = joueur.portee_xp_base + stats["bonus_attirance"]
+    joueur.reduction_degats   = stats["reduction_degats"]
+
+    # Multi-effets autres (vitesse, etc)
     for k, v in stats["multi_effets"].items():
         if k == "vitesse":
-            joueur.vitesse  *= (1 + v)
-        elif k == "sante":
-            joueur.hp_max    = int(joueur.hp_max * (1 + v))
-            joueur.hp        = min(joueur.hp, joueur.hp_max)
+            joueur.vitesse = joueur.vitesse * (1 + v)
+        # le multi sante a déjà été appliqué plus haut, on le skip ici

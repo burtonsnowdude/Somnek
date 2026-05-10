@@ -52,7 +52,7 @@ def scroll_gemme(frame):
     WIN.blit(GEMMES, (0, y))
 
 
-def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_name):
+def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_name, nb_choix):
     map_img = IMAGES_MAPS[map_name]
     mapX, mapY = map_img.get_size()
     debut  = time.time()

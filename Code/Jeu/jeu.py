@@ -99,7 +99,7 @@ def jeu(perso, nom, map_choisie="Cour"):
     coffre_existant = minijeu_fini = False
 
     anim_item       = None
-    derniere_regen  = time.time()
+    
     victoire_decl   = False
     TEMPS_OBJECTIF  = temps_limite(map_choisie)
 
@@ -120,7 +120,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                 if event.key == pyg.K_z:
                     p.arme_active = (p.arme_active + 1) % len(p.armes)
 
-        # ── Game over ─────────────────────────────────────────────────────
+        
         if not p.alive:
             if p.resurrection:
                 p.hp           = p.hp_max // 2
@@ -251,13 +251,9 @@ def jeu(perso, nom, map_choisie="Cour"):
                     coffre_existant = False
 
             dernier_coffre_apparu += 1
-
-            # ── Régénération HP ───────────────────────────────────────────
-            maintenant = time.time()
-            if p.regen > 0 and maintenant - derniere_regen >= 1.0:
-                p.hp = min(p.hp + p.regen, p.hp_max)
-                derniere_regen = maintenant
-
+            dt = clock.get_time() / 1000.0   # ms → secondes
+            p.regen_hp(dt)
+            
             # ── Dessin joueur & armes ─────────────────────────────────────
             p.draw_player(frame)
 
@@ -279,11 +275,11 @@ def jeu(perso, nom, map_choisie="Cour"):
                 else:
                     anim_item = None
 
-            # ── HUD ───────────────────────────────────────────────────────
+            
             afficher_xp(xp_attendu, p)
             afficher_timer_vie(temps_ecoule, p)
 
-            # ── Quêtes ────────────────────────────────────────────────────
+            
             kill_qid = verif_kill_id(p)
             if kill_qid and kill_qid not in completed_kill_quests:
                 popup_group.add(PopupAchievement(LIBELLES_QUETES[kill_qid]))
@@ -296,11 +292,11 @@ def jeu(perso, nom, map_choisie="Cour"):
                 actualiser_quete(nom, acq_qid)
                 completed_acquire_quests.add(acq_qid)
 
-            # ── Passage de niveau ─────────────────────────────────────────
+            
             if p.update_xp(xp, xp_attendu):
                 xp_attendu = passage(xp_attendu)
-
-                objet, pause_time = choix_arme(p, armes_possedees, monstres_presents, xp_dispo, map_choisie)
+                nb_choix = p.get_nb_choix()
+                objet, pause_time = choix_arme(p, armes_possedees, monstres_presents, xp_dispo, map_choisie, nb_choix)
                 armes_et_items_possedees.append(objet[1])
 
                 if objet[0] == "arme":

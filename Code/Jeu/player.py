@@ -93,6 +93,7 @@ class Player:
         self.all_projectiles    = pyg.sprite.Group()
         self.projectile_cooldown= 0
         self.projectile_cadence = 30
+        self._regen_timer = 0.0
 
     
 
@@ -203,6 +204,14 @@ class Player:
         if self.hp <= 0:
             self.hp    = 0
             self.alive = False
+    def regen_hp(self, dt):
+        """Régénère les HP en fonction de la stat 'regen' (1× par seconde)."""
+        if self.regen <= 0 or not self.alive:
+            return
+        self._regen_timer += dt
+        if self._regen_timer >= 1.0:
+            self.hp = min(self.hp + self.regen, self.hp_max)
+            self._regen_timer = 0.0
 
     def update_xp(self, xp, xp_attendu):
         self.xp += xp
@@ -211,6 +220,16 @@ class Player:
             self.niveau += 1
             return True
         return False
+    
+    def get_nb_choix(self):
+        nb_choix = 3
+        """Retourne le nombre de choix d'amélioration au level-up,
+        influencé par la stat 'chance'."""
+        if self.chance >= 0.3:
+            nb_choix = 4
+            return nb_choix
+        return nb_choix
+
 
     def update_cooldown(self):
         if self.projectile_cooldown > 0:

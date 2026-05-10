@@ -1,15 +1,15 @@
-<<<<<<< HEAD
-Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee,aaa,liam_du_connecticut
-Cour,1,0,0,0,0,0,0,1,0,0,1,1
-Rue,0,0,0,0,0,0,0,0,0,0,0,0
-Ruelle,0,0,0,0,0,0,0,0,0,0,0,0
-Foire,0,0,0,0,0,0,0,0,0,0,0,0
-Metro,0,0,0,0,0,0,0,0,0,0,0,0
-=======
-Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee
-Cour,1,0,0,0,0,0,0,1,0,0
-Rue,0,0,0,0,0,0,0,0,0,0
-Ruelle,0,0,0,0,0,0,0,0,0,0
-Foire,0,0,0,0,0,0,0,0,0,0
-Metro,0,0,1,0,0,0,0,0,0,0
->>>>>>> bbd798b221a025595dffd30ce9a5232eadedb55f
+<<<<<<< HEAD,liam_du_connecticut,nana,fee
+Type,0,0,0
+Cour,0,0,0
+Rue,0,0,0
+Ruelle,0,0,0
+Foire,0,0,0
+Metro,0,0,0
+=======,0,0,0
+Type,0,0,0
+Cour,0,0,0
+Rue,0,0,0
+Ruelle,0,0,0
+Foire,0,0,0
+Metro,0,0,0
+>>>>>>> bbd798b221a025595dffd30ce9a5232eadedb55f,0,0,0
