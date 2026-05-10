@@ -12,6 +12,7 @@ Règles :
 
 import csv
 import os
+from Jeu.player import Player
 
 
 
@@ -145,6 +146,15 @@ def map_terminee(joueur, nom_map, noms):
     """
     nouvelle_map  = None
     nouveau_perso = None
+
+    #debloque item
+    if nom_map == "Metro":
+        if p.perso == "Nonne":
+            p.ajouter_item("Voile")
+        elif p.perso == "Nerd":
+            p.ajouter_item("Armure_chevalier")
+        elif p.perso == "Fille_populaire":
+            p.ajouter_item("jean_stanely")
 
     # ─── Map suivante ────────────────────────────────────────────────────
     if nom_map in ORDRE_MAPS:
