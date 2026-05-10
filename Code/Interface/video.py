@@ -11,6 +11,10 @@ def play_video(image, col, row, nb_a_enlever):
     frame = 0
     i = 0
     while i < len(anims) - 1 :
+        for event in pyg.event.get():  
+            if event.type == pyg.QUIT:
+                pyg.quit()
+                exit()
         WIN.blit(anims[i], rect)
         if frame %15 == 0 :
             i += 1
