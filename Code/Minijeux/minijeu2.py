@@ -15,8 +15,8 @@ import time
 pyg.init()
 pyg.mixer.init()
 
-X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200 # c'est faux c'est juste pour test
-OBJET = pyg.image.load("Images/Armes_items/highlighter.png")
+X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 600, 650, 300, 350 # c'est faux c'est juste pour test
+OBJET = pyg.image.load("Images/Autre/sephora_exterieur.png")
 SON = "Sons/son_quete2.mp3"
 spritesheet_quizz = pyg.image.load("Images/Autre/anim_quizz.png")
 ANIM_QUIZZ = decouper_image(spritesheet_quizz, 5, 5, 3)
