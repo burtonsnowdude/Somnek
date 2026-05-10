@@ -85,8 +85,11 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
 
     choix = []
     compteur = 0
-    while compteur < 3:
-        print("y")
+    while compteur < nb_choix:
+        if nb_choix > len(dispo) :
+            choix = dispo
+            nb_choix = len(dispo)
+            break
         arme = choice(dispo)
         if arme not in choix:
             choix.append(arme)
@@ -100,7 +103,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
     violet = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
     violet.fill((102, 62, 86, 150))
     texte  = FONT_NIVEAU.render("Niveau " + str(p.niveau) + " atteint !", True, (255, 255, 255))
-    buttons = [Button(affich[i], choix[i], 400, 200 + 100 * i, 400, 80, FONT) for i in range(3)]
+    buttons = [Button(affich[i], choix[i], 400, 200 + 100 * i, 400, 80, FONT) for i in range(nb_choix)]
     for b in buttons:
         b.color1      = (122, 48, 113)
         b.color2      = (161, 99, 158)

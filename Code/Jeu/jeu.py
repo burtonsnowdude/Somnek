@@ -264,10 +264,10 @@ def jeu(perso, nom, map_choisie="Cour"):
                     coffre_existant = False
 
             dernier_coffre_apparu += 1
-            dt = clock.get_time() / 1000.0   # ms → secondes
+            dt = clock.get_time() / 1000.0  #ms en sec
             p.regen_hp(dt)
             
-            # ── Dessin joueur & armes ─────────────────────────────────────
+            # Dessin joueur et armes
             p.draw_player(frame)
 
             for arme in p.armes:
@@ -280,7 +280,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             for explosion in explosions:
                 explosion.draw(WIN)
 
-            # ── Animation item ────────────────────────────────────────────
+            # Anim items
             if anim_item is not None:
                 if anim_item.en_cours():
                     anim_item.update()
