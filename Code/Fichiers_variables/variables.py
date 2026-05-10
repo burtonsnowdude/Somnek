@@ -1,3 +1,9 @@
+""" 
+Variables
+Variables principales
+Catégories et attribut des monstres
+"""
+
 import pygame as pyg
 pyg.font.init() # initialiser le module font de pygame
 from Fichiers_variables.traitement_images import *
@@ -15,9 +21,9 @@ PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
 PLAYER_VIT = 2 # vitesse de deplacement du joueur
 PLAYER_PV = 300 # points de vie du joueur
 
-FREQUENCE = 50
+FREQUENCE = 50 # fréquence d'apparition des monstres
 
-
+# Animations des persos
 PERSOS =  {
     "Fille_populaire" : {"anim" : 
                 {"avant" : ANIM_FILLE_POPULAIRE_AVANT,
@@ -39,6 +45,7 @@ PERSOS =  {
             "color" : (92, 167, 133, 200)}
 }
 
+#Catégories par niveau des monstres
 CATEGORIE = {}
 for i in range(1, 51):
     t = "Type " + str(i)
@@ -46,7 +53,8 @@ for i in range(1, 51):
                 "hp" : 30*i,
                 "vitesse" : ceil(i/10),
                 "niveau" : i}
-    
+
+# Dictionnaire contenant tous les monstres   
 TYPES_MONSTRES = {
 
     # NERD
@@ -176,9 +184,3 @@ TYPES_MONSTRES = {
 
 TYPES = [type for type in TYPES_MONSTRES]
 
-# Dictionnaire ARMES qui n'a aucun sens juste pour test mon code
-"""
-ARMES = {}
-for i in range(1,61):
-    ARMES["nawak"+str(i)] = i
-"""

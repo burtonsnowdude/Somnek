@@ -1,3 +1,8 @@
+""" 
+Coffres
+Ce fichier gère l'apparition et les récompenses des coffres
+"""
+
 from random import *
 from math import *
 import pygame as pyg
@@ -57,25 +62,28 @@ class Coffre :
 
         Parameters
         ----------
-        armes_possedees : list
-            La liste des armes détenues par le joueur
-        seuil : int
-            Le seuil de valeur maximale pour une arme (en fonction du niveau atteint)
+        armes_et_items_possedees : list
+            La liste des armes et items détenus par le joueur
+        p : Self@Player
+            Le joueur
         
         Returns
         -------
         int
             L'argent récolté
         ou
-        str
-            L'arme récupérée
+        tuple(str, str)
+            Le type d'objet (arme ou item) et l'arme/item obtenu
         """
         rect = ANIM_COFFRE[0].get_rect()
         rect.center = (CENTREx, CENTREy)
         frame = 0
         i = 0
-        violet = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
+
+        violet = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA) #overlay
         violet.fill((102, 62, 86, 150))
+
+        # Anim du coffre
         while i < len(ANIM_COFFRE) -1 :
             remplir_fond(p)
             WIN.blit(violet, (0, 0))
@@ -85,13 +93,16 @@ class Coffre :
             if frame % 10 == 0 :
                 i += 1
             pyg.display.flip()
+        # Détermination de la disponibilité des armes/items
         armes_dispo = []
         items_dispo = []
-        niveau = 1
+        # Items
+        niveau = 1 # on initialise à 1 pour parcourir le dico par niveau jusqu'à celui du joueur
         while niveau < p.niveau :
             for item in GESTION_NIVEAU_ITEMS[p.perso]["Niveau "+str(niveau)]:
                 items_dispo.append(item)
             niveau += 1
+        # Armes
         niveau = 1
         while niveau < p.niveau :
             if "Niveau "+str(niveau) in GESTION_DES_NIVEAUX_ARMES[p.perso] :
@@ -99,13 +110,16 @@ class Coffre :
                     if niveau != 1 :
                         armes_dispo.append(arme)
             niveau += 1
-        dispo = items_dispo+armes_dispo
+        dispo = items_dispo+armes_dispo # fusion des armes et items
+        # on enlève chaque arme déjà possédée seulement une fois pour pas
+        # poser problème avec les améliorations et le nbre de choix
         armes_deja_enlevees = []
         for arme in dispo[:]:
             if arme in armes_et_items_possedees or arme in armes_deja_enlevees :
                 dispo.remove(arme)
                 armes_deja_enlevees.append(arme)
-        argent_dispo = randint(p.niveau*50, p.niveau*200)
+        argent_dispo = randint(p.niveau*50, p.niveau*200) # gain d'argent
+        # choix entre argent et arme
         choix_aleat = choice((True, False))
         if choix_aleat or len(dispo) == 0 :
             rect = ARGENT.get_rect()
@@ -115,7 +129,8 @@ class Coffre :
             txt_rect = txt.get_rect()
             txt_rect.center = CENTREx, 100
             frame = 0
-            fade = 255
+            fade = 255 # pour le texte
+            # anim de l'argent pendant 3 secondes environ avec un léger fade du texte
             while frame < 180 : 
                 remplir_fond(p)
                 scroll_gemme(frame)
@@ -138,10 +153,36 @@ class Coffre :
     
 
 def ajout_coffre(dernier_coffre_apparu, coffre_existant, p):
-    if randint(1,100) == 1 and dernier_coffre_apparu > 100 and not coffre_existant:
+    """Ajoute un coffre
+    
+    Parameters
+    ----------
+    dernier_coffre_apparu : int
+        Le nombre de frames depuis le dernier coffre
+    coffre_existant : bool
+        Si oui ou non il y a déjà un coffre
+    p : Self@Player
+        Le joueur
+    
+    Returns
+    -------
+    tuple(
+        Self@Coffre
+            Le nouveau coffre,
+        int
+            Le nb de frames depuis le dernier_coffre_apparu ,
+        bool 
+            coffre_existant
+    )
+    ou 
+    bool (toujours False)
+    """
+    # Ne peut s'enclencher qu'1min après le dernier coffre apparu et a une chance d'1/100 à
+    # partir de ce moment là
+    if randint(1,100) == 1 and dernier_coffre_apparu > 3600 and not coffre_existant:
             nouveau_coffre = Coffre(p)
-            dernier_coffre_apparu = 0 
-            coffre_existant = True
+            dernier_coffre_apparu = 0 # réinitialisation du nb de frames depuis le dernier coffre
+            coffre_existant = True 
             return nouveau_coffre, dernier_coffre_apparu, coffre_existant
     else :
         return False

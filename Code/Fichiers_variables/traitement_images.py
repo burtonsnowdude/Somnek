@@ -1,3 +1,10 @@
+""" 
+Traitement des images
+Gestion de la plupart des images
+Animations
+Fonction decouper_image pour les spritesheets
+"""
+
 import pygame as pyg
 
 ##############################################################################################################
