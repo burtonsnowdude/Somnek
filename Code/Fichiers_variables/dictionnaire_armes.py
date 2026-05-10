@@ -145,7 +145,7 @@ TYPES_ARMES = {
         "type_arme": "zone",
         "image": GLOSS_ROSE,
         "texte": "Crée des zones de destruction. Dégâts de base : 10PV."
-=======
+        
         },
     "Higliter": {
         "type_arme": "balle",
