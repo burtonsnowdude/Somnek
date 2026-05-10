@@ -176,7 +176,7 @@ def reecrire_fichier(fichier, new_tab, noms):
         headers = noms
     fichier = "Fichiers_csv/"+fichier+".csv"
     with open(fichier, "w", newline = "") as tab :
-            writer = csv.DictWriter(tab, headers)
+            writer = csv.DictWriter(tab, headers, extrasaction='ignore')
             writer.writeheader()
             for row in new_tab:
                 writer.writerow(row)
