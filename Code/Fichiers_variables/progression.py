@@ -12,7 +12,6 @@ Règles :
 
 import csv
 import os
-from Jeu.player import Player as p
 
 
 ORDRE_MAPS   = ["Cour", "Rue", "Ruelle", "Foire", "Metro"]
@@ -46,62 +45,32 @@ CHEMIN_PERSOS = "Fichiers_csv/persos_debloques.csv"
 
 def _lire_csv(chemin):
     if not os.path.exists(chemin):
-        return []
+        return [], []
     with open(chemin, "r", newline="") as f:
-        rows = list(csv.DictReader(f))
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        headers = list(reader.fieldnames) if reader.fieldnames else ["Type"]
     # Nettoie les clés parasites (None, "") dues aux virgules en trop
+    clean_headers = [h for h in headers if h and h.strip()]
     for row in rows:
         for k in list(row.keys()):
-            if k is None or k == "":
+            if k is None or k == "" or not k.strip():
                 del row[k]
-    return rows
+    return rows, clean_headers
 
 
-def _ecrire_csv(chemin, rows, noms):
-    headers = ["Type"] + noms
+def _ecrire_csv_avec_headers(chemin, rows, headers):
+    """Réécrit un CSV avec les headers exacts fournis."""
     os.makedirs(os.path.dirname(chemin), exist_ok=True)
     with open(chemin, "w", newline="") as f:
         writer = csv.DictWriter(f, headers, extrasaction="ignore")
         writer.writeheader()
         for row in rows:
-            for n in noms:
-                if n not in row:
-                    row[n] = 0
+            # S'assure que toutes les colonnes existent
+            for h in headers:
+                if h not in row:
+                    row[h] = "0"
             writer.writerow(row)
-
-
-def _ecrire_fichier_perso(headers, rows):
-    """Réécrit persos_debloques.csv avec headers explicites."""
-    with open(CHEMIN_PERSOS, "w", newline="") as f:
-        writer = csv.DictWriter(f, headers, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
-
-
-def _creer_fichier_si_manque(chemin, types_initiaux, noms):
-    """Si le fichier n'existe pas, le crée avec une ligne par type et 0 partout."""
-    if os.path.exists(chemin):
-        return
-    rows = []
-    for t in types_initiaux:
-        row = {"Type": t}
-        for n in noms:
-            row[n] = 0
-        rows.append(row)
-    _ecrire_csv(chemin, rows, noms)
-
-
-def _ajouter_colonne_joueur_si_manque(chemin, joueur, noms):
-    """Ajoute la colonne du joueur (à 0) si elle n'existe pas."""
-    if not os.path.exists(chemin):
-        return
-    data = _lire_csv(chemin)
-    if data and joueur not in data[0]:
-        for row in data:
-            row[joueur] = 0
-        _ecrire_csv(chemin, data, noms)
-
-
 
 
 def init_progression(joueur, noms=None):
@@ -126,17 +95,7 @@ def _init_fichier(chemin, ordre_canonique, element_de_depart, joueur):
         print(f"[Progression] {chemin} créé, '{joueur}' initialisé avec {element_de_depart}.")
         return
 
-    # Lire le fichier
-    with open(chemin, "r", newline="") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-        headers = list(reader.fieldnames) if reader.fieldnames else ["Type"]
-
-    # Nettoyer les clés parasites
-    for row in rows:
-        for k in list(row.keys()):
-            if k is None or k == "":
-                del row[k]
+    rows, headers = _lire_csv(chemin)
 
     # Joueur déjà présent → on s'assure qu'il a au moins l'élément de départ
     if joueur in headers:
@@ -146,10 +105,7 @@ def _init_fichier(chemin, ordre_canonique, element_de_depart, joueur):
                 row[joueur] = "1"
                 modifie = True
         if modifie:
-            with open(chemin, "w", newline="") as f:
-                writer = csv.DictWriter(f, headers, extrasaction="ignore")
-                writer.writeheader()
-                writer.writerows(rows)
+            _ecrire_csv_avec_headers(chemin, rows, headers)
             print(f"[Progression] '{joueur}' avait perdu {element_de_depart}, restauré.")
         return
 
@@ -158,20 +114,14 @@ def _init_fichier(chemin, ordre_canonique, element_de_depart, joueur):
     for row in rows:
         row[joueur] = "1" if row.get("Type") == element_de_depart else "0"
 
-    with open(chemin, "w", newline="") as f:
-        writer = csv.DictWriter(f, headers, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
+    _ecrire_csv_avec_headers(chemin, rows, headers)
     print(f"[Progression] Nouveau joueur '{joueur}' ajouté avec {element_de_depart} débloqué(e).")
 
+
 def maps_debloquees(joueur):
-    """Liste des maps débloquées pour ce joueur, dans l'ordre canonique.
-    Auto-réparation : si le joueur n'existe pas ou n'a aucune map,
-    on lui débloque Cour automatiquement."""
+    """Liste des maps débloquées pour ce joueur, dans l'ordre canonique."""
+    map_depart = ORDRE_MAPS[0]
 
-    map_depart = ORDRE_MAPS[0]  # Cour
-
-    # Fichier absent → on le crée
     if not os.path.exists(CHEMIN_MAPS):
         os.makedirs(os.path.dirname(CHEMIN_MAPS), exist_ok=True)
         with open(CHEMIN_MAPS, "w", newline="") as f:
@@ -182,39 +132,23 @@ def maps_debloquees(joueur):
         print(f"[Auto-progression] maps_debloquees.csv créé pour '{joueur}'.")
         return [map_depart]
 
-    
-    with open(CHEMIN_MAPS, "r", newline="") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-        headers = list(reader.fieldnames) if reader.fieldnames else ["Type"]
-
-    for row in rows:
-        for k in list(row.keys()):
-            if k is None or k == "":
-                del row[k]
+    rows, headers = _lire_csv(CHEMIN_MAPS)
 
     # Joueur absent → on l'ajoute
     if joueur not in headers:
         headers.append(joueur)
         for row in rows:
             row[joueur] = "1" if row.get("Type") == map_depart else "0"
-        with open(CHEMIN_MAPS, "w", newline="") as f:
-            writer = csv.DictWriter(f, headers, extrasaction="ignore")
-            writer.writeheader()
-            writer.writerows(rows)
+        _ecrire_csv_avec_headers(CHEMIN_MAPS, rows, headers)
         print(f"[Auto-progression] '{joueur}' ajouté dans maps avec {map_depart} débloquée.")
         return [map_depart]
 
-    # Joueur présent mais aucune map débloquée → on lui rend Cour
-    debloquees = {row["Type"] for row in rows if str(row.get(joueur, "0")) == "1"}
+    debloquees = {row["Type"] for row in rows if str(row.get(joueur, "0")).strip() == "1"}
     if not debloquees:
         for row in rows:
             if row.get("Type") == map_depart:
                 row[joueur] = "1"
-        with open(CHEMIN_MAPS, "w", newline="") as f:
-            writer = csv.DictWriter(f, headers, extrasaction="ignore")
-            writer.writeheader()
-            writer.writerows(rows)
+        _ecrire_csv_avec_headers(CHEMIN_MAPS, rows, headers)
         print(f"[Auto-progression] '{joueur}' n'avait aucune map, {map_depart} restaurée.")
         return [map_depart]
 
@@ -223,13 +157,9 @@ def maps_debloquees(joueur):
 
 
 def persos_debloques(joueur):
-    """Liste des persos débloqués pour ce joueur, dans l'ordre canonique.
-    Si le joueur n'existe pas dans le fichier, on l'ajoute avec
-    Fille_populaire débloquée par défaut (auto-réparation)."""
+    """Liste des persos débloqués pour ce joueur, dans l'ordre canonique."""
+    perso_depart = ORDRE_PERSOS[0]
 
-    perso_depart = ORDRE_PERSOS[0]  # Fille_populaire
-
-    
     if not os.path.exists(CHEMIN_PERSOS):
         os.makedirs(os.path.dirname(CHEMIN_PERSOS), exist_ok=True)
         with open(CHEMIN_PERSOS, "w", newline="") as f:
@@ -240,44 +170,25 @@ def persos_debloques(joueur):
         print(f"[Auto-progression] Fichier créé pour '{joueur}'.")
         return [perso_depart]
 
-    
-    with open(CHEMIN_PERSOS, "r", newline="") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-        headers = list(reader.fieldnames) if reader.fieldnames else ["Type"]
+    rows, headers = _lire_csv(CHEMIN_PERSOS)
 
-    # Nettoyer les clés parasites
-    for row in rows:
-        for k in list(row.keys()):
-            if k is None or k == "":
-                del row[k]
-
-    # ⚡ AUTO-RÉPARATION : le joueur n'a pas de colonne → on l'ajoute
     if joueur not in headers:
         headers.append(joueur)
         for row in rows:
             row[joueur] = "1" if row.get("Type") == perso_depart else "0"
-        with open(CHEMIN_PERSOS, "w", newline="") as f:
-            writer = csv.DictWriter(f, headers, extrasaction="ignore")
-            writer.writeheader()
-            writer.writerows(rows)
+        _ecrire_csv_avec_headers(CHEMIN_PERSOS, rows, headers)
         print(f"[Auto-progression] '{joueur}' ajouté avec {perso_depart} débloquée.")
         return [perso_depart]
 
-    # ⚡ AUTO-RÉPARATION : le joueur existe mais n'a aucun perso → on lui rend Fille_populaire
-    debloques = {row["Type"] for row in rows if str(row.get(joueur, "0")) == "1"}
+    debloques = {row["Type"] for row in rows if str(row.get(joueur, "0")).strip() == "1"}
     if not debloques:
         for row in rows:
             if row.get("Type") == perso_depart:
                 row[joueur] = "1"
-        with open(CHEMIN_PERSOS, "w", newline="") as f:
-            writer = csv.DictWriter(f, headers, extrasaction="ignore")
-            writer.writeheader()
-            writer.writerows(rows)
+        _ecrire_csv_avec_headers(CHEMIN_PERSOS, rows, headers)
         print(f"[Auto-progression] '{joueur}' n'avait rien, {perso_depart} restaurée.")
         return [perso_depart]
 
-    # Cas normal
     return [p for p in ORDRE_PERSOS if p in debloques]
 
 
@@ -294,14 +205,13 @@ def map_terminee(joueur, nom_map, noms, perso=None, player=None):
     Appelée à la victoire d'une map.
     Débloque la map suivante + le perso suivant non encore débloqué.
 
-    Retourne (nouvelle_map, nouveau_perso) — chacun peut être None si plus rien
-    à débloquer dans sa catégorie.
+    Retourne (nouvelle_map, nouveau_perso, nouvel_item).
     """
     nouvelle_map  = None
     nouveau_perso = None
     nouvel_item   = None
 
-    #debloque item
+    # Débloque item spécial (Metro uniquement)
     if nom_map == "Metro" and perso is not None and player is not None:
         if perso == "Nonne":
             nouvel_item = "Voile"
@@ -312,39 +222,49 @@ def map_terminee(joueur, nom_map, noms, perso=None, player=None):
         if nouvel_item:
             player.ajouter_item(nouvel_item)
 
-   
-    if nom_map == "Metro" and perso in MAPS_FINALES:
-        map_finale = MAPS_FINALES[perso]
-        maps_data  = _lire_csv(CHEMIN_MAPS)
-        for row in maps_data:
-            if row["Type"] == map_finale and str(row.get(joueur, "0")) == "0":
-                row[joueur]  = 1
-                nouvelle_map = map_finale
-                break
-        _ecrire_csv(CHEMIN_MAPS, maps_data, noms)
-    elif nom_map in ORDRE_MAPS:
+    # ── Débloque la map suivante ──────────────────────────────────────────
+    if nom_map in ORDRE_MAPS:
         idx = ORDRE_MAPS.index(nom_map)
         if idx + 1 < len(ORDRE_MAPS):
             map_suivante = ORDRE_MAPS[idx + 1]
-            maps_data    = _lire_csv(CHEMIN_MAPS)
-            for row in maps_data:
-                if row["Type"] == map_suivante and str(row.get(joueur, "0")) == "0":
-                    row[joueur]  = 1
+            rows, headers = _lire_csv(CHEMIN_MAPS)
+
+            # Ajoute la colonne joueur si elle manque
+            if joueur not in headers:
+                headers.append(joueur)
+                for row in rows:
+                    row[joueur] = "0"
+
+            for row in rows:
+                if row.get("Type") == map_suivante and str(row.get(joueur, "0")).strip() == "0":
+                    row[joueur]  = "1"
                     nouvelle_map = map_suivante
                     break
-            _ecrire_csv(CHEMIN_MAPS, maps_data, noms)
 
-    
-    persos_data = _lire_csv(CHEMIN_PERSOS)
+            # ✅ FIX : on utilise les vrais headers du fichier, pas `noms`
+            _ecrire_csv_avec_headers(CHEMIN_MAPS, rows, headers)
+            print(f"[Progression] Map débloquée : {nouvelle_map} pour '{joueur}'")
+
+    # ── Débloque le perso suivant ─────────────────────────────────────────
+    rows, headers = _lire_csv(CHEMIN_PERSOS)
+
+    if joueur not in headers:
+        headers.append(joueur)
+        for row in rows:
+            row[joueur] = "0"
+
     for nom_perso_canonique in ORDRE_PERSOS:
-        for row in persos_data:
-            if row["Type"] == nom_perso_canonique and str(row.get(joueur, "0")) == "0":
-                row[joueur]   = 1
+        for row in rows:
+            if row.get("Type") == nom_perso_canonique and str(row.get(joueur, "0")).strip() == "0":
+                row[joueur]   = "1"
                 nouveau_perso = nom_perso_canonique
                 break
         if nouveau_perso:
             break
-    _ecrire_csv(CHEMIN_PERSOS, persos_data, noms)
+
+    # ✅ FIX : on utilise les vrais headers du fichier, pas `noms`
+    _ecrire_csv_avec_headers(CHEMIN_PERSOS, rows, headers)
+    print(f"[Progression] Perso débloqué : {nouveau_perso} pour '{joueur}'")
 
     return nouvelle_map, nouveau_perso, nouvel_item
 

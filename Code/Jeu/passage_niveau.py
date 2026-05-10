@@ -86,6 +86,10 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
     choix = []
     compteur = 0
     while compteur < nb_choix:
+        if nb_choix > len(dispo) :
+            choix = dispo
+            nb_choix = len(dispo)
+            break
         arme = choice(dispo)
         if arme not in choix:
             choix.append(arme)
