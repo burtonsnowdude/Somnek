@@ -53,17 +53,32 @@ def ajouter_utilisateur(nom, noms):
     ou 
     False
     """
-    if nom not in noms :
+    if nom not in noms:
         noms.append(nom)
+
         new_tab_armes = contenu_fichier_armes()
         for ligne in new_tab_armes:
             ligne[nom] = 0
+
         new_tab_quetes = contenu_fichier_quetes()
         for ligne in new_tab_quetes:
             ligne[nom] = 0
+
         new_tab_powerups = contenu_fichier_powerups()
         for ligne in new_tab_powerups:
-                ligne[nom] = 0
+            ligne[nom] = 0
+
+        # ⬇️⬇️ AJOUT CRUCIAL : débloque Fille_populaire dès l'inscription ⬇️⬇️
+        from Fichiers_variables.progression import init_progression
+        try:
+            init_progression(nom)
+            print(f"[Inscription] '{nom}' inscrit avec Fille_populaire débloquée.")
+        except Exception as e:
+            import traceback
+            print(f"[Inscription] Erreur init_progression : {e}")
+            traceback.print_exc()
+        # ⬆️⬆️ FIN AJOUT ⬆️⬆️
+
         return noms, new_tab_armes, new_tab_quetes, new_tab_powerups
     return False
 
@@ -163,23 +178,21 @@ def ajouter_arme(nom, arme, new_tab):
     return new_tab
 
 def reecrire_fichier(fichier, new_tab, noms):
-    """Réécrit le fichier csv avec les données actualisées
-
-    Parameters
-    ----------
-    new_tab : list(dict)
-        La liste actualisée contenant les lignes de données sous forme de dictionnaires
-    """
-    if fichier in ("armes_obtenues_par_joueur", "quetes_reussis", "powerups") :
+    if fichier in ("armes_obtenues_par_joueur", "quetes_reussis", "powerups"):
         headers = ["Type"] + noms
-    else :
+    else:
         headers = noms
-    fichier = "Fichiers_csv/"+fichier+".csv"
-    with open(fichier, "w", newline = "") as tab :
-            writer = csv.DictWriter(tab, headers, extrasaction='ignore')
-            writer.writeheader()
-            for row in new_tab:
-                writer.writerow(row)
+    fichier = "Fichiers_csv/" + fichier + ".csv"
+    with open(fichier, "w", newline="") as tab:
+        # extrasaction="ignore" → ignore les colonnes en trop (FEE, Fee, None…)
+        writer = csv.DictWriter(tab, headers, extrasaction="ignore")
+        writer.writeheader()
+        for row in new_tab:
+            # Nettoyer les clés parasites (virgule en trop dans le CSV)
+            for k in list(row.keys()):
+                if k is None or k == "":
+                    del row[k]
+            writer.writerow(row)
 
 def get_info(joueur, info, arme):
     if info == "argent" :

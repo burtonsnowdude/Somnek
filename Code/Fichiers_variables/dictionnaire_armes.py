@@ -3,32 +3,30 @@ from Fichiers_variables.traitement_images import *
 GESTION_DES_ARMES = {
 
     "Nerd": {
-
-        "Cle_USB": {"effet": "degats", "max": 30},
+        "Cle_USB":        {"effet": "degats", "max": 30},
         "Epee_enflammee": {"effet": "degats", "max": 15},
-        "Pistolets": {"effet": "attaque", "max": 2.0},
-        "Ticket_de_metro": {"effet": "degats", "max": 20},
-        "Epee_de_Guts": {"effet": "degats", "max": 40}
+        "Pistolets":      {"effet": "attaque", "max": 2.0},
+        "Ticket_de_metro":{"effet": "degats", "max": 20},
+        "Epee_de_Guts":   {"effet": "degats", "max": 40}
     },
 
     "Fille_populaire": {
-        "Gloss_rose" : {"effet": "degats", "max": 45},
-        "Faux_cils" : {"effet": "degats", "max": 20},
-        "Bracelet_de_sa_soeur": {"effet": "degats", "max": 19},
-        "Faux_ongles_roses": {"effet": "degats", "max": 23},
-        "Fer_a_lisser": {"effet": "degats", "max": 19},
-        "Pass_Navigo": {"effet": "degats", "max": 20},
-        "Ring_light": {"effet": "degats", "max": 40},
-        "Highliter" : {"effet": "degats", "max" : 40}
+        "Gloss_rose":            {"effet": "degats", "max": 45},
+        "Faux_cils":             {"effet": "degats", "max": 20},
+        "Bracelet_de_sa_soeur":  {"effet": "degats", "max": 19},
+        "Faux_ongles_roses":     {"effet": "degats", "max": 23},
+        "Fer_a_lisser":          {"effet": "degats", "max": 19},
+        "Pass_Navigo":           {"effet": "degats", "max": 20},
+        "Ring_light":            {"effet": "degats", "max": 40},
+        "Highlighter":           {"effet": "degats", "max": 40}
     },
 
     "Nonne": {
-
         "Feu_de_l'Esprit_Saint": {"effet": "degats", "max": 23},
-        "Medaille_de_bapteme": {"effet": "degats", "max": 16},
-        "Coiffe_de_rameau": {"effet": "degats", "max": 19},
-        "Croix_marron": {"effet": "degats", "max": 14},
-        "JALAMBAYA" : {"effet": "degats", "max": 20}
+        "Medaille_de_bapteme":   {"effet": "degats", "max": 16},
+        "Coiffe_de_rameau":      {"effet": "degats", "max": 19},
+        "Croix_marron":          {"effet": "degats", "max": 14},
+        "JALAMBAYA":             {"effet": "degats", "max": 20}
     }
 }
 
@@ -81,7 +79,7 @@ TYPES_ARMES = {
         "Console_allumee": {
             "type_arme": "zone",
             "image": CONSOLE,
-            "texte": "Augmente la Puissance des ennemi de 10 % pendant 1 minutes et augmente la Puissance du personnage de 20% pendant 2 minutes"
+            "texte": "Augmente la Puissance des ennemis de 10% pendant 1 minute et augmente la Puissance du personnage de 20% pendant 2 minutes"
         }
     },
 
@@ -134,32 +132,16 @@ TYPES_ARMES = {
             "image": RING_LIGHT,
             "texte": "Tire rapidement dans quatre directions fixes. Dégâts de base : 40PV.",
             "dgbase": 40
-    },
-    "Higliter": {
-        "type_arme": "balle",
-        "image": HIGLIGHTER,
-        "texte": "Jette des étoiles trop joliesss . Dégâts de base : 10PV.",
-        "dgbase": 10
-    },
-    "Gloss_rose": {
-        "type_arme": "zone",
-        "image": GLOSS_ROSE,
-        "texte": "Crée des zones de destruction. Dégâts de base : 10PV."
-        
         },
-    "Higliter": {
-        "type_arme": "balle",
-        "image": HIGLIGHTER,
-        "texte": "Jette des étoiles trop joliesss . Dégâts de base : 10PV.",
-        "dgbase" : 10
 
+        
+        "Highlighter": {
+            "type_arme": "orbital",
+            "image": HIGLIGHTER,
+            "texte": "Jette des étoiles trop joliesss. Dégâts de base : 10PV.",
+            "dgbase": 10
+        }
     },
-    "Gloss_rose": {
-        "type_arme": "zone",
-        "image": GLOSS_ROSE,
-        "texte": "Crée des zones de destruction. Dégâts de base : 10PV.",
-        "dgbase" : 10
-    }},
 
     "Nonne": {
 
@@ -199,9 +181,9 @@ TYPES_ARMES = {
         },
 
         "Aura_divine": {
-            "type_arme": "poison",
+            "type_arme": "orbital",
             "image": AURA_DIVINE,
-            "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV.",
+            "texte": "Tourne autour du personnage et inflige des dégâts. Dégât de base : 40PV.",
             "dgbase": 40
         },
 
@@ -213,6 +195,7 @@ TYPES_ARMES = {
         }
     }
 }
+
 ARMES = {
 
     "Nerd": {
@@ -249,6 +232,7 @@ ARMES = {
     },
 
     "Fille_populaire": {
+
         "Gloss_rose": {
             **TYPES_ARMES["Fille_populaire"]["Gloss_rose"],
             "niveau_req": 1
@@ -282,6 +266,11 @@ ARMES = {
         "Ring_light": {
             **TYPES_ARMES["Fille_populaire"]["Ring_light"],
             "niveau_req": 24
+        },
+
+        "Highlighter": {
+            **TYPES_ARMES["Fille_populaire"]["Highlighter"],
+            "niveau_req": 10
         }
     },
 
@@ -312,263 +301,82 @@ ARMES = {
             "niveau_req": 19
         },
 
+        # CORRECTION : était Ring_light → Aura_divine
         "Aura_divine": {
             **TYPES_ARMES["Nonne"]["Aura_divine"],
             "niveau_req": 24
+        },
+
+        "JALAMBAYA": {
+            **TYPES_ARMES["Nonne"]["JALAMBAYA"],
+            "niveau_req": 28
         }
     }
 }
 
+# CORRECTION : converti en listes de noms d'armes (au lieu de dicts {arme: description})
+# pour que choix_arme() puisse itérer correctement avec "for arme in GESTION_DES_NIVEAUX_ARMES[...]["Niveau X"]"
 GESTION_DES_NIVEAUX_ARMES = {
 
     "Nerd": {
-
-        "Niveau 4": {
-            "Cle_USB": "23 PV",
-            "Epee_enflammee": "10 PV",
-            "Pistolets": "15 PV"
-        },
-
-        "Niveau 5": {
-            "Pistolets": "15 PV"
-        },
-
-        "Niveau 7": {
-            "Cle_USB": "+20% dégâts",
-            "Epee_enflammee": "+10% dégâts"
-        },
-
-        "Niveau 10": {
-            "Cle_USB": "+20% dégâts",
-            "Epee_enflammee": "+10% dégâts"
-        },
-
-        "Niveau 11": {
-            "Pistolets": "+7% dégâts"
-        },
-
-        "Niveau 12": {
-            "Epee_enflammee": "+10% dégâts"
-        },
-
-        "Niveau 14": {
-            "Epee_enflammee": "+3% dégâts"
-        },
-
-        "Niveau 15": {
-            "Pistolets": "+7% dégâts"
-        },
-
-        "Niveau 16": {
-            "Pistolets": "+7% dégâts"
-        },
-
-        "Niveau 17": {
-            "Epee_enflammee": "+10% dégâts"
-        },
-
-        "Niveau 18": {
-            "Epee_enflammee": "+15% dégâts"
-        },
-
-        "Niveau 19": {
-            "Ticket_de_metro": "20 PV",
-            "Cle_USB": "+10% dégâts"
-        },
-
-        "Niveau 20": {
-            "Ticket_de_metro": "20 PV",
-            "Epee_enflammee": "+15% dégâts"
-        },
-
-        "Niveau 21": {
-            "Ticket_de_metro": "20 PV",
-            "Cle_USB": "+10% dégâts"
-        },
-
-        "Niveau 22": {
-            "Cle_USB": "+10% dégâts"
-        },
-
-        "Niveau 23": {
-            "Pistolets": "+7% dégâts"
-        },
-
-        "Niveau 24": {
-            "Pistolets": "+7% dégâts",
-            "Epee_de_Guts": "40 PV"
-        },
-
-        "Niveau 26": {
-            "Epee_enflammee": "+15% dégâts",
-            "Cle_USB": "+20% dégâts"
-        }
+        "Niveau 4":  ["Cle_USB", "Epee_enflammee", "Pistolets"],
+        "Niveau 5":  ["Pistolets"],
+        "Niveau 7":  ["Cle_USB", "Epee_enflammee"],
+        "Niveau 10": ["Cle_USB", "Epee_enflammee"],
+        "Niveau 11": ["Pistolets"],
+        "Niveau 12": ["Epee_enflammee"],
+        "Niveau 14": ["Epee_enflammee"],
+        "Niveau 15": ["Pistolets"],
+        "Niveau 16": ["Pistolets"],
+        "Niveau 17": ["Epee_enflammee"],
+        "Niveau 18": ["Epee_enflammee"],
+        "Niveau 19": ["Ticket_de_metro", "Cle_USB"],
+        "Niveau 20": ["Ticket_de_metro", "Epee_enflammee"],
+        "Niveau 21": ["Ticket_de_metro", "Cle_USB"],
+        "Niveau 22": ["Cle_USB"],
+        "Niveau 23": ["Pistolets"],
+        "Niveau 24": ["Pistolets", "Epee_de_Guts"],
+        "Niveau 26": ["Epee_enflammee", "Cle_USB"]
     },
-
 
     "Fille_populaire": {
-
-        "Niveau 1": {
-            
-            "Faux_cils": "15 PV",
-            "Fer_a_lisser": "19 PV"
-        },
-
-        "Niveau 2": {
-            "Faux_cils": "+10% dégâts"
-        },
-
-        "Niveau 3": {
-            "Faux_cils": "+15% dégâts"
-        },
-
-        "Niveau 4": {
-            "Faux_ongles_roses": "23 PV",
-            "Bracelet_de_sa_soeur": "10 PV"
-        },
-
-        "Niveau 5": {
-            "Bracelet_de_sa_soeur": "+9% dégâts",
-            "Fer_a_lisser": "19 PV"
-        },
-
-        "Niveau 7": {
-            "Faux_ongles_roses": "+20% dégâts",
-            "Bracelet_de_sa_soeur": "+7% dégâts"
-        },
-
-        "Niveau 8": {
-            "Faux_cils": "+10% dégâts"
-        },
-
-        "Niveau 9": {
-            "Fer_a_lisser": "+10% dégâts",
-            "Gloss_rose" : "9% dégats"
-        },
-
-        "Niveau 10": {
-            "Faux_ongles_roses": "+20% dégâts",
-            "Bracelet_de_sa_soeur": "+10% dégâts"
-        },
-
-        "Niveau 11": {
-            "Fer_a_lisser": "+7% dégâts"
-        },
-
-        "Niveau 12": {
-            "Bracelet_de_sa_soeur": "+10% dégâts",
-            "Faux_cils": "+15% dégâts", 
-            "Gloss_rose" : "12% dégâts"
-        },
-
-        "Niveau 13": {
-            "Bracelet_de_sa_soeur": "+10% dégâts"
-        },
-
-        "Niveau 15": {
-            "Fer_a_lisser": "+7% dégâts"
-        },
-
-        "Niveau 16": {
-            "Fer_a_lisser": "+7% dégâts",
-            "Gloss_rose" : "12% dégâts"
-        },
-
-        "Niveau 17": {
-            "Bracelet_de_sa_soeur": "+10% dégâts",
-            "Gloss_rose" : "15% dégâts"
-        },
-
-        "Niveau 18": {
-            "Bracelet_de_sa_soeur": "+15% dégâts"
-        },
-
-        "Niveau 19": {
-            "Faux_ongles_roses": "+12% dégâts"
-        },
-
-        "Niveau 21": {
-            "Faux_cils": "+15% dégâts"
-        },
-
-        "Niveau 23": {
-            "Fer_a_lisser": "+7% dégâts"
-        },
-
-        "Niveau 24": {
-            "Fer_a_lisser": "+7% dégâts",
-            "Ring_light": "40 PV"
-        },
-
-        "Niveau 26": {
-            "Bracelet_de_sa_soeur": "+15% dégâts",
-            "Faux_ongles_roses": "+20% dégâts"
-        }
+        "Niveau 1":  ["Faux_cils", "Fer_a_lisser"],
+        "Niveau 2":  ["Faux_cils"],
+        "Niveau 3":  ["Faux_cils"],
+        "Niveau 4":  ["Faux_ongles_roses", "Bracelet_de_sa_soeur"],
+        "Niveau 5":  ["Bracelet_de_sa_soeur", "Fer_a_lisser"],
+        "Niveau 7":  ["Faux_ongles_roses", "Bracelet_de_sa_soeur"],
+        "Niveau 8":  ["Faux_cils"],
+        "Niveau 9":  ["Fer_a_lisser", "Gloss_rose"],
+        "Niveau 10": ["Faux_ongles_roses", "Bracelet_de_sa_soeur", "Highlighter"],
+        "Niveau 11": ["Fer_a_lisser"],
+        "Niveau 12": ["Bracelet_de_sa_soeur", "Faux_cils", "Gloss_rose"],
+        "Niveau 13": ["Bracelet_de_sa_soeur"],
+        "Niveau 15": ["Fer_a_lisser"],
+        "Niveau 16": ["Fer_a_lisser", "Gloss_rose"],
+        "Niveau 17": ["Bracelet_de_sa_soeur", "Gloss_rose"],
+        "Niveau 18": ["Bracelet_de_sa_soeur"],
+        "Niveau 19": ["Faux_ongles_roses"],
+        "Niveau 21": ["Faux_cils"],
+        "Niveau 23": ["Fer_a_lisser"],
+        "Niveau 24": ["Fer_a_lisser", "Ring_light"],
+        "Niveau 26": ["Bracelet_de_sa_soeur", "Faux_ongles_roses"]
     },
 
-
     "Nonne": {
-
-        "Niveau 1": {
-            "Croix_marron": "14 PV",
-            "Feu_de_l'Esprit_Saint": "23 PV"
-        },
-
-        "Niveau 3": {
-            "Croix_marron": "+15% dégâts"
-        },
-
-        "Niveau 4": {
-            "Feu_de_l'Esprit_Saint": "23 PV",
-            "Medaille_de_bapteme": "15 PV"
-        },
-
-        "Niveau 7": {
-            "Feu_de_l'Esprit_Saint": "+20% dégâts"
-        },
-
-        "Niveau 8": {
-            "Coiffe_de_rameau": "19 PV"
-        },
-
-        "Niveau 10": {
-            "Feu_de_l'Esprit_Saint": "+20% dégâts",
-            "Medaille_de_bapteme": "+10% dégâts"
-        },
-
-        "Niveau 12": {
-            "Medaille_de_bapteme": "+10% dégâts"
-        },
-
-        "Niveau 13": {
-            "Medaille_de_bapteme": "+10% dégâts"
-        },
-
-        "Niveau 14": {
-            "Feu_de_l'Esprit_Saint": "+20% dégâts"
-        },
-
-        "Niveau 17": {
-            "Medaille_de_bapteme": "+10% dégâts"
-        },
-
-        "Niveau 18": {
-            "Medaille_de_bapteme": "+15% dégâts"
-        },
-
-        "Niveau 20": {
-            "Medaille_de_bapteme": "+15% dégâts"
-        },
-
-        "Niveau 24": {
-            "Ring_light": "40 PV"
-        },
-
-        "Niveau 26": {
-            "Medaille_de_bapteme": "+15% dégâts",
-            "Feu_de_l'Esprit_Saint": "+20% dégâts"
-        }
+        "Niveau 1":  ["Croix_marron", "Feu_de_l'Esprit_Saint"],
+        "Niveau 3":  ["Croix_marron"],
+        "Niveau 4":  ["Feu_de_l'Esprit_Saint", "Medaille_de_bapteme"],
+        "Niveau 7":  ["Feu_de_l'Esprit_Saint"],
+        "Niveau 8":  ["Coiffe_de_rameau"],
+        "Niveau 10": ["Feu_de_l'Esprit_Saint", "Medaille_de_bapteme"],
+        "Niveau 12": ["Medaille_de_bapteme"],
+        "Niveau 13": ["Medaille_de_bapteme"],
+        "Niveau 14": ["Feu_de_l'Esprit_Saint"],
+        "Niveau 17": ["Medaille_de_bapteme"],
+        "Niveau 18": ["Medaille_de_bapteme"],
+        "Niveau 20": ["Medaille_de_bapteme"],
+        "Niveau 24": ["Aura_divine"],
+        "Niveau 26": ["Medaille_de_bapteme", "Feu_de_l'Esprit_Saint"]
     }
-
-    }
-
+}
