@@ -14,7 +14,6 @@ import csv
 import os
 
 
-
 ORDRE_MAPS   = ["Cour", "Rue", "Ruelle", "Foire", "Metro"]
 ORDRE_PERSOS = ["Fille_populaire", "Nerd", "Nonne"]
 
@@ -39,20 +38,34 @@ def _lire_csv(chemin):
     if not os.path.exists(chemin):
         return []
     with open(chemin, "r", newline="") as f:
-        return list(csv.DictReader(f))
+        rows = list(csv.DictReader(f))
+    # Nettoie les clés parasites (None, "") dues aux virgules en trop
+    for row in rows:
+        for k in list(row.keys()):
+            if k is None or k == "":
+                del row[k]
+    return rows
 
 
 def _ecrire_csv(chemin, rows, noms):
     headers = ["Type"] + noms
     os.makedirs(os.path.dirname(chemin), exist_ok=True)
     with open(chemin, "w", newline="") as f:
-        writer = csv.DictWriter(f, headers)
+        writer = csv.DictWriter(f, headers, extrasaction="ignore")
         writer.writeheader()
         for row in rows:
             for n in noms:
                 if n not in row:
                     row[n] = 0
             writer.writerow(row)
+
+
+def _ecrire_fichier_perso(headers, rows):
+    """Réécrit persos_debloques.csv avec headers explicites."""
+    with open(CHEMIN_PERSOS, "w", newline="") as f:
+        writer = csv.DictWriter(f, headers, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def _creer_fichier_si_manque(chemin, types_initiaux, noms):
@@ -83,47 +96,179 @@ def _ajouter_colonne_joueur_si_manque(chemin, joueur, noms):
 #  API PUBLIQUE
 # ─────────────────────────────────────────────
 
-def init_progression(joueur, noms):
-    """
-    À appeler au démarrage avant tout. Si le joueur est nouveau,
-    Cour et Fille_populaire sont débloqués.
-    """
-    _creer_fichier_si_manque(CHEMIN_MAPS,   ORDRE_MAPS,   noms)
-    _creer_fichier_si_manque(CHEMIN_PERSOS, ORDRE_PERSOS, noms)
+def init_progression(joueur, noms=None):
+    """Inscrit le joueur dans persos_debloques.csv ET maps_debloquees.csv,
+    avec Fille_populaire et Cour débloquées par défaut."""
+    _init_fichier(CHEMIN_PERSOS, ORDRE_PERSOS, ORDRE_PERSOS[0], joueur)
+    _init_fichier(CHEMIN_MAPS,   ORDRE_MAPS,   ORDRE_MAPS[0],   joueur)
 
-    _ajouter_colonne_joueur_si_manque(CHEMIN_MAPS,   joueur, noms)
-    _ajouter_colonne_joueur_si_manque(CHEMIN_PERSOS, joueur, noms)
 
-    # Maps : Cour débloquée par défaut
-    maps_data = _lire_csv(CHEMIN_MAPS)
-    a_au_moins_une_map = any(str(row.get(joueur, "0")) == "1" for row in maps_data)
-    if not a_au_moins_une_map:
-        for row in maps_data:
-            if row["Type"] == "Cour":
-                row[joueur] = 1
-        _ecrire_csv(CHEMIN_MAPS, maps_data, noms)
+def _init_fichier(chemin, ordre_canonique, element_de_depart, joueur):
+    """Ajoute le joueur dans un fichier CSV de progression avec
+    `element_de_depart` débloqué par défaut."""
 
-    # Persos : Fille_populaire débloquée par défaut
-    persos_data = _lire_csv(CHEMIN_PERSOS)
-    a_au_moins_un_perso = any(str(row.get(joueur, "0")) == "1" for row in persos_data)
-    if not a_au_moins_un_perso:
-        for row in persos_data:
-            if row["Type"] == "Fille_populaire":
-                row[joueur] = 1
-        _ecrire_csv(CHEMIN_PERSOS, persos_data, noms)
+    # Le fichier n'existe pas → on le crée
+    if not os.path.exists(chemin):
+        os.makedirs(os.path.dirname(chemin), exist_ok=True)
+        with open(chemin, "w", newline="") as f:
+            writer = csv.DictWriter(f, ["Type", joueur])
+            writer.writeheader()
+            for elt in ordre_canonique:
+                writer.writerow({"Type": elt, joueur: "1" if elt == element_de_depart else "0"})
+        print(f"[Progression] {chemin} créé, '{joueur}' initialisé avec {element_de_depart}.")
+        return
 
+    # Lire le fichier
+    with open(chemin, "r", newline="") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        headers = list(reader.fieldnames) if reader.fieldnames else ["Type"]
+
+    # Nettoyer les clés parasites
+    for row in rows:
+        for k in list(row.keys()):
+            if k is None or k == "":
+                del row[k]
+
+    # Joueur déjà présent → on s'assure qu'il a au moins l'élément de départ
+    if joueur in headers:
+        modifie = False
+        for row in rows:
+            if row.get("Type") == element_de_depart and row.get(joueur, "0") in ("0", "", None):
+                row[joueur] = "1"
+                modifie = True
+        if modifie:
+            with open(chemin, "w", newline="") as f:
+                writer = csv.DictWriter(f, headers, extrasaction="ignore")
+                writer.writeheader()
+                writer.writerows(rows)
+            print(f"[Progression] '{joueur}' avait perdu {element_de_depart}, restauré.")
+        return
+
+    # Nouveau joueur → on ajoute la colonne
+    headers.append(joueur)
+    for row in rows:
+        row[joueur] = "1" if row.get("Type") == element_de_depart else "0"
+
+    with open(chemin, "w", newline="") as f:
+        writer = csv.DictWriter(f, headers, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+    print(f"[Progression] Nouveau joueur '{joueur}' ajouté avec {element_de_depart} débloqué(e).")
 
 def maps_debloquees(joueur):
-    """Liste des maps débloquées pour ce joueur, dans l'ordre canonique."""
-    data = _lire_csv(CHEMIN_MAPS)
-    debloquees = {row["Type"] for row in data if str(row.get(joueur, "0")) == "1"}
+    """Liste des maps débloquées pour ce joueur, dans l'ordre canonique.
+    Auto-réparation : si le joueur n'existe pas ou n'a aucune map,
+    on lui débloque Cour automatiquement."""
+
+    map_depart = ORDRE_MAPS[0]  # Cour
+
+    # Fichier absent → on le crée
+    if not os.path.exists(CHEMIN_MAPS):
+        os.makedirs(os.path.dirname(CHEMIN_MAPS), exist_ok=True)
+        with open(CHEMIN_MAPS, "w", newline="") as f:
+            writer = csv.DictWriter(f, ["Type", joueur])
+            writer.writeheader()
+            for m in ORDRE_MAPS:
+                writer.writerow({"Type": m, joueur: "1" if m == map_depart else "0"})
+        print(f"[Auto-progression] maps_debloquees.csv créé pour '{joueur}'.")
+        return [map_depart]
+
+    # Lire
+    with open(CHEMIN_MAPS, "r", newline="") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        headers = list(reader.fieldnames) if reader.fieldnames else ["Type"]
+
+    for row in rows:
+        for k in list(row.keys()):
+            if k is None or k == "":
+                del row[k]
+
+    # Joueur absent → on l'ajoute
+    if joueur not in headers:
+        headers.append(joueur)
+        for row in rows:
+            row[joueur] = "1" if row.get("Type") == map_depart else "0"
+        with open(CHEMIN_MAPS, "w", newline="") as f:
+            writer = csv.DictWriter(f, headers, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"[Auto-progression] '{joueur}' ajouté dans maps avec {map_depart} débloquée.")
+        return [map_depart]
+
+    # Joueur présent mais aucune map débloquée → on lui rend Cour
+    debloquees = {row["Type"] for row in rows if str(row.get(joueur, "0")) == "1"}
+    if not debloquees:
+        for row in rows:
+            if row.get("Type") == map_depart:
+                row[joueur] = "1"
+        with open(CHEMIN_MAPS, "w", newline="") as f:
+            writer = csv.DictWriter(f, headers, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"[Auto-progression] '{joueur}' n'avait aucune map, {map_depart} restaurée.")
+        return [map_depart]
+
     return [m for m in ORDRE_MAPS if m in debloquees]
 
 
 def persos_debloques(joueur):
-    """Liste des persos débloqués pour ce joueur, dans l'ordre canonique."""
-    data = _lire_csv(CHEMIN_PERSOS)
-    debloques = {row["Type"] for row in data if str(row.get(joueur, "0")) == "1"}
+    """Liste des persos débloqués pour ce joueur, dans l'ordre canonique.
+    Si le joueur n'existe pas dans le fichier, on l'ajoute avec
+    Fille_populaire débloquée par défaut (auto-réparation)."""
+
+    perso_depart = ORDRE_PERSOS[0]  # Fille_populaire
+
+    # Si le fichier n'existe pas → on le crée
+    if not os.path.exists(CHEMIN_PERSOS):
+        os.makedirs(os.path.dirname(CHEMIN_PERSOS), exist_ok=True)
+        with open(CHEMIN_PERSOS, "w", newline="") as f:
+            writer = csv.DictWriter(f, ["Type", joueur])
+            writer.writeheader()
+            for p in ORDRE_PERSOS:
+                writer.writerow({"Type": p, joueur: "1" if p == perso_depart else "0"})
+        print(f"[Auto-progression] Fichier créé pour '{joueur}'.")
+        return [perso_depart]
+
+    # Lire le fichier
+    with open(CHEMIN_PERSOS, "r", newline="") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        headers = list(reader.fieldnames) if reader.fieldnames else ["Type"]
+
+    # Nettoyer les clés parasites
+    for row in rows:
+        for k in list(row.keys()):
+            if k is None or k == "":
+                del row[k]
+
+    # ⚡ AUTO-RÉPARATION : le joueur n'a pas de colonne → on l'ajoute
+    if joueur not in headers:
+        headers.append(joueur)
+        for row in rows:
+            row[joueur] = "1" if row.get("Type") == perso_depart else "0"
+        with open(CHEMIN_PERSOS, "w", newline="") as f:
+            writer = csv.DictWriter(f, headers, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"[Auto-progression] '{joueur}' ajouté avec {perso_depart} débloquée.")
+        return [perso_depart]
+
+    # ⚡ AUTO-RÉPARATION : le joueur existe mais n'a aucun perso → on lui rend Fille_populaire
+    debloques = {row["Type"] for row in rows if str(row.get(joueur, "0")) == "1"}
+    if not debloques:
+        for row in rows:
+            if row.get("Type") == perso_depart:
+                row[joueur] = "1"
+        with open(CHEMIN_PERSOS, "w", newline="") as f:
+            writer = csv.DictWriter(f, headers, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"[Auto-progression] '{joueur}' n'avait rien, {perso_depart} restaurée.")
+        return [perso_depart]
+
+    # Cas normal
     return [p for p in ORDRE_PERSOS if p in debloques]
 
 
