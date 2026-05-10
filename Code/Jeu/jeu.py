@@ -1,3 +1,8 @@
+""" 
+Boucle principale de jeu
+Tout simplement le jeu
+"""
+
 import pygame as pyg 
 import time
 from Fichiers_variables.variables import *
@@ -10,13 +15,11 @@ from Fichiers_variables.dictionnaire_armes import ARMES
 from Monstres.class_monstre import *
 from Affichage.fonctionnement_divers import *
 from Fichiers_variables.gestion_fichiers import *
-from Jeu.player import Player
 from Monstres.vagues import *
 from Jeu.Quêtes import verif_kill_id, verif_acquerir_id, LIBELLES_QUETES
 from Monstres.boss import spawn_boss, gestion_boss
 from Minijeux.all_mj import mj
 from Armes_Items.Classe_par_type_darme import *
-from Armes_Items.class_armes_sans_bugs import Arme
 from Interface.Game_over import game_over
 from Interface.victoire import victoire
 from Fichiers_variables.dictionnaire_items import TYPES_ITEMS
@@ -24,9 +27,12 @@ from Fichiers_variables.progression import (
     init_progression, map_terminee, temps_limite
 )
 
+# Dico des objets spéciaux des joueurs (s'ils ne l'obtiennent pas pendant leur quête ils meurent)
 OBJ_SPECIAL = {"Nerd" : "Console_allumee",
                "Nonne" : "Aura_divine",
                "Fille_populaire" : "Highlighter"}
+
+
 def on_level_up(player):
     niveau = player.niveau
     armes_dispos = ARMES[player.perso]
@@ -36,12 +42,29 @@ def on_level_up(player):
 
 
 def jeu(perso, nom, map_choisie="Cour"):
+    """ Boucle principale de jeu
+    
+    Parameters
+    -----------
+    perso : str
+        Le nom du perso choisi
+    nom : str
+        Le nom du joueur
+    map_choisie :
+        Le nom de la map
+
+    Returns
+    -------
+    str
+        "menu" ou "quit" pour déterminer la suite
+    """
     from Armes_Items.Explosions import Explosion
     from Armes_Items.Item_system import appliquer_stats_items
     from Armes_Items.Animation_items import lancer_animation_item
     Explosion.init_frames()
 
-    noms, new_tab = det_noms()
+    # on récupère les noms des joueurs enregistrés pour la gestion de fichiers
+    noms, new_tab = det_noms() 
     res = ajouter_utilisateur(nom, noms)
     if res == False:
         argent = int(new_tab[1][nom])
@@ -57,13 +80,14 @@ def jeu(perso, nom, map_choisie="Cour"):
     # Initialise la progression du joueur
     init_progression(nom, noms)
 
-    armes_joueur = contenu_fichier_armes()
+    armes_joueur = contenu_fichier_armes() #armes acquises par le joueur, toutes parties confondues
     clock = pyg.time.Clock()
     run   = True
 
     from Jeu.power_up import apply_powerups
     p = Player(perso, nom)
 
+    #armes de départ
     DEPART = {
         "Nerd":            {"armes": ["Epee_bleue"],   "items": []},
         "Fille_populaire": {"armes": ["Gloss_rose"],   "items": []},
@@ -99,14 +123,15 @@ def jeu(perso, nom, map_choisie="Cour"):
     vague = pause = boss_present = False
     coffre_existant = minijeu_fini = False
 
-    anim_item       = None
-    victoire_decl   = False
-    force_victoire  = False
-    TEMPS_OBJECTIF  = temps_limite(map_choisie)
+    anim_item = None
+    victoire_decl = False
+    force_victoire = False
+    TEMPS_OBJECTIF = temps_limite(map_choisie)
 
     popup_group = pyg.sprite.Group()
-    completed_kill_quests    = set()
+    completed_kill_quests = set()
     completed_acquire_quests = set()
+
     while run:
         xp = 0
 
@@ -125,8 +150,8 @@ def jeu(perso, nom, map_choisie="Cour"):
         
         if not p.alive:
             if p.resurrection:
-                p.hp           = p.hp_max // 2
-                p.alive        = True
+                p.hp = p.hp_max // 2
+                p.alive = True
                 p.resurrection = False
             else:
                 action  = game_over()
@@ -146,6 +171,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
 
+            # Gestion des mini-jeux
             coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur, map_choisie)
             if minijeu_fini and not OBJ_SPECIAL[p.perso] in armes_possedees :
                 action  = game_over()
@@ -167,8 +193,8 @@ def jeu(perso, nom, map_choisie="Cour"):
                 if nouvel_item:
                     armes_joueur = ajouter_arme(nom, nouvel_item, armes_joueur)
                     reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
-
-                action = victoire(                          # ← nouvel appel avec stats
+                # nouvel appel avec les stats
+                action = victoire(         
                 map_choisie,
                 nouvelle_map,
                 nouveau_perso,
@@ -222,42 +248,45 @@ def jeu(perso, nom, map_choisie="Cour"):
                     boss.degats(10)
                     projectile.kill()
 
-            # monstres
-            if frame % FREQUENCE == 0:
+            # Gestion des monstres
+            if frame % FREQUENCE == 0: # ajout d'un monstre toutes les 50 frames
                 monstres_presents = ajouter_monstre(monstres_presents, p, perso)
 
             monstres_presents, p.kill_count = gestion_monstres_presents(monstres_presents, frame, p, xp_dispo)
 
-            xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu)
+            xp_dispo, xp = gestion_xp_fenetre(xp_dispo, p, xp_attendu) #xp récupéré par le joueur
 
             res = gestion_vague(derniere_vague, p, perso)
             if res is not False:
                 derniere_vague, monstres_vague, coin = res
                 x_monde, y_monde = coord_coin(coin, p)
             else:
-                derniere_vague += 1
+                derniere_vague += 1 # actualise le nb de frames depuis la dernière vague
 
             if monstres_vague is not None:
                 monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
                 monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p, perso)
+            # Gestion des boss
             boss_present, boss = spawn_boss(map_choisie, boss_present, boss_acheves, p, boss, perso)
             boss_present, boss_acheves = gestion_boss(boss, boss_present, p, frame, boss_acheves)
+            
+            # Gestion des coffres
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout is not False:
                 nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
-
             if coffre_existant:
                 nouveau_coffre.pointer_coffre(p)
-                if p.pos.colliderect(nouveau_coffre.rect):
+                if p.pos.colliderect(nouveau_coffre.rect): # collision avec le coffre
                     gain = nouveau_coffre.determiner_recompense(armes_et_items_possedees, p)
-                    if type(gain) == int:
+                    if type(gain) == int: # argent reçu
                         argent += int(gain * (1 + p.argent_bonus))
                     else:
                         armes_et_items_possedees.append(gain[1])
-                        if gain[0] == "arme":
+                        if gain[0] == "arme": # si le type d'objet est une arme
                             armes_possedees.append(gain[1])
                             p.equiper_arme(gain[1])
                             armes_joueur = ajouter_arme(nom, gain[1], armes_joueur)
+                            # Actualisation du fichier csv des armes et items
                             reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
                         else:
                             items_possedes.append(gain[1])
@@ -272,7 +301,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                                 )
                     coffre_existant = False
 
-            dernier_coffre_apparu += 1
+            dernier_coffre_apparu += 1 # actualisation du nb de frames depuis l'apparition du dernier coffre
             dt = clock.get_time() / 1000.0  #ms en sec
             p.regen_hp(dt)
             
@@ -297,11 +326,11 @@ def jeu(perso, nom, map_choisie="Cour"):
                 else:
                     anim_item = None
 
-            
+            # Affichage des différentes barres de vie/xp/timer/kill_count
             afficher_xp(xp_attendu, p)
             afficher_timer_vie(temps_ecoule, p)
 
-            
+            # Quêtes
             kill_qid = verif_kill_id(p)
             if kill_qid and kill_qid not in completed_kill_quests:
                 popup_group.add(PopupAchievement(LIBELLES_QUETES[kill_qid]))
@@ -314,13 +343,14 @@ def jeu(perso, nom, map_choisie="Cour"):
                 actualiser_quete(nom, acq_qid)
                 completed_acquire_quests.add(acq_qid)
 
-            
+            # Passage de niveau
             if p.update_xp(xp, xp_attendu):
-                xp_attendu = passage(xp_attendu)
-                nb_choix = p.get_nb_choix()
+                xp_attendu = passage(xp_attendu) # actualisation de l'xp attendu
+                nb_choix = p.get_nb_choix() # nbre de choix possibles (change en fonction de la chance)
+                # Choix de l'arme/item
                 objet, pause_time = choix_arme(p, armes_possedees, monstres_presents, xp_dispo, map_choisie, nb_choix)
                 armes_et_items_possedees.append(objet[1])
-
+                # même principe que les coffres
                 if objet[0] == "arme":
                     armes_possedees.append(objet[1])
                     p.equiper_arme(objet[1])
@@ -343,6 +373,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
                 on_level_up(p)
 
+            # Déplace le fond et les objets sur la map en fonction des déplacements du joueur
             p.move_bg(monstres_presents, xp_dispo, monstres_vague, boss, boss_present)
 
             popup_group.update()
@@ -361,7 +392,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                 flashing_effect(WIN)
 
             pyg.display.flip()
-
+    # Actualisation des données
     new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
     reecrire_fichier("niveau_argent", new_tab, noms)
     reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
