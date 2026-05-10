@@ -197,7 +197,7 @@ def open_start(WIN, events, mouse_pos, mouse_pressed, btn_close, font, joueur):
         from Interface.choix_map import open_choix_map
         WIN.fill((0, 0, 0))
         pygame.display.flip()
-        map_choisie = open_choix_map(joueur)
+        map_choisie = open_choix_map(joueur, perso)
         if map_choisie is None:
             return None
         return ("start_game", perso, map_choisie)

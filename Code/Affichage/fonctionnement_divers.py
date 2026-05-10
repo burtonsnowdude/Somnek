@@ -7,11 +7,15 @@ from Interface.Class_Button import Button
 FONT_PAUSE = pyg.font.SysFont("Press Start 2P", 50)
 
 MAPS_CHEMINS = {
-    "Metro": "Images/Maps/metro.png",
-    "Cour":  "Images/Maps/map_cour_vraie.png",
-    "Rue":   "Images/Maps/map_rue.png",
-    "Ruelle":   "Images/Maps/Alley.png",
-    "Foire":   "Images/Maps/map_foire.png" }
+    "Metro":        "Images/Maps/metro.png",
+    "Cour":         "Images/Maps/map_cour_vraie.png",
+    "Rue":          "Images/Maps/map_rue.png",
+    "Ruelle":       "Images/Maps/Alley.png",
+    "Foire":        "Images/Maps/map_foire.png",
+    "Villa":    "Images/Maps/villa.png",
+    "immeuble": "Images/Maps/immeubles.png",
+    "Eglise":   "Images/Maps/eglise.png",
+}
 
 def changer_map(nom_map):
     global BG, BGX, BGY

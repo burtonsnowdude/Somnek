@@ -17,13 +17,22 @@ import os
 ORDRE_MAPS   = ["Cour", "Rue", "Ruelle", "Foire", "Metro"]
 ORDRE_PERSOS = ["Fille_populaire", "Nerd", "Nonne"]
 
+MAPS_FINALES = {
+    "Fille_populaire": "Villa",
+    "Nerd":            "immeuble",
+    "Nonne":           "Eglise",
+}
+
 # Temps en secondes pour considérer la map comme terminée
 TEMPS_LIMITE_MAP = {
-    "Cour":    5 * 60,    # 5 min
-    "Rue":     7 * 60,    # 7 min
-    "Ruelle":  9 * 60,    # 9 min
-    "Foire":  11 * 60,    # 11 min
-    "Metro":  13 * 60,    # 13 min
+    "Cour":          5 * 60,
+    "Rue":           7 * 60,
+    "Ruelle":        9 * 60,
+    "Foire":        11 * 60,
+    "Metro":        13 * 60,
+    "Villa":    15 * 60,
+    "immeuble": 15 * 60,
+    "Eglise":   15 * 60,
 }
 
 CHEMIN_MAPS   = "Fichiers_csv/maps_debloquees.csv"
@@ -143,7 +152,8 @@ def maps_debloquees(joueur):
         print(f"[Auto-progression] '{joueur}' n'avait aucune map, {map_depart} restaurée.")
         return [map_depart]
 
-    return [m for m in ORDRE_MAPS if m in debloquees]
+    toutes = ORDRE_MAPS + list(MAPS_FINALES.values())
+    return [m for m in toutes if m in debloquees]
 
 
 def persos_debloques(joueur):
