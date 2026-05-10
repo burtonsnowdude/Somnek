@@ -1,5 +1,5 @@
 """
-mini jeu du nerd : binaire
+Mini jeu du nerd : binaire
 """
 import pygame as pyg
 from Minijeux.minijeu2 import spawn_objet, draw_objet, collision
@@ -11,8 +11,6 @@ from Fichiers_variables.gestion_fichiers import ajouter_arme
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200
 COMPUTER = pyg.image.load("Images/Maps/Game_stop_exterieur.png") 
 FOND = pyg.image.load("Images/Maps/Game_stop_interieur.png")
-#pour l'instant, on utilise une image d'arme pour représenter l'ordinateur, mais on peut la changer plus tard
-
 
 def binary_quiz():
     """Quiz binaire simple - affiche le binaire, obtiens la réponse entière"""
