@@ -1,3 +1,10 @@
+"""
+Passage de niveau
+Ce fichier gère :
+    la variation d'xp attendu
+    le choix d'une arme ou d'un item (en fonction de la chance du joueur)
+"""
+
 from Fichiers_variables.variables import *
 from random import *
 import time
@@ -9,18 +16,40 @@ from Fichiers_variables.dictionnaire_armes import GESTION_DES_NIVEAUX_ARMES, TYP
 from Minijeux.minijeu2 import retour_ligne
 from Interface.choix_map import IMAGES_MAPS
 
-FONT_NIVEAU     = pyg.font.SysFont("Press Start 2P", 50)
+FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50)
 FONT_TEXTE_ARME = pyg.font.SysFont("Press Start 2P", 17)
-GEMMES          = pyg.image.load("Images/Autre/gemmes.png")
+GEMMES = pyg.image.load("Images/Autre/gemmes.png")
 
 
 def passage(xp_attendu):
-    xp_attendu = ceil(1.5 * xp_attendu)
+    """ Actualise l'xp attendu 
+    
+    Parameters
+    ----------
+    xp_attendu : int
+        L'xp attendu au niveau précédent 
+    
+    Returns
+    -------
+    int
+        L'xp attendu au niveau d'après
+    """
+    xp_attendu = ceil(1.5 * xp_attendu) # pour toujours avoir un entier
     return xp_attendu
 
 
 def show_image(button, p):
-    y = button.rect.center[1]
+    """ Montre l'image de l'arme ou de l'item correspondant
+    
+    Parameters
+    ----------
+    button : Self@Button
+        Le bouton correspondant à une certaine arme/un certain item
+    p : Self@Player
+        Le joueur
+    """
+
+    y = button.rect.center[1] # ordonnée du centre du bouton pour aligner l'image
     if button.action in TYPES_ARMES[p.perso]:
         image = TYPES_ARMES[p.perso][button.action]["image"]
     else:
@@ -31,11 +60,20 @@ def show_image(button, p):
 
 
 def show_texte(button, p):
+    """ Affiche le texte explicatif de l'arme ou de l'item
+    
+    Parameters
+    -----------
+    button : Self@Button
+        Bouton affiché
+    p : Self@Player
+        Le joueur
+    """
     if button.action in TYPES_ARMES[p.perso]:
         texte = TYPES_ARMES[p.perso][button.action]["texte"]
     else:
         texte = TYPES_ITEMS[p.perso][button.action]["texte"]
-    texte = retour_ligne(texte, 50)
+    texte = retour_ligne(texte, 50) # fonction pour retourner à la ligne (cf minijeu2)
     for t in range(len(texte)):
         txt = FONT_TEXTE_ARME.render(texte[t], True, (255, 255, 255))
         rect = txt.get_rect()
@@ -45,19 +83,56 @@ def show_texte(button, p):
 
 
 def scroll_gemme(frame):
-    y = frame % HEIGHT
+    """ Fait défiler un écran de gemmes très très beau
+    
+    Parameters
+    ----------
+    frame : int
+        Le numéro de la frame actuelle
+    """
+    y = frame % HEIGHT # pour rester dans les limites de l'écran
     if y != 0:
-        y2 = y - HEIGHT
-        WIN.blit(GEMMES, (0, y2))
+        y2 = y - HEIGHT 
+        WIN.blit(GEMMES, (0, y2)) # 2e image pour combler le vide
     WIN.blit(GEMMES, (0, y))
 
 
 def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_name, nb_choix):
+    """Choix d'une arme ou d'un item en fonction du niveau et de la chance du joueur
+    
+    Parameters
+    -----------
+    p : Self@Player
+        Le joueur
+    armes_et_items_possedees : list
+        Liste des armes et items possédés
+    monstres_presents : list
+        Liste des monstres présents
+    xp_present : list
+        Liste de tous les xp disponibles sur la map
+    map_name : str
+        Map choisie
+    Nb_choix : int
+        Nombre de choix possibles (varie en fonction de la chance)
+    
+    Returns
+    -------
+    tuple(
+        tuple(
+            str, 
+                Type d'objet
+            str), 
+                Choix
+        float
+            Temps écoulé
+    )
+
+    """
     map_img = IMAGES_MAPS[map_name]
     mapX, mapY = map_img.get_size()
     debut  = time.time()
     clock  = pyg.time.Clock()
-
+    # Détermination des armes et items disponibles
     armes_dispo = []
     items_dispo = []
     niveau = 1
@@ -73,6 +148,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
         niveau += 1
 
     dispo = items_dispo + armes_dispo
+    # Enlève les doublons seulement une fois
     armes_enlevees = []
     for arme in dispo[:]:
         if arme in armes_et_items_possedees and not arme in armes_enlevees:
@@ -86,7 +162,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
     choix = []
     compteur = 0
     while compteur < nb_choix:
-        if nb_choix > len(dispo) :
+        if nb_choix > len(dispo) : # pour éviter une boucle infinie en cas de choix insuffisants
             choix = dispo
             nb_choix = len(dispo)
             break
@@ -94,7 +170,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
         if arme not in choix:
             choix.append(arme)
             compteur += 1
-
+    # Normalisation de l'affichage (avec espaces et en majuscules)
     affich = []
     for mot in choix:
         m = mot.replace("_", " ").upper()
@@ -105,12 +181,12 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
     texte  = FONT_NIVEAU.render("Niveau " + str(p.niveau) + " atteint !", True, (255, 255, 255))
     buttons = [Button(affich[i], choix[i], 400, 200 + 100 * i, 400, 80, FONT) for i in range(nb_choix)]
     for b in buttons:
-        b.color1      = (122, 48, 113)
-        b.color2      = (161, 99, 158)
+        b.color1 = (122, 48, 113)
+        b.color2 = (161, 99, 158)
         b.rect_center = (400, b.rect.topleft[1] + 20)
 
     waiting = True
-    selec   = 0
+    selec   = 0 # sélection actuelle (pour le clavier)
     frame   = 0
 
     while waiting:
@@ -119,6 +195,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
             if event.type == pyg.QUIT:
                 exit()
             if event.type == pyg.KEYDOWN:
+                # Permet de sélectionner avec le clavier pour aller plus vite lors des tests
                 if event.key == pyg.K_UP and selec != 0:
                     selec -= 1
                 if event.key == pyg.K_DOWN and selec != 2:
@@ -141,11 +218,11 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
             for j in range(-mapY, HEIGHT + mapY, mapY):
                 WIN.blit(map_img, (t, j))
         for m in monstres_presents:
-            m.show(1)
+            m.show(1) # pour que les monstres ne changent pas d'anim
         for xp in xp_present:
             xp.show_xp()
         WIN.blit(violet, (0, 0))
-        scroll_gemme(frame)
+        scroll_gemme(frame) # écran magnifique de gemmes en fond
         frame += 1
         for btn in buttons:
             btn.draw(WIN, mouse_pos)
