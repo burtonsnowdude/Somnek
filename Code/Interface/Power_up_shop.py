@@ -11,10 +11,7 @@ import Interface.pygameui as pygameui
 WIDTH, HEIGHT = 500, 500
 
 
-# ─────────────────────────────────────────────
-#  ORDRE DES POWER-UPS
-#  3 par ligne, dernière ligne avec 1 seul (centré)
-# ─────────────────────────────────────────────
+
 
 ORDRE_POWERUPS = [
     "Pouvoir",   "sante",     "Protection",     # ligne 1
