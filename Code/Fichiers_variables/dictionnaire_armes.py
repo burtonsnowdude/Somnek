@@ -87,7 +87,6 @@ TYPES_ARMES = {
 
     "Fille_populaire": {
 
-<<<<<<< HEAD
         "Gloss_rose": {
             "type_arme": "zone",
             "image": GLOSS_ROSE,
@@ -135,19 +134,32 @@ TYPES_ARMES = {
             "image": RING_LIGHT,
             "texte": "Tire rapidement dans quatre directions fixes. Dégâts de base : 40PV.",
             "dgbase": 40
-        }
-=======
+    },
     "Higliter": {
         "type_arme": "balle",
         "image": HIGLIGHTER,
-        "texte": "Jette des étoiles trop joliesss . Dégâts de base : 10PV."
+        "texte": "Jette des étoiles trop joliesss . Dégâts de base : 10PV.",
+        "dgbase": 10
     },
     "Gloss_rose": {
         "type_arme": "zone",
         "image": GLOSS_ROSE,
         "texte": "Crée des zones de destruction. Dégâts de base : 10PV."
->>>>>>> 57795b8b2372ba858fb77ceaae4f045dd61aff22
+=======
+        },
+    "Higliter": {
+        "type_arme": "balle",
+        "image": HIGLIGHTER,
+        "texte": "Jette des étoiles trop joliesss . Dégâts de base : 10PV.",
+        "dgbase" : 10
+
     },
+    "Gloss_rose": {
+        "type_arme": "zone",
+        "image": GLOSS_ROSE,
+        "texte": "Crée des zones de destruction. Dégâts de base : 10PV.",
+        "dgbase" : 10
+    }},
 
     "Nonne": {
 

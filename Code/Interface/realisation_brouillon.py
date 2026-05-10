@@ -7,6 +7,13 @@ from Fichiers_variables.gestion_fichiers import contenu_fichier_quetes
 #  DÉFINITION DES QUÊTES
 # ─────────────────────────────────────────────
 
+POPUP_W, POPUP_H = 500, 400
+WORLD_H = 1000  
+
+world = pygame.Surface((POPUP_W, WORLD_H))
+
+fond_realisation = pygame.image.load("Images/Interface/fond_realisation.png")
+fond_realisation = pygame.transform.scale(fond_realisation, (POPUP_W, WORLD_H))
 QUETES = {
     "histoire": {
         "scene1": [

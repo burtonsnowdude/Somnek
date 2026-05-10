@@ -7,11 +7,9 @@ from Interface.Class_Button import Button
 from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS, TYPES_ITEMS
 from Fichiers_variables.dictionnaire_armes import  GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
 from Minijeux.minijeu2 import retour_ligne
-from Interface.choix_map import MAPS_DISPO
+from Interface.choix_map import IMAGES_MAPS
 
-dico_images_maps = {}
-for map in MAPS_DISPO :
-    dico_images_maps[map] = pyg.image.load(MAPS_DISPO[map])
+
 
 FONT_NIVEAU = pyg.font.SysFont("Press Start 2P", 50) 
 FONT_TEXTE_ARME = pyg.font.SysFont("Press Start 2P", 17)
@@ -82,7 +80,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map):
     tuple(list, float)
         contient la liste des armes possedees par le joueur et le temps de pause
     """
-    map = dico_images_maps[map]
+    map = IMAGES_MAPS[map]
     mapX, mapY = map.get_size()
     debut = time.time()
     clock = pyg.time.Clock()

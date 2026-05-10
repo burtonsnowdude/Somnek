@@ -44,8 +44,8 @@ def jeu(perso, nom, map_choisie="Cour"):
     if res == False:
         argent = int(new_tab[1][nom])
         new_tab[0][nom] = int(new_tab[0][nom])
-    else:
-        noms, new_tab_armes, new_tab_quetes = res
+    else :
+        noms, new_tab_armes, new_tab_quetes, new_tab_powerups = res
         argent = 0
         new_tab[0][nom] = 1
         new_tab[1][nom] = 0
@@ -144,7 +144,8 @@ def jeu(perso, nom, map_choisie="Cour"):
             temps_ecoule = chrono(clock, start_time, pause_time)
             frame += 1
 
-            # ── Détection de VICTOIRE ────────────────────────────────────
+            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur, map_choisie)
+            # Victoire
             if not victoire_decl and temps_ecoule >= TEMPS_OBJECTIF:
                 victoire_decl = True
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
@@ -158,12 +159,9 @@ def jeu(perso, nom, map_choisie="Cour"):
                     return "menu"
                 if action == "quit":
                     return "quit"
+            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur, map_choisie)
 
-            coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(
-                perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur
-            )
-
-            # ── Armes & projectiles ───────────────────────────────────────
+            # Armes
             p.update_armes()
             p.all_projectiles.update()
             p.all_zones.update()
@@ -202,7 +200,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                     boss.degats(10)
                     projectile.kill()
 
-            # ── Monstres ──────────────────────────────────────────────────
+            # monstres
             if frame % FREQUENCE == 0:
                 monstres_presents = ajouter_monstre(monstres_presents, p, perso)
 
@@ -218,21 +216,10 @@ def jeu(perso, nom, map_choisie="Cour"):
                 derniere_vague += 1
 
             if monstres_vague is not None:
-                monstres_vague, p.kill_count = traverser_ecran(
-                    monstres_vague, p, frame, xp_dispo, x_monde, y_monde
-                )
-                monstres_presents, vague = vague_130(
-                    temps_ecoule, monstres_presents, vague, p, perso
-                )
-
-            boss_present, boss = spawn_boss(
-                temps_ecoule, boss_present, boss_acheves, p, boss, perso
-            )
-            boss_present, boss_acheves = gestion_boss(
-                boss, boss_present, p, frame, boss_acheves
-            )
-
-            # ── Coffres ───────────────────────────────────────────────────
+                monstres_vague, p.kill_count = traverser_ecran(monstres_vague, p, frame, xp_dispo, x_monde, y_monde)
+                monstres_presents, vague = vague_130(temps_ecoule, monstres_presents, vague, p, perso)
+            boss_present, boss = spawn_boss(map_choisie, boss_present, boss_acheves, p, boss, perso)
+            boss_present, boss_acheves = gestion_boss(boss, boss_present, p, frame, boss_acheves)
             ajout = ajout_coffre(dernier_coffre_apparu, coffre_existant, p)
             if ajout is not False:
                 nouveau_coffre, dernier_coffre_apparu, coffre_existant = ajout
@@ -313,10 +300,7 @@ def jeu(perso, nom, map_choisie="Cour"):
             if p.update_xp(xp, xp_attendu):
                 xp_attendu = passage(xp_attendu)
 
-                objet, pause_time_delta = choix_arme(
-                    p, armes_possedees, monstres_presents, xp_dispo
-                )
-                pause_time += pause_time_delta
+                objet, pause_time = choix_arme(p, armes_possedees, monstres_presents, xp_dispo, map_choisie)
                 armes_et_items_possedees.append(objet[1])
 
                 if objet[0] == "arme":

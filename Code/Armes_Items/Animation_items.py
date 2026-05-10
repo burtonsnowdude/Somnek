@@ -10,7 +10,6 @@ Quand un item est choisi :
 import pygame
 import time
 import math
-from Fichiers_variables.gestion_fichiers import ajouter_arme_acquise
 
 # ─────────────────────────────────────────────
 #  COULEUR PRINCIPALE PAR ITEM
@@ -174,13 +173,13 @@ class AnimationItemTombe:
 # ─────────────────────────────────────────────
 #  ENREGISTREMENT COLLECTION + LANCEMENT
 # ─────────────────────────────────────────────
-
-def enregistrer_item_collection(joueur_nom: str, nom_item: str):
-    """Ajoute immédiatement l'item dans le CSV collection du joueur."""
-    try:
-        ajouter_arme_acquise(joueur_nom, nom_item)
+"""
+def enregistrer_item_collection(joueur_nom: str, nom_item: str):"""
+""" Ajoute immédiatement l'item dans le CSV collection du joueur."""
+"""   try:
+        ajouter_arme(joueur_nom, nom_item)
     except Exception as e:
-        print(f"[Collection] Erreur ajout '{nom_item}' : {e}")
+        print(f"[Collection] Erreur ajout '{nom_item}' : {e}")"""
 
 
 def lancer_animation_item(nom_item: str, joueur, joueur_nom: str,
@@ -194,5 +193,5 @@ def lancer_animation_item(nom_item: str, joueur, joueur_nom: str,
             TYPES_ITEMS[p.perso][objet[1]]["image"]
         )
     """
-    enregistrer_item_collection(joueur_nom, nom_item)
+    #enregistrer_item_collection(joueur_nom, nom_item)
     return AnimationItemTombe(nom_item, image_small, joueur)
