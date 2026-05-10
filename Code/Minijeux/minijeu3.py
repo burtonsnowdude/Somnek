@@ -83,6 +83,31 @@ PAROLES = {
 }
 
 def minijeu3(p, coord_monde, minijeu3_fini,  armes_et_items_possedees, armes_possedees, armes_joueur, map):
+    """ Minijeu de la nonne
+    
+    Parameters
+    ----------
+    perso : str
+        Perso choisi
+    coord_monde : tuple(int, int)
+        Coordonnées monde du magasin/eglise
+    minijeu_fini : bool
+        Si le mini-jeu est fini ou pas
+    p : Self@Player
+        Le joueur
+    armes_et_items_possedees : list
+        Liste des armes et items possédés
+    armes_possedees : list
+        Liste des armes possédées
+    armes_joueur : list(dict)
+        Contenu actualisé du fichier csv des armes
+    map : Surface
+        La map actuelle
+
+    Returns
+    -------
+    idem sauf la map
+    """
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p, map)
         coord_screen = (300, 200)
@@ -95,6 +120,7 @@ def minijeu3(p, coord_monde, minijeu3_fini,  armes_et_items_possedees, armes_pos
         anim_debut(SON)
         victoire = noubliez_pas_les_paroles()
         if victoire :
+            # ajout de l'objet spécial
             armes_possedees.append("Aura_divine")
             armes_et_items_possedees.append("Aura_divine")
             armes_joueur = ajouter_arme(p.nom, "Aura_divine", armes_joueur)
@@ -103,6 +129,13 @@ def minijeu3(p, coord_monde, minijeu3_fini,  armes_et_items_possedees, armes_pos
     return coord_monde, minijeu3_fini, armes_et_items_possedees, armes_possedees, armes_joueur
 
 def anim_debut(son):
+    """Animation avant le mini-jeu
+    
+    Parameters
+    ----------
+    son : str
+        Chemin d'accès du fichier son
+    """
     replique("Bien le bonjour ! Vous êtes venue pour prier j'imagine ?", GRIS_1, (0,0,0))
     play_sound(son)
     replique("Moi ? (* regarde derrière elle *) Je... Ah oui, oui tout à fait.", GRIS_2, (0,0,0))
@@ -130,6 +163,15 @@ def anim_debut(son):
     pyg.mixer.music.stop()
 
 def anim_fin(victoire, son):
+    """Animation après le mini-jeu
+    
+    Parameters
+    ----------
+    victoire : bool
+        Si le joueur a gagné ou pas
+    son : str
+        Chemin d'accès du fichier son
+    """
     if victoire :
         replique("Bravo ! Vous maitrisez vos classiques à ce que je vois.", GRIS_1, (0,0,0))
         play_sound(son)
@@ -174,16 +216,17 @@ def pause_differenciee(chant, j):
         pyg.time.delay(5000)
 
 def noubliez_pas_les_paroles():
+    """ Mini-jeu N'oubliez pas les paroles"""
     FONDX, FONDY = FOND.get_size()
     i = 0
     clock = pyg.time.Clock()
     win_count = 0
-    for i in range(3) :
+    for i in range(3) : # toutes les musiques
         run = True
-        complete = 0
-        chant = CHANTS[i]
-        texte = PAROLES[chant]["Paroles_trou"]
-        play_sound(PAROLES[chant]["Musique"])
+        complete = 0 # nombre de mots complétés
+        chant = CHANTS[i] # chant actuel
+        texte = PAROLES[chant]["Paroles_trou"] # texte affiché
+        play_sound(PAROLES[chant]["Musique"]) # joue la musique
         while run :
             clock.tick(60)
             for event in pyg.event.get():
@@ -191,7 +234,7 @@ def noubliez_pas_les_paroles():
                     pyg.quit()
                     exit()
             for j in range(len(texte)) :
-                if j%3 == 0:
+                if j%3 == 0: # pour revenir au début toutes les 3 lignes
                     WIN.fill((225, 225, 225))
                     for t in range(-FONDX, WIDTH + FONDX, FONDX):
                         for x in range(-FONDY, HEIGHT + FONDY, FONDY):
@@ -204,34 +247,46 @@ def noubliez_pas_les_paroles():
                 l = FONT.render(ligne, True, (20, 20, 20))
                 WIN.blit(l, (80, 100+20*(j%3)))
                 pyg.display.update()
-                if "_" in ligne :
-                    pyg.mixer.music.pause()
-                    mot = ecrire(l, j, FOND)
+                if "_" in ligne : # s'il y a un espace à compléter
+                    pyg.mixer.music.pause() 
+                    mot = ecrire(l, j) 
                     if mot == PAROLES[chant]["Mots_non_accentues"][complete]:
                         win_count += 1
                     complete += 1
                     pyg.mixer.music.unpause()
-                pause_differenciee(chant, j)
+                pause_differenciee(chant, j) # attente pour passer à la ligne suivante
                 if j == len(texte)-1:
                     pyg.mixer.music.stop()
                     run = False
                     frame = 0
                     i = 0
-                    while i < 21 :
+                    while i < 21 : # anim pour passer à la musique suivante
                         frame += 1
                         WIN.blit(ANIM_NOUBLIEZ_PAS_LES_PAROLES[i], (0,0))
                         if frame%6 == 0:
                             i += 1
                         pyg.display.update()
-    return win_count >= 5
+    return win_count >= 5 # condition de victoire
 
         
-def ecrire(l, k, FOND):
+def ecrire(l, k):
+    """Permet de remplir les espaces manquants à partir du clavier
+    l : Surface
+        Ligne affichée à compléter
+    k : int
+        indice de la ligne dans le texte
+
+    Returns
+    -------
+    mot : str
+        Mot rentré par le joueur
+    """
+
     FONDX, FONDY = FOND.get_size()
     waiting = True
     mot = ""
     while waiting:
-        lettre = None
+        lettre = None # pour que ça ne réécrive pas en boucle la même lettre
         WIN.fill((225, 225, 225))
         for t in range(-FONDX, WIDTH + FONDX, FONDX):
             for j in range(-FONDY, HEIGHT + FONDY, FONDY):
@@ -303,13 +358,13 @@ def ecrire(l, k, FOND):
                 if keys[pyg.K_SPACE]:
                     lettre = " "
                 if keys[pyg.K_BACKSPACE]:
-                    mot = mot[0:-1]
+                    mot = mot[0:-1] # enlever le dernier caractère
                 if keys[pyg.K_RETURN]:
-                    return mot
+                    return mot # soumettre le mot
         if lettre is not None:
             mot += lettre
         affichage = FONT.render(mot, True, (0, 0, 0))
         rect = affichage.get_rect()
-        rect.bottomright= l_rect.bottomright
+        rect.bottomright= l_rect.bottomright # pour écrire pile sur l'espace vide
         WIN.blit(affichage, rect)
         pyg.display.update()
