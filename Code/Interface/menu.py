@@ -225,7 +225,7 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                     musique_close = True
 
             if show_start:
-                result = open_start(WIN, events, mouse_pos, mouse_pressed, btn_rev_start, FONT_BUTTON)
+                result = open_start(WIN, events, mouse_pos, mouse_pressed, btn_rev_start, FONT_BUTTON, joueur)
                 if result is not None:
                     if result == "close":
                         show_start = False
