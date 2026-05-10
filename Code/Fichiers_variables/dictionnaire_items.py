@@ -193,9 +193,8 @@ TYPES_ITEMS = {
         "Iphone_2000": {"image": IPHONE_2000, "texte": "Objet rare multi-effets."},
         "Minuteur": {"image": MINUTEUR, "texte": "Augmente la durée des bonus."},
         "Ambroisie": {"image": AMBROISIE, "texte": "Permet de ressusciter."},
-        "Ensemble_juicy": {"image": CROP_TOP_ROSE, "texte": "Bonus global."},
-        "Manteau_leopard": {"image": CROP_TOP_ROSE, "texte": "Augmente la résistance."}
-        
+        "Ensemble_juicy": {"image": JUCY, "texte": "Bonus global."},
+        "Manteau_leopard": {"image": MANTEAU_LEOPARD, "texte": "Augmente la résistance."},
     },
 
     "Nonne": {

@@ -78,6 +78,8 @@ RING_LIGHT = pyg.image.load("Images/Armes_items/ring light.png")
 LIVRE_DU_LORE = pyg.image.load("Images/Armes_items/livre_du_lore.png")
 EPEE_BLEUE = pyg.image.load("Images/Armes_items/epee_bleue_img.png") 
 FAUX_ONGLE = pyg.image.load("Images/Armes_items/faux_ongles_roses.png") 
+MANTEAU_LEOPARD = pyg.image.load("Images/Armes_items/manteau_leopard.png")
+JUCY = pyg.image.load("Images/Armes_items/jucy.png")
 
 
 # NONNE 
