@@ -33,3 +33,5 @@ def play_video(image, col, row, nb_a_enlever):
                 fade -= 5
         frame += 1
         pyg.display.update()
+
+# LIGNE QUI SERT A RIEN MAIS FAUT QUE JE COMMIT
