@@ -79,9 +79,7 @@ def _draw_button(surface, rect, label, hovered):
     surface.blit(txt, txt.get_rect(center=rect.center))
 
 
-# ─────────────────────────────────────────────
-#  ÉCRAN VICTOIRE
-# ─────────────────────────────────────────────
+
 
 def victoire(
     map_terminee_nom: str,
@@ -233,11 +231,11 @@ def victoire(
                           (tableau_rect.right - 20, unlock_y), 1)
             unlock_y += 10
             if nouvelle_map:
-                t = FONT_UNLOCK.render(f"✦  Nouvelle map débloquée : {nouvelle_map}", True, OR)
+                t = FONT_UNLOCK.render(f"Nouvelle map débloquée : {nouvelle_map}", True, OR)
                 WIN.blit(t, t.get_rect(center=(CENTREx, unlock_y)))
                 unlock_y += 22
             if nouveau_perso:
-                t = FONT_UNLOCK.render(f"✦  Nouveau personnage : {nouveau_perso}", True, OR)
+                t = FONT_UNLOCK.render(f"Nouveau personnage : {nouveau_perso}", True, OR)
                 WIN.blit(t, t.get_rect(center=(CENTREx, unlock_y)))
 
         # ── Boutons ────────────────────────────────────────────────────────

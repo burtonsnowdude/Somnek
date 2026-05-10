@@ -22,7 +22,7 @@ PROJECTILES = {
 
     # Fille populaire
     "Gloss_rose":           "Images/Armes_items/projectile/proj_gloss_rose.png",
-    "Faux_cils":            "Images/Armes_items/projectile/proj_faux_cil.png",
+    "Faux_cils":            "Images/Armes_items/projectile/proj_faux_cils.png",
     "Faux_ongles_roses":    "Images/Armes_items/projectile/proj_ongles.png",
     "Bracelet_de_sa_soeur": {
         "path":    "Images/Armes_items/projectile/proj_bracelet.png",
@@ -112,7 +112,7 @@ class Projectile(pyg.sprite.Sprite):
                 nom_arme = ""
         self.nom_arme = nom_arme
 
-        # ── Chargement image / animation ──────────────────────────────────
+        
         result, self.anime = _charger_image_projectile(nom_arme)
 
         if self.anime:
@@ -124,13 +124,13 @@ class Projectile(pyg.sprite.Sprite):
         else:
             self.image = result
 
-        # ── Position et direction ─────────────────────────────────────────
+       
         self.rect    = self.image.get_rect(center=player.pos.center)
         dx, dy       = player.get_direction()
         self.dx      = float(dx)
         self.dy      = float(dy)
 
-    # ── Helpers ───────────────────────────────────────────────────────────
+    
 
     def set_direction(self, angle: float):
         rad      = math.radians(angle)
@@ -141,7 +141,7 @@ class Projectile(pyg.sprite.Sprite):
             self.dx /= length
             self.dy /= length
 
-    # ── Update / Draw ─────────────────────────────────────────────────────
+    
 
     def update(self):
         if self.anime:

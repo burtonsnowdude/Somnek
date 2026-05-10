@@ -87,6 +87,9 @@ EPEE_BLEUE = pyg.image.load("Images/Armes_items/epee_bleue_img.png")
 FAUX_ONGLE = pyg.image.load("Images/Armes_items/faux_ongles_roses.png") 
 MANTEAU_LEOPARD = pyg.image.load("Images/Armes_items/manteau_leopard.png")
 JUCY = pyg.image.load("Images/Armes_items/jucy.png")
+COLLANT = pyg.image.load("Images/Armes_items/collant.png")
+CAPE = pyg.image.load("Images/Armes_items/cape.png")
+COEUR  = pyg.image.load("Images/Armes_items/coeur.png")
 
 
 # NONNE 
@@ -104,10 +107,10 @@ MEDAILLON = pyg.image.load("Images/Armes_items/medaillon.png")
 VOILE = pyg.image.load("Images/Armes_items/voile.png")
 JALAMBAYA = pyg.image.load("Images/Armes_items/jambalaya.png")
 AURA_DIVINE = pyg.image.load("Images/Armes_items/aura divine.png")
-
+TABLEAU_SACRE = pyg.image.load("Images/Armes_items/tableau.png")
 CHAPELET = pyg.image.load("Images/Armes_items/chapelet.png")
 LANCE_SACREE = pyg.image.load("Images/Armes_items/lance sacre.png")
-
+HUILE_BENEDICTION = pyg.image.load("Images/Armes_items/huile.png")
 SAC_BLEU = pyg.image.load("Images/Armes_items/sac_bleu.png")
 ###################################### PERSONNAGES ##########################################################
 # FILLE POPULAIRE

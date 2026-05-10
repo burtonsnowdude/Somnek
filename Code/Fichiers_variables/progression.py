@@ -262,7 +262,7 @@ def map_terminee(joueur, nom_map, noms, perso=None, player=None):
         if nouveau_perso:
             break
 
-    # ✅ FIX : on utilise les vrais headers du fichier, pas `noms`
+    
     _ecrire_csv_avec_headers(CHEMIN_PERSOS, rows, headers)
     print(f"[Progression] Perso débloqué : {nouveau_perso} pour '{joueur}'")
 

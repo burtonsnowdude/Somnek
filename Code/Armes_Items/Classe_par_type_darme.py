@@ -24,10 +24,6 @@ ZONES_IMAGES = {
 _ZONE_FALLBACK = "Images/Armes_items/projectile/proj_couronne.png"
 
 
-# ─────────────────────────────────────────────
-#  Base
-# ─────────────────────────────────────────────
-
 class ArmeBase:
     def __init__(self, player, nom_arme: str = None):
         from Fichiers_variables.dictionnaire_armes import TYPES_ARMES
