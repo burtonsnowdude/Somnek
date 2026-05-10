@@ -18,7 +18,8 @@ GESTION_DES_ARMES = {
         "Faux_ongles_roses": {"effet": "degats", "max": 23},
         "Fer_a_lisser": {"effet": "degats", "max": 19},
         "Pass_Navigo": {"effet": "degats", "max": 20},
-        "Ring_light": {"effet": "degats", "max": 40}
+        "Ring_light": {"effet": "degats", "max": 40},
+        "Highliter" : {"effet": "degats", "max" : 40}
     },
 
     "Nonne": {
@@ -72,6 +73,12 @@ TYPES_ARMES = {
         },
 
     "Fille_populaire": {
+
+    "Higliter": {
+        "type_arme": "balle",
+        "image": HIGLIGHTER,
+        "texte": "Jette des étoiles trop joliesss . Dégâts de base : 10PV."
+    },
     "Gloss_rose": {
         "type_arme": "zone",
         "image": GLOSS_ROSE,

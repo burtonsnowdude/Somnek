@@ -2,28 +2,7 @@ import csv
 from Fichiers_variables.variables import *
 from Fichiers_variables.dictionnaire_items import TYPES_ITEMS
 from Fichiers_variables.dictionnaire_armes import GESTION_DES_NIVEAUX_ARMES, TYPES_ARMES
-"""
-Niveau atteint
-Argent obtenu
-Personnages débloqués (pour le moment pas faisable) 
-Armes/ items débloqués
-Quêtes réussies (pareil pour le moment pas faisable) 
 
-
---> Mettre un système d'identifiant ? Parce que sinon dès qu'on fera une partie ça enregistrera pour tout
-le monde donc faudra en permanence supprimer les données créées.
---> Donc créer l'interface plus tôt que prévu
---> Pour l'instant juste stocker les infos mais tout sera affiché plus tard sur l'interface d'accueil
-
-Dans chaque fichier : une colonne par personne
-1 fichier par catégorie : persos, armes/items, quêtes, et niveau+argent ensemble
-    1 ligne par arme-item/perso/quête
-    Si obtenu : 1
-    Si pas obtenu : 0
-Dans 1 autre fichier : niveau + argent
-    1 ligne pour le niveau, 1 ligne pour l'argent
-    Avec juste les valeurs pour chacun dedans
-"""
 ######################## Fonctions générales #############################
 
 def det_noms():
@@ -36,73 +15,33 @@ def det_noms():
     return noms, new_tab
 
 def ajouter_utilisateur(nom, noms):
-    """Ajouter un nouvel utilisateur
-    
-    Parameters
-    ----------
-    nom : str
-        Le nom du joueur actuel
-    noms : str
-        La liste de tous les joueurs inscrits
-    
-    Returns
-    -------
-    list
-        La liste de joueurs inscrits actualisée
-    ou 
-    False
-    """
     if nom not in noms :
         noms.append(nom)
         new_tab_armes = contenu_fichier_armes()
         for ligne in new_tab_armes:
             ligne[nom] = 0
-        return noms, new_tab_armes
-    return False 
+        new_tab_quetes = contenu_fichier_quetes()
+        for ligne in new_tab_quetes:
+            ligne[nom] = 0
+        return noms, new_tab_armes, new_tab_quetes
+    return False
 
 ######################### Niveau et argent #################################
 
 def actualiser_donnees(nom, niveau, argent, new_tab):
-    """Actualise les donnees de niveau et l'argent possede par le joueur
-    
-    Parameters
-    ----------
-    nom : str
-        Le nom du joueur actuel
-    niveau : int
-        Le niveau actuel atteint par le joueur
-    argent : int
-        L'argent récolté par le joueur
-    new_tab : list(dict)
-        La liste actualisée contenant les lignes de données sous forme de dictionnaires
-    
-    Returns
-    -------
-    list(dict)
-        La liste de données qui seront réécrites dans le fichier csv
-    """
     if new_tab[0][nom] < niveau :
         new_tab[0][nom] = niveau
     new_tab[1][nom] = argent
     return new_tab
 
-
-########################## Armes ###########################
+########################## Armes / Items ###################################
 
 def definir_fichier_nouv_armes(noms):
-    """Réinitialise le fichier armes_obtenues_par_joueur.csv, sera utile quand on aura 
-    le bon dico pour les ARMES
-    
-    Parameters
-    ----------
-    noms : list(str)
-        La liste des joueurs inscrits
-    """
     headers = ["Type"] + noms
     with open("Fichiers_csv/armes_obtenues_par_joueur.csv", "w", newline = "") as fichier_niveau :
             writer = csv.DictWriter(fichier_niveau, headers)
             writer.writeheader()
-            for perso in TYPES_ITEMS : 
+            for perso in TYPES_ITEMS :
                 for arme in TYPES_ITEMS[perso]:
                     row = {}
                     row["Type"] = arme
@@ -110,8 +49,6 @@ def definir_fichier_nouv_armes(noms):
                         row[nom] = 0
                     writer.writerow(row)
             for perso in TYPES_ARMES:
-                print("TYPE perso =", type(perso))
-                print("VALEUR perso =", perso)
                 for arme in TYPES_ARMES[perso]:
                     row = {}
                     row["Type"] = arme
@@ -122,7 +59,6 @@ def definir_fichier_nouv_armes(noms):
 def contenu_fichier_armes():
     """Récupère les données du fichier armes_obtenues_par_joueur.csv"""
     contenu_niveau = csv.DictReader(open("Fichiers_csv/armes_obtenues_par_joueur.csv"))
-    
     new_tab = []
     for row in contenu_niveau :
         new_tab.append(row)
@@ -134,37 +70,24 @@ def liste_armes_acquises(joueur):
     return liste
 
 def ajouter_arme(nom, arme, new_tab):
-    """Actualise les donnees des armes possedees par le joueur
-    
-    Parameters
-    ----------
-    nom : str
-        Le nom du joueur actuel
-    arme : str
-        Le nom de l'arme récupérée
-    new_tab : list(dict)
-        La liste actualisée contenant les lignes de données sous forme de dictionnaires
-    
-    Returns
-    -------
-    list(dict)
-        La liste de données qui seront réécrites dans le fichier csv
-    """
+    """Marque une arme/item comme acquis dans le tableau en mémoire."""
     for row in new_tab :
         if row["Type"] == arme:
             if int(row[nom]) == 0:
                 row[nom] = 1
     return new_tab
 
-def reecrire_fichier(fichier, new_tab, noms):
-    """Réécrit le fichier csv avec les données actualisées
-
-    Parameters
-    ----------
-    new_tab : list(dict)
-        La liste actualisée contenant les lignes de données sous forme de dictionnaires
+def ajouter_arme_acquise(joueur_nom: str, nom_item: str):
     """
-    if fichier == "armes_obtenues_par_joueur" :
+    Marque un item/arme comme acquis pour un joueur et sauvegarde immédiatement.
+    """
+    noms, _ = det_noms()
+    new_tab  = contenu_fichier_armes()
+    new_tab  = ajouter_arme(joueur_nom, nom_item, new_tab)
+    reecrire_fichier("armes_obtenues_par_joueur", new_tab, noms)
+
+def reecrire_fichier(fichier, new_tab, noms):
+    if fichier in ("armes_obtenues_par_joueur", "quetes_reussis") :
         headers = ["Type"] + noms
     else :
         headers = noms
@@ -189,36 +112,51 @@ def get_info(joueur, info, arme):
                     return False
                 if row[joueur] == 1 :
                     return True
-                else : 
+                else :
                     return False
-                
+
 def replace_player_money(joueur, argent):
     noms, new_tab = det_noms()
     new_tab[1][joueur] = argent
     reecrire_fichier("niveau_argent", new_tab, noms)
 
 def joueur_qui_a_tout(noms):
-    """Ajouter un nouvel utilisateur
-    
-    Parameters
-    ----------
-    nom : str
-        Le nom du joueur actuel
-    noms : str
-        La liste de tous les joueurs inscrits
-    
-    Returns
-    -------
-    list
-        La liste de joueurs inscrits actualisée
-    ou 
-    False
-    """
     nom = "test"
     noms.append(nom)
     new_tab_armes = contenu_fichier_armes()
     for ligne in new_tab_armes:
         ligne[nom] = 1
     reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
-    
-    
+
+########################### Quêtes ##########################################
+
+def contenu_fichier_quetes():
+    """Récupère les données du fichier quetes_reussis.csv"""
+    contenu = csv.DictReader(open("Fichiers_csv/quetes_reussis.csv"))
+    return [row for row in contenu]
+
+
+def actualiser_quete(nom, quete):
+    """
+    Marque une quête comme réussie pour un joueur et sauvegarde immédiatement.
+    Si la quête n'existe pas encore dans le CSV, ajoute la ligne automatiquement.
+    """
+    noms, _ = det_noms()
+    new_tab = contenu_fichier_quetes()
+
+    # Cherche la ligne de la quête
+    trouve = False
+    for row in new_tab:
+        if row.get("Type") == quete:
+            row[nom] = 1
+            trouve = True
+            break
+
+    # Crée la ligne si elle n'existe pas
+    if not trouve:
+        nouvelle_ligne = {"Type": quete}
+        for n in noms:
+            nouvelle_ligne[n] = 1 if n == nom else 0
+        new_tab.append(nouvelle_ligne)
+
+    reecrire_fichier("quetes_reussis", new_tab, noms)

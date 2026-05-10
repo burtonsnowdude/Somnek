@@ -1,8 +1,8 @@
 Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee
-Lunettes_cassees,0,0,0,0,1,0,0,0,0,0
-Souris_pc,0,0,0,0,1,0,0,0,0,0
-Chaussettes_propres,0,0,0,0,1,0,0,0,0,0
-Cahier_NSI,0,0,0,0,1,0,0,0,0,0
+Lunettes_cassees,0,0,0,0,1,0,0,1,0,0
+Souris_pc,0,0,0,0,1,0,0,1,0,0
+Chaussettes_propres,0,0,0,0,1,0,0,1,0,0
+Cahier_NSI,0,0,0,0,1,0,0,1,0,0
 Vody_Lemonade,0,0,0,0,1,0,0,0,0,0
 Deodorant,0,0,0,0,1,0,0,0,0,0
 Pomme_scientifique,0,0,0,0,1,0,0,0,0,0
@@ -20,9 +20,9 @@ Crop_top_rose,0,0,0,0,1,0,0,0,0,0
 Coque_trefle,0,0,0,0,1,0,0,0,0,0
 Mousse_vanille,0,0,0,0,1,0,0,0,0,0
 Sac_main_violet,0,0,0,0,1,0,0,0,0,0
-Croix_marron,0,0,0,0,1,0,0,0,0,0
-Chapelet,0,0,0,0,1,0,0,0,0,0
-Mocassin,0,0,0,0,1,0,0,0,0,0
+Croix_marron,0,0,0,0,1,0,0,1,0,0
+Chapelet,0,0,0,0,1,0,0,1,0,0
+Mocassin,0,0,0,0,1,0,0,1,0,0
 Tableau_sacre,0,0,0,0,1,0,0,0,0,0
 Bourse,0,0,0,0,1,0,0,0,0,0
 Bougie,0,0,0,0,1,0,0,0,0,0
@@ -30,9 +30,9 @@ Voile,0,0,0,0,1,0,0,0,0,0
 Huile_benie,0,0,0,0,1,0,0,0,0,0
 Ostie,0,0,0,0,1,0,0,0,0,0
 Sac_a_dos_bleu,0,0,0,0,1,0,0,0,0,0
-Eau_benite,0,0,0,0,1,0,0,0,0,0
+Eau_benite,0,0,0,0,1,0,0,1,0,0
 Epee_bleue,0,0,0,0,1,0,0,0,0,0
-Cle_USB,0,0,0,0,1,0,0,0,0,0
+Cle_USB,0,0,0,0,1,0,0,1,0,0
 Epee_enflammee,0,0,0,0,1,0,0,0,0,0
 Pistolets,0,0,0,0,1,0,0,0,0,0
 Ticket_de_metro,0,0,0,0,1,0,0,0,0,0
@@ -60,10 +60,9 @@ Mousse_a_la_vanille,0,0,0,0,1,0,0,0,0,0
 Ambroisie,0,0,0,0,1,0,0,0,0,0
 Ensemble_Juicy_Couture,0,0,0,0,1,0,0,0,0,0
 Manteau_leopard,0,0,0,0,1,0,0,0,0,0
-Croix_marron,0,0,0,0,1,0,0,0,0,0
-Feu_de_l'Esprit_Saint,0,0,0,0,1,0,0,0,0,0
-Medaille_de_bapteme,0,0,0,0,1,0,0,0,0,0
+Croix_marron,0,0,0,0,1,0,0,1,0,0
+Feu_de_l'Esprit_Saint,0,0,0,0,1,0,0,1,0,0
+Medaille_de_bapteme,0,0,0,0,1,0,0,1,0,0
 Coiffe_de_rameau,0,0,0,0,1,0,0,0,0,0
 Lance_sacree,0,0,0,0,1,0,0,0,0,0
 Aura_divine,1,0,0,0,1,0,0,0,0,0
->>>>>>> 765098a59a89ed61231df219e6bbfa306767b1c9,,,,,,,,0,0,0
