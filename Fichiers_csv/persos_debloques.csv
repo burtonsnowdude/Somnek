@@ -1,11 +1,6 @@
-<<<<<<< HEAD,liam_du_connecticut,nana,fee
-Type,0,0,0
-Fille_populaire,0,0,0
-Nerd,0,0,0
-Nonne,0,0,0
-=======,0,0,0
-Type,0,0,0
-Fille_populaire,0,0,0
-Nerd,0,0,0
-Nonne,0,0,0
->>>>>>> bbd798b221a025595dffd30ce9a5232eadedb55f,0,0,0
+
+
+Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee
+Fille_populaire,1,0,1,0,0,0,0,1,0,0
+Nerd,0,0,1,0,0,0,0,0,0,0
+Nonne,0,0,1,0,0,0,0,0,0,0

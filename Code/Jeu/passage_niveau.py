@@ -73,9 +73,11 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
         niveau += 1
 
     dispo = items_dispo + armes_dispo
+    armes_enlevees = []
     for arme in dispo[:]:
-        if arme in armes_et_items_possedees:
+        if arme in armes_et_items_possedees and not arme in armes_enlevees:
             dispo.remove(arme)
+            armes_enlevees.append(arme)
 
     # Fallback si tout est déjà possédé
     if len(dispo) == 0:
@@ -84,6 +86,7 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
     choix = []
     compteur = 0
     while compteur < 3:
+        print("y")
         arme = choice(dispo)
         if arme not in choix:
             choix.append(arme)
