@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,aa,aaa,liam_du_connecticut
 Avoir_retrouve_quelquun,0,0,0,0,0,0,0,,0,0,0
 Inspecter_livre_mysterieux,0,0,0,0,0,0,0,,0,0,0
@@ -12,3 +13,19 @@ aquerir_1,0,0,0,0,0,0,0,1,0,0,0
 aquerir_5,0,0,0,0,0,0,0,1,0,0,0
 aquerir_10,0,0,0,0,0,0,0,1,0,0,0
 aquerir_50,0,0,0,0,0,0,0,1,0,0,0
+=======
+Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee
+Avoir_retrouve_quelquun,0,0,0,0,0,0,0,,,
+Inspecter_livre_mysterieux,0,0,0,0,0,0,0,,,
+Trouver_objet_mysterieux,0,0,0,0,0,0,0,,,
+Eliminer_boss_final,0,0,0,0,0,0,0,,,
+Entrer_metro,0,0,0,0,0,0,0,,,
+kill_10,1,0,0,0,0,0,0,1,0,0
+kill_50,1,0,0,0,0,0,0,1,0,0
+kill_100,0,0,0,0,0,0,0,1,0,0
+kill_500,0,0,0,0,0,0,0,1,0,0
+aquerir_1,0,0,0,0,0,0,0,1,0,0
+aquerir_5,0,0,0,0,0,0,0,1,0,0
+aquerir_10,0,0,0,0,0,0,0,1,0,0
+aquerir_50,0,0,0,0,0,0,0,1,0,0
+>>>>>>> bbd798b221a025595dffd30ce9a5232eadedb55f

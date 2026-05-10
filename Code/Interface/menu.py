@@ -210,7 +210,7 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                     pyg.mixer.music.play(-1)
 
             if show_realisation:
-                popup = realisation_brouillon(events)
+                popup = realisation_brouillon(events, joueur)
                 WIN.blit(popup, ((WIDTH - POPUP_W)//2, (HEIGHT - POPUP_H)//2))
                 btn_rev_real.draw(WIN, mouse_pos)
                 if btn_rev_real.is_clicked(mouse_pos, mouse_pressed):
@@ -239,6 +239,9 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                         show_shop = False
                         perso = result[1]
                         map_choisie = result[2]
+                        if map_choisie == "Metro":
+                            from Fichiers_variables.gestion_fichiers import actualiser_quete
+                            actualiser_quete(joueur, "Entrer_metro")
                         return perso, map_choisie, joueur
 
             if show_options:

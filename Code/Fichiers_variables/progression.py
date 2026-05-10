@@ -12,6 +12,7 @@ Règles :
 
 import csv
 import os
+from Jeu.player import Player
 
 
 ORDRE_MAPS   = ["Cour", "Rue", "Ruelle", "Foire", "Metro"]
@@ -92,9 +93,7 @@ def _ajouter_colonne_joueur_si_manque(chemin, joueur, noms):
         _ecrire_csv(chemin, data, noms)
 
 
-# ─────────────────────────────────────────────
-#  API PUBLIQUE
-# ─────────────────────────────────────────────
+
 
 def init_progression(joueur, noms=None):
     """Inscrit le joueur dans persos_debloques.csv ET maps_debloquees.csv,
@@ -174,7 +173,7 @@ def maps_debloquees(joueur):
         print(f"[Auto-progression] maps_debloquees.csv créé pour '{joueur}'.")
         return [map_depart]
 
-    # Lire
+    
     with open(CHEMIN_MAPS, "r", newline="") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
@@ -220,7 +219,7 @@ def persos_debloques(joueur):
 
     perso_depart = ORDRE_PERSOS[0]  # Fille_populaire
 
-    # Si le fichier n'existe pas → on le crée
+    
     if not os.path.exists(CHEMIN_PERSOS):
         os.makedirs(os.path.dirname(CHEMIN_PERSOS), exist_ok=True)
         with open(CHEMIN_PERSOS, "w", newline="") as f:
@@ -231,7 +230,7 @@ def persos_debloques(joueur):
         print(f"[Auto-progression] Fichier créé pour '{joueur}'.")
         return [perso_depart]
 
-    # Lire le fichier
+    
     with open(CHEMIN_PERSOS, "r", newline="") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
@@ -291,7 +290,16 @@ def map_terminee(joueur, nom_map, noms):
     nouvelle_map  = None
     nouveau_perso = None
 
-    # ─── Map suivante ────────────────────────────────────────────────────
+    #debloque item
+    if nom_map == "Metro":
+        if p.perso == "Nonne":
+            p.ajouter_item("Voile")
+        elif p.perso == "Nerd":
+            p.ajouter_item("Armure_chevalier")
+        elif p.perso == "Fille_populaire":
+            p.ajouter_item("jean_stanely")
+
+   
     if nom_map in ORDRE_MAPS:
         idx = ORDRE_MAPS.index(nom_map)
         if idx + 1 < len(ORDRE_MAPS):
@@ -304,7 +312,7 @@ def map_terminee(joueur, nom_map, noms):
                     break
             _ecrire_csv(CHEMIN_MAPS, maps_data, noms)
 
-    # ─── Perso suivant ───────────────────────────────────────────────────
+    
     persos_data = _lire_csv(CHEMIN_PERSOS)
     for nom_perso_canonique in ORDRE_PERSOS:
         for row in persos_data:

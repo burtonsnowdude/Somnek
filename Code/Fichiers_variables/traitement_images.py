@@ -22,7 +22,7 @@ BGX, BGY = BG.get_size()
 FLECHE = pyg.image.load("Images/Coffres/fleche.png")
 FLECHE = pyg.transform.smoothscale(FLECHE, (30, 50))
 TRESOR = pyg.image.load("Images/Coffres/tresor.png")
-ARGENT = pyg.image.load("Images/Coffres/argent.png")
+ARGENT = pyg.image.load("Images/Interface/argent.png")
 KILL_SIGN = pyg.image.load("Images/Autre/kill.png")
 
 

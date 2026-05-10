@@ -5,7 +5,9 @@ from Fichiers_variables.variables import *
 from Affichage.fonctionnement_divers import remplir_fond
 from Fichiers_variables.dictionnaire_armes import GESTION_DES_NIVEAUX_ARMES
 from Fichiers_variables.dictionnaire_items import GESTION_NIVEAU_ITEMS
+from Jeu.passage_niveau import scroll_gemme
 
+FONT_COFFRE = pyg.font.SysFont("Press Start 2P", 50) 
 DISTANCE_MIN = -2000
 DISTANCE_MAX = 2000
 ARGENT_W = ARGENT.get_width()
@@ -70,11 +72,16 @@ class Coffre :
         """
         rect = ANIM_COFFRE[0].get_rect()
         rect.center = (CENTREx, CENTREy)
-        for i in ANIM_COFFRE :
+        frame = 0
+        i = 0
+        while i < len(ANIM_COFFRE) -1 :
             remplir_fond(p)
-            WIN.blit(i, rect)
+            scroll_gemme(frame)
+            WIN.blit(ANIM_COFFRE[i], rect)
+            frame += 1
+            if frame % 10 == 0 :
+                i += 1
             pyg.display.flip()
-            pyg.time.delay(200)
         armes_dispo = []
         items_dispo = []
         niveau = 1
@@ -99,10 +106,22 @@ class Coffre :
             rect = ARGENT.get_rect()
             rect.center = (CENTREx, CENTREy)
             WIN.blit(ARGENT, rect)
-            txt = FONT.render(str(argent_dispo), 1, (255, 255, 255))
-            WIN.blit(txt, (CENTREx, CENTREy-ARGENT_H/2+20))
-            pyg.display.flip()
-            pyg.time.delay(2000)
+            txt = FONT_COFFRE.render(str(argent_dispo), 1, (255, 255, 255))
+            txt_rect = txt.get_rect()
+            txt_rect.center = CENTREx, 200
+            frame = 0
+            fade = 255
+            while frame < 180 : 
+                remplir_fond(p)
+                scroll_gemme(frame)
+                txt.set_alpha(fade)
+                if frame%2 == 0:
+                    fade -= 1
+                rect.center = (CENTREx, CENTREy)
+                WIN.blit(ARGENT, rect)
+                frame += 1
+                WIN.blit(txt, txt_rect)
+                pyg.display.flip()
             return argent_dispo
         else : 
             choix = choice(dispo)
