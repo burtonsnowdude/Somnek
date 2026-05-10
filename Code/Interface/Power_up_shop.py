@@ -34,10 +34,6 @@ NOMS_FR = {
 }
 
 
-# ─────────────────────────────────────────────
-#  POSITIONS DES CELLULES (générées proprement)
-# ─────────────────────────────────────────────
-
 CELL_W, CELL_H = 130, 70
 GAP_X          = 25
 GAP_Y          = 18
@@ -73,10 +69,6 @@ def _calc_positions():
 CELLS_LAYOUT = _calc_positions()
 
 
-# ─────────────────────────────────────────────
-#  POLICES
-# ─────────────────────────────────────────────
-
 try:
     FONT_TITRE_CELL = pygame.font.Font("assets/pixels.ttf", 11)
 except Exception:
@@ -95,9 +87,7 @@ except Exception:
 FONT_MAX_LABEL = pygame.font.SysFont("Arial", 10)
 
 
-# ─────────────────────────────────────────────
-#  IMAGE ARGENT (remplace le mot "Or")
-# ─────────────────────────────────────────────
+
 
 try:
     IMG_ARGENT = pygame.image.load("Images/Interface/argent.png").convert_alpha()
@@ -114,9 +104,6 @@ IMG_ARGENT_PETIT = _scale_argent(28)   # à côté du compteur en bas
 IMG_ARGENT_MINI  = _scale_argent(22)   # dans le bouton acheter
 
 
-# ─────────────────────────────────────────────
-#  CELLULE
-# ─────────────────────────────────────────────
 
 class PowerUpCell:
     def __init__(self, x, y, w, h, power):
@@ -198,9 +185,6 @@ class PowerUpCell:
             cb._rect = orig
 
 
-# ─────────────────────────────────────────────
-#  SHOP
-# ─────────────────────────────────────────────
 
 class ShopPowerUp:
     def __init__(self):
@@ -217,7 +201,7 @@ class ShopPowerUp:
             self.bg = pygame.Surface((WIDTH, HEIGHT))
             self.bg.fill((40, 25, 60))
 
-    # ── Dessin ───────────────────────────────────────────────────────────
+    
 
     def draw(self, win, player_money, offset=(0, 0)):
         ox, oy = offset
@@ -290,7 +274,7 @@ class ShopPowerUp:
             iy = rect.centery - IMG_ARGENT_MINI.get_height() // 2
             win.blit(IMG_ARGENT_MINI, (cur_x, iy))
 
-    # ── Logique ──────────────────────────────────────────────────────────
+    
 
     def update(self, events, win, mouse_pos, mouse_pressed,
                player_money, player, offset=(0, 0)):
@@ -340,9 +324,6 @@ class ShopPowerUp:
         return player_money
 
 
-# ─────────────────────────────────────────────
-#  API EXTERNE
-# ─────────────────────────────────────────────
 
 _shop_instance = None
 
