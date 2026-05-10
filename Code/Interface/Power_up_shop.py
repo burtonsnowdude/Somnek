@@ -31,6 +31,22 @@ NOMS_FR = {
     "croissance":      "Croissance",
 }
 
+# ── Dimensions fenêtre (doit correspondre à fond_power_up.png) ───────────────
+WIDTH, HEIGHT = 320, 350
+
+# ── Couleurs ──────────────────────────────────────────────────────────────────
+COLOR_CELL      = (220, 180, 210, 180)   # rose translucide comme sur l'image
+COLOR_SELECTED  = (255, 220, 50)         # jaune vif
+COLOR_BORDER    = (140, 80, 140)         # bordure violette
+COLOR_BOUGHT    = (80, 200, 100)         # carré niveau acheté : vert
+COLOR_LOCKED    = (160, 120, 160)        # carré niveau non acheté : mauve sombre
+COLOR_TEXT      = (60, 20, 80)           # texte violet foncé
+COLOR_PRICE     = (180, 60, 60)          # prix en rouge foncé
+COLOR_MAX       = (80, 160, 80)          # MAX en vert
+
+# ── Positions et tailles des cases (en px, calquées sur l'image 320x350) ─────
+#   Chaque tuple : (x, y, w, h, clé_power_up, label)
+
 CELLS_LAYOUT = [
     # ── Ligne 1 : 3 cases en haut ─────────────────────────────────────────
     ( 10,  18,  85, 55, "Pouvoir",         "Pouvoir"),
