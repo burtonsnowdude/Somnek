@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee,new
 Fille_populaire,1,0,1,0,0,0,0,1,0,0,1
 Nerd,0,0,0,0,0,0,0,0,0,0,0
 Nonne,0,0,0,0,0,0,0,0,0,0,0
+=======
+Type,Daphne,Feerose,Liam,Random,Test,TEST,encore_un_test,fee,FEE,Fee
+Fille_populaire,1,0,1,0,0,0,0,1,0,0
+Nerd,0,0,1,0,0,0,0,0,0,0
+Nonne,0,0,1,0,0,0,0,0,0,0
+>>>>>>> 1fbfa0e9e86dc4301129524d14f90e5deea92277
