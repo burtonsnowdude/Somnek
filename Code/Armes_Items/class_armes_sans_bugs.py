@@ -17,6 +17,8 @@ class Arme:
     for _perso, _armes in ARMES_PAR_PERSO.items():
         for _nom, _data in _armes.items():
             ARMES[_nom] = {**Carac_base, **_data}
+    if ARMES[_nom]["dgbase"] <= 0:
+        ARMES[_nom]["dgbase"] = 10
 
     def __init__(self, nom_arme, perso="Nerd"):
         if nom_arme not in self.ARMES:
@@ -24,7 +26,7 @@ class Arme:
         self.nom = nom_arme
         self.perso = perso
         self.caracteristiques = self.ARMES[nom_arme].copy()
-        self.attack = self.caracteristiques.get("dgbase", 0)
+        self.attack = self.caracteristiques.get("dgbase", 10)
 
         type_data = TYPES_ARMES.get(perso, {}).get(nom_arme, {})
         self.image = type_data.get("image", None)

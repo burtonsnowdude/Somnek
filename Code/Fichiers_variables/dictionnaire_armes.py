@@ -33,136 +33,161 @@ GESTION_DES_ARMES = {
 
 TYPES_ARMES = {
 
-    "Nerd": {    
+    "Nerd": {
+
         "Epee_bleue": {
-                "type_arme": "coup",        
-                "image": EPEE_BLEUE,        
-                "texte": "Donne +20% de douleur. Dégât de base : 4PV"    
-        },    
-        "Cle_USB": {        
-                "type_arme": "zone",        
-                "image": CLE_USB,        
-                "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée. Dégât de base : 23PV"    
-        },    
-        "Epee_enflammee": {        
-                "type_arme": "coup",        
-                "image": EPEE_ENFLAMMEE,        
-                "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 10PV"    
-        },    
-        "Pistolets": {        
-                "type_arme": "balle",        
-                "image": PISTOLETS,        
-                "texte": "Génère de fines zones de dégâts. Échelle à haute quantité. Dégât de base : 15PV"    
-        },    
-        "Ticket_de_metro": {        
-            "type_arme": "trait",        
-            "image": TICKET,        
-            "texte": "Attaque verticalement, traverse les ennemis. Dégât de base : 20PV"    
-        },    
-        "Epee_de_Guts": {        
-                "type_arme": "coup",        
-                "image": EPEE_GUTS,        
-                "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV"    
-        },    
-        "Console_allumee": {        
-                    "type_arme": "zone",        
-                    "image": CONSOLE,        
-                    "texte": "Augmente la Puissance des ennemi de 10 % pendant 1 minutes et augmente la Puissance du personnage de 20% pendant 2 minutes"    
-        }
+            "type_arme": "coup",
+            "image": EPEE_BLEUE,
+            "texte": "Donne +20% de douleur. Dégât de base : 4PV",
+            "dgbase": 4
         },
 
+        "Cle_USB": {
+            "type_arme": "zone",
+            "image": CLE_USB,
+            "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée. Dégât de base : 23PV",
+            "dgbase": 23
+        },
+
+        "Epee_enflammee": {
+            "type_arme": "coup",
+            "image": EPEE_ENFLAMMEE,
+            "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 10PV",
+            "dgbase": 10
+        },
+
+        "Pistolets": {
+            "type_arme": "balle",
+            "image": PISTOLETS,
+            "texte": "Génère de fines zones de dégâts. Échelle à haute quantité. Dégât de base : 15PV",
+            "dgbase": 15
+        },
+
+        "Ticket_de_metro": {
+            "type_arme": "trait",
+            "image": TICKET,
+            "texte": "Attaque verticalement, traverse les ennemis. Dégât de base : 20PV",
+            "dgbase": 20
+        },
+
+        "Epee_de_Guts": {
+            "type_arme": "coup",
+            "image": EPEE_GUTS,
+            "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV",
+            "dgbase": 40
+        },
+
+        "Console_allumee": {
+            "type_arme": "zone",
+            "image": CONSOLE,
+            "texte": "Augmente la Puissance des ennemi de 10 % pendant 1 minutes et augmente la Puissance du personnage de 20% pendant 2 minutes"
+        }
+    },
+
     "Fille_populaire": {
-    "Gloss_rose": {
-        "type_arme": "zone",
-        "image": GLOSS_ROSE,
-        "texte": "Crée des zones de destruction. Dégâts de base : 10PV."
+
+        "Gloss_rose": {
+            "type_arme": "zone",
+            "image": GLOSS_ROSE,
+            "texte": "Crée des zones de destruction. Dégâts de base : 10PV.",
+            "dgbase": 10
+        },
+
+        "Faux_cils": {
+            "type_arme": "trait",
+            "image": FAUX_CILS,
+            "texte": "Attaque horizontalement et traverse les ennemis. Réduit les dégâts entrants. Dégâts de base : 15PV.",
+            "dgbase": 15
+        },
+
+        "Faux_ongles_roses": {
+            "type_arme": "zone",
+            "image": FAUX_ONGLE,
+            "texte": "Crée une zone dévastatrice derrière le personnage. Dégâts de base : 23PV.",
+            "dgbase": 23
+        },
+
+        "Bracelet_de_sa_soeur": {
+            "type_arme": "balle",
+            "image": BRACELET_SOEUR,
+            "texte": "Tire sur un ennemi aléatoire et inflige de lourds dégâts. Dégâts de base : 16PV.",
+            "dgbase": 16
+        },
+
+        "Fer_a_lisser": {
+            "type_arme": "zone_multiples",
+            "image": FER_A_LISSER,
+            "texte": "Génère plusieurs zones de dégâts. Dégâts de base : 19PV.",
+            "dgbase": 19
+        },
+
+        "Pass_Navigo": {
+            "type_arme": "trait",
+            "image": PASS_NAVIGO,
+            "texte": "Attaque verticalement et traverse les ennemis. Dégâts de base : 20PV.",
+            "dgbase": 20
+        },
+
+        "Ring_light": {
+            "type_arme": "zone_multiples",
+            "image": RING_LIGHT,
+            "texte": "Tire rapidement dans quatre directions fixes. Dégâts de base : 40PV.",
+            "dgbase": 40
+        }
     },
-
-    "Faux_cils": {
-        "type_arme": "trait",
-        "image": FAUX_CILS,
-        "texte": "Attaque horizontalement et traverse les ennemis. Réduit les dégâts entrants. Dégâts de base : 15PV."
-    },
-
-    "Faux_ongles_roses": {
-        "type_arme": "zone",
-        "image": FAUX_ONGLE, #en attente
-        "texte": "Crée une zone dévastatrice derrière le personnage. Dégâts de base : 23PV."
-    },
-
-    "Bracelet_de_sa_soeur": {
-        "type_arme": "balle",
-        "image": BRACELET_SOEUR,
-        "texte": "Tire sur un ennemi aléatoire et inflige de lourds dégâts. Dégâts de base : 16PV."
-    },
-
-    "Fer_a_lisser": {
-        "type_arme": "zone_multiples",
-        "image": FER_A_LISSER,
-        "texte": "Génère plusieurs zones de dégâts. Dégâts de base : 19PV."
-    },
-
-    "Pass_Navigo": {
-        "type_arme": "trait",
-        "image": PASS_NAVIGO,
-        "texte": "Attaque verticalement et traverse les ennemis. Dégâts de base : 20PV."
-    },
-
-    "Ring_light": {
-        "type_arme": "zone_multiples",
-        "image": RING_LIGHT,#en attente
-        "texte": "Tire rapidement dans quatre directions fixes. Dégâts de base : 40PV."
-    },
-
-   
-
-},
 
     "Nonne": {
 
-    "Croix_marron": {
-        "type_arme": "poison",
-        "image": CROIX_DE_BASE,
-        "texte": "Une croix marron qui donne +22% en santé. Dégâts de base : 14PV."
-    },
+        "Croix_marron": {
+            "type_arme": "poison",
+            "image": CROIX_DE_BASE,
+            "texte": "Une croix marron qui donne +22% en santé. Dégâts de base : 14PV.",
+            "dgbase": 14
+        },
 
-    "Feu_de_l'Esprit_Saint": {
-        "type_arme": "zone",
-        "image": FEU_SAINT,
-        "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée. Dégât de base : 23PV."
-    },
+        "Feu_de_l'Esprit_Saint": {
+            "type_arme": "zone",
+            "image": FEU_SAINT,
+            "texte": "Crée une zone dévastatrice en forme de virus dans la direction opposée. Dégât de base : 23PV.",
+            "dgbase": 23
+        },
 
-    "Medaille_de_bapteme": {
-        "type_arme": "balle",
-        "image": MEDAILLON,
-        "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 15PV."
-    },
+        "Medaille_de_bapteme": {
+            "type_arme": "balle",
+            "image": MEDAILLON,
+            "texte": "Tire sur un ennemi aléatoire, inflige de lourds dégâts. Dégât de base : 15PV.",
+            "dgbase": 15
+        },
 
-    "Coiffe_de_rameau": {
-        "type_arme": "zone",
-        "image": COURONNE,
-        "texte": "Génère de fines zones de dégâts. Échelle à haute quantité. Dégât de base : 19PV."
-    },
+        "Coiffe_de_rameau": {
+            "type_arme": "zone",
+            "image": COURONNE,
+            "texte": "Génère de fines zones de dégâts. Échelle à haute quantité. Dégât de base : 19PV.",
+            "dgbase": 19
+        },
 
-    "Lance_sacree": {
-        "type_arme": "trait",
-        "image": LANCE_SACREE,
-        "texte": "Attaque verticalement, traverse les ennemis. Dégât de base : 20PV."
-    },
+        "Lance_sacree": {
+            "type_arme": "trait",
+            "image": LANCE_SACREE,
+            "texte": "Attaque verticalement, traverse les ennemis. Dégât de base : 20PV.",
+            "dgbase": 20
+        },
 
-    "Aura_divine": {
-        "type_arme": "poison",
-        "image": AURA_DIVINE,
-        "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV."
-    },
-    "JALAMBAYA": {
-        "type_arme": "balle",
-        "image": JALAMBAYA,
-        "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 70PV."
-    },
+        "Aura_divine": {
+            "type_arme": "poison",
+            "image": AURA_DIVINE,
+            "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 40PV.",
+            "dgbase": 40
+        },
+
+        "JALAMBAYA": {
+            "type_arme": "balle",
+            "image": JALAMBAYA,
+            "texte": "Tire rapidement dans quatre directions fixes. Dégât de base : 70PV.",
+            "dgbase": 70
+        }
+    }
 }
-}
-
 ARMES = {
 
     "Nerd": {

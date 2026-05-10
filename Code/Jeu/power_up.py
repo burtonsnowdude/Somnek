@@ -62,7 +62,7 @@ def apply_powerups(player):
     if player.hp > player.hp_max:
         player.hp = player.hp_max
 
-    # ★ Répercute le bonus Pouvoir sur chaque arme possédée
+    #  Répercute le bonus Pouvoir sur chaque arme possédée
     for arme_instance in player.armes:
         _appliquer_degats_arme(arme_instance, player.degats_bonus)
 
@@ -89,8 +89,11 @@ def _appliquer_degats_arme(arme_instance, multiplicateur: float):
 
     # Priorité : dgbase post-levelup stocké sur l'instance ArmeBase
     # sinon : dgbase initial du dictionnaire
-    dgbase = getattr(arme_instance, "_dgbase_apres_levelup", arme_data.get("dgbase", 0))
-
+    dgbase = getattr(arme_instance, "_dgbase_apres_levelup", arme_data.get("dgbase", 10))
+    #print("dgbase =", dgbase)
+    #print("multiplicateur =", multiplicateur)
+    print(nom)
+    print(Arme.ARMES)
     arme_instance.damage = dgbase * multiplicateur
 
 

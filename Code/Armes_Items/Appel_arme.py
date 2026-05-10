@@ -1,1 +1,2 @@
-def appel_arme ()
+def appel_arme ():
+    pass
