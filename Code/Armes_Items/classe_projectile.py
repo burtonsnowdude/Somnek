@@ -1,7 +1,10 @@
 """
 classe_projectile.py — SOMNEK
-Correction clé : le nom de l'arme est passé EXPLICITEMENT au Projectile.
-On ne se fie plus à player.arme_active (qui peut avoir changé entre temps).
+- Epee_bleue retiré de PROJECTILES (ArmeEpee ne tire pas de Projectile)
+- Cle_USB : image statique (c'est une ArmeZone, pas de projectile visible)
+- Fer_a_lisser retiré (ArmeExplosion ne crée pas de Projectile visible)
+- Ring_light retiré (idem)
+- Croix_marron : poison animé, conservé
 """
 
 import math
@@ -10,56 +13,51 @@ import pygame as pyg
 from Fichiers_variables.traitement_images import decouper_image
 
 PROJECTILES = {
-    # Nerd
-    "Epee_bleue":           "Images/Armes_items/projectile/proj_epee.png",
+    # ── Nerd ──────────────────────────────────────────────────────────────
+    # Epee_bleue : RETIRÉ — ArmeEpee crée une ZoneCoup, pas un Projectile
     "Epee_enflammee": {
         "path":    "Images/Armes_items/Epee enflamee.png",
         "cols":    4, "rows": 1, "enlever": 0, "taille": (30, 30)
     },
-    "Cle_USB":              "Images/Armes_items/projectile/proj_cleusb.png",
+    # Cle_USB : statique — c'est une ArmeZone, pas de projectile tiré
     "Pistolets":            "Images/Armes_items/projectile/proj_pistolet.png",
     "Ticket_de_metro":      "Images/Armes_items/projectile/proj_ticket.png",
 
-    # Fille populaire
-    "Gloss_rose":           "Images/Armes_items/projectile/proj_gloss_rose.png",
+    # ── Fille populaire ───────────────────────────────────────────────────
+    # Gloss_rose : ArmeZone → pas de projectile visible
     "Faux_cils":            "Images/Armes_items/projectile/proj_faux_cils.png",
     "Faux_ongles_roses":    "Images/Armes_items/projectile/proj_ongles.png",
     "Bracelet_de_sa_soeur": {
         "path":    "Images/Armes_items/projectile/proj_bracelet.png",
         "cols":    7, "rows": 1, "enlever": 0, "taille": (30, 30)
     },
-    "Fer_a_lisser": {
-        "path":    "Images/Armes_items/projectile/proj_fer_a_lisser.png",
-        "cols":    4, "rows": 1, "enlever": 0, "taille": (30, 30)
-    },
+    # Fer_a_lisser : RETIRÉ — ArmeExplosion ne tire pas de Projectile visible
+    # Ring_light   : RETIRÉ — idem ArmeExplosion
     "Pass_Navigo":          "Images/Armes_items/projectile/proj_ticket.png",
-    "Ring_light":           "Images/Armes_items/projectile/proj_ringlight.png",
     "Highlighter":          "Images/Armes_items/projectile/proj_highliter.png",
 
-    # Nonne
+    # ── Nonne ─────────────────────────────────────────────────────────────
     "Croix_marron": {
         "path":    "Images/Armes_items/projectile/proj_croix.png",
         "cols":    4, "rows": 1, "enlever": 0, "taille": (30, 30)
     },
     "Feu_de_l'Esprit_Saint": "Images/Armes_items/projectile/feu esprit sain.png",
     "Medaille_de_bapteme":   "Images/Armes_items/projectile/proj_medaille.png",
-    "Coiffe_de_rameau":      "Images/Armes_items/projectile/proj_couronne.png",
+    # Coiffe_de_rameau : ArmeZone → pas de projectile visible
     "Lance_sacree":          "Images/Armes_items/projectile/proj_lance.png",
-    "Aura_divine":           "Images/Armes_items/projectile/aura divine.png",
+    # Aura_divine : ArmeOrbitale → gère son propre affichage
     "JALAMBAYA": {
         "path":    "Images/Armes_items/projectile/proj_jalambaya.png",
         "cols":    13, "rows": 1, "enlever": 0, "taille": (30, 30)
     },
 }
 
-# Image de fallback si l'arme n'a pas de projectile défini
 _FALLBACK_PATH = "Images/Armes_items/projectile/feu esprit sain.png"
 
 
 def _charger_image_projectile(nom_arme: str):
     """
-    Charge et retourne (image_ou_frames, est_anime).
-    Centralisé ici pour éviter la duplication entre Projectile et sous-classes.
+    Retourne (image_ou_frames, est_anime).
     """
     image_data = PROJECTILES.get(nom_arme)
 
@@ -79,7 +77,6 @@ def _charger_image_projectile(nom_arme: str):
         frames = [pyg.transform.scale(f, taille) for f in frames]
         return frames, True
 
-    # Chemin simple (str)
     img = pyg.image.load(image_data).convert_alpha()
     return pyg.transform.scale(img, (30, 30)), False
 
@@ -88,7 +85,6 @@ class Projectile(pyg.sprite.Sprite):
     """
     Paramètre `nom_arme` (str) : le nom de l'arme qui tire CE projectile.
     Toujours le passer explicitement depuis ArmeBase.tirer().
-    Ne jamais se fier à player.arme_active.
     """
 
     def __init__(self, player, proj_type: str = "balle",
@@ -102,17 +98,13 @@ class Projectile(pyg.sprite.Sprite):
         self.explode  = explode
         self.anime    = False
 
-        # ── Résolution du nom d'arme ──────────────────────────────────────
-        # On utilise le paramètre en priorité, jamais arme_active seul.
         if nom_arme is None:
-            # Fallback de sécurité : prendre l'arme active actuelle
             if player.armes:
                 nom_arme = player.armes[player.arme_active].nom
             else:
                 nom_arme = ""
         self.nom_arme = nom_arme
 
-        
         result, self.anime = _charger_image_projectile(nom_arme)
 
         if self.anime:
@@ -124,24 +116,19 @@ class Projectile(pyg.sprite.Sprite):
         else:
             self.image = result
 
-       
-        self.rect    = self.image.get_rect(center=player.pos.center)
-        dx, dy       = player.get_direction()
-        self.dx      = float(dx)
-        self.dy      = float(dy)
-
-    
+        self.rect = self.image.get_rect(center=player.pos.center)
+        dx, dy    = player.get_direction()
+        self.dx   = float(dx)
+        self.dy   = float(dy)
 
     def set_direction(self, angle: float):
-        rad      = math.radians(angle)
-        self.dx  = math.cos(rad)
-        self.dy  = math.sin(rad)
-        length   = math.hypot(self.dx, self.dy)
+        rad     = math.radians(angle)
+        self.dx = math.cos(rad)
+        self.dy = math.sin(rad)
+        length  = math.hypot(self.dx, self.dy)
         if length:
             self.dx /= length
             self.dy /= length
-
-    
 
     def update(self):
         if self.anime:

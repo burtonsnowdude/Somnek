@@ -11,19 +11,17 @@ from Affichage.fonctionnement_divers import camera
 from Interface.Game_over import game_over
 from Armes_Items.creer_arme import creer_arme
 from Fichiers_variables.dictionnaire_armes import ARMES
-from Armes_Items.Classe_par_type_darme import ArmeProjectile, ArmeEpee, ArmeMultiDirection, ArmeZone, ArmeExplosion
+from Armes_Items.Classe_par_type_darme import (
+    ArmeProjectile, ArmeEpee, ArmeMultiDirection,
+    ArmeZone, ArmeExplosion, ArmePoison,
+    ArmeOrbitale, ArmeOrbitaleExplosion
+)
 from Jeu.power_up import apply_powerups
 from Armes_Items.class_armes_sans_bugs import Arme
 from Armes_Items.Item_system import InventaireItems, appliquer_stats_items
 
 
-TYPE_VERS_CLASSE = {
-    "balle":          ArmeProjectile,
-    "zone":           ArmeZone,
-    "coup":           ArmeEpee,
-    "trait":          ArmeMultiDirection,
-    "zone_multiples": ArmeExplosion,
-}
+
 
 
 class Player:
@@ -58,6 +56,7 @@ class Player:
         self.hp              = PLAYER_PV
         self.hp_max          = PLAYER_PV
         self.vitesse         = PLAYER_VIT
+        
 
         # Bonus items (0 ou 1 = aucun bonus)
         self.bonus_degats       = 0.0
@@ -78,7 +77,7 @@ class Player:
         self.armes_unlock = set()
         self.all_zones    = pyg.sprite.Group()
         self.armes_data   = Arme.arme_possede
-
+        self.explosions = []
         
         self.inventaire_items = InventaireItems(perso)
 

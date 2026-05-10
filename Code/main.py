@@ -1,3 +1,6 @@
+"""
+Main
+"""
 import sys
 from Jeu.jeu import jeu
 from Interface.menu import interface
