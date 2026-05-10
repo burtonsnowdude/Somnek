@@ -99,16 +99,6 @@ def jeu(perso, nom, map_choisie="Cour"):
     coffre_existant = minijeu_fini = False
 
     anim_item       = None
-    action_1 = victoire(map_choisie, nouvelle_map, nouveau_perso)
-    action_1 = victoire(
-                    map_choisie,
-                    nouvelle_map,
-                    nouveau_perso,
-                    temps_survie    = temps_ecoule,
-                    argent_recolte  = argent,
-                    monstres_tues   = p.kill_count,
-                    armes_debloquees= len(armes_et_items_possedees),
-                )
     victoire_decl   = False
     force_victoire  = False
     TEMPS_OBJECTIF  = temps_limite(map_choisie)
@@ -169,7 +159,15 @@ def jeu(perso, nom, map_choisie="Cour"):
                     armes_joueur = ajouter_arme(nom, nouvel_item, armes_joueur)
                     reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
 
-                action = victoire(map_choisie, nouvelle_map, nouveau_perso)
+                action = victoire(                          # ← nouvel appel avec stats
+                map_choisie,
+                nouvelle_map,
+                nouveau_perso,
+                temps_survie     = temps_ecoule,
+                argent_recolte   = argent,
+                monstres_tues    = p.kill_count,
+                armes_debloquees = len(armes_et_items_possedees),
+                    )
                 if action == "menu":
                     return "menu"
                 if action == "quit":
