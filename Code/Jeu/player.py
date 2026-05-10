@@ -1,3 +1,7 @@
+"""
+Class Player
+"""
+
 import pygame as pyg
 from Fichiers_variables.variables import * 
 import math
@@ -26,23 +30,23 @@ class Player:
     """Class Player"""
 
     def __init__(self, perso, nom):
-        self.nom   = nom
+        self.nom = nom
         self.perso = perso
 
-        
+        # détermine les différentes images ou anims du joueur
         if "image" in PERSOS[perso]:
             self.image_r = PERSOS[perso]["image"]["horizon_r"]
             self.image_l = PERSOS[perso]["image"]["horizon_l"]
-            self.image   = self.image_r
-            self.pos     = self.image.get_rect()
+            self.image = self.image_r
+            self.pos = self.image.get_rect()
         else:
-            self.index         = 0
-            self.anim_avant    = PERSOS[perso]["anim"]["avant"]
-            self.anim_arriere  = PERSOS[perso]["anim"]["arriere"]
-            self.anim_horizon_r= PERSOS[perso]["anim"]["horizon_r"]
-            self.anim_horizon_l= PERSOS[perso]["anim"]["horizon_l"]
-            self.anim          = self.anim_avant
-            self.pos           = self.anim[0].get_rect()
+            self.index = 0
+            self.anim_avant = PERSOS[perso]["anim"]["avant"]
+            self.anim_arriere = PERSOS[perso]["anim"]["arriere"]
+            self.anim_horizon_r = PERSOS[perso]["anim"]["horizon_r"]
+            self.anim_horizon_l = PERSOS[perso]["anim"]["horizon_l"]
+            self.anim = self.anim_avant
+            self.pos = self.anim[0].get_rect()
 
         self.pos.center = CENTREx, CENTREy
 
@@ -51,13 +55,11 @@ class Player:
         self.vitesse_base   = PLAYER_VIT
         self.zone_base      = 1.0
         self.portee_xp_base = 100.0
-
-        
         self.hp              = PLAYER_PV
         self.hp_max          = PLAYER_PV
         self.vitesse         = PLAYER_VIT
 
-        # Bonus items (valeur 0 / 1.0 = aucun bonus)
+        # Bonus items (0 ou 1 = aucun bonus)
         self.bonus_degats       = 0.0
         self.attaque_mult       = 1.0
         self.cooldown_reduction = 0.0
@@ -70,7 +72,6 @@ class Player:
         self.zone_attaque       = 1.0
         self.portee_xp          = 100.0
         self.reduction_degats   = 0.0
-
        
         self.arme_active  = 0
         self.armes        = []
@@ -95,9 +96,14 @@ class Player:
         self.projectile_cadence = 30
         self._regen_timer = 0.0
 
-    
-
     def draw_player(self, frame):
+        """Dessine le joueur (animé ou non)
+        
+        Parameters
+        -----------
+        frame : int
+            Le numéro de la frame actuelle
+        """
         if "anim" in PERSOS[self.perso]:
             if frame % 4 == 0:
                 self.index += 1
@@ -137,11 +143,23 @@ class Player:
     
 
     def move_bg(self, monstres, xp, monstres_vague, boss, boss_present):
-        keys  = pyg.key.get_pressed()
-        up    = keys[pyg.K_UP]    or keys[pyg.K_w]
+        """Déplace le fond en fonction des mouvements du joueur
+        
+        Parameters
+        ----------
+        monstres : list
+            La liste des monstres présents
+        xp : list
+            La liste de l'xp dispo sur la map
+        monstres_vague : list
+            Liste des monstres appartenant à la vague
+        
+        """
+        keys = pyg.key.get_pressed()
+        up = keys[pyg.K_UP]    or keys[pyg.K_w]
         right = keys[pyg.K_RIGHT] or keys[pyg.K_d]
-        left  = keys[pyg.K_LEFT]  or keys[pyg.K_a]
-        down  = keys[pyg.K_DOWN]  or keys[pyg.K_s]
+        left = keys[pyg.K_LEFT]  or keys[pyg.K_a]
+        down = keys[pyg.K_DOWN]  or keys[pyg.K_s]
 
         obj_a_deplacer = monstres + xp
         if monstres_vague is not None:
@@ -154,11 +172,12 @@ class Player:
         if left:
             dx -= 1 * self.vitesse
             if "anim" in PERSOS[self.perso]:
-                if self.anim != self.anim_horizon_l:
+                # si c'est pas encore changé (évite de recommencer à la 1ere frame tout le temps)
+                if self.anim != self.anim_horizon_l: 
                     self.index = 0
                 self.anim = self.anim_horizon_l
             else:
-                self.image = self.image_l
+                self.image = self.image_l # changement d'anim actuelle
 
         if right:
             dx += 1 * self.vitesse
@@ -183,20 +202,27 @@ class Player:
                     self.index = 0
                 self.anim = self.anim_avant
 
+        # normalisation de la vitesse en diagonale
         if dx != 0 and dy != 0:
             dx *= 1 / math.sqrt(2)
             dy *= 1 / math.sqrt(2)
 
         self.x_monde += dx
         self.y_monde += dy
-
+        # on actualise les coordonnées des différents objets en appliquant la camera
         for objet in obj_a_deplacer:
             objet.x_screen, objet.y_screen = camera(objet.x_monde, objet.y_monde, self)
 
    
 
     def degats(self, degats_bruts):
-        """Subit des dégâts en tenant compte de la réduction (items protection)."""
+        """Subit des dégâts en tenant compte de la réduction (items protection)
+        
+        Parameters
+        -----------
+        degats_bruts : int
+            Nombre de points de dégâts
+        """
         if not self.alive:
             return
         degats_reels = degats_bruts * (1.0 - self.reduction_degats)
@@ -204,8 +230,9 @@ class Player:
         if self.hp <= 0:
             self.hp    = 0
             self.alive = False
+
     def regen_hp(self, dt):
-        """Régénère les HP en fonction de la stat 'regen' (1× par seconde)."""
+        """Régénère les HP en fonction de la stat regen (1X par seconde)."""
         if self.regen <= 0 or not self.alive:
             return
         self._regen_timer += dt
@@ -214,6 +241,19 @@ class Player:
             self._regen_timer = 0.0
 
     def update_xp(self, xp, xp_attendu):
+        """Augmente l'xp perso du joueur
+        
+        Parameters
+        ----------
+        xp : int 
+            xp obtenu
+        xp_attendu : int
+            xp attendu pour passer le niveau
+        
+        Returns
+        -------
+        bool
+        """
         self.xp += xp
         if self.xp >= xp_attendu:
             self.xp -= xp_attendu
