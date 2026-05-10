@@ -9,14 +9,9 @@ from random import randint
 from Fichiers_variables.gestion_fichiers import ajouter_arme
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200
-<<<<<<< HEAD
 COMPUTER = pyg.image.load("Images/Maps/Game_stop_exterieur.png") 
 FOND = pyg.image.load("Images/Maps/Game_stop_interieur.png")
 #pour l'instant, on utilise une image d'arme pour représenter l'ordinateur, mais on peut la changer plus tard
-=======
-COMPUTER = pyg.image.load("Images/Autre/game_stop_exterieur.png")
-FOND_QUIZ = pyg.transform.scale(pyg.image.load("Images/Autre/game_stop_interieur.png"), (WIDTH, HEIGHT))
->>>>>>> df330c5ba483733ddfddc2aafcd728e4ea50c526
 
 
 def binary_quiz():
@@ -38,7 +33,7 @@ def binary_quiz():
     while True:
         clock.tick(60)
         
-        WIN.blit(FOND_QUIZ, (0, 0))
+        WIN.blit(FOND, (0, 0))
         
         # Popup box
         pyg.draw.rect(WIN, (50, 50, 50), (popup_x, popup_y, popup_width, popup_height))

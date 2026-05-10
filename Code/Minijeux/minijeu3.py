@@ -14,7 +14,7 @@ pyg.mixer.init()
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = [0]*4
 OBJET = pyg.image.load("Images/Maps/Eglise_exterieur.png")
-FOND = pyg.image.load("Images/Eglise_interieur.png")
+FOND = pyg.image.load("Images/Maps/Eglise_interieur.png")
 spritesheet_noubliez_pas_les_paroles = pyg.image.load("Images/Autre/anim_noubliez_pas_les_paroles.png")
 ANIM_NOUBLIEZ_PAS_LES_PAROLES = decouper_image(spritesheet_noubliez_pas_les_paroles, 5, 5, 3)
 SON = "Sons/son_quete2.mp3"
