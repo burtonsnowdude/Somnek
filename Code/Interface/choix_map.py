@@ -7,7 +7,7 @@ et ne sont pas cliquables.
 import pygame
 from Fichiers_variables.variables import WIDTH, HEIGHT, WIN
 from Fichiers_variables.progression import (
-    ORDRE_MAPS, maps_debloquees, temps_limite
+    ORDRE_MAPS, MAPS_FINALES, maps_debloquees, temps_limite
 )
 from Interface.Class_Button import Button
 
@@ -55,11 +55,14 @@ def _try_load(path, size):
 CARTE_W, CARTE_H = 180, 110
 
 IMAGES_MAPS = {
-    "Cour":   _try_load("Images/Interface/img_map_cour.png",   (CARTE_W, CARTE_H)),
-    "Rue":    _try_load("Images/Interface/img_map_rue.png",    (CARTE_W, CARTE_H)),
-    "Ruelle": _try_load("Images/Interface/img_map_ruelle.png", (CARTE_W, CARTE_H)),
-    "Foire":  _try_load("Images/Interface/img_map_foire.png",  (CARTE_W, CARTE_H)),
-    "Metro":  _try_load("Images/Interface/img_map_metro.png",  (CARTE_W, CARTE_H)),
+    "Cour":         _try_load("Images/Interface/img_map_cour.png",         (CARTE_W, CARTE_H)),
+    "Rue":          _try_load("Images/Interface/img_map_rue.png",          (CARTE_W, CARTE_H)),
+    "Ruelle":       _try_load("Images/Interface/img_map_ruelle.png",       (CARTE_W, CARTE_H)),
+    "Foire":        _try_load("Images/Interface/img_map_foire.png",        (CARTE_W, CARTE_H)),
+    "Metro":        _try_load("Images/Interface/img_map_metro.png",        (CARTE_W, CARTE_H)),
+    "Villa":    _try_load("Images/Maps/villa.png",     (CARTE_W, CARTE_H)),
+    "immeuble": _try_load("Images/Maps/immeubles.png", (CARTE_W, CARTE_H)),
+    "Eglise":   _try_load("Images/Maps/eglise.png",    (CARTE_W, CARTE_H)),
 }
 
 
@@ -135,20 +138,25 @@ class CarteMap:
 #  ENTRÉE PRINCIPALE
 # ─────────────────────────────────────────────
 
-def open_choix_map(joueur: str):
+def open_choix_map(joueur: str, perso: str = None):
     """
     Affiche un écran plein-écran de sélection de map. Bloque jusqu'à choix.
     Retourne le nom de la map choisie, ou None si l'utilisateur annule (Echap).
     """
     clock = pygame.time.Clock()
 
-    # Crée les cartes en grille (3 + 2)
+    # Maps à afficher : les maps normales + la map finale du perso choisi
+    maps_a_afficher = list(ORDRE_MAPS)
+    if perso and perso in MAPS_FINALES:
+        maps_a_afficher.append(MAPS_FINALES[perso])
+
+    # Crée les cartes en grille (3 par ligne)
     margin_x = 30
     margin_y = 150
     espace_x = (WIDTH - 3 * CARTE_W - 2 * margin_x) // 2
     espace_y = 50
     cartes   = []
-    for i, nom in enumerate(ORDRE_MAPS):
+    for i, nom in enumerate(maps_a_afficher):
         col = i % 3
         row = i // 3
         x = margin_x + col * (CARTE_W + espace_x)
