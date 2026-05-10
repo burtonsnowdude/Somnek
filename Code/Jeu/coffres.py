@@ -74,8 +74,11 @@ class Coffre :
         rect.center = (CENTREx, CENTREy)
         frame = 0
         i = 0
+        violet = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
+        violet.fill((102, 62, 86, 150))
         while i < len(ANIM_COFFRE) -1 :
             remplir_fond(p)
+            WIN.blit(violet, (0, 0))
             scroll_gemme(frame)
             WIN.blit(ANIM_COFFRE[i], rect)
             frame += 1
@@ -97,9 +100,11 @@ class Coffre :
                         armes_dispo.append(arme)
             niveau += 1
         dispo = items_dispo+armes_dispo
+        armes_deja_enlevees = []
         for arme in dispo[:]:
-            if arme in armes_et_items_possedees :
+            if arme in armes_et_items_possedees or arme in armes_deja_enlevees :
                 dispo.remove(arme)
+                armes_deja_enlevees.append(arme)
         argent_dispo = randint(p.niveau*50, p.niveau*200)
         choix_aleat = choice((True, False))
         if choix_aleat or len(dispo) == 0 :
@@ -108,7 +113,7 @@ class Coffre :
             WIN.blit(ARGENT, rect)
             txt = FONT_COFFRE.render(str(argent_dispo), 1, (255, 255, 255))
             txt_rect = txt.get_rect()
-            txt_rect.center = CENTREx, 200
+            txt_rect.center = CENTREx, 100
             frame = 0
             fade = 255
             while frame < 180 : 
