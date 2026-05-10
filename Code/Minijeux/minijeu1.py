@@ -8,8 +8,8 @@ from Fichiers_variables.variables import *
 from random import randint
 
 X_DEBUT, X_FIN, Y_DEBUT, Y_FIN = 300, 350, 100, 200
-COMPUTER = pyg.image.load("Images/Armes_items/smart.png") 
-#pour l'instant, on utilise une image d'arme pour représenter l'ordinateur, mais on peut la changer plus tard
+COMPUTER = pyg.image.load("Images/Autre/game_stop_exterieur.png")
+FOND_QUIZ = pyg.transform.scale(pyg.image.load("Images/Autre/game_stop_interieur.png"), (WIDTH, HEIGHT))
 
 
 def binary_quiz():
@@ -31,10 +31,7 @@ def binary_quiz():
     while True:
         clock.tick(60)
         
-        # Overlay semi-transparent
-        overlay = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
-        overlay.fill((0, 0, 0, 100))
-        WIN.blit(overlay, (0, 0))
+        WIN.blit(FOND_QUIZ, (0, 0))
         
         # Popup box
         pyg.draw.rect(WIN, (50, 50, 50), (popup_x, popup_y, popup_width, popup_height))
