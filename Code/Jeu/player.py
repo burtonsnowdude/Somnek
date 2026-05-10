@@ -46,7 +46,7 @@ class Player:
 
         self.pos.center = CENTREx, CENTREy
 
-        # ── Stats de BASE (ne jamais les modifier — servent au recalcul) ─
+        # Stats de base
         self.hp_max_base    = PLAYER_PV
         self.vitesse_base   = PLAYER_VIT
         self.zone_base      = 1.0
