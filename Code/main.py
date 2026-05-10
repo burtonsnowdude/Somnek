@@ -1,12 +1,13 @@
 import sys
 from Jeu.jeu import jeu
 from Interface.menu import interface
+from Interface.video import play_video 
 
 def main():
     running = True
     skip_intro = False
     joueur = None
-
+    play_video("extrait_trailer", 13, 23, 12)
     while running:
         res = interface(skip_intro=skip_intro, joueur=joueur)
 
