@@ -181,7 +181,7 @@ TYPES_ARMES = {
         },
 
         "Aura_divine": {
-            "type_arme": "orbital",
+            "type_arme": "orbital_explosion",
             "image": AURA_DIVINE,
             "texte": "Tourne autour du personnage et inflige des dégâts. Dégât de base : 40PV.",
             "dgbase": 40

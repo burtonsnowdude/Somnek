@@ -50,10 +50,12 @@ spritesheet_epee_bleue = pyg.image.load("Images/Armes_items/epee_bleue.png")
 ANIM_EPEE_BLEUE = decouper_image(spritesheet_epee_bleue, 5, 1, 0)
 EPEE_GUTS = pyg.image.load("Images/Armes_items/epee_guts.png")
 EPEE_ENFLAMMEE = pyg.image.load("Images/Armes_items/Epee enflamee.png")
-
+APPLE_WATCH =  pyg.image.load("Images/Armes_items/smart.png")
+DEODORANT = pyg.image.load("Images/Armes_items/Deodorant.png")
 # FILLE POPULAIRE
 GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose.png")
 TICKET =  pyg.image.load("Images/Armes_items/ticket.png")
+SAC_VIOLET = pyg.image.load("Images/Armes_items/sac_violet.png")
 HIGLIGHTER =  pyg.image.load("Images/Armes_items/highlighter.png")
 FAUX_CILS = pyg.image.load("Images/Armes_items/faux_cils.png")
 BRACELET_SOEUR = pyg.image.load("Images/Armes_items/bracelet_soeur.png")
