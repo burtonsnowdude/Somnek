@@ -25,9 +25,11 @@ PERSOS =  {
                 "horizon_r" : ANIM_FILLE_POPULAIRE_HORIZON_R,
                 "horizon_l" : ANIM_FILLE_POPULAIRE_HORIZON_L},
                         "color" : (167, 67, 86, 200)},
-    "Nonne" : {"image" :
-                {"horizon_r" : NONNE_R,
-                "horizon_l" : NONNE_L},
+    "Nonne" : {"anim" : 
+                {"avant" : ANIM_NONNE_AVANT,
+                "arriere" : ANIM_NONNE_ARRIERE,
+                "horizon_r" : ANIM_NONNE_HORIZON_R,
+                "horizon_l" : ANIM_NONNE_HORIZON_L},
                 "color" : (92, 60, 61, 200)},
     "Nerd" : {"anim" : 
                 {"avant" : ANIM_NERD_AVANT,
@@ -164,6 +166,9 @@ TYPES_MONSTRES = {
     "Miroir" : { ** CATEGORIE["Type 22"],
                 "perso" : "Nonne",
                 "anim" : ANIM_MIROIR},
+    "Ange_dechu" : { ** CATEGORIE["Type 24"],
+                "perso" : "Nonne",
+                "anim" : ANIM_ANGE_DECHU},
     "Lucifer" : { ** CATEGORIE["Type 26"],
                 "perso" : "Nonne",
                 "anim" : ANIM_LUCIFER}
