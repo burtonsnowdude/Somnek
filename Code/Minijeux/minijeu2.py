@@ -25,6 +25,7 @@ BLEU = (154, 158, 200, 200)
 ECRITURE = (167, 67, 86)
 FOND = pyg.image.load("Images/Maps/Sephora_interieur.png")
 
+# Questions du quizz
 QUIZZ = { 
     0 :
     ("Vrai ou Faux : M.Rossier est le propriétaire officiel de la marque Rare Beauty.",
@@ -50,10 +51,18 @@ QUIZZ = {
 
 def spawn_objet(x_debut, x_fin, y_debut, y_fin, p, map):
     """Faire spawn l'objet dans un des magasins
+
+    Parameters
+    ----------
     x_debut, x_fin, y_debut, y_fin : int
         Les coordonnées du magasin
     p : Self@Player
         Le joueur
+    
+    Returns
+    -------
+    coord
+        Les coordonnées du magasin
     """
     nb_aleat1 = randint(-1, 1)
     nb_aleat2 = randint(-1, 1)
@@ -64,13 +73,38 @@ def spawn_objet(x_debut, x_fin, y_debut, y_fin, p, map):
     y_fin += nb_aleat2 * mapY
     coord = (randint(x_debut, x_fin), randint(y_debut, y_fin))
     coord = screen_to_world(coord[0], coord[1], p)
-    coord = (300, 200)
+    #coord = (300, 200)
     return coord
 
 def draw_objet(coord, image):
+    """Dessine le magasin
+    
+    Parameters
+    ----------
+    coord : tuple(int, int)
+        Les coordonnées écran du magasin
+    image : Surface
+        L'image du magasin
+    """
     WIN.blit(image, coord)
 
 def collision(coord, image, p):
+    """ Détecte la collision entre le magasin et le joueur
+    
+    Parameters
+    ----------
+    coord : tuple(int, int)
+        Coordonnées screen du magasin
+    image : Surface
+        L'image du magasin
+    p : Self@Player
+        Le joueur
+    
+    Returns
+    -------
+    bool
+        Collisuon détectée ou non
+    """
     rect = image.get_rect()
     rect.topleft = coord
     if p.pos.colliderect(rect):
@@ -78,6 +112,17 @@ def collision(coord, image, p):
     return False
 
 def regler_volume(coord, p, map):
+    """Règle le volume de la musique en fonction de l'éloignement du joueur
+    
+    Parameters
+    ----------
+    coord : tuple(int, int)
+        Les coordonnées monde de l'objet
+    p : Self@Player
+        Le joueur
+    map : Surface
+        La map
+    """
     dist = sqrt((coord[0] - p.x_monde)**2 + (coord[1] - p.y_monde)**2)
     mapX, mapY = map.get_size()
     # distance max d'entente 
@@ -86,17 +131,34 @@ def regler_volume(coord, p, map):
     volume = 1 - (dist / max_dist)
     volume = max(0, min(1, volume))
     pyg.mixer.music.set_volume(volume)
-    #son.set_volume(volume)
     
 from Interface.option import settings
 
 def play_sound(son):
+    """Joue le son
+    
+    Parameters
+    ----------
+    son : str
+        Chemin du fichier
+    """
     if settings["sound"] and not pyg.mixer.music.get_busy():
         pyg.mixer.music.load(son)
         pyg.mixer.music.play()
 
 def replique(texte, color, text_color):
-    textes = retour_ligne(texte, 80)
+    """Affiche une réplique
+    
+    Parameters
+    ----------
+    texte : str
+        Texte à afficher
+    color : tuple(int, int, int, int)
+        Couleur du fond
+    text_color : tuple(int, int, int)
+        Couleur du texte
+    """
+    textes = retour_ligne(texte, 80) # pour ne pas dépasser en dehors de l'écran
     temps_debut = time.time()
     fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
     fond.fill(color)
@@ -108,7 +170,7 @@ def replique(texte, color, text_color):
             if event.type == pyg.KEYDOWN :
                 keys = pyg.key.get_pressed()
                 if keys[pyg.K_RETURN]:
-                    return
+                    return # pour passer la réplique
         WIN.blit(fond, (20, HEIGHT-100))
         for t in textes :
             texte = FONT.render(t, True, text_color)
@@ -116,6 +178,14 @@ def replique(texte, color, text_color):
         pyg.display.update()
 
 def anim_quizz(son):
+    """Animation avant le quizz
+    
+    Parameters
+    ----------
+    son : str
+        Chemin d'accès du fichier son
+    """
+    # Dialogue
     replique("Bonjour ! Bienvenue au magasin !", ROSE, ECRITURE)
     play_sound(son)
     replique("Heuu... qui êtes vous ? Je ne vois personne.", BLEU, ECRITURE)
@@ -129,16 +199,27 @@ def anim_quizz(son):
     replique("Ça fait rêver...", BLEU, ECRITURE)
     frame = 0
     i = 0
+    # petite anim sympathique
     while i < 21 :
         play_sound(son)
         frame += 1
         WIN.blit(ANIM_QUIZZ[i], (0,0))
-        if frame%6 == 0:
+        if frame%6 == 0: # fréquence de changement de frame pour que ça n'aille pas trop vite
             i += 1
         pyg.display.update()
 
 def anim_fin(victoire, son):
+    """Animation après le quizz
+    
+    Parameters
+    ----------
+    victoire : bool
+        Si le joueur a gagné ou non
+    son : str
+        Chemin d'accès du fichier son
+    """
     play_sound(son)
+    # Dialogues différenciés 
     if victoire :
         play_sound(son)
         replique("Bravo ! Vous avez réussi à avoir la moyenne ! Vous repartez avec ce magnifique highlighter, et ce sans le payer !", ROSE, ECRITURE)
@@ -161,6 +242,7 @@ def anim_fin(victoire, son):
         replique("Arrêtez d'avoir le seum et fichez le camp de mon magasin s'il vous plait.", ROSE, ECRITURE)        
     frame = 0
     i = 0
+    #autre anim sympa
     while i < 21 :
         play_sound(son)
         frame += 1
@@ -170,12 +252,18 @@ def anim_fin(victoire, son):
         pyg.display.update()
               
 def quizz(son):
-
+    """ Quizz 
+    
+    Parameters
+    -----------
+    son : str
+        Chemin d'accès du fichier son
+    """
     FONDX, FONDY = FOND.get_size()
     run = True
     i = 0
     clock = pyg.time.Clock()
-    win_count = 0
+    win_count = 0 # compteur de bonnes réponses
     while run and i < max(QUIZZ)+1:
         clock.tick(60)
         WIN.fill((225, 225, 225))
@@ -183,7 +271,6 @@ def quizz(son):
             for j in range(-FONDY, HEIGHT + FONDY, FONDY):
                     WIN.blit(FOND, (t, j))
         mouse_pos = pyg.mouse.get_pos()
-
         rose = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
         rose.fill((255, 182, 229, 200))  
         WIN.blit(rose, (0, 0))
@@ -195,7 +282,7 @@ def quizz(son):
         ordre = [[QUIZZ[i][1][j], j] for j in range(len(QUIZZ[i][1]))]
         shuffle(ordre)
         buttons = [Button(ordre[j][0], ordre[j][1], 400, 200+100*j, 650, 80, FONT) for j in range(len(QUIZZ[i][1]))]
-        for b in buttons :
+        for b in buttons : # pour changer les couleurs des boutons
             b.color1 = (200, 46, 74)
             b.color2 = (232, 73, 105)
         waiting = True
@@ -211,9 +298,9 @@ def quizz(son):
 
                     for btn in buttons:
                         if btn.rect.collidepoint(mouse_pos):
-                            if btn.action == 0:
+                            if btn.action == 0: # indice 0 = bonne réponse
                                 win_count += 1
-                            elif i == 4 or i == 5:
+                            elif i == 4 or i == 5: # questions données
                                 win_count += 1
                             waiting = False
             mouse_pos = pyg.mouse.get_pos()
@@ -225,19 +312,33 @@ def quizz(son):
 # (oui c'est de la fausse générosité) comme ça vous pouvez ajouter des questions sans tout casser
         
 def retour_ligne(texte, longueur):
+    """ Permet de retourner à la ligne si le texte fourni est trop long
+    
+    Parameters
+    -----------
+    texte : str
+        Texte à afficher
+    longueur : int
+        longueur à ne pas dépasser
+
+    Returns
+    --------
+    list
+        liste contenant les textes à afficher
+    """
     nb_carac = len(texte)
     if nb_carac >= longueur:
         i = longueur - 1
-        while texte[i] != " " :
+        while texte[i] != " " : # pour ne pas couper au milieu d'un mot
             i -= 1
         liste = [texte[0:i], texte[i+1:nb_carac] ]
         nb_carac = len(liste[1])
         if nb_carac >= longueur:
             i = longueur - 1
-            while liste[1][i] != " " :
+            while liste[1][i] != " " : 
                 i -= 1
             liste2 = [liste[1][0:i], liste[1][i+1:nb_carac] ]
-            liste.remove(liste[1])
+            liste.remove(liste[1]) # pour ne pas avoir de doublon
             liste += liste2
     else : 
         liste = [texte]
@@ -246,6 +347,31 @@ def retour_ligne(texte, longueur):
 
 
 def minijeu2(p, coord_monde, minijeu2_fini, armes_et_items_possedees, armes_possedees, armes_joueur, map):
+    """ Minijeu de la fille
+    
+    Parameters
+    ----------
+    perso : str
+        Perso choisi
+    coord_monde : tuple(int, int)
+        Coordonnées monde du magasin/eglise
+    minijeu_fini : bool
+        Si le mini-jeu est fini ou pas
+    p : Self@Player
+        Le joueur
+    armes_et_items_possedees : list
+        Liste des armes et items possédés
+    armes_possedees : list
+        Liste des armes possédées
+    armes_joueur : list(dict)
+        Contenu actualisé du fichier csv des armes
+    map : Surface
+        La map actuelle
+
+    Returns
+    -------
+    idem sauf la map
+    """
     if coord_monde == None:
         coord_screen = spawn_objet(X_DEBUT, X_FIN, Y_DEBUT, Y_FIN, p, map)
         coord_monde = screen_to_world(coord_screen[0], coord_screen[1], p)
