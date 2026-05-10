@@ -87,9 +87,10 @@ def regler_volume(coord, p, map):
     pyg.mixer.music.set_volume(volume)
     #son.set_volume(volume)
     
+from Interface.option import settings
 
 def play_sound(son):
-    if not pyg.mixer.music.get_busy():
+    if settings["sound"] and not pyg.mixer.music.get_busy():
         pyg.mixer.music.load(son)
         pyg.mixer.music.play()
 

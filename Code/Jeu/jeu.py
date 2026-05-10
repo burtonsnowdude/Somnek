@@ -339,8 +339,13 @@ def jeu(perso, nom, map_choisie="Cour"):
             popup_group.update()
             popup_group.draw(WIN)
 
-            if not settings["music"]:
-                pyg.mixer.music.stop()
+            if settings["music"]:
+                if not pyg.mixer.music.get_busy():
+                    pyg.mixer.music.load("Sons/son_quete2.mp3")  # ← ton fichier musique du jeu
+                    pyg.mixer.music.play(-1)
+            else:
+                if pyg.mixer.music.get_busy():
+                    pyg.mixer.music.stop()
             if settings["bw"]:
                 black_and_white(WIN)
             if settings["vfx"]:
