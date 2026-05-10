@@ -52,7 +52,7 @@ def jeu(perso, nom, map_choisie="Cour"):
         reecrire_fichier("niveau_argent", new_tab, noms)
         reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
         reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
-
+    definir_fichier_nouv_armes(noms)
     # Initialise la progression du joueur
     init_progression(nom, noms)
 
@@ -106,7 +106,6 @@ def jeu(perso, nom, map_choisie="Cour"):
     popup_group = pyg.sprite.Group()
     completed_kill_quests    = set()
     completed_acquire_quests = set()
-
     while run:
         xp = 0
 

@@ -68,7 +68,7 @@ def ajouter_utilisateur(nom, noms):
         for ligne in new_tab_powerups:
             ligne[nom] = 0
 
-        # ⬇️⬇️ AJOUT CRUCIAL : débloque Fille_populaire dès l'inscription ⬇️⬇️
+        # débloque fille populaire dès l'inscription
         from Fichiers_variables.progression import init_progression
         try:
             init_progression(nom)
@@ -77,7 +77,7 @@ def ajouter_utilisateur(nom, noms):
             import traceback
             print(f"[Inscription] Erreur init_progression : {e}")
             traceback.print_exc()
-        # ⬆️⬆️ FIN AJOUT ⬆️⬆️
+        
 
         return noms, new_tab_armes, new_tab_quetes, new_tab_powerups
     return False
