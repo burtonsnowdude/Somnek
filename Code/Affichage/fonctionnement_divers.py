@@ -1,3 +1,5 @@
+"""Fonctionnement divers"""
+
 import time
 from Fichiers_variables.variables import *
 from Fichiers_variables.gestion_fichiers import reecrire_fichier
@@ -23,6 +25,13 @@ def changer_map(nom_map):
     BGX, BGY = BG.get_size()
 
 def remplir_fond(p):
+    """Dessine et répète la map grâce à un offset calculé à partir du joueur.
+    
+    Parameters
+    ----------
+    p : Self@Player
+        le joueur
+    """
     WIN.fill((225, 225, 225))
     offset_x = p.x_monde % BGX
     offset_y = p.y_monde % BGY
@@ -31,6 +40,17 @@ def remplir_fond(p):
             WIN.blit(BG, (i-offset_x, j-offset_y))
 
 def chrono(clock, start_time, pause_time):
+    """Calcule le temps écoulé depuis le début de la partie sans compter les pauses
+
+    Parameters
+    ----------
+    clock : Clock
+        horloge de pygame
+    start_time : float
+        temps de début
+    pause_time : float
+        temps de fin
+    """
     clock.tick(60)
     return time.time() - start_time - pause_time
 

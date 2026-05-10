@@ -129,6 +129,15 @@ ANIM_NERD_HORIZON_R = decouper_image(spritesheet_nerd_horizon_r, 3, 3, 0)
 ANIM_NERD_HORIZON_L = decouper_image(spritesheet_nerd_horizon_l, 3, 3, 0)
 
 #NONNE
+spritesheet_nonne_avant = pyg.image.load("Images/Persos/nonne_avant.png")
+spritesheet_nonne_arriere = pyg.image.load("Images/Persos/nonne_arriere.png")
+spritesheet_nonne_horizon_r = pyg.image.load("Images/Persos/nonne_horizon_r.png")
+spritesheet_nonne_horizon_l = pyg.image.load("Images/Persos/nonne_horizon_l.png")
+ANIM_NONNE_AVANT = decouper_image(spritesheet_nonne_avant, 12, 1, 0)
+ANIM_NONNE_ARRIERE = decouper_image(spritesheet_nonne_arriere, 12, 1, 0)
+ANIM_NONNE_HORIZON_R = decouper_image(spritesheet_nonne_horizon_r, 9, 1, 0)
+ANIM_NONNE_HORIZON_L = decouper_image(spritesheet_nonne_horizon_l, 3, 3, 0)
+
 NONNE_R = pyg.image.load("Images/Persos/nonne_r.png")
 NONNE_L = pyg.image.load("Images/Persos/nonne_l.png")
 
@@ -195,6 +204,7 @@ spritesheet_demon = pyg.image.load("Images/Monstres/demon.png")
 spritesheet_diablotin = pyg.image.load("Images/Monstres/diablotin.png")
 spritesheet_gargouille = pyg.image.load("Images/Monstres/gargouille.png")
 spritesheet_lucifer = pyg.image.load("Images/Monstres/lucifer.png")
+spritesheet_ange_dechu = pyg.image.load("Images/Monstres/ange_dechus.png")
 
 ANIM_COFFRE = decouper_image(spritesheet_coffre, 4, 6, 0)
 
@@ -234,3 +244,4 @@ ANIM_DEMON = decouper_image(spritesheet_demon, 6, 1, 0)
 ANIM_DIABLOTIN = decouper_image(spritesheet_diablotin, 9, 1, 0)
 ANIM_GARGOUILLE = decouper_image(spritesheet_gargouille, 8, 1, 0)
 ANIM_LUCIFER = decouper_image(spritesheet_lucifer, 8, 1, 0)
+ANIM_ANGE_DECHU = decouper_image(spritesheet_ange_dechu, 8, 1, 0)

@@ -24,7 +24,9 @@ from Fichiers_variables.progression import (
     init_progression, map_terminee, temps_limite
 )
 
-
+OBJ_SPECIAL = {"Nerd" : "Console_allumee",
+               "Nonne" : "Aura_divine",
+               "Fille_populaire" : "Highlighter"}
 def on_level_up(player):
     niveau = player.niveau
     armes_dispos = ARMES[player.perso]
@@ -52,7 +54,6 @@ def jeu(perso, nom, map_choisie="Cour"):
         reecrire_fichier("niveau_argent", new_tab, noms)
         reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
         reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
-
     # Initialise la progression du joueur
     init_progression(nom, noms)
 
@@ -106,7 +107,6 @@ def jeu(perso, nom, map_choisie="Cour"):
     popup_group = pyg.sprite.Group()
     completed_kill_quests    = set()
     completed_acquire_quests = set()
-
     while run:
         xp = 0
 
@@ -147,6 +147,15 @@ def jeu(perso, nom, map_choisie="Cour"):
             frame += 1
 
             coord_monde, minijeu_fini, armes_et_items_possedees, armes_joueur = mj(perso, coord_monde, minijeu_fini, p, armes_et_items_possedees, armes_joueur, map_choisie)
+            if minijeu_fini and not OBJ_SPECIAL[p.perso] in armes_possedees :
+                action  = game_over()
+                new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
+                reecrire_fichier("niveau_argent", new_tab, noms)
+                reecrire_fichier("armes_obtenues_par_joueur", armes_joueur, noms)
+                if action == "menu":
+                    return "menu"
+                if action == "quit":
+                    return "quit"
             # Victoire
             if not victoire_decl and (temps_ecoule >= TEMPS_OBJECTIF or force_victoire):
                 victoire_decl = True
