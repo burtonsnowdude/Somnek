@@ -2,7 +2,7 @@ import pygame as pyg
 from Fichiers_variables.variables import * 
 import math
 from random import choice, randint
-from Affichage.fonctionnement_divers import screen_to_world
+from Affichage.fonctionnement_divers import screen_to_world, camera
 
 class Monstre:
     """Class Monstre"""
@@ -13,12 +13,15 @@ class Monstre:
         ----------
         type : str
             Le type de monstre
+        p : Self@Player
+            Le joueur
         """
         self.type = type
         self.puissance = TYPES_MONSTRES[type]["puissance"]
         self.hp = TYPES_MONSTRES[type]["hp"]
         self.vitesse = TYPES_MONSTRES[type]["vitesse"]
         self.all_monsters = pyg.sprite.Group() 
+        # sélection de l'image ou de l'anim selon ce qui est dispo
         if "image" in TYPES_MONSTRES[type]:
             self.image = TYPES_MONSTRES[type]["image"]
             self.rect = self.image.get_rect()
@@ -40,20 +43,34 @@ class Monstre:
         
         
 
-    def choix_coord(self, coord):
+    def choix_coord(self, coord, p):
+        """Permet de définir manuellement les coordonnées d'un monstre
+        
+        Parameters
+        ----------
+        coord : tuple(int, int)
+            Coordonnées monde
+        p : Self@Player
+            Le joueur
+        """
         self.x_monde, self.y_monde = coord
-        self.x_screen, self.y_screen = coord
+        # Adaption des coordonnées screen
+        self.x_screen, self.y_screen = camera(coord[0], coord[1], p)
 
     def show(self, frame):
-        """Dessine le monstre"""
+        """Dessine le monstre
+        
+        frame : int
+            Numéro de la frame actuelle
+        """
         self.rect.center = (self.x_screen, self.y_screen)
         if "image" in TYPES_MONSTRES[self.type]:
             img = self.image.copy()
             WIN.blit(img, self.rect)
-        elif frame % 4 == 0:
+        elif frame % 4 == 0: # fréquence de changement de frame
             WIN.blit(self.anim[self.index], self.rect)
             self.index += 1
-            self.index = self.index % len(self.anim)
+            self.index = self.index % len(self.anim) # pour empêcher d'être out of range
         else:
             WIN.blit(self.anim[self.index], self.rect)
 
@@ -65,12 +82,13 @@ class Monstre:
             WIN.blit(img, self.rect)
     
     def show_xp(self):
+        """Montre l'xp"""
         self.rect.center = (self.x_screen, self.y_screen)
         WIN.blit(XP, self.rect)
         self.valeur = self.puissance
     
 
-    def empoisonner(self, duree, degats, tick):  # ← dans la classe
+    def empoisonner(self, duree, degats, tick):  
         self.est_empoisonne = True
         self.poison_duree = duree
         self.poison_degats = degats
@@ -87,6 +105,7 @@ class Monstre:
             self.poison_timer = 0
         if self.poison_duree <= 0:
             self.est_empoisonne = False
+
     def degats(self, degats):
         """Inflige des dégâts au monstre
 
@@ -101,7 +120,8 @@ class Monstre:
         
         Parameters
         ----------
-        p : Self@Player
+        x, y : int
+            coord monde
         """
 
         # Calculate direction vector from monster to player
@@ -123,17 +143,17 @@ def ajouter_monstre(monstres_presents, p, perso):
     ----------
     monstres_presents : list
         La liste des monstres presents
+    p : Self@Player 
+        Le joueur
+    perso : str
+        Le nom du perso choisi
     
     Returns
     -------
     list 
-        La liste des monstres presents"""
+        La liste des monstres presents
+    """
     choix_possibles = [monstre for monstre in TYPES_MONSTRES if TYPES_MONSTRES[monstre]["niveau"] <= p.niveau and TYPES_MONSTRES[monstre]["perso"] == perso]
-    if not choix_possibles:
-        choix_possibles = [m for m in TYPES_MONSTRES 
-                           if TYPES_MONSTRES[m]["perso"] == perso]
-        choix_possibles = [min(choix_possibles, 
-                           key=lambda m: TYPES_MONSTRES[m]["niveau"])]
     monstres_presents.append(Monstre(choice(choix_possibles), p)) # crée un nouveau monstre de type aléatoire
     return monstres_presents
 
@@ -148,6 +168,8 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
         Le numéro de la frame actuelle
     p : Self@Player
         Le joueur
+    xp_dispo : list
+        Liste de l'xp dispo sur la map
     
     Returns
     -------
@@ -169,14 +191,31 @@ def gestion_monstres_presents(monstres_presents, frame, p, xp_dispo):
     return monstres_presents, kill_count
 
 def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
+    """ Gère l'xp présent sur la map
+    
+    Parameters
+    ----------
+    xp_dispo : list
+        Liste des xp dispo
+    p : Self@Player
+        Le joueur
+    
+    Returns
+    -------
+    list
+        Liste des xp dispos
+    obtenu
+        Xp obtenu
+    """
     obtenu = 0
     for xp in xp_dispo[:]:
         xp.show_xp()
         if p.pos.colliderect(xp.rect):
             obtenu += xp.valeur
             p.xp += xp.valeur  
-            xp_dispo.remove(xp)
+            xp_dispo.remove(xp) # on l'enlève si le joueur le gagne
     return xp_dispo, obtenu
+
 def empoisonner(self, duree, degats, tick):
     self.est_empoisonne = True
     self.poison_duree = duree
