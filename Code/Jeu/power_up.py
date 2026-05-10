@@ -9,7 +9,11 @@ import Interface.variable_power_up as data
 
 BASE_VITESSE       = 2
 BASE_CADENCE       = 30      # frames entre deux tirs
+<<<<<<< HEAD
 BASE_HP_MAX        = 400
+=======
+BASE_HP_MAX        = 300
+>>>>>>> 57795b8b2372ba858fb77ceaae4f045dd61aff22
 BASE_PROTECTION    = 0.0
 BASE_QUANTITE      = 1
 BASE_ZONE          = 1.0

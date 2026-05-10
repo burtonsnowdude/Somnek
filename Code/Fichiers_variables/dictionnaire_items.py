@@ -19,7 +19,6 @@ Items = {
         "Minuteur": {"effet": "duree", "max": 2.0},
         "Ensemble_juicy": {"effet": "protection", "max": 0.50},
         "Manteau_leopard": {"effet": "protection", "max": 0.27}
-        
     },
 
     "Nerd": {
@@ -65,6 +64,8 @@ Items = {
         "Minuteur": {"effet": "duree", "max": 2.0},
     }
 }
+
+
 
 
 GESTION_NIVEAU_ITEMS = {
@@ -122,7 +123,7 @@ GESTION_NIVEAU_ITEMS = {
         "Niveau 21": {"Talons_noirs": 0.10},
         "Niveau 22": {"Chew_gum": 0.35, "Mousse_vanille": 3, "Ambroisie": 0.50},
         "Niveau 23": {"Chew_gum": 0.15, "Parfum_Dioru": 0.8, "Carte_bleue": 0.2},
-        "Niveau 24": {"Chew_gum": 0.15,  "Mousse_vanille": 0.8},
+        "Niveau 24": {"Chew_gum": 0.15, "Mousse_vanille": 0.8},
         "Niveau 25": {"Ensemble_juicy": 0.50, "Manteau_leopard": 0.27},
         "Niveau 26": {}
     },
@@ -217,3 +218,5 @@ TYPES_ITEMS = {
         "Minuteur": {"image": MINUTEUR, "texte": "Augmente la durée des bonus."},
     }
 }
+
+ITEMS_PAR_PERSO = Items

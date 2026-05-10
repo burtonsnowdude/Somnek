@@ -13,7 +13,7 @@ FONT = pyg.font.SysFont("Press Start 2P", 24) # definir la police d'ecriture
 CENTREx, CENTREy = WIDTH//2, HEIGHT//2 
 PLAYER_WIDTH, PLAYER_HEIGHT = 25, 45 # taille du joueur
 PLAYER_VIT = 2 # vitesse de deplacement du joueur
-PLAYER_PV = 200 # points de vie du joueur
+PLAYER_PV = 300 # points de vie du joueur
 
 FREQUENCE = 50
 

@@ -18,7 +18,8 @@ GESTION_DES_ARMES = {
         "Faux_ongles_roses": {"effet": "degats", "max": 23},
         "Fer_a_lisser": {"effet": "degats", "max": 19},
         "Pass_Navigo": {"effet": "degats", "max": 20},
-        "Ring_light": {"effet": "degats", "max": 40}
+        "Ring_light": {"effet": "degats", "max": 40},
+        "Highliter" : {"effet": "degats", "max" : 40}
     },
 
     "Nonne": {
@@ -86,6 +87,7 @@ TYPES_ARMES = {
 
     "Fille_populaire": {
 
+<<<<<<< HEAD
         "Gloss_rose": {
             "type_arme": "zone",
             "image": GLOSS_ROSE,
@@ -134,6 +136,17 @@ TYPES_ARMES = {
             "texte": "Tire rapidement dans quatre directions fixes. Dégâts de base : 40PV.",
             "dgbase": 40
         }
+=======
+    "Higliter": {
+        "type_arme": "balle",
+        "image": HIGLIGHTER,
+        "texte": "Jette des étoiles trop joliesss . Dégâts de base : 10PV."
+    },
+    "Gloss_rose": {
+        "type_arme": "zone",
+        "image": GLOSS_ROSE,
+        "texte": "Crée des zones de destruction. Dégâts de base : 10PV."
+>>>>>>> 57795b8b2372ba858fb77ceaae4f045dd61aff22
     },
 
     "Nonne": {
