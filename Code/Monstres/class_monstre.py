@@ -1,3 +1,7 @@
+"""
+Class Monstre :
+Apparition, action, déplacements, xp
+"""
 import pygame as pyg
 from Fichiers_variables.variables import * 
 import math
