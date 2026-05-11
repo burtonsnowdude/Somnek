@@ -1,3 +1,5 @@
+"Test map"
+
 import csv, os
 CHEMIN = "Fichiers_csv/maps_debloquees.csv"
 
@@ -17,6 +19,6 @@ if os.path.exists(CHEMIN):
         writer = csv.DictWriter(f, headers, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
-    print("✅ Cour débloquée pour tous les joueurs.")
+    print("Cour débloquée pour tous les joueurs.")
 else:
-    print("⚠ maps_debloquees.csv n'existe pas encore — il sera créé au premier lancement.")
+    print("maps_debloquees.csv n'existe pas encore — il sera créé au premier lancement.")

@@ -314,8 +314,7 @@ ARMES = {
     }
 }
 
-# CORRECTION : converti en listes de noms d'armes (au lieu de dicts {arme: description})
-# pour que choix_arme() puisse itérer correctement avec "for arme in GESTION_DES_NIVEAUX_ARMES[...]["Niveau X"]"
+
 GESTION_DES_NIVEAUX_ARMES = {
 
     "Nerd": {

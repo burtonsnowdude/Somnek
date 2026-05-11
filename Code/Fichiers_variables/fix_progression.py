@@ -34,4 +34,4 @@ with open(CHEMIN, "w", newline="") as f:
     writer.writeheader()
     writer.writerows(rows)
 
-print("✅ Fille_populaire débloquée pour :", ", ".join(joueurs))
+print("Fille_populaire débloquée pour :", ", ".join(joueurs))
