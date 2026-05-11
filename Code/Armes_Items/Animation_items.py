@@ -153,9 +153,9 @@ class AnimationItemTombe:
                 overlay.fill((*self.couleur, intensite))
                 surface.blit(overlay, self.joueur.pos.topleft)
 
-    # ── Privé ─────────────────────────────────────────────────────────────
-
+    #
     def _draw_trainee(self, surface: pygame.Surface):
+        
         cx = int(self.x + self.TAILLE_ITEM[0] // 2)
         for i in range(1, 9):
             alpha = int(150 * (1 - i / 9))

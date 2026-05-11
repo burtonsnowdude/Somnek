@@ -33,9 +33,7 @@ class Item:
                 f"{self.valeur_plafonnee:.2f}/{self.max}>")
 
 
-# ─────────────────────────────────────────────
-#  InventaireItems
-# ─────────────────────────────────────────────
+
 
 class InventaireItems:
     """
@@ -51,7 +49,7 @@ class InventaireItems:
         self.perso  = perso
         self._items: dict[str, Item] = {}
 
-    # ── API ───────────────────────────────────────────────────────────
+    
 
     def equiper_item(self, nom_item: str, niveau: int):
         catalogue = ITEMS_PAR_PERSO.get(self.perso, {})
@@ -81,7 +79,7 @@ class InventaireItems:
     def lister(self) -> list:
         return list(self._items.values())
 
-    # ── Calcul des stats agrégées ────────────────────────────────────
+    
 
     def calculer_stats(self) -> dict:
         stats = {
@@ -152,7 +150,7 @@ class InventaireItems:
         stats["bonus_chance"]     = min(stats["bonus_chance"],     1.00)
         return stats
 
-    # ── Privé ────────────────────────────────────────────────────────
+    
 
     def _ajouter(self, nom_item: str, valeur: float):
         catalogue = ITEMS_PAR_PERSO.get(self.perso, {})
@@ -180,9 +178,7 @@ class InventaireItems:
         return 0.0
 
 
-# ─────────────────────────────────────────────
-#  Application des stats sur le joueur
-# ─────────────────────────────────────────────
+
 
 def appliquer_stats_items(joueur, stats: dict):
     """
@@ -196,7 +192,7 @@ def appliquer_stats_items(joueur, stats: dict):
     ancien_hp_max  = getattr(joueur, "hp_max", joueur.hp_max_base)
     nouveau_hp_max = int(joueur.hp_max_base * (1 + stats["bonus_sante"]))
 
-    # Multi-effets (Eau_benite)
+    # Multi-effets 
     multi_sante = stats["multi_effets"].get("sante", 0)
     if multi_sante:
         nouveau_hp_max = int(nouveau_hp_max * (1 + multi_sante))
@@ -222,14 +218,13 @@ def appliquer_stats_items(joueur, stats: dict):
     joueur.portee_xp          = joueur.portee_xp_base + stats["bonus_attirance"]
     joueur.reduction_degats   = stats["reduction_degats"]
 
-    # FIX : la cooldown_reduction des items agit maintenant réellement.
-    # Plafonné à 5 frames mini pour éviter le tir-spam infini.
+   
     joueur.projectile_cadence = max(
         5,
         int(CADENCE_BASE * (1.0 - stats["cooldown_reduction"]))
     )
 
-    # Multi-effets non-santé (déjà appliquée plus haut)
+    
     for k, v in stats["multi_effets"].items():
         if k == "vitesse":
             joueur.vitesse = joueur.vitesse * (1 + v)
