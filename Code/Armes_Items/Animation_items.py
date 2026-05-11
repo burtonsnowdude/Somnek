@@ -11,9 +11,7 @@ import pygame
 import time
 import math
 
-# ─────────────────────────────────────────────
-#  COULEUR PRINCIPALE PAR ITEM
-# ─────────────────────────────────────────────
+
 
 COULEUR_ITEM = {
     # Nerd
@@ -71,9 +69,7 @@ COULEUR_ITEM = {
 COULEUR_DEFAUT = (200, 200, 255)
 
 
-# ─────────────────────────────────────────────
-#  ANIMATION
-# ─────────────────────────────────────────────
+
 
 class AnimationItemTombe:
     """
@@ -87,7 +83,7 @@ class AnimationItemTombe:
     VITESSE_CHUTE   = 8       # px/frame
     TAILLE_ITEM     = (40, 40)
     FLASH_DUREE     = 3.0     # secondes totales de teinte
-    FLASH_INTENSITE = 130     # opacité max (0-255)
+    FLASH_INTENSITE = 130     # opacité max
     FONDU_DEBUT     = 2.0     # à partir de quand le fondu commence
 
     def __init__(self, nom_item: str, image_surface: pygame.Surface, joueur):
@@ -170,9 +166,7 @@ class AnimationItemTombe:
             surface.blit(tmp, (cx - rayon, vy - rayon))
 
 
-# ─────────────────────────────────────────────
-#  ENREGISTREMENT COLLECTION + LANCEMENT
-# ─────────────────────────────────────────────
+
 """
 def enregistrer_item_collection(joueur_nom: str, nom_item: str):"""
 """ Ajoute immédiatement l'item dans le CSV collection du joueur."""

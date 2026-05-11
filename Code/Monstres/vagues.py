@@ -49,7 +49,7 @@ def gestion_vague(derniere_vague, p, perso):
         for i in range(nb_monstres) :
             m = Monstre(type, p)
             m.vitesse += 7
-            m.choix_coord((x, y))
+            m.choix_coord((x, y), p) 
             if choice((True, False)) :
                 x += randint(-60,60) # décalage des coordonnées
             else : 
@@ -165,17 +165,17 @@ def vague_130(temps_ecoule, monstres_presents, vague, p, perso):
         for x in range(1,nb_mx) : # bords haut et bas
             m1, m4 = Monstre(type, p), Monstre(type, p)
             coord1 = screen_to_world(x*w, 0, p)
-            m1.choix_coord(coord1)
+            m1.choix_coord(coord1,p)
             coord4 = screen_to_world(x*w, HEIGHT, p)
-            m4.choix_coord(coord4)
+            m4.choix_coord(coord4,p)
             monstres_presents.append(m1)
             monstres_presents.append(m4)
         for y in range(nb_my): # bords gauche et droite
             m2, m3 = Monstre(type, p), Monstre(type, p)
             coord2 = screen_to_world(0, y*h, p)
             coord3 = screen_to_world(WIDTH, y*h, p)
-            m2.choix_coord(coord2)
-            m3.choix_coord(coord3)
+            m2.choix_coord(coord2,p)
+            m3.choix_coord(coord3,p)
             monstres_presents.append(m2)
             monstres_presents.append(m3)
         return monstres_presents, True

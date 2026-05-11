@@ -1,12 +1,13 @@
 """
 Classe_par_type_darme.py — SOMNEK
 
-Corrections :
-- ArmeExplosion : ne tire PLUS de Projectile visible, crée l'Explosion directement
-- ArmeOrbitale  : nouvelle classe — les armes orbitent autour du joueur
-- draw()        : l'arme d'index 0 (arme de départ) s'affiche en main,
-                  les autres tournent en orbite
-- Aura_divine   : type "orbital_explosion" → orbite + explosion à l'impact
+CORRECTIONS :
+- Nouvelle méthode ArmeBase.calculer_degats_finaux() qui combine :
+    arme.damage × (1 + player.bonus_degats) × player.attaque_mult
+- Tous les .tirer() propagent ces dégâts au Projectile / Explosion / Zone
+  (avant, Projectile.damage restait hardcodé à 10 dans son __init__)
+- ZoneAttaque et ZoneCoup stockent leur damage pour que la collision
+  dans jeu.py puisse le lire via `zone.damage`
 """
 
 import pygame as pyg
@@ -16,11 +17,11 @@ import math
 from Armes_Items.classe_projectile import Projectile, ProjectilePoison
 
 ZONES_IMAGES = {
-    "Cle_USB":           "Images/Armes_items/projectile/proj_cleusb.png",
-    "Console_allumee":   "Images/Armes_items/projectile/proj_console.png",
-    "Gloss_rose":        "Images/Armes_items/projectile/proj_gloss_rose.png",
-    "Faux_ongles_roses": "Images/Armes_items/projectile/proj_faux_ongles_roses.png",
-    "Coiffe_de_rameau":  "Images/Armes_items/projectile/proj_couronne.png",
+    "Cle_USB":               "Images/Armes_items/projectile/proj_cleusb.png",
+    "Console_allumee":       "Images/Armes_items/projectile/proj_console.png",
+    "Gloss_rose":            "Images/Armes_items/projectile/proj_gloss_rose.png",
+    "Faux_ongles_roses":     "Images/Armes_items/projectile/proj_faux_ongles_roses.png",
+    "Coiffe_de_rameau":      "Images/Armes_items/projectile/proj_couronne.png",
     "Feu_de_l'Esprit_Saint": "Images/Armes_items/projectile/feu esprit sain.png",
 }
 
@@ -38,7 +39,6 @@ class ArmeBase:
         self.cooldown = 60
         self.timer    = 0
         self.nom      = nom_arme
-        self.damage   = 10
 
         data           = TYPES_ARMES.get(player.perso, {}).get(nom_arme, {})
         self.proj_type = data.get("type_arme", "balle")
@@ -51,6 +51,16 @@ class ArmeBase:
         else:
             self.image   = None
             self.visible = False
+
+    # ── NOUVEAU : centralise le calcul de dégâts incluant les bonus joueur
+    def calculer_degats_finaux(self) -> float:
+        """
+        Dégâts de base de l'arme × bonus du joueur (items 'degats' et 'attaque').
+        À utiliser dans CHAQUE tirer() pour propager au projectile/zone/explosion.
+        """
+        bonus_degats = getattr(self.player, "bonus_degats", 0.0)
+        attaque_mult = getattr(self.player, "attaque_mult", 1.0)
+        return float(self.damage) * (1.0 + bonus_degats) * attaque_mult
 
     def update(self):
         if self.timer > 0:
@@ -65,36 +75,37 @@ class ArmeBase:
         pass
 
     def _est_arme_de_base(self) -> bool:
-        """Retourne True si cette arme est la première du joueur (index 0)."""
         return bool(self.player.armes) and self.player.armes[0] is self
 
     def draw(self, win):
         if not self.image:
             return
         if self._est_arme_de_base():
-        # Arme de départ : en main
             direction = self.player.get_direction()
             px, py    = self.player.pos.x, self.player.pos.y
             offsets   = {
-            (1,  0): (35, 10),
-            (-1, 0): (-20, 10),
-            (0, -1): (10, -20),
-            (0,  1): (10, 35),
+                (1,  0): (35, 10),
+                (-1, 0): (-20, 10),
+                (0, -1): (10, -20),
+                (0,  1): (10, 35),
             }
             ox, oy = offsets.get(direction, (35, 10))
             win.blit(self.image, (px + ox, py + oy))
         else:
-        # Armes secondaires : orbite simple
-            idx = self.player.armes.index(self)  # position dans la liste
-            angle_base = (idx * 90) % 360        # espacement à 90° entre armes
-            # l'angle tourne avec le temps via un compteur global frame
-            angle = (angle_base + pyg.time.get_ticks() * 0.1) % 360
-            rad   = math.radians(angle)
-            cx    = self.player.pos.centerx + math.cos(rad) * 80
-            cy    = self.player.pos.centery + math.sin(rad) * 80
-            rotated  = pyg.transform.rotate(self.image, -angle)
-            rot_rect = rotated.get_rect(center=(int(cx), int(cy)))
+            idx        = self.player.armes.index(self)
+            angle_base = (idx * 90) % 360
+            angle      = (angle_base + pyg.time.get_ticks() * 0.1) % 360
+            rad        = math.radians(angle)
+            cx         = self.player.pos.centerx + math.cos(rad) * 80
+            cy         = self.player.pos.centery + math.sin(rad) * 80
+            rotated    = pyg.transform.rotate(self.image, -angle)
+            rot_rect   = rotated.get_rect(center=(int(cx), int(cy)))
             win.blit(rotated, rot_rect)
+
+
+# ─────────────────────────────────────────────
+#  Projectile simple
+# ─────────────────────────────────────────────
 
 class ArmeProjectile(ArmeBase):
     """Tire un projectile dans la direction du joueur."""
@@ -102,20 +113,18 @@ class ArmeProjectile(ArmeBase):
         proj = Projectile(
             self.player,
             proj_type=self.proj_type,
-            nom_arme=self.nom
+            nom_arme=self.nom,
         )
+        proj.damage = self.calculer_degats_finaux()   # FIX
         self.player.all_projectiles.add(proj)
 
 
 # ─────────────────────────────────────────────
-#  Explosion directe (SANS projectile visible)
+#  Explosion directe (sans projectile visible)
 # ─────────────────────────────────────────────
 
 class ArmeExplosion(ArmeBase):
-    """
-    Crée une explosion directement à portée aléatoire.
-    N'instancie AUCUN Projectile visible — élimine le double-sprite.
-    """
+    """Crée une explosion à portée aléatoire."""
     def __init__(self, player, nom_arme: str = None):
         super().__init__(player, nom_arme)
         self.cooldown = 90
@@ -128,8 +137,10 @@ class ArmeExplosion(ArmeBase):
         rad      = math.radians(angle)
         x = self.player.x_monde + math.cos(rad) * distance
         y = self.player.y_monde + math.sin(rad) * distance
-        exp = Explosion(x, y, self.player, degats=self.damage)
-        # On ajoute dans la liste globale d'explosions via le player
+        exp = Explosion(
+            x, y, self.player,
+            degats=self.calculer_degats_finaux(),     # FIX
+        )
         if hasattr(self.player, "explosions"):
             self.player.explosions.append(exp)
 
@@ -141,12 +152,14 @@ class ArmeExplosion(ArmeBase):
 class ArmeMultiDirection(ArmeBase):
     """Tire dans 8 directions simultanément."""
     def tirer(self):
+        degats = self.calculer_degats_finaux()        # FIX : une seule fois
         for angle in range(0, 360, 45):
             proj = Projectile(
                 self.player,
                 proj_type=self.proj_type,
-                nom_arme=self.nom
+                nom_arme=self.nom,
             )
+            proj.damage = degats
             proj.set_direction(angle)
             self.player.all_projectiles.add(proj)
 
@@ -162,21 +175,21 @@ class ArmePoison(ArmeBase):
         self.cooldown = 80
 
     def tirer(self):
-        proj = ProjectilePoison(
-            self.player,
-            nom_arme=self.nom
-        )
+        proj = ProjectilePoison(self.player, nom_arme=self.nom)
+        proj.damage = self.calculer_degats_finaux()   # FIX
         self.player.all_projectiles.add(proj)
 
 
 # ─────────────────────────────────────────────
-#  Zone ponctuelle (spawn aléatoire autour du joueur)
+#  Zone ponctuelle (spawn autour du joueur)
 # ─────────────────────────────────────────────
 
 class ZoneAttaque(pyg.sprite.Sprite):
-    def __init__(self, pos, player, nom_arme: str = None, duration: int = 150):
+    def __init__(self, pos, player, nom_arme: str = None,
+                 duration: int = 150, damage: float = 10.0):
         super().__init__()
         self.player = player
+        self.damage = damage                          # FIX : exposé pour jeu.py
 
         image_path = ZONES_IMAGES.get(nom_arme, _ZONE_FALLBACK)
         self.image = pyg.image.load(image_path).convert_alpha()
@@ -198,7 +211,7 @@ class ZoneAttaque(pyg.sprite.Sprite):
 
 
 class ArmeZone(ArmeBase):
-    """Crée une zone d'attaque à portée aléatoire autour du joueur."""
+    """Crée une zone d'attaque à portée aléatoire."""
     def __init__(self, player, nom_arme: str = None):
         super().__init__(player, nom_arme)
         self.cooldown = 200
@@ -210,7 +223,11 @@ class ArmeZone(ArmeBase):
         rad      = math.radians(angle)
         x = self.player.x_monde + math.cos(rad) * distance
         y = self.player.y_monde + math.sin(rad) * distance
-        zone = ZoneAttaque((x, y), self.player, nom_arme=self.nom)
+        zone = ZoneAttaque(
+            (x, y), self.player,
+            nom_arme=self.nom,
+            damage=self.calculer_degats_finaux(),     # FIX
+        )
         self.player.all_zones.add(zone)
 
 
@@ -219,7 +236,8 @@ class ArmeZone(ArmeBase):
 # ─────────────────────────────────────────────
 
 class ZoneCoup(pyg.sprite.Sprite):
-    def __init__(self, player, nom_arme: str, duration: int = 15):
+    def __init__(self, player, nom_arme: str,
+                 duration: int = 15, damage: float = 10.0):
         super().__init__()
         from Fichiers_variables.dictionnaire_armes import TYPES_ARMES
         data  = TYPES_ARMES.get(player.perso, {}).get(nom_arme, {})
@@ -233,8 +251,9 @@ class ZoneCoup(pyg.sprite.Sprite):
         self.rect   = self.image.get_rect()
         self.player = player
         self.timer  = duration
+        self.damage = damage                          # FIX
 
-        dx, dy = player.get_direction()
+        dx, dy            = player.get_direction()
         self.rect.centerx = player.pos.centerx + dx * 50
         self.rect.centery = player.pos.centery + dy * 50
 
@@ -245,86 +264,72 @@ class ZoneCoup(pyg.sprite.Sprite):
 
 
 class ArmeEpee(ArmeBase):
-    """Arme de mêlée : crée une zone de coup devant le joueur. Pas de Projectile."""
+    """Mêlée : crée une zone de coup devant le joueur."""
     def __init__(self, player, nom_arme: str = None):
         super().__init__(player, nom_arme)
         self.offset   = (20, 10)
         self.cooldown = 40
 
     def tirer(self):
-        zone = ZoneCoup(self.player, self.nom)
+        zone = ZoneCoup(
+            self.player, self.nom,
+            damage=self.calculer_degats_finaux(),     # FIX
+        )
         self.player.all_zones.add(zone)
 
     def draw(self, win):
-        # L'épée de base s'affiche en main via ArmeBase.draw()
         super().draw(win)
 
 
 # ─────────────────────────────────────────────
-#  Orbitale — tourne autour du joueur en continu
+#  Orbitales
 # ─────────────────────────────────────────────
 
 class ArmeOrbitale(ArmeBase):
-    """
-    L'arme tourne en orbite autour du joueur.
-    Chaque tick elle vérifie les collisions avec les ennemis.
-    Pas de Projectile tiré — le sprite orbital EST l'arme.
-
-    Usage : Highlighter (Fille populaire), Aura_divine (Nonne)
-    """
-    RAYON_ORBITE  = 80      # pixels écran
-    VITESSE_DEG   = 2.5     # degrés par frame
+    """L'arme tourne autour du joueur. Hitbox = self.get_rect_ecran()."""
+    RAYON_ORBITE = 80
+    VITESSE_DEG  = 2.5
 
     def __init__(self, player, nom_arme: str = None):
         super().__init__(player, nom_arme)
-        self.cooldown = 1      # trigger chaque frame pour update_angle
-        self.angle    = 0.0    # angle courant en degrés
-        # Décalage de phase pour ne pas empiler toutes les orbitales au même endroit
+        self.cooldown = 1
+        self.angle    = 0.0
         idx = len([a for a in player.armes if isinstance(a, ArmeOrbitale)])
-        self.angle = idx * (360 / max(1, 4))   # répartition initiale
+        self.angle = idx * (360 / max(1, 4))
 
     def update(self):
         super().update()
         self.angle = (self.angle + self.VITESSE_DEG) % 360
 
     def tirer(self):
-        # Pas de projectile — les dégâts sont gérés dans jeu.py via all_zones
-        # On crée un sprite orbital pour la hitbox et l'affichage
+        # Pas de projectile. La hitbox orbite et les dégâts sont gérés via jeu.py
         pass
 
     def get_pos_ecran(self):
-        """Retourne la position écran du centre de l'orbitale."""
         rad = math.radians(self.angle)
         cx  = self.player.pos.centerx + math.cos(rad) * self.RAYON_ORBITE
         cy  = self.player.pos.centery + math.sin(rad) * self.RAYON_ORBITE
         return int(cx), int(cy)
 
     def get_rect_ecran(self):
-        """Retourne le rect écran pour la détection de collision."""
         cx, cy = self.get_pos_ecran()
         if self.image:
-            r = self.image.get_rect(center=(cx, cy))
-        else:
-            r = pyg.Rect(0, 0, 40, 40)
-            r.center = (cx, cy)
+            return self.image.get_rect(center=(cx, cy))
+        r = pyg.Rect(0, 0, 40, 40)
+        r.center = (cx, cy)
         return r
 
     def draw(self, win):
         if not self.image:
             return
-        cx, cy = self.get_pos_ecran()
-        rect   = self.image.get_rect(center=(cx, cy))
-        # Rotation de l'image selon l'angle pour un effet plus vivant
-        rotated = pyg.transform.rotate(self.image, -self.angle)
+        cx, cy   = self.get_pos_ecran()
+        rotated  = pyg.transform.rotate(self.image, -self.angle)
         rot_rect = rotated.get_rect(center=(cx, cy))
         win.blit(rotated, rot_rect)
 
 
 class ArmeOrbitaleExplosion(ArmeOrbitale):
-    """
-    Variante orbitale qui déclenche une explosion quand elle touche un ennemi.
-    Utilisée par Aura_divine.
-    """
+    """Variante orbitale : déclenche une explosion au contact."""
     RAYON_ORBITE = 90
     VITESSE_DEG  = 3.0
 
@@ -338,15 +343,17 @@ class ArmeOrbitaleExplosion(ArmeOrbitale):
             self._explosion_cooldown -= 1
 
     def declencher_explosion(self):
-        """Appelé depuis jeu.py quand la hitbox touche un ennemi."""
+        """Appelé depuis jeu.py au contact avec un ennemi."""
         if self._explosion_cooldown > 0:
             return
         from Armes_Items.Explosions import Explosion
-        cx, cy = self.get_pos_ecran()
-        # Convertir position écran → monde
+        cx, cy  = self.get_pos_ecran()
         x_monde = self.player.x_monde + (cx - self.player.pos.centerx)
         y_monde = self.player.y_monde + (cy - self.player.pos.centery)
-        exp = Explosion(x_monde, y_monde, self.player, degats=self.damage)
+        exp = Explosion(
+            x_monde, y_monde, self.player,
+            degats=self.calculer_degats_finaux(),     # FIX
+        )
         if hasattr(self.player, "explosions"):
             self.player.explosions.append(exp)
-        self._explosion_cooldown = 45   # ~0.75 s à 60 fps entre deux explosions
+        self._explosion_cooldown = 45                 # ~0.75s à 60 fps

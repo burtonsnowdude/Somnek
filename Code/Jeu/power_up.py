@@ -8,7 +8,7 @@ import Interface.variable_power_up as data
 
 
 BASE_VITESSE       = 2
-BASE_CADENCE       = 30      # frames entre deux tirs
+BASE_CADENCE       = 30      
 BASE_HP_MAX        = 400
 BASE_PROTECTION    = 0.0
 BASE_QUANTITE      = 1
@@ -71,13 +71,13 @@ def apply_powerups(player):
 def _appliquer_degats_arme(arme_instance, multiplicateur: float):
     """
     Met à jour arme_instance.damage en partant du dgbase propre à chaque arme
-    (ex : Epee_bleue=4, Cle_USB=23, Epee_enflammee=10...)
+    (ex : Epee_bleue=4)
     puis applique le multiplicateur Pouvoir du joueur.
 
     Si l'arme a déjà gagné des niveaux (levelup_depuis_niveau),
     on utilise _dgbase_apres_levelup pour ne pas perdre ces bonus.
     """
-    from Armes_Items.class_armes_sans_bugs import Arme  # import local : évite les imports circulaires
+    from Armes_Items.class_armes_sans_bugs import Arme  
 
     nom = getattr(arme_instance, "nom", None)
     if nom is None:
@@ -90,36 +90,9 @@ def _appliquer_degats_arme(arme_instance, multiplicateur: float):
     # Priorité : dgbase post-levelup stocké sur l'instance ArmeBase
     # sinon : dgbase initial du dictionnaire
     dgbase = getattr(arme_instance, "_dgbase_apres_levelup", arme_data.get("dgbase", 10))
-    #print("dgbase =", dgbase)
-    #print("multiplicateur =", multiplicateur)
-    print(nom)
-    print(Arme.ARMES)
     arme_instance.damage = dgbase * multiplicateur
 
 
-
-#
-#   def levelup_depuis_niveau(self, niveau_joueur):
-#       nv_key = f"Niveau {niveau_joueur}"
-#       bonus = GESTION_DES_NIVEAUX_ARMES.get(self.perso, {}).get(nv_key, {})
-#       if self.nom in bonus:
-#           valeur = bonus[self.nom]
-#           if isinstance(valeur, str) and "%" in valeur:
-#               pct = float(valeur.replace("+","").replace("% dégâts","").strip()) / 100
-#               self.caracteristiques["dgbase"] *= (1 + pct)
-#           elif isinstance(valeur, (int, float)):
-#               self.caracteristiques["dgbase"] += valeur
-#       self.attack = self.caracteristiques["dgbase"]
-#
-#       # ★ AJOUTER CES 2 LIGNES :
-#       # Cherche l'instance ArmeBase correspondante dans player.armes et met à jour
-#       # son _dgbase_apres_levelup pour que apply_powerups() parte du bon dgbase
-#       arme_base = next((a for a in self._player.armes if a.nom == self.nom), None)
-#       if arme_base:
-#           arme_base._dgbase_apres_levelup = self.caracteristiques["dgbase"]
-#
-# Note : il faut que Arme() reçoive le player en paramètre (self._player = player)
-# ou passer par une fonction utilitaire appelée depuis Player.
 
 
 

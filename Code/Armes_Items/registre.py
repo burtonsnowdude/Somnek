@@ -3,7 +3,7 @@
 """
 registre.py — SOMNEK
 Source unique de vérité pour la classification arme / item.
-Toujours importer depuis ici plutôt que de dupliquer la logique.
+
 """
  
 from Fichiers_variables.dictionnaire_armes import TYPES_ARMES

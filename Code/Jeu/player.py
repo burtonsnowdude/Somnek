@@ -47,17 +47,16 @@ class Player:
             self.pos = self.anim[0].get_rect()
 
         self.pos.center = CENTREx, CENTREy
-
+ 
         # Stats de base
         self.hp_max_base    = PLAYER_PV
         self.vitesse_base   = PLAYER_VIT
         self.zone_base      = 1.0
         self.portee_xp_base = 100.0
-        self.hp              = PLAYER_PV
-        self.hp_max          = PLAYER_PV
-        self.vitesse         = PLAYER_VIT
-        
-
+        self.hp             = PLAYER_PV
+        self.hp_max         = PLAYER_PV
+        self.vitesse        = PLAYER_VIT
+ 
         # Bonus items (0 ou 1 = aucun bonus)
         self.bonus_degats       = 0.0
         self.attaque_mult       = 1.0
@@ -71,30 +70,29 @@ class Player:
         self.zone_attaque       = 1.0
         self.portee_xp          = 100.0
         self.reduction_degats   = 0.0
-       
+ 
         self.arme_active  = 0
         self.armes        = []
         self.armes_unlock = set()
         self.all_zones    = pyg.sprite.Group()
         self.armes_data   = Arme.arme_possede
-        self.explosions = []
-        
+        self.explosions   = []
+ 
         self.inventaire_items = InventaireItems(perso)
-
-        
-        self.xp          = 0
-        self.niveau      = 1
-        self.kill_count  = 0
-        self.alive       = True
-        self.color       = PERSOS[perso]["color"]
-        self.x_monde     = CENTREx
-        self.y_monde     = CENTREy
-
-        self.all_projectiles    = pyg.sprite.Group()
-        self.projectile_cooldown= 0
-        self.projectile_cadence = 30
-        self._regen_timer = 0.0
-
+ 
+        self.xp         = 0
+        self.niveau     = 1
+        self.kill_count = 0
+        self.alive      = True
+        self.color      = PERSOS[perso]["color"]
+        self.x_monde    = CENTREx
+        self.y_monde    = CENTREy
+ 
+        self.all_projectiles     = pyg.sprite.Group()
+        self.projectile_cooldown = 0
+        self.projectile_cadence  = 30
+        self._regen_timer        = 0.0
+ 
     def draw_player(self, frame):
         """Dessine le joueur (animé ou non)
         
@@ -227,8 +225,12 @@ class Player:
         degats_reels = degats_bruts * (1.0 - self.reduction_degats)
         self.hp -= degats_reels
         if self.hp <= 0:
-            self.hp    = 0
-            self.alive = False
+            if self.resurrection:
+                self.hp = self.hp_max
+                self.resurrection = False    # consommé une seule fois
+            else:
+                self.hp = 0
+                self.alive = False
 
     def regen_hp(self, dt):
         """Régénère les HP en fonction de la stat regen (1X par seconde)."""

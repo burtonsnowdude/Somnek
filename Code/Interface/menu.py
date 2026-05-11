@@ -1,3 +1,10 @@
+"""
+interface.py :
+Menu principal de SOMNEK — gestion de l'écran d'accueil, de la navigation
+entre les différentes fenêtres (collection, réalisations, power-ups, options,
+crédits, démarrage de partie) 
+"""
+
 from Interface.option import settings, flashing_effect, black_and_white
 import pygame as pyg
 import sys
@@ -19,33 +26,64 @@ pyg.mixer.init()
 WIN = pyg.display.set_mode((WIDTH, HEIGHT))
 pyg.display.set_caption("SOMNEK")
 
+
 def play_music(path):
+    """Arrête la musique en cours et lance une nouvelle piste
+
+    Parameters
+    ----------
+    path : str
+        Chemin vers le fichier audio à jouer
+    """
     pyg.mixer.music.stop()
     pyg.mixer.music.load(path)
     pyg.mixer.music.play(0)
 
+
+
 try:
-    FONT_TITLE = pyg.font.Font("assets/pixels.ttf", 130)
+    FONT_TITLE  = pyg.font.Font("assets/pixels.ttf", 130)
     FONT_BUTTON = pyg.font.Font("assets/pixels.ttf", 36)
 except:
-    FONT_TITLE = pyg.font.SysFont(None, 130)
+    FONT_TITLE  = pyg.font.SysFont(None, 130)
     FONT_BUTTON = pyg.font.SysFont(None, 36)
 
 FONT_BUTTON = pyg.font.SysFont(None, 36)
 
 
-def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
+def interface(skip_intro=False, joueur=None):
+    """Lance et gère la boucle principale du menu de SOMNEK
+
+    Affiche l'écran d'intro jusqu'à l'appui sur ESPACE, puis le menu principal
+    avec tous les boutons de navigation. Gère les transitions entre les
+    sous-fenêtres et la musique de fond.
+
+    Parameters
+    ----------
+    skip_intro : bool, optional
+        True pour passer directement au menu sans l'écran d'intro (défaut False)
+    joueur : str, optional
+        Nom du joueur déjà identifié ; si None, déclenche la saisie du nom
+
+    Returns
+    -------
+    tuple(str, str, str) or bool
+        (personnage, map_choisie, nom_joueur) si une partie est lancée,
+        False si la fenêtre est fermée
+    """
     fond_intro = pyg.image.load("Images/Interface/press.png")
     fond_intro = pyg.transform.scale(fond_intro, (WIDTH, HEIGHT))
+
+    # identification du joueur et initialisation de son compte si nécessaire
     if joueur is None:
         from Interface.utilisateur import get_user_name
         joueur = get_user_name(fond_intro)
         noms, new_tab = det_noms()
         res = ajouter_utilisateur(joueur, noms)
-        if  res == False :
+        if res == False:
             argent = int(new_tab[1][joueur])
             new_tab[0][joueur] = int(new_tab[0][joueur])
-        else :
+        else:
             noms, new_tab_armes, new_tab_quetes, new_tab_powerups = res
             argent = 0
             new_tab[0][joueur] = 1
@@ -54,6 +92,7 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
             reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
             reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
 
+    
     fond_menu = pyg.image.load("Images/Interface/fond_accueil.png")
     fond_menu = pyg.transform.scale(fond_menu, (WIDTH, HEIGHT))
 
@@ -64,17 +103,19 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
     img_title = pyg.transform.smoothscale(img_title, (600, 250))
     rect_title = img_title.get_rect(center=(WIDTH // 2, 180))
 
-    img_commencer = pyg.image.load("Images/Interface/commencer_btn.png").convert_alpha()
+    # images des boutons du menu principal
+    img_commencer  = pyg.image.load("Images/Interface/commencer_btn.png").convert_alpha()
     img_collection = pyg.image.load("Images/Interface/collection_btn.png").convert_alpha()
-    img_option = pyg.image.load("Images/Interface/options_btn.png").convert_alpha()
-    img_power_up = pyg.image.load("Images/Interface/power_up_btn.png").convert_alpha()
-    img_credit = pyg.image.load("Images/Interface/credit_btn.png").convert_alpha()
+    img_option     = pyg.image.load("Images/Interface/options_btn.png").convert_alpha()
+    img_power_up   = pyg.image.load("Images/Interface/power_up_btn.png").convert_alpha()
+    img_credit     = pyg.image.load("Images/Interface/credit_btn.png").convert_alpha()
     img_avancement = pyg.image.load("Images/Interface/avancement_btn.png").convert_alpha()
-    img_quitter = pyg.image.load("Images/Interface/quitter_btn.png").convert_alpha()
+    img_quitter    = pyg.image.load("Images/Interface/quitter_btn.png").convert_alpha()
 
     img_argent = pyg.image.load("Images/Interface/argent.png").convert_alpha()
     img_argent = pyg.transform.smoothscale(img_argent, (130, 120))
 
+    # boutons du menu principal avec leur action associée
     buttons = [
         Button("COMMENCER",   "load",         400, 300, 400, 95,  FONT_BUTTON, image=img_commencer),
         Button("COLLECTION",  "collection",   150, 390, 290, 65,  FONT_BUTTON, image=img_collection),
@@ -85,23 +126,25 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
         Button("QUITTER",     "quit",         700, 40,  200, 350, FONT_BUTTON, image=img_quitter),
     ]
 
-    btn_rev_coll  = Button("X", "rev_coll",  550, 130, 40, 40, FONT_BUTTON)
-    btn_rev_real  = Button("X", "rev_real",  550, 130, 40, 40, FONT_BUTTON)
-    btn_rev_cre   = Button("X", "rev_cre",   550, 130, 40, 40, FONT_BUTTON)
-    btn_rev_opt   = Button("X", "rev_opt",   550, 130, 40, 40, FONT_BUTTON)
+    # boutons de fermeture de chaque sous-fenêtre
+    btn_rev_coll     = Button("X", "rev_coll",  550, 130, 40, 40, FONT_BUTTON)
+    btn_rev_real     = Button("X", "rev_real",  550, 130, 40, 40, FONT_BUTTON)
+    btn_rev_cre      = Button("X", "rev_cre",   550, 130, 40, 40, FONT_BUTTON)
+    btn_rev_opt      = Button("X", "rev_opt",   550, 130, 40, 40, FONT_BUTTON)
     btn_confirm_nerd = Button("Confirmer", "confirm", 550, 500, 80, 40, FONT_BUTTON)
-    btn_rev_start = Button("X", "rev_start", 550, 130, 40, 40, FONT_BUTTON)
-    btn_rev_shop = Button("X", "rev_shop", 550, 130, 40, 40, FONT_BUTTON)
+    btn_rev_start    = Button("X", "rev_start", 550, 130, 40, 40, FONT_BUTTON)
+    btn_rev_shop     = Button("X", "rev_shop",  550, 130, 40, 40, FONT_BUTTON)
 
+    # seconde vérification du joueur 
     if joueur is None:
         from Interface.utilisateur import get_user_name
         joueur = get_user_name(fond_intro)
         noms, new_tab = det_noms()
         res = ajouter_utilisateur(joueur, noms)
-        if  res == False :
+        if res == False:
             argent = int(new_tab[1][joueur])
             new_tab[0][joueur] = int(new_tab[0][joueur])
-        else :
+        else:
             noms, new_tab_armes, new_tab_quetes, new_tab_powerups = res
             argent = 0
             new_tab[0][joueur] = 1
@@ -110,52 +153,59 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
             reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
             reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
 
+   
+    game             = skip_intro     # afficher l'écran d'intro
+    show_image       = False          # collection ouverte
+    show_realisation = False          # réalisations ouvertes
+    show_credits     = False          # crédits ouverts
+    show_start       = False          # écran de démarrage ouvert
+    show_options     = False          # options ouvertes
+    show_shop        = False          # boutique power-ups ouverte
 
-    game = skip_intro
-    show_image = False
-    show_realisation = False
-    show_credits = False
-    show_start = False
-    show_options = False
-    show_shop = False
-
-    musique_bout = False
-    musique_load = False
+   
+    musique_bout  = False
+    musique_load  = False
     musique_close = False
 
-    musique_bout_played = False
-    musique_load_played = False
+    musique_bout_played  = False
+    musique_load_played  = False
     musique_close_played = False
 
     player_money = get_info(joueur, "argent", None)
 
-    clock = pyg.time.Clock()
+    clock   = pyg.time.Clock()
     running = True
 
+    # boucle principale du menu
     while running:
         clock.tick(60)
 
-        mouse_pos = pyg.mouse.get_pos()
+        mouse_pos    = pyg.mouse.get_pos()
         mouse_pressed = pyg.mouse.get_pressed()
-        events = pyg.event.get()
+        events       = pyg.event.get()
 
-        musique_bout_played = False
-        musique_load_played = False
+        
+        musique_bout_played  = False
+        musique_load_played  = False
         musique_close_played = False
 
         if not game:
+            
             WIN.blit(fond_intro, (0, 0))
             texte = FONT_BUTTON.render("Pressez ESPACE", True, (255, 255, 255))
             WIN.blit(texte, (250, 300))
 
         else:
+            # menu principal 
             WIN.blit(fond_menu, (0, 0))
             WIN.blit(img_title, rect_title)
             WIN.blit(img_argent, (270, 3))
             argent_text = FONT_BUTTON.render(f"{player_money}", True, (0, 0, 0))
             WIN.blit(argent_text, (380, 50))
 
-            aucune_fenetre_ouverte = not (show_image or show_realisation or show_credits or show_start or show_options or show_shop)
+            # Les boutons principaux ne sont actifs qu'si aucune sous-fenêtre n'est ouverte
+            aucune_fenetre_ouverte = not (show_image or show_realisation or show_credits
+                                          or show_start or show_options or show_shop)
 
             for btn in buttons:
                 btn.draw(WIN, mouse_pos)
@@ -186,6 +236,7 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                         show_shop = True
                         musique_bout = True
 
+            
             if not settings["music"]:
                 pyg.mixer.music.stop()
 
@@ -204,10 +255,13 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                     play_music("Sons/rev.mp3")
                     musique_close = False
 
+            # Relance la musique de fond en boucle si elle s'est arrêtée
             if settings["music"]:
                 if not pyg.mixer.music.get_busy():
                     pyg.mixer.music.load("Sons/music_interface.mp3")
                     pyg.mixer.music.play(-1)
+
+            # ── Affichage des sous-fenêtres ───────────────────────────────────
 
             if show_realisation:
                 popup = realisation_brouillon(events, joueur)
@@ -225,19 +279,20 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                     musique_close = True
 
             if show_start:
-                result = open_start(WIN, events, mouse_pos, mouse_pressed, btn_rev_start, FONT_BUTTON, joueur)
+                result = open_start(WIN, events, mouse_pos, mouse_pressed,
+                                    btn_rev_start, FONT_BUTTON, joueur)
                 if result is not None:
                     if result == "close":
                         show_start = False
                     elif result[0] == "start_game":
-                        show_start = False  
-            
-                        show_image = False
+                        # Fermeture de toutes les sous-fenêtres et lancement de la partie
+                        show_start       = False
+                        show_image       = False
                         show_realisation = False
-                        show_credits = False
-                        show_options = False
-                        show_shop = False
-                        perso = result[1]
+                        show_credits     = False
+                        show_options     = False
+                        show_shop        = False
+                        perso       = result[1]
                         map_choisie = result[2]
                         if map_choisie == "Metro":
                             from Fichiers_variables.gestion_fichiers import actualiser_quete
@@ -250,34 +305,38 @@ def interface(skip_intro=False, joueur=None):  # ← joueur en paramètre
                 if btn_rev_opt.is_clicked(mouse_pos, mouse_pressed):
                     show_options = False
                     musique_close = True
-                player_money = get_info(joueur, "argent", None)
+                player_money = get_info(joueur, "argent", None)  # rafraîchit l'argent après les options
 
             if show_shop:
                 from Interface.Power_up_shop import open_shop
-                close, player_money = open_shop(events, WIN, mouse_pos, mouse_pressed, btn_rev_shop, FONT_BUTTON, player_money, joueur)
+                close, player_money = open_shop(events, WIN, mouse_pos, mouse_pressed,
+                                                btn_rev_shop, FONT_BUTTON, player_money, joueur)
                 btn_rev_shop.draw(WIN, mouse_pos)
                 if close:
                     show_shop = False
                     musique_close = True
-                player_money = get_info(joueur, "argent", None)
+                player_money = get_info(joueur, "argent", None)  # rafraîchit l'argent après l'achat
 
             if show_image:
-                close = open_collection(events, WIN, mouse_pos, mouse_pressed, btn_rev_coll, joueur)
+                close = open_collection(events, WIN, mouse_pos, mouse_pressed,
+                                        btn_rev_coll, joueur)
                 if close:
                     show_image = False
                     musique_close = True
 
+        
         for event in events:
             if event.type == pyg.QUIT:
                 running = False
                 return False
             if event.type == pyg.KEYDOWN:
                 if event.key == pyg.K_SPACE:
-                    game = True
+                    game = True   # passe de l'intro au menu
 
+       
         if settings["bw"]:
-            black_and_white(WIN)
+            black_and_white(WIN)   # filtre noir et blanc
         if settings["vfx"]:
-            flashing_effect(WIN)
+            flashing_effect(WIN)   # effet de flash
 
         pyg.display.flip()

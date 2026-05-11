@@ -1,7 +1,14 @@
+"""
+collection.py :
+Interface de collection — affiche les items acquis et inconnus du joueur
+sous forme de grille cliquable avec aperçu agrandi de l'item sélectionné
+"""
+
 import pygame
 import Interface.variable_power_up as data
 from Interface.Class_Button import Button
 from Fichiers_variables.gestion_fichiers import liste_armes_acquises
+
 pygame.init()
 
 WOR = pygame.display.set_mode((500, 500))
@@ -12,22 +19,50 @@ FONT_BUTTON = pygame.font.SysFont(None, 24)
 shop_bg_img = pygame.image.load("Images/Interface/Collection.png")
 shop_bg_img = pygame.transform.scale(shop_bg_img, (500, 500))
 
-AFFICH_SIZE = (375, 105)
-ITEM_SIZE = 30
-START_X = 67
-START_Y = 49
-COLS = 8
-ROWS = 6
-SPACING_X = 50
-SPACING_Y = 38
+# paramètres de la grille 
+AFFICH_SIZE = (375, 105)  # dimensions de l'image d'aperçu agrandi
+ITEM_SIZE   = 30          # taille des icônes dans la grille
+START_X     = 67          # coordonnée x du premier item
+START_Y     = 49          # coordonnée y du premier item
+COLS        = 8           # nombre de colonnes
+ROWS        = 6           # nombre de lignes
+SPACING_X   = 50          # écart horizontal entre items
+SPACING_Y   = 38          # écart vertical entre items
+
 
 def load_small(path):
+    """Charge une image et la redimensionne à la taille ITEM_SIZE x ITEM_SIZE
+
+    Parameters
+    ----------
+    path : str
+        Chemin vers le fichier image
+
+    Returns
+    -------
+    pygame.Surface
+        Image redimensionnée à (ITEM_SIZE, ITEM_SIZE)
+    """
     return pygame.transform.scale(pygame.image.load(path), (ITEM_SIZE, ITEM_SIZE))
 
+
 def load_big(path):
+    """Charge une image et la redimensionne à la taille AFFICH_SIZE
+
+    Parameters
+    ----------
+    path : str
+        Chemin vers le fichier image
+
+    Returns
+    -------
+    pygame.Surface
+        Image redimensionnée à AFFICH_SIZE
+    """
     return pygame.transform.scale(pygame.image.load(path), AFFICH_SIZE)
 
-# ── Petites images ────────────────────────────────────────────────────────────
+
+# petites images 
 img_palette            = load_small("Images/Armes_items/palette.png")
 img_berserk            = load_small("Images/Armes_items/berserk.png")
 img_nain               = load_small("Images/Armes_items/nain.png")
@@ -79,8 +114,8 @@ img_chargeur        = load_small("Images/Armes_items/chargeur.png")
 img_faux_ongles     = load_small("Images/Armes_items/faux_ongles_roses.png")
 img_ring_light      = load_small("Images/Armes_items/ring light.png")
 img_sac_violet      = load_small("Images/Armes_items/sac_violet.png")
-img_ensemble_jucy     = load_small("Images/Armes_items/ensemble_jucy.png")
-img_manteau_leopard     = load_small("Images/Armes_items/manteau_leopard.png")
+img_ensemble_jucy   = load_small("Images/Armes_items/jucy.png")
+img_manteau_leopard = load_small("Images/Armes_items/manteau_leopard.png")
 
 # NONNE
 img_croix_de_base  = load_small("Images/Armes_items/croix_de_base.png")
@@ -106,7 +141,7 @@ img_collant        = load_small("Images/Armes_items/collant.png")
 img_cape           = load_small("Images/Armes_items/cape.png")
 img_coeur          = load_small("Images/Armes_items/coeur.png")
 
-# ── Grandes images ────────────────────────────────────────────────────────────
+# ── Grandes images (aperçus) ──────────────────────────────────────────────────
 palette_affich             = load_big("Images/Interface/affiche/palette_affich.png")
 berserk_affich             = load_big("Images/Interface/affiche/berserk_affich.png")
 nain_affich                = load_big("Images/Interface/affiche/nain_affiche.png")
@@ -128,53 +163,54 @@ console_affich             = load_big("Images/Interface/affiche/console_affiche.
 serviette_affich           = load_big("Images/Interface/affiche/serviette_affiche.png")
 pas_trouve                 = load_big("Images/Interface/affiche/pas_trouvé.png")
 
-# grandes images
-palette_affich = load_big("Images/Interface/affiche/palette_affich.png")
-berserk_affich = load_big("Images/Interface/affiche/berserk_affich.png")
-nain_affich = load_big("Images/Interface/affiche/nain_affiche.png")
-lunettes_cassees_affich = load_big("Images/Interface/affiche/lunettes_cassees_affiche.png")
-cahier_de_nsi_affich = load_big("Images/Interface/affiche/cahier_NSI_affiche.png")
-chaussettes_affich = load_big("Images/Interface/affiche/chaussettes_affiche.png")
-souris_affich = load_big("Images/Interface/affiche/souris_affiche.png")
-cle_usb_affich = load_big("Images/Interface/affiche/cle_usb_affiche.png")
-pistolets_affich = load_big("Images/Interface/affiche/pistolets_affiche.png")
-chariot_violet_affich = load_big("Images/Interface/affiche/chariot_affiche.png")
+# Doublons intentionnels (réassignation après chargement initial)
+palette_affich            = load_big("Images/Interface/affiche/palette_affich.png")
+berserk_affich            = load_big("Images/Interface/affiche/berserk_affich.png")
+nain_affich               = load_big("Images/Interface/affiche/nain_affiche.png")
+lunettes_cassees_affich   = load_big("Images/Interface/affiche/lunettes_cassees_affiche.png")
+cahier_de_nsi_affich      = load_big("Images/Interface/affiche/cahier_NSI_affiche.png")
+chaussettes_affich        = load_big("Images/Interface/affiche/chaussettes_affiche.png")
+souris_affich             = load_big("Images/Interface/affiche/souris_affiche.png")
+cle_usb_affich            = load_big("Images/Interface/affiche/cle_usb_affiche.png")
+pistolets_affich          = load_big("Images/Interface/affiche/pistolets_affiche.png")
+chariot_violet_affich     = load_big("Images/Interface/affiche/chariot_affiche.png")
 pomme_scientifique_affich = load_big("Images/Interface/affiche/pomme_affiche.png")
-vody_affich = load_big("Images/Interface/affiche/vody_affiche.png")
-deodorant_affich = load_big("Images/Interface/affiche/deodorant_affiche.png")
-ambroisie_affich = load_big("Images/Interface/affiche/ambroisie_affiche.png")
-nokia_affich = load_big("Images/Interface/affiche/nokia_affiche.png")
-trefle_affich = load_big("Images/Interface/affiche/trefle_affiche.png")
-armure_affich = load_big("Images/Interface/affiche/armure_affiche.png")
-console_affich = load_big("Images/Interface/affiche/console_affiche.png")
-serviette_affich = load_big("Images/Interface/affiche/serviette_affiche.png")
-apple_watch_affich = load_big("Images/Interface/affiche/apple_watch_affiche.png")
-pantalon_beige_affich = load_big("Images/Interface/affiche/pantalon_beige_affiche.png")
+vody_affich               = load_big("Images/Interface/affiche/vody_affiche.png")
+deodorant_affich          = load_big("Images/Interface/affiche/deodorant_affiche.png")
+ambroisie_affich          = load_big("Images/Interface/affiche/ambroisie_affiche.png")
+nokia_affich              = load_big("Images/Interface/affiche/nokia_affiche.png")
+trefle_affich             = load_big("Images/Interface/affiche/trefle_affiche.png")
+armure_affich             = load_big("Images/Interface/affiche/armure_affiche.png")
+console_affich            = load_big("Images/Interface/affiche/console_affiche.png")
+serviette_affich          = load_big("Images/Interface/affiche/serviette_affiche.png")
+apple_watch_affich        = load_big("Images/Interface/affiche/apple_watch_affiche.png")
+pantalon_beige_affich     = load_big("Images/Interface/affiche/pantalon_beige_affiche.png")
 
 # FILLE POPULAIRE
-gloss_rose_affich      = load_big("Images/Interface/affiche/gloss_affiche.png")
-ticket_affich          = load_big("Images/Interface/affiche/ticket_affiche.png")
-highlighter_affich     = load_big("Images/Interface/affiche/highlighter_affiche.png")
-faux_cils_affich       = load_big("Images/Interface/affiche/cils_affiche.png")
-bracelet_soeur_affich  = load_big("Images/Interface/affiche/bracelet_affiche.png")
-carte_bleu_affich      = load_big("Images/Interface/affiche/carte_affiche.png")
-pilule_verte_affich    = load_big("Images/Interface/affiche/pilule_affiche.png")
-mousse_vanille_affich  = load_big("Images/Interface/affiche/mousse_affiche.png")
-demaquillant_affich    = load_big("Images/Interface/affiche/demaquillant_affiche.png")
-parfum_dioru_affich    = load_big("Images/Interface/affiche/parfum_affiche.png")
-minuteur_affich        = load_big("Images/Interface/affiche/minuteur_affiche.png")
-chew_gum_affich        = load_big("Images/Interface/affiche/chew_gum_affiche.png")
-crop_top_rose_affich   = load_big("Images/Interface/affiche/crop_top_affiche.png")
-talon_noir_affich      = load_big("Images/Interface/affiche/talon_n_affiche.png")
-talon_louboutin_affich = load_big("Images/Interface/affiche/talon_l_affiche.png")
-iphone_2000_affich = load_big("Images/Interface/affiche/iphone_affiche.png")
-pass_navigo_affich = load_big("Images/Interface/affiche/pass_affiche.png")
-fer_a_lisser_affich = load_big("Images/Interface/affiche/fer_affiche.png")
-jean_stanley_affich = load_big("Images/Interface/affiche/jean_stanley_affiche.png")
-chargeur_affich = load_big("Images/Interface/affiche/chargeur_affiche.png")
-ensemble_jucy_affich = load_big("Images/Interface/affiche/ensemble_jucy_affiche.png")
-manteau_leopard_affich = load_big("Images/Interface/affiche/manteau_leopard_affiche.png")
-sac_a_main_violet_affich = load_big("Images/Interface/affiche/sac_violet_affiche.png")
+gloss_rose_affich        = load_big("Images/Interface/affiche/gloss_affiche.png")
+ticket_affich            = load_big("Images/Interface/affiche/ticket_affiche.png")
+highlighter_affich       = load_big("Images/Interface/affiche/highlighter_affiche.png")
+faux_cils_affich         = load_big("Images/Interface/affiche/cils_affiche.png")
+bracelet_soeur_affich    = load_big("Images/Interface/affiche/bracelet_affiche.png")
+carte_bleu_affich        = load_big("Images/Interface/affiche/carte_affiche.png")
+pilule_verte_affich      = load_big("Images/Interface/affiche/pilule_affiche.png")
+mousse_vanille_affich    = load_big("Images/Interface/affiche/mousse_affiche.png")
+demaquillant_affich      = load_big("Images/Interface/affiche/demaquillant_affiche.png")
+parfum_dioru_affich      = load_big("Images/Interface/affiche/parfum_affiche.png")
+minuteur_affich          = load_big("Images/Interface/affiche/minuteur_affiche.png")
+chew_gum_affich          = load_big("Images/Interface/affiche/chew_gum_affiche.png")
+crop_top_rose_affich     = load_big("Images/Interface/affiche/crop_top_affiche.png")
+talon_noir_affich        = load_big("Images/Interface/affiche/talon_n_affiche.png")
+talon_louboutin_affich   = load_big("Images/Interface/affiche/talon_l_affiche.png")
+iphone_2000_affich       = load_big("Images/Interface/affiche/iphone_affiche.png")
+pass_navigo_affich       = load_big("Images/Interface/affiche/pass_affiche.png")
+fer_a_lisser_affich      = load_big("Images/Interface/affiche/fer_affiche.png")
+jean_stanley_affich      = load_big("Images/Interface/affiche/jean_stanley_affiche.png")
+chargeur_affich          = load_big("Images/Interface/affiche/chargeur_affiche.png")
+ensemble_jucy_affich     = load_big("Images/Interface/affiche/ensemble_jucy_affiche.png")
+manteau_leopard_affich   = load_big("Images/Interface/affiche/manteau_leopard_affiche.png")
+sac_a_main_violet_affich = load_big("Images/Interface/affiche/sac_a_main_violet_affiche.png")
+
 # NONNE
 croix_de_base_affich  = load_big("Images/Interface/affiche/croix_affiche.png")
 couronne_affich       = load_big("Images/Interface/affiche/couronne_affiche.png")
@@ -185,17 +221,20 @@ voile_affiche         = load_big("Images/Interface/affiche/voile_affiche.png")
 huile_affich          = load_big("Images/Interface/affiche/huile_affiche.png")
 ostie_affich          = load_big("Images/Interface/affiche/hostie_affiche.png")
 boule_denergie_affich = load_big("Images/Interface/affiche/boule_energie_affiche.png")
-eau_benite_affich = load_big("Images/Interface/affiche/eau_affiche.png")
-mocassin_affich = load_big("Images/Interface/affiche/mocassin_affiche.png")
-halo_lumineux_affich = load_big("Images/Interface/affiche/halo_affiche.png")
-coeur_affiche = load_big("Images/Interface/affiche/coeur_affiche.png")
-cape_affiche = load_big("Images/Interface/affiche/cape_affiche.png")
-collant_affiche = load_big("Images/Interface/affiche/collant_affiche.png")
-sac_a_dos_bleu_affich = load_big("Images/Interface/affiche/sac_bleu_affiche.png")
-chapelet_affich = load_big("Images/Interface/affiche/chapelet_affiche.png")
-tableau_sacre_affich = load_big("Images/Interface/affiche/tableau_sacre_affiche.png")
-pas_trouve = load_big("Images/Interface/affiche/pas_trouvé.png")
+eau_benite_affich     = load_big("Images/Interface/affiche/eau_affiche.png")
+mocassin_affich       = load_big("Images/Interface/affiche/mocassin_affiche.png")
+halo_lumineux_affich  = load_big("Images/Interface/affiche/halo_affiche.png")
+coeur_affiche         = load_big("Images/Interface/affiche/coeur_affiche.png")
+cape_affiche          = load_big("Images/Interface/affiche/cape_affiche.png")
+collant_affiche       = load_big("Images/Interface/affiche/collant_affiche.png")
+sac_a_dos_bleu_affich = load_big("Images/Interface/affiche/sac_a_dos_bleu_affiche.png")
+chapelet_affich       = load_big("Images/Interface/affiche/chapelet_affiche.png")
+tableau_sacre_affich  = load_big("Images/Interface/affiche/tableau_sacre_affiche.png")
+pas_trouve            = load_big("Images/Interface/affiche/pas_trouvé.png")
 
+# Dictionnaire item adapptés à collection
+# Associe chaque item à son icône de grille et son image d'aperçu agrandi.
+# Les items non débloqués affichent l'icône "inconnu" et l'image "pas_trouve".
 liste_all_item = {
     "Palette": (img_palette, palette_affich),
     "Berserk": (img_berserk, berserk_affich),
@@ -323,17 +362,42 @@ liste_all_item = {
 }
 """
 
-selected_item = None
+selected_item = None  # item actuellement sélectionné dans la grille
 
 
 class ShopItem:
+    """
+    Class ShopItem :
+    Représente un item cliquable dans la grille de collection
+    """
+
     def __init__(self, name, image, affich, x, y):
-        self.name  = name
-        self.image = image
+        """Initialise un item de la grille avec son nom, ses images et sa position
+
+        Parameters
+        ----------
+        name : str
+            Nom de l'item
+        image : pygame.Surface
+            Icône affichée dans la grille
+        affich : pygame.Surface
+            Grande image affichée en aperçu lors de la sélection
+        x, y : int
+            Coordonnées de l'item dans la grille
+        """
+        self.name   = name
+        self.image  = image
         self.affich = affich
-        self.rect  = pygame.Rect(x, y, 41, 30)
+        self.rect   = pygame.Rect(x, y, 41, 30)
 
     def update(self, events):
+        """Met à jour l'item en vérifiant si l'utilisateur a cliqué dessus
+
+        Parameters
+        ----------
+        events : list[pygame.event.Event]
+            Liste des événements pygame du frame courant
+        """
         global selected_item
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -341,13 +405,35 @@ class ShopItem:
                     selected_item = self
 
     def draw(self, surface):
+        """Dessine l'item sur la surface avec un contour jaune s'il est sélectionné
+
+        Parameters
+        ----------
+        surface : pygame.Surface
+            La surface sur laquelle dessiner l'item
+        """
         surface.blit(self.image, self.rect)
-        pygame.draw.rect(surface, (80, 80, 80), self.rect, 2)
+        pygame.draw.rect(surface, (80, 80, 80), self.rect, 2)  # contour gris par défaut
         if selected_item == self:
-            pygame.draw.rect(surface, (255, 255, 0), self.rect, 3)
+            pygame.draw.rect(surface, (255, 255, 0), self.rect, 3)  # contour jaune si sélectionné
 
 
 def create_items(joueur):
+    """Génère la liste des ShopItem à afficher selon l'inventaire du joueur
+
+    Les items possédés affichent leur vraie image ; les autres affichent
+    l'icône "inconnu" et l'aperçu "pas_trouve".
+
+    Parameters
+    ----------
+    joueur : str
+        Nom du joueur dont on charge l'inventaire
+
+    Returns
+    -------
+    list[ShopItem]
+        Liste des items positionnés dans la grille (ROWS × COLS cases)
+    """
     player_inventory = liste_armes_acquises(joueur)
     items = []
     i = 0
@@ -363,17 +449,43 @@ def create_items(joueur):
                 if name in player_inventory:
                     image, affich = liste_all_item[name]
                 else:
-                    image  = inconnu
+                    image  = inconnu   # item non débloqué → silhouette
                     affich = pas_trouve
                 items.append(ShopItem(name, image, affich, x, y))
                 i += 1
             else:
+                # Case vide au-delà du nombre d'items disponibles
                 items.append(ShopItem("?", inconnu, pas_trouve, x, y))
 
     return items
 
 
 def open_collection(events, WIN, mouse_pos, mouse_pressed, close_button, joueur):
+    """Affiche et gère l'interface de collection pour un frame
+
+    Dessine le fond, les items de la grille et l'aperçu de l'item sélectionné.
+    Retourne True si le bouton de fermeture est cliqué.
+
+    Parameters
+    ----------
+    events : list[pygame.event.Event]
+        Liste des événements pygame du frame courant
+    WIN : pygame.Surface
+        Fenêtre principale du jeu
+    mouse_pos : tuple(int, int)
+        Position de la souris
+    mouse_pressed : tuple
+        État des boutons de la souris
+    close_button : Button
+        Bouton de fermeture de la collection
+    joueur : str
+        Nom du joueur
+
+    Returns
+    -------
+    bool
+        True si la collection doit être fermée, False sinon
+    """
     global selected_item
 
     items = create_items(joueur)
@@ -384,6 +496,7 @@ def open_collection(events, WIN, mouse_pos, mouse_pressed, close_button, joueur)
         item.update(events)
         item.draw(WIN)
 
+    # ffiche l'aperçu agrandi de l'item sélectionné
     if selected_item:
         WIN.blit(selected_item.affich, (90, 265))
 

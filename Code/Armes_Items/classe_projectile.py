@@ -1,10 +1,6 @@
 """
 classe_projectile.py — SOMNEK
-- Epee_bleue retiré de PROJECTILES (ArmeEpee ne tire pas de Projectile)
-- Cle_USB : image statique (c'est une ArmeZone, pas de projectile visible)
-- Fer_a_lisser retiré (ArmeExplosion ne crée pas de Projectile visible)
-- Ring_light retiré (idem)
-- Croix_marron : poison animé, conservé
+
 """
 
 import math
@@ -13,8 +9,7 @@ import pygame as pyg
 from Fichiers_variables.traitement_images import decouper_image
 
 PROJECTILES = {
-    # ── Nerd ──────────────────────────────────────────────────────────────
-    # Epee_bleue : RETIRÉ — ArmeEpee crée une ZoneCoup, pas un Projectile
+   
     "Epee_enflammee": {
         "path":    "Images/Armes_items/Epee enflamee.png",
         "cols":    4, "rows": 1, "enlever": 0, "taille": (30, 30)

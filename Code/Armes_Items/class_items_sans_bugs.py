@@ -71,13 +71,6 @@ class Items:
         self.caracteristiques = self.Items[nom_item].copy()
     
     
-    def acheter_item(self,solde_j, prix):
-        """Acheter un item"""
-        if solde_j >= prix:
-            solde_j -= prix
-            return solde_j
-        return solde_j
-    
     def refroidissement(self):
         """Reduit le temps entre les attaques"""
         refroidissement_base = 100
@@ -202,7 +195,7 @@ def calculer_application_refroidissement(dernier_tir, refroidissement):
 
 def regen_hp(player, dt=None):
     """Régénère les PV au fil du temps.
-    À APPELER CHAQUE FRAME depuis la game loop.
+    
 
     `player.regen` est en HP par seconde (vient des items de regen).
     `dt` est le temps écoulé depuis la frame précédente, en secondes.

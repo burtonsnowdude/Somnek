@@ -1,6 +1,12 @@
-player_money = 400
-player_point = 10
+"""
+Variables liées aux power up :
+Argent du joueur, inventaire des niveaux, prix et effets de chaque power up
+"""
 
+
+
+
+# niveau  de base de chaque power up pour le joueur
 playerInventory = {
     "Pouvoir":          0,
     "Protection":       0,
@@ -15,6 +21,7 @@ playerInventory = {
     "croissance":       0,
 }
 
+# liste des prix par niveau, liste des effets par niveau pour chaque power up 
 liste_power_up = {
     "Pouvoir":          ([50, 100, 150, 200, 250],  [0.10, 0.10, 0.10, 0.10, 0.10]),
     "Protection":       ([50, 100, 150, 200, 250],  [0.05, 0.05, 0.05, 0.05, 0.05]),
@@ -29,6 +36,5 @@ liste_power_up = {
     "croissance":       ([70, 140, 210],             [0.10, 0.10, 0.10]),
 }
 
+# calcule le niveau max de chaque power up à partir du nombre de prix dispo
 MAX_NIVEAUX = {key: len(val[0]) for key, val in liste_power_up.items()}
-
-

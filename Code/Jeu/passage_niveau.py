@@ -96,7 +96,30 @@ def scroll_gemme(frame):
         WIN.blit(GEMMES, (0, y2)) # 2e image pour combler le vide
     WIN.blit(GEMMES, (0, y))
 
-
+def _collect_niveau_courant(p, items_dispo, armes_dispo):
+    """Remplit items_dispo/armes_dispo avec les unlocks du niveau ATTEINT."""
+    nv_key = "Niveau " + str(p.niveau)
+    if nv_key in GESTION_NIVEAU_ITEMS.get(p.perso, {}):
+        for it in GESTION_NIVEAU_ITEMS[p.perso][nv_key]:
+            items_dispo.append(it)
+    if nv_key in GESTION_DES_NIVEAUX_ARMES.get(p.perso, {}):
+        for a in GESTION_DES_NIVEAUX_ARMES[p.perso][nv_key]:
+            armes_dispo.append(a)
+ 
+ 
+def _collect_tout_unlocked(p, items_dispo, armes_dispo):
+    """Fallback : tous les niveaux <= p.niveau (sans doublons)."""
+    for n in range(1, p.niveau + 1):
+        k = "Niveau " + str(n)
+        if k in GESTION_NIVEAU_ITEMS.get(p.perso, {}):
+            for it in GESTION_NIVEAU_ITEMS[p.perso][k]:
+                if it not in items_dispo:
+                    items_dispo.append(it)
+        if k in GESTION_DES_NIVEAUX_ARMES.get(p.perso, {}):
+            for a in GESTION_DES_NIVEAUX_ARMES[p.perso][k]:
+                if a not in armes_dispo:
+                    armes_dispo.append(a)
+ 
 def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_name, nb_choix):
     """Choix d'une arme ou d'un item en fonction du niveau et de la chance du joueur
     
@@ -135,35 +158,33 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
     # Détermination des armes et items disponibles
     armes_dispo = []
     items_dispo = []
-    niveau = 1
-    while niveau < p.niveau:
-        for item in GESTION_NIVEAU_ITEMS[p.perso]["Niveau " + str(niveau)]:
-            items_dispo.append(item)
-        niveau += 1
-    niveau = 1
-    while niveau < p.niveau:
-        if "Niveau " + str(niveau) in GESTION_DES_NIVEAUX_ARMES[p.perso]:
-            for arme in GESTION_DES_NIVEAUX_ARMES[p.perso]["Niveau " + str(niveau)]:
-                armes_dispo.append(arme)
-        niveau += 1
-
-    dispo = items_dispo + armes_dispo
-    # Enlève les doublons seulement une fois
-    armes_enlevees = []
-    for arme in dispo[:]:
-        if arme in armes_et_items_possedees and not arme in armes_enlevees:
-            dispo.remove(arme)
-            armes_enlevees.append(arme)
-
-    # Fallback si tout est déjà possédé
+    
+    _collect_niveau_courant(p, items_dispo, armes_dispo)
+    dispo = [x for x in items_dispo + armes_dispo
+             if x not in armes_et_items_possedees]
+ 
+    # ÉTAPE 2 (fallback) : si tout ce qui était au niveau courant est possédé,
+    # on retombe sur l'ensemble des unlocks cumulés.
     if len(dispo) == 0:
-        dispo = items_dispo + armes_dispo
+        items_dispo.clear()
+        armes_dispo.clear()
+        _collect_tout_unlocked(p, items_dispo, armes_dispo)
+        dispo = [x for x in items_dispo + armes_dispo
+                 if x not in armes_et_items_possedees]
+ 
+    # ÉTAPE 3 (ultime fallback) : tout est déjà possédé → on autorise re-pick.
+    if len(dispo) == 0:
+        dispo = list(dict.fromkeys(items_dispo + armes_dispo))  # dédoublonné, ordre conservé
+ 
+    # Cas extrême : aucun unlock du tout pour ce perso → on sort proprement.
+    if len(dispo) == 0:
+        return (None, None), time.time() - debut
 
     choix = []
     compteur = 0
     while compteur < nb_choix:
         if nb_choix > len(dispo) : # pour éviter une boucle infinie en cas de choix insuffisants
-            choix = dispo
+            choix    = list(dispo)
             nb_choix = len(dispo)
             break
         arme = choice(dispo)
@@ -188,7 +209,8 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
     waiting = True
     selec   = 0 # sélection actuelle (pour le clavier)
     frame   = 0
-
+    choix_final = None
+    type_objet  = "item"
     while waiting:
         clock.tick(60)
         for event in pyg.event.get():
@@ -196,9 +218,9 @@ def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_n
                 exit()
             if event.type == pyg.KEYDOWN:
                 # Permet de sélectionner avec le clavier pour aller plus vite lors des tests
-                if event.key == pyg.K_UP and selec != 0:
+                if event.key == pyg.K_UP and selec > 0:
                     selec -= 1
-                if event.key == pyg.K_DOWN and selec != 2:
+                if event.key == pyg.K_DOWN and selec < nb_choix - 1:
                     selec += 1
                 if event.key == pyg.K_RETURN:
                     choix_final = buttons[selec].action

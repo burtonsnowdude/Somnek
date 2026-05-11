@@ -1,5 +1,5 @@
 # Jeu/player_actif.py
-# Référence globale au joueur actif (None si on est dans le menu)
+# Référence globale au joueur actif 
 
 _player_actif = None
 

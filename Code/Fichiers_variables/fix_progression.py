@@ -6,7 +6,7 @@ CHEMIN = "Fichiers_csv/persos_debloques.csv"
 PERSO_DEPART = "Fille_populaire"
 
 if not os.path.exists(CHEMIN):
-    print(f"❌ Fichier introuvable : {CHEMIN}")
+    
     exit()
 
 # Lire

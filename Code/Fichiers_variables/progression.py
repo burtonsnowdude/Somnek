@@ -81,8 +81,8 @@ def init_progression(joueur, noms=None):
 
 
 def _init_fichier(chemin, ordre_canonique, element_de_depart, joueur):
-    """Ajoute le joueur dans un fichier CSV de progression avec
-    `element_de_depart` débloqué par défaut."""
+    """Ajoute le joueur dans un fichier CSV de progression avec un
+    élement_de_depart` débloqué par défaut."""
 
     # Le fichier n'existe pas → on le crée
     if not os.path.exists(chemin):
@@ -222,8 +222,7 @@ def map_terminee(joueur, nom_map, noms, perso=None, player=None):
         if nouvel_item:
             player.ajouter_item(nouvel_item)
 
-    # ── Débloque la map suivante ──────────────────────────────────────────
-    if nom_map in ORDRE_MAPS:
+   
         idx = ORDRE_MAPS.index(nom_map)
         if idx + 1 < len(ORDRE_MAPS):
             map_suivante = ORDRE_MAPS[idx + 1]
