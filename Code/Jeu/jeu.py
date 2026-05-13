@@ -305,7 +305,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                 monstres_vague, p.kill_count = traverser_ecran(
                     monstres_vague, p, frame, xp_dispo, x_monde, y_monde
                 )
-                monstres_presents, vague = vague_130(
+            monstres_presents, vague = vague_130(
                     temps_ecoule, monstres_presents, vague, p, perso
                 )
 

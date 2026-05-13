@@ -171,9 +171,10 @@ def replique(texte, color, text_color):
                 keys = pyg.key.get_pressed()
                 if keys[pyg.K_RETURN]:
                     return # pour passer la réplique
-        for idx, t in enumerate(textes):
-            ligne = FONT.render(t, True, text_color)
-            WIN.blit(ligne, (30, HEIGHT - 90 + 20 * idx))
+        WIN.blit(fond, (20, HEIGHT-100))
+        for t in textes :
+            texte = FONT.render(t, True, text_color)
+            WIN.blit(texte, (30, HEIGHT-90+20*textes.index(t)))
         pyg.display.update()
 
 def anim_quizz(son):
@@ -275,9 +276,9 @@ def quizz(son):
         WIN.blit(rose, (0, 0))
         texte = QUIZZ[i][0]
         texte = retour_ligne(texte, 80)
-        for idx in texte :
+        for t in texte :
             question = FONT.render(t, True, (163, 38, 47))
-            WIN.blit(question, (80, 100 + 20 * idx))
+            WIN.blit(question, (80, 100+20*texte.index(t)))
         ordre = [[QUIZZ[i][1][j], j] for j in range(len(QUIZZ[i][1]))]
         shuffle(ordre)
         buttons = [Button(ordre[j][0], ordre[j][1], 400, 200+100*j, 650, 80, FONT) for j in range(len(QUIZZ[i][1]))]
