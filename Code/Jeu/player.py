@@ -18,6 +18,7 @@ from Armes_Items.Classe_par_type_darme import (
 )
 from Jeu.power_up import apply_powerups
 from Armes_Items.class_armes_sans_bugs import Arme
+from Jeu.power_up import *
 from Armes_Items.Item_system import InventaireItems, appliquer_stats_items
 
 
@@ -255,7 +256,7 @@ class Player:
         -------
         bool
         """
-        self.xp += xp
+        self.xp += calculer_xp_gagne(self, xp)
         if self.xp >= xp_attendu:
             self.xp -= xp_attendu
             self.niveau += 1

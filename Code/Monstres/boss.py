@@ -25,10 +25,10 @@ REPLIQUES_ELEVES = [
 ]
 BOSS = {}
 maps = ["Ruelle", "Foire"] # maps des boss
-for t in maps :
-    BOSS[t] = {"hp" : t*1000,
-               "vitesse" : maps.index(t)+1,
-               "puissance" : 10* maps.index(t)}
+for t in maps:
+    BOSS[t] = {"hp": (maps.index(t) + 1) * 1000,
+               "vitesse": maps.index(t) + 1,
+               "puissance": 10 * maps.index(t)}
 
 BOSS["Ruelle"]["particularites"] = ["dialogue_boss", "rotation_boss", "move"]
 BOSS["Foire"]["particularites"] = ["dialogue_perso", "dash_boss", "hallucination"]
@@ -120,19 +120,19 @@ class Boss :
         p : Self@Player
             Le joueur
         """
-        if self.iteration1 :
+        if self.iteration1:
             self.iteration1 = False
             self.temps_debut = time.time()
-            self.textes = choice(REPLIQUES_ELEVES)
-            self.textes = retour_ligne(self.textes)
+            texte_brut = choice(REPLIQUES_ELEVES)
+            self.textes = retour_ligne(texte_brut, 80)
         if time.time() - self.temps_debut < 5:
             fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
             fond.fill(p.color)
             WIN.blit(fond, (20, HEIGHT-100))
-            for t in self.textes :
+            for idx, t in enumerate(self.textes):
                 texte = FONT.render(t, True, (0, 0, 0))
-                WIN.blit(texte, (30, HEIGHT-90+20*self.textes.index(t)))
-        else :
+                WIN.blit(texte, (30, HEIGHT - 90 + 20 * idx))
+        else:
             self.action_is_over = True
 
     def dialogue_boss(self):
@@ -143,19 +143,20 @@ class Boss :
         p : Self@Player
             Le joueur
         """
-        if self.iteration1 :
+        if self.iteration1:
             self.iteration1 = False
             self.temps_debut = time.time()
-            self.textes = choice(REPLIQUES_BOSS)
-            self.textes = retour_ligne(self.textes)
+            # on garde la string brute et on la coupe une seule fois
+            texte_brut = choice(REPLIQUES_BOSS)
+            self.textes = retour_ligne(texte_brut, 80)
         if time.time() - self.temps_debut < 5:
             fond = pyg.Surface((WIDTH-40, 80), pyg.SRCALPHA)
             fond.fill((92, 101, 184, 200))
             WIN.blit(fond, (20, HEIGHT-100))
-            for t in self.textes :
+            for idx, t in enumerate(self.textes):
                 texte = FONT.render(t, True, (0, 0, 0))
-                WIN.blit(texte, (30, HEIGHT-90+20*self.textes.index(t)))
-        else :
+                WIN.blit(texte, (30, HEIGHT - 90 + 20 * idx))
+        else:
             self.action_is_over = True
 
     def rotation_boss(self, p):
@@ -359,7 +360,7 @@ def gestion_boss(boss, boss_present, p, frame, boss_acheves):
 
         if boss.hp <= 0: # mort du boss
             boss_present = False
-            boss_acheves.append(boss.map)
+            boss_acheves.append(boss.maps)
             boss = None
 
     return boss_present, boss_acheves

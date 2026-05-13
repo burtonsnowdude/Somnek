@@ -1,12 +1,7 @@
 """
 class_armes_sans_bugs.py — SOMNEK
 
-CORRECTIONS :
-- Le check `if dgbase <= 0` est désormais DANS la boucle de construction
-  (avant, il ne vérifiait que la dernière arme aplatie → silencieux mais buggy)
-- `levelup_depuis_niveau` gère le nouveau format LISTE de
-  GESTION_DES_NIVEAUX_ARMES (avant : `bonus[self.nom]` sur une liste → TypeError)
-- `calculer_degat` complétée proprement
+
 """
 
 from Fichiers_variables.dictionnaire_armes import (
@@ -28,9 +23,8 @@ class Arme:
     }
     arme_possede = []
 
-    # ── Construction du dico aplati {nom_arme: data} ───────────────────
-    # FIX : check `dgbase <= 0` DANS la boucle (pour chaque arme, pas
-    #       seulement la dernière).
+    # Construction du dico aplati 
+    
     ARMES = {}
     for _perso, _armes in ARMES_PAR_PERSO.items():
         for _nom, _data in _armes.items():

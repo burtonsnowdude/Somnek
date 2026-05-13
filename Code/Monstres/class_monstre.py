@@ -220,21 +220,4 @@ def gestion_xp_fenetre(xp_dispo, p, xp_attendu):
             xp_dispo.remove(xp) # on l'enlève si le joueur le gagne
     return xp_dispo, obtenu
 
-def empoisonner(self, duree, degats, tick):
-    self.est_empoisonne = True
-    self.poison_duree = duree
-    self.poison_degats = degats
-    self.poison_tick = tick
-    self.poison_timer = 0
-
-def update_poison(self):
-    if not getattr(self, "est_empoisonne", False):
-        return
-    self.poison_timer += 1
-    self.poison_duree -= 1
-    if self.poison_timer >= self.poison_tick:
-        self.degats(self.poison_degats)
-        self.poison_timer = 0
-    if self.poison_duree <= 0:
-        self.est_empoisonne = False
 

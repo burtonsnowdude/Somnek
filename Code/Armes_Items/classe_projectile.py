@@ -15,6 +15,8 @@ PROJECTILES = {
         "path":    "Images/Armes_items/Epee enflamee.png",
         "cols":    4, "rows": 1, "enlever": 0, "taille": (30, 30)
     },
+    "Epee_bleue" :  
+        "Images/Armes_items/epee_bleue_img.png",
     
     "Pistolets":            "Images/Armes_items/projectile/proj_pistolet.png",
     "Ticket_de_metro":      "Images/Armes_items/projectile/proj_ticket.png",

@@ -5,6 +5,8 @@ Gestion de fichiers en csv, ce fichier gère les sauvegardes
     des armes et items acquises
     des quêtes accomplies
     des powerups achetés
+    des maps
+    des persos
 Il possède différentes fonctions non utilisées dans le code mais qui sont utiles pour réinitialiser les fichiers
 """
 

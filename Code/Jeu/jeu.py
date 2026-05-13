@@ -35,12 +35,7 @@ OBJ_SPECIAL = {
 }
 
 
-def on_level_up(player):
-    niveau = player.niveau
-    armes_dispos = ARMES[player.perso]
-    for nom_arme, data in armes_dispos.items():
-        if data["niveau_req"] == niveau:
-            player.ajouter_arme(nom_arme)
+
 
 
 def jeu(perso, nom, map_choisie="Cour"):
@@ -78,7 +73,7 @@ def jeu(perso, nom, map_choisie="Cour"):
         reecrire_fichier("niveau_argent", new_tab, noms)
         reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
         reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
-    
+    definir_fichier_nouv_armes(noms) 
     # Initialise la progression du joueur
     init_progression(nom, noms)
 
@@ -232,12 +227,16 @@ def jeu(perso, nom, map_choisie="Cour"):
 
             
             if frame % 10 == 0:
+                print(f"--- Frame {frame} | zones: {len(p.all_zones)} | monstres: {len(monstres_presents)}")
                 for zone in p.all_zones:
+                    print(f"  Zone rect={zone.rect} damage={zone.damage}")
                     for m in monstres_presents:
-                        if zone.rect.colliderect(m.rect):
-                            m.degats(p.armes[p.arme_active].damage)
+                        collide = zone.rect.colliderect(m.rect)
+                        if collide:
+                            print(f"    HIT monstre rect={m.rect} -> degats({zone.damage})")
+                            m.degats(zone.damage)
                     if boss_present and zone.rect.colliderect(boss.rect):
-                        boss.degats(10)
+                        boss.degats(zone.damage)     
 
             # Armes orbitales
             for arme in p.armes:
@@ -425,7 +424,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                 from Jeu.player_actif import set_player_actif
                 set_player_actif(None)
                 new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)
-                on_level_up(p)
+                
 
              # Déplace le fond et les objets sur la map en fonction des déplacements du joueur
             p.move_bg(monstres_presents, xp_dispo, monstres_vague, boss, boss_present)
@@ -446,6 +445,7 @@ def jeu(perso, nom, map_choisie="Cour"):
                 flashing_effect(WIN)
 
             pyg.display.flip()
+        
 
     # Actualisation des données 
     new_tab = actualiser_donnees(nom, p.niveau, argent, new_tab)

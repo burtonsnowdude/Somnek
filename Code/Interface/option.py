@@ -95,8 +95,8 @@ def sync_settings():
     settings["sound"]  = checkboxes[0].is_checked()
     settings["music"]  = checkboxes[1].is_checked()
     settings["vfx"]    = checkboxes[2].is_checked()
-    settings["damage"] = checkboxes[3].is_checked()
-    settings["bw"]     = checkboxes[4].is_checked()
+    
+    settings["bw"]     = checkboxes[3].is_checked()
 
 
 def options(events, mouse_pos, mouse_pressed, surface, joueur, player_money):

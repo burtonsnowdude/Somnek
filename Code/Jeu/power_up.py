@@ -1,7 +1,7 @@
 """
 power_up.py
 Applique les bonus de l'inventaire sur les stats du joueur.
-À appeler : après chaque achat, après un level-up, au chargement de la partie.
+ appeler : après chaque achat, après un level-up, au chargement de la partie.
 """
 
 import Interface.variable_power_up as data
@@ -87,7 +87,7 @@ def _appliquer_degats_arme(arme_instance, multiplicateur: float):
     if arme_data is None:
         return
 
-    # Priorité : dgbase post-levelup stocké sur l'instance ArmeBase
+    #dgbase post-levelup stocké sur l'instance ArmeBase
     # sinon : dgbase initial du dictionnaire
     dgbase = getattr(arme_instance, "_dgbase_apres_levelup", arme_data.get("dgbase", 10))
     arme_instance.damage = dgbase * multiplicateur
@@ -110,7 +110,5 @@ def calculer_degats_recus(player, degats_bruts: float) -> float:
 def calculer_xp_gagne(player, xp_base: float) -> float:
     """
     Retourne l'XP réellement gagné après bonus Croissance.
-    À appeler dans player.update_xp() :
-        self.xp += calculer_xp_gagne(self, xp)
     """
     return xp_base * getattr(player, "croissance_xp", 1.0)

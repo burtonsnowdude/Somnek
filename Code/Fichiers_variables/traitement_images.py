@@ -59,6 +59,7 @@ EPEE_GUTS = pyg.image.load("Images/Armes_items/epee_guts.png")
 EPEE_ENFLAMMEE = pyg.image.load("Images/Armes_items/Epee enflamee.png")
 APPLE_WATCH =  pyg.image.load("Images/Armes_items/smart.png")
 DEODORANT = pyg.image.load("Images/Armes_items/Deodorant.png")
+EPEE_ENFLAMMEE_img = pyg.image.load("Images/Armes_items/Epee_enfla_img.png")
 # FILLE POPULAIRE
 GLOSS_ROSE = pyg.image.load("Images/Armes_items/gloss_rose.png")
 TICKET =  pyg.image.load("Images/Armes_items/ticket.png")

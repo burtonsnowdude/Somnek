@@ -1,6 +1,6 @@
 """
 Power_up_shop.py :
-Boutique de power-ups — grille 3 colonnes avec police pixel,
+Boutique de power-ups ,
 achat via argent du joueur et sauvegarde de la progression
 """
 
