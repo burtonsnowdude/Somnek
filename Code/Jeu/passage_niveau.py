@@ -123,160 +123,138 @@ def _collect_tout_unlocked(p, items_dispo, armes_dispo):
 
 
 
-def choix_arme(p, armes_et_items_possedees, monstres_presents,
-               xp_present, map_name, nb_choix):
-    """
-    affiche le menu de level up et renvoie le choix du joueur.
+def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_name, nb_choix):
+    """Choix d'une arme ou d'un item en fonction du niveau et de la chance du joueur
+    
+    Parameters
+    -----------
+    p : Self@Player
+        Le joueur
+    armes_et_items_possedees : list
+        Liste des armes et items possédés
+    monstres_presents : list
+        Liste des monstres présents
+    xp_present : list
+        Liste de tous les xp disponibles sur la map
+    map_name : str
+        Map choisie
+    Nb_choix : int
+        Nombre de choix possibles (varie en fonction de la chance)
+    
+    Returns
+    -------
+    tuple(
+        tuple(
+            str, 
+                Type d'objet
+            str), 
+                Choix
+        float
+            Temps écoulé
+    )
 
-    étapes :
-    - récupère les objets dispo
-    - priorise ceux du niveau actuel
-    - complète avec anciens objets si besoin
-    - gère le choix clavier/souris
     """
     map_img = IMAGES_MAPS[map_name]
     mapX, mapY = map_img.get_size()
+    debut  = time.time()
+    clock  = pyg.time.Clock()
+    # Détermination des armes et items disponibles
+    armes_dispo = []
+    items_dispo = []
+    niveau = 1
+    while niveau < p.niveau:
+        for item in GESTION_NIVEAU_ITEMS[p.perso]["Niveau " + str(niveau)]:
+            items_dispo.append(item)
+        niveau += 1
+    niveau = 1
+    while niveau < p.niveau:
+        if "Niveau " + str(niveau) in GESTION_DES_NIVEAUX_ARMES[p.perso]:
+            for arme in GESTION_DES_NIVEAUX_ARMES[p.perso]["Niveau " + str(niveau)]:
+                armes_dispo.append(arme)
+        niveau += 1
 
-    debut = time.time()
-    clock = pyg.time.Clock()
+    dispo = items_dispo + armes_dispo
+    # Enlève les doublons seulement une fois
+    armes_enlevees = []
+    for arme in dispo[:]:
+        if arme in armes_et_items_possedees and not arme in armes_enlevees:
+            dispo.remove(arme)
+            armes_enlevees.append(arme)
 
-   
+    # Fallback si tout est déjà possédé
+    if len(dispo) == 0:
+        dispo = items_dispo + armes_dispo
 
-    # objets du niveau actuel
-    prioritaire_items = []
-    prioritaire_armes = []
-    _collect_niveau_courant(p, prioritaire_items, prioritaire_armes)
-
-    prioritaire = list(dict.fromkeys(
-        x for x in prioritaire_items + prioritaire_armes
-        if x not in armes_et_items_possedees
-    ))
-
-    # objets cumulés 
-    complement_items = []
-    complement_armes = []
-    _collect_tout_unlocked(p, complement_items, complement_armes)
-
-    complement = list(dict.fromkeys(
-        x for x in complement_items + complement_armes
-        if x not in armes_et_items_possedees and x not in prioritaire
-    ))
-
-    # listes globales 
-    items_dispo = list(dict.fromkeys(prioritaire_items + complement_items))
-    armes_dispo = list(dict.fromkeys(prioritaire_armes + complement_armes))
-
-    
-
-    # priorité aux objets du niveau
-    if len(prioritaire) <= nb_choix:
-        choix = list(prioritaire)
-    else:
-        choix = sample(prioritaire, nb_choix)
-
-    # complète si pas assez
-    pool_comp = list(complement)
-    while len(choix) < nb_choix and pool_comp:
-        pick = choice(pool_comp)
-        pool_comp.remove(pick)
-        if pick not in choix:
-            choix.append(pick)
-
-    # fallback ultime si tout est déjà possédé
-    if len(choix) == 0:
-        tous = list(dict.fromkeys(items_dispo + armes_dispo))
-        while len(choix) < nb_choix and tous:
-            pick = choice(tous)
-            tous.remove(pick)
-            if pick not in choix:
-                choix.append(pick)
-
-    nb_choix = len(choix)
-
-    if nb_choix == 0:
-        return (None, None), time.time() - debut
-
-    affich = [mot.replace("_", " ").upper() for mot in choix]
+    choix = []
+    compteur = 0
+    while compteur < nb_choix:
+        if nb_choix > len(dispo) : # pour éviter une boucle infinie en cas de choix insuffisants
+            choix = dispo
+            nb_choix = len(dispo)
+            break
+        arme = choice(dispo)
+        if arme not in choix:
+            choix.append(arme)
+            compteur += 1
+    # Normalisation de l'affichage (avec espaces et en majuscules)
+    affich = []
+    for mot in choix:
+        m = mot.replace("_", " ").upper()
+        affich.append(m)
 
     violet = pyg.Surface((WIDTH, HEIGHT), pyg.SRCALPHA)
     violet.fill((102, 62, 86, 150))
-
-    texte = FONT_NIVEAU.render(
-        "Niveau " + str(p.niveau) + " atteint !",
-        True, (255, 255, 255)
-    )
-
-    buttons = [
-        Button(affich[i], choix[i], 400, 200 + 100 * i, 400, 80, FONT)
-        for i in range(nb_choix)
-    ]
-
+    texte  = FONT_NIVEAU.render("Niveau " + str(p.niveau) + " atteint !", True, (255, 255, 255))
+    buttons = [Button(affich[i], choix[i], 400, 200 + 100 * i, 400, 80, FONT) for i in range(nb_choix)]
     for b in buttons:
         b.color1 = (122, 48, 113)
         b.color2 = (161, 99, 158)
         b.rect_center = (400, b.rect.topleft[1] + 20)
 
     waiting = True
-    selec = 0
-    frame = 0
-    choix_final = None
-    type_objet = "item"
+    selec   = 0 # sélection actuelle (pour le clavier)
+    frame   = 0
 
-    # boucle du menu 
     while waiting:
         clock.tick(60)
-
         for event in pyg.event.get():
             if event.type == pyg.QUIT:
                 exit()
-
             if event.type == pyg.KEYDOWN:
-                if event.key == pyg.K_UP and selec > 0:
+                # Permet de sélectionner avec le clavier pour aller plus vite lors des tests
+                if event.key == pyg.K_UP and selec != 0:
                     selec -= 1
-                if event.key == pyg.K_DOWN and selec < nb_choix - 1:
+                if event.key == pyg.K_DOWN and selec != 2:
                     selec += 1
                 if event.key == pyg.K_RETURN:
                     choix_final = buttons[selec].action
-                    type_objet = "arme" if choix_final in armes_dispo else "item"
-                    waiting = False
-
+                    type_objet  = "arme" if choix_final in armes_dispo else "item"
+                    waiting     = False
             if event.type == pyg.MOUSEBUTTONDOWN:
                 mouse_pos = pyg.mouse.get_pos()
                 for btn in buttons:
                     if btn.rect.collidepoint(mouse_pos):
                         choix_final = btn.action
-                        type_objet = "arme" if btn.action in armes_dispo else "item"
-                        waiting = False
+                        type_objet  = "arme" if btn.action in armes_dispo else "item"
+                        waiting     = False
 
         mouse_pos = pyg.mouse.get_pos()
-
         WIN.fill((225, 225, 225))
-
-        # affichage map
         for t in range(-mapX, WIDTH + mapX, mapX):
             for j in range(-mapY, HEIGHT + mapY, mapY):
                 WIN.blit(map_img, (t, j))
-
-        # affichage fond dynamique
         for m in monstres_presents:
-            m.show(1)
-
+            m.show(1) # pour que les monstres ne changent pas d'anim
         for xp in xp_present:
             xp.show_xp()
-
         WIN.blit(violet, (0, 0))
-
-        scroll_gemme(frame)
+        scroll_gemme(frame) # écran magnifique de gemmes en fond
         frame += 1
-
-        # boutons 
         for btn in buttons:
             btn.draw(WIN, mouse_pos)
             show_image(btn, p)
             show_texte(btn, p)
-
         WIN.blit(texte, texte.get_rect(center=(CENTREx, 100)))
-
         pyg.display.update()
 
     return (type_objet, choix_final), time.time() - debut
