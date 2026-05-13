@@ -235,6 +235,7 @@ pas_trouve            = load_big("Images/Interface/affiche/pas_trouvé.png")
 # Dictionnaire item adapptés à collection
 # Associe chaque item à son icône de grille et son image d'aperçu agrandi.
 # Les items non débloqués affichent l'icône "inconnu" et l'image "pas_trouve".
+"""
 liste_all_item = {
     "Palette": (img_palette, palette_affich),
     "Berserk": (img_berserk, berserk_affich),
@@ -305,7 +306,10 @@ liste_all_item = {
 liste_all_item = {
     "Palette": (img_palette, palette_affich),
     "Berserk": (img_berserk, berserk_affich),
+    "Cle_USB": (img_cle_usb, cle_usb_affich),
     "Petit_nain_roux": (img_nain, pas_trouve),
+    "Pistolets": (img_pistolets, pistolets_affich),
+    "Chariot Violet": (img_chariot_violet, chariot_violet_affich),
     "Lunettes_cassees": (img_lunettes_cassees, lunettes_cassees_affich),
     "Souris_pc": (img_souris, souris_affich),
     "Chaussettes_propres": (img_chaussettes, chaussettes_affich),
@@ -320,6 +324,9 @@ liste_all_item = {
     "Serviette_nettoyante":(img_serviette,         serviette_affich),
     "Nokia":              (img_nokia,              nokia_affich),
     "Trefle":             (img_trefle,             trefle_affich),
+    "Sac_a_dos_bleu": (img_sac_bleu, sac_a_dos_bleu_affich),
+    "Ambroisie": (img_ambroisie, ambroisie_affich),
+    "Console_allumee": (img_console, console_affich),
 
     # FILLE POPULAIRE
     "Gloss_rose": (img_gloss_rose, gloss_rose_affich),
@@ -342,6 +349,9 @@ liste_all_item = {
     "Sac_a_main_violet": (img_mousse_vanille, sac_a_main_violet_affich),
     "Jean_stanley" : (img_jean_stanley, jean_stanley_affich),
     "Chargeur" : (img_chargeur, chargeur_affich),
+    "Fer_a_lisser": (img_fer_a_lisser, fer_a_lisser_affich),
+    "Ensemble_juicy": (img_ensemble_jucy, ensemble_jucy_affich),
+    "Manteau_leopard": (img_manteau_leopard, manteau_leopard_affich),
 
     # NONNE
     "Croix_marron": (img_croix_de_base, croix_de_base_affich),
@@ -356,11 +366,14 @@ liste_all_item = {
     "Huile_benie": (img_bougie, huile_affich),
     "Ostie": (img_ostie, ostie_affich),
     "Sac_a_dos_bleu": (img_ostie, sac_a_dos_bleu_affich),
-    "Eau_benite": (img_ostie, eau_benite_affich),
+    "Eau_benite": (img_eau_benite, eau_benite_affich),
     "Halo_lumineux": (img_halo_lumineux, halo_lumineux_affich),
-    "Boule_denergie" : (img_boule_denergie, boule_denergie_affich)
+    "Boule_energie" : (img_boule_denergie, boule_denergie_affich),
+    "Coeur": (img_coeur, coeur_affiche),
+    "Cape": (img_cape, cape_affiche),
+    "Collant": (img_collant, collant_affiche),
 }
-"""
+
 
 selected_item = None  # item actuellement sélectionné dans la grille
 

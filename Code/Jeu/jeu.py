@@ -96,9 +96,11 @@ def jeu(perso, nom, map_choisie="Cour"):
 
     for nom_arme in DEPART[perso]["armes"]:
         p.ajouter_arme(nom_arme)
+        armes_joueur = ajouter_arme(nom, nom_arme, armes_joueur)
 
     for nom_item in DEPART[perso]["items"]:
         p.ajouter_item(nom_item)
+        armes_joueur = ajouter_arme(nom, nom_item, armes_joueur)
 
     apply_powerups(p)
     p.vitesse_base = p.vitesse
