@@ -85,44 +85,6 @@ def scroll_gemme(frame):
     WIN.blit(GEMMES, (0, y))
 
 
-
-def _collect_niveau_courant(p, items_dispo, armes_dispo):
-    """
-    récupère les objets débloqués au niveau actuel.
-    """
-    nv_key = "Niveau " + str(p.niveau)
-
-    if nv_key in GESTION_NIVEAU_ITEMS.get(p.perso, {}):
-        for it in GESTION_NIVEAU_ITEMS[p.perso][nv_key]:
-            items_dispo.append(it)
-
-    if nv_key in GESTION_DES_NIVEAUX_ARMES.get(p.perso, {}):
-        for a in GESTION_DES_NIVEAUX_ARMES[p.perso][nv_key]:
-            armes_dispo.append(a)
-
-
-def _collect_tout_unlocked(p, items_dispo, armes_dispo):
-    """
-    récupère tous les objets débloqués jusqu'au niveau actuel.
-
-    utilisé si aucun objet n'est dispo au niveau courant.
-    """
-    for n in range(1, p.niveau + 1):
-        k = "Niveau " + str(n)
-
-        if k in GESTION_NIVEAU_ITEMS.get(p.perso, {}):
-            for it in GESTION_NIVEAU_ITEMS[p.perso][k]:
-                if it not in items_dispo:
-                    items_dispo.append(it)
-
-        if k in GESTION_DES_NIVEAUX_ARMES.get(p.perso, {}):
-            for a in GESTION_DES_NIVEAUX_ARMES[p.perso][k]:
-                if a not in armes_dispo:
-                    armes_dispo.append(a)
-
-
-
-
 def choix_arme(p, armes_et_items_possedees, monstres_presents, xp_present, map_name, nb_choix):
     """Choix d'une arme ou d'un item en fonction du niveau et de la chance du joueur
     
