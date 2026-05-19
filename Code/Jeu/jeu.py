@@ -73,7 +73,7 @@ def jeu(perso, nom, map_choisie="Cour"):
         reecrire_fichier("niveau_argent", new_tab, noms)
         reecrire_fichier("armes_obtenues_par_joueur", new_tab_armes, noms)
         reecrire_fichier("quetes_reussis", new_tab_quetes, noms)
-    definir_fichier_nouv_armes(noms) 
+    
     # Initialise la progression du joueur
     init_progression(nom, noms)
 
